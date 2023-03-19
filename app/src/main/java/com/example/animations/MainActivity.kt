@@ -12,7 +12,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
+import com.example.animations.navigation.AnimatedNavGraph
 import com.example.animations.navigation.NavGraph
+import com.example.animations.ui.screens.AnimatedNav
 import com.example.animations.ui.screens.HomeScreen
 import com.example.animations.ui.theme.AnimationsTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -45,3 +47,30 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+//class NavActivity : ComponentActivity() {
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
+//        setContent {
+//            AnimationsTheme {
+//                val systemUiController = rememberSystemUiController()
+//                val color = MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
+//                systemUiController.setStatusBarColor(
+//                    color = color,
+//                )
+//                systemUiController.setNavigationBarColor(
+//                    color = color,
+//                    navigationBarContrastEnforced = false
+//                )
+//                Surface(
+//                    modifier = Modifier
+//                        .fillMaxSize(),
+//                    color = MaterialTheme.colorScheme.background
+//                ) {
+//                    NavGraph()
+//                }
+//            }
+//        }
+//    }
+//}

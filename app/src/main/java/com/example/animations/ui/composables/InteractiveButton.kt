@@ -1,15 +1,12 @@
 package com.example.animations.ui.composables
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,7 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -31,9 +28,9 @@ import androidx.compose.ui.unit.dp
 fun InteractiveButton(
     text: String,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     height: Dp = 90.dp,
     padding: PaddingValues = PaddingValues(12.dp),
-    modifier: Modifier = Modifier
 ) {
     val interactionSource = remember {
         MutableInteractionSource()
@@ -48,30 +45,18 @@ fun InteractiveButton(
     )
     val buttonDp by animateDpAsState(
         targetValue = if (buttonInteracted) 5.dp else 100.dp,
-        animationSpec = tween(500 )
+        animationSpec = tween(500)
     )
-    Column() {
-        Button(
-            shape = RoundedCornerShape(size = buttonDp),
-            modifier = modifier
-                .fillMaxWidth()
-                .height(height)
-                .padding(padding),
-            interactionSource = interactionSource,
-            colors = ButtonDefaults.buttonColors(containerColor = animateColor),
-            onClick = onClick
-        ) {
-            Text(text = text)
-        }
+    Button(
+        shape = RoundedCornerShape(size = buttonDp),
+        modifier = modifier
+            .height(height)
+            .fillMaxWidth()
+            .padding(padding),
+        interactionSource = interactionSource,
+        colors = ButtonDefaults.buttonColors(containerColor = animateColor),
+        onClick = onClick
+    ) {
+        Text(text = text, fontWeight = FontWeight.Bold)
     }
-}
-
-
-@Preview
-@Composable
-fun PreviewInteractiveButton() {
-    InteractiveButton(
-        text = "text here",
-        onClick = {}
-    )
 }
