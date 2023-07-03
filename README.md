@@ -21,7 +21,7 @@ This is a sample animations app made to demonstrate animations in jetpack compos
 | Animated Transition | <video src="https://github.com/MadFlasheroo7/Compose-Animations/assets/57130085/8e3b1a1c-744e-475a-b436-bdfcbc2e8675"/> |
 | Animated List | <video src="https://github.com/MadFlasheroo7/Compose-Animations/assets/57130085/4cd5053a-33c1-487d-b4c3-a0828f7143f7"/> |
 | Animated Gesture | <video src="https://github.com/MadFlasheroo7/Compose-Animations/assets/57130085/33f5f1e2-e983-44d5-b901-75c1cbf69b7d" /> |
-| Infinite Transistion | <video src="https://github.com/MadFlasheroo7/Compose-Animations/assets/57130085/a376aa1b-4e15-4de4-89dd-a911eb307021"/> |
+| Infinite Transition | <video src="https://github.com/MadFlasheroo7/Compose-Animations/assets/57130085/a376aa1b-4e15-4de4-89dd-a911eb307021"/> |
 | Animated Navigation | <video src="https://github.com/MadFlasheroo7/Compose-Animations/assets/57130085/e8817f10-3750-4a84-bb08-5a99328b47b6"/> |
 | Bouncy Rope | <video src="https://github.com/MadFlasheroo7/Compose-Animations/assets/57130085/3e474420-c4f9-43ef-8ea0-7f883fafbee2"/> |
 
