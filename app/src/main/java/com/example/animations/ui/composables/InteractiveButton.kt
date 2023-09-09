@@ -37,7 +37,7 @@ fun InteractiveButton(
     }
     val isPressed by interactionSource.collectIsPressedAsState()
     val isHovered by interactionSource.collectIsHoveredAsState()
-    val buttonInteracted = isPressed || isHovered
+    val buttonInteracted = isPressed.or(isHovered)
 
     val animateColor by animateColorAsState(
         targetValue = if (buttonInteracted) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary,

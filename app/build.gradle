@@ -47,6 +47,8 @@ android {
 }
 
 dependencies {
+    implementation "me.saket.cascade:cascade:2.0.0-rc02"
+    implementation "me.saket.cascade:cascade-compose:2.0.0-rc02"
     implementation "com.airbnb.android:lottie-compose:6.0.0"
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'

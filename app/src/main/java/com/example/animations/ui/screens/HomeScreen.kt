@@ -28,7 +28,7 @@ fun HomeScreen(
     navToBouncyRopes: () -> Unit,
     navToAnimateValueAsState: () -> Unit
 ) {
-    Column() {
+    Column {
         CenterAlignedTopAppBar(
             title = {
                 Text(
@@ -77,14 +77,6 @@ fun HomeScreen(
             InteractiveButton(
                 text = "Bouncy Ropes",
                 onClick = navToBouncyRopes
-            )
-            InteractiveButton(
-                text = "Lottie & Rive Animations",
-                onClick = navToAnimateVisibility
-            )
-            InteractiveButton(
-                text = "Community Built",
-                onClick = navToAnimateVisibility
             )
         }
     }
