@@ -33,7 +33,7 @@ fun HungryCat() {
     val mediaPlayer = MediaPlayer.create(LocalContext.current, R.raw.angry_cat)
     Card {
         var isVisible by remember { mutableStateOf(true) }
-        var randNum = mutableListOf(-200..200).random()
+        val randNum = mutableListOf(-200..200).random()
         Column(
             modifier = Modifier
                 .fillMaxWidth()

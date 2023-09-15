@@ -21,7 +21,7 @@ import pro.jayeshseth.animations.util.AnimationScreen
 
 @Composable
 fun AnimationCard(animationScreen: AnimationScreen) {
-    Card() {
+    Card {
         var isVisible by remember { mutableStateOf(true) }
         Column(
             modifier = Modifier

@@ -19,7 +19,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -41,7 +41,7 @@ fun InfiniteRotation() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         var fanSpeed by remember {
-            mutableStateOf(360f)
+            mutableFloatStateOf(360f)
         }
         Card(Modifier.safeContentPadding()) {
             Column(
@@ -59,14 +59,14 @@ fun InfiniteRotation() {
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.SemiBold
                 )
-                val infiniteTransition = rememberInfiniteTransition()
+                val infiniteTransition = rememberInfiniteTransition(label = "infinite transition")
                 val angle by infiniteTransition.animateFloat(
                     initialValue = 0f,
                     targetValue = fanSpeed,
                     animationSpec = infiniteRepeatable(
                         animation = tween(durationMillis = 360, easing = LinearEasing),
                         repeatMode = RepeatMode.Restart
-                    )
+                    ), label = "infinite transition"
                 )
                 Image(
                     painter = painterResource(

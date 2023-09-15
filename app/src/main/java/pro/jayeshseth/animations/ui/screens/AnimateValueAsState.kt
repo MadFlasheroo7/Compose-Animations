@@ -80,7 +80,7 @@ fun AnimateFloatAsState() {
 
             val alpha: Float by animateFloatAsState(
                 if (enabled) 1f else 0.5f,
-                animationSpec = tween(DURATION, easing = LinearEasing)
+                animationSpec = tween(DURATION, easing = LinearEasing), label = "animate float value"
             )
             Box(
                 Modifier
@@ -120,7 +120,7 @@ fun AnimateDpAsState() {
 
             val size by animateDpAsState(
                 if (enabled) 200.dp else 100.dp,
-                animationSpec = tween(DURATION, easing = LinearEasing)
+                animationSpec = tween(DURATION, easing = LinearEasing), label = "animate dp"
             )
             Box(
                 Modifier
@@ -159,7 +159,7 @@ fun AnimateOffsetAsState() {
 
             val offset by animateIntOffsetAsState(
                 if (enabled) IntOffset(0, 0) else IntOffset(100, -100),
-                animationSpec = tween(DURATION, easing = LinearEasing)
+                animationSpec = tween(DURATION, easing = LinearEasing), label = "animate offset"
             )
             Box(
                 Modifier
@@ -201,7 +201,7 @@ fun AnimateColorAsState() {
 
             val color by animateColorAsState(
                 if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.inversePrimary,
-                animationSpec = tween(1000, easing = LinearEasing)
+                animationSpec = tween(1000, easing = LinearEasing), label = "animate color"
             )
             Box(
                 Modifier

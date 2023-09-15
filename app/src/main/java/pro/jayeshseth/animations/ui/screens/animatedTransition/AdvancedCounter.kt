@@ -1,11 +1,10 @@
 package pro.jayeshseth.animations.ui.screens.animatedTransition
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,7 +14,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -32,20 +31,23 @@ data class Digit(val singleDigit: Char, val fullNumber: Int, val place: Int) {
             else -> super.equals(other)
         }
     }
+
+    override fun hashCode(): Int {
+        return singleDigit.hashCode()
+    }
 }
 
 operator fun Digit.compareTo(other: Digit): Int {
     return fullNumber.compareTo(other.fullNumber)
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AdvancedIncrementCounter() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        var count by remember { mutableStateOf(0) }
+        var count by remember { mutableIntStateOf(0) }
         Column(
             modifier = Modifier
                 .padding(12.dp),
@@ -60,7 +62,7 @@ fun AdvancedIncrementCounter() {
                 fontWeight = FontWeight.SemiBold
             )
 
-            Row() {
+            Row {
                 count.toString().reversed()
                     .mapIndexed { index, char -> Digit(char, count, index) }
                     .reversed()
@@ -70,12 +72,13 @@ fun AdvancedIncrementCounter() {
                             transitionSpec = {
                                 if (targetState > initialState) {
                                     // Enter Transition            Exit Transition
-                                    slideInVertically { -it } with (slideOutVertically { it } + fadeOut())
+                                    slideInVertically { -it } togetherWith (slideOutVertically { it } + fadeOut())
                                 } else {
                                     // Exit Transition
-                                    slideInVertically { it } with (slideOutVertically { -it } + fadeOut())
+                                    slideInVertically { it } togetherWith (slideOutVertically { -it } + fadeOut())
                                 }
-                            }
+                            },
+                            label = "text animation"
                         ) { updatedCount ->
                             Text(
                                 text = "${updatedCount.singleDigit}",

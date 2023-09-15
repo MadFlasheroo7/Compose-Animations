@@ -41,11 +41,13 @@ fun InteractiveButton(
 
     val animateColor by animateColorAsState(
         targetValue = if (buttonInteracted) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary,
-        animationSpec = tween(500, easing = LinearEasing)
+        animationSpec = tween(500, easing = LinearEasing),
+        label = "animated button color"
     )
     val buttonDp by animateDpAsState(
         targetValue = if (buttonInteracted) 5.dp else 100.dp,
-        animationSpec = tween(500)
+        animationSpec = tween(500),
+        label = "animate button shape"
     )
     Button(
         shape = RoundedCornerShape(size = buttonDp),

@@ -55,7 +55,7 @@ fun BouncyRope() {
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioHighBouncy,
             stiffness = Spring.StiffnessVeryLow
-        )
+        ), label = "animated mid point"
     )
     val color = MaterialTheme.colorScheme.tertiary
 

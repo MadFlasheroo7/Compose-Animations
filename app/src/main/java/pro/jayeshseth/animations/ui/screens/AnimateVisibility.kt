@@ -25,7 +25,6 @@ import pro.jayeshseth.animations.ui.screens.animateVisibility.SlideInVertically
 import pro.jayeshseth.animations.util.AnimationScreen
 import pro.jayeshseth.animations.util.DURATION
 
-
 @Composable
 fun VisibilityAnimation() {
     LazyColumn {

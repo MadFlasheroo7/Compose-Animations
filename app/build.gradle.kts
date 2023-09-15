@@ -5,14 +5,14 @@ plugins {
 }
 
 android {
-    namespace = "pro.jayeshseth.animations"
+    namespace = libs.versions.namespace.get()
     compileSdk = libs.versions.compile.sdk.get().toInt()
 
     defaultConfig {
-        applicationId = "pro.jayeshseth.animations"
+        applicationId = libs.versions.applicationId.get()
         minSdk = libs.versions.min.sdk.get().toInt()
         targetSdk = libs.versions.target.sdk.get().toInt()
-        versionCode = 1
+        versionCode = libs.versions.version.code.get().toInt()
         versionName = libs.versions.version.name.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -23,7 +23,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

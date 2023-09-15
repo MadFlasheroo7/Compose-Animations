@@ -25,9 +25,6 @@ import pro.jayeshseth.animations.util.CatItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
-
-
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun SwipeRefresh() {

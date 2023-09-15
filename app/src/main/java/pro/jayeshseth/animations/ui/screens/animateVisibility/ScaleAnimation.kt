@@ -1,7 +1,6 @@
 package pro.jayeshseth.animations.ui.screens.animateVisibility
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
@@ -10,7 +9,6 @@ import androidx.compose.runtime.Composable
 import pro.jayeshseth.animations.ui.composables.CatImage
 import pro.jayeshseth.animations.util.DURATION
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Scale(isVisible: Boolean) {
     AnimatedVisibility(

@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import pro.jayeshseth.animations.R
 
 @Composable
-fun CatImage(size: Dp = 200.dp, modifier: Modifier = Modifier) {
+fun CatImage(modifier: Modifier = Modifier, size: Dp = 200.dp) {
     Image(
         painter = painterResource(
             id = R.drawable.cat
