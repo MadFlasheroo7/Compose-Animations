@@ -38,8 +38,8 @@ room = "2.5.2"
 spotless = "6.20.0"
 target-sdk = "34"
 vanniktechMavenPublish = "0.25.3"
-version-code = "2"
-version-name = "1.0"
+version-code = "3"
+version-name = "1.0.0"
 appcompat = "1.6.1"
 com-google-android-material-material = "1.9.0"  # X.Y.Z; X = Major, Y = minor, Z = Patch level
 
