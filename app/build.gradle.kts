@@ -71,6 +71,7 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     // migrate deprecated deps
 //    implementation("com.google.accompanist:accompanist-navigation-animation:0.29.1-alpha")
+    implementation(libs.commonmodule)
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.29.1-alpha")
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.android.test.compose.ui.test.junit4)
