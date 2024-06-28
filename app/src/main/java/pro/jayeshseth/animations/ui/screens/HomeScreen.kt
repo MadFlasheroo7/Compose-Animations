@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import pro.jayeshseth.animations.ui.composables.InteractiveButton
+import pro.jayeshseth.commoncomponents.InteractiveButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

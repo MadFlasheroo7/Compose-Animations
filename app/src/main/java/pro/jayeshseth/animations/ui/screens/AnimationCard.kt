@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pro.jayeshseth.animations.ui.composables.InteractiveButton
 import pro.jayeshseth.animations.util.AnimationScreen
+import pro.jayeshseth.commoncomponents.InteractiveButton
 
 @Composable
 fun AnimationCard(animationScreen: AnimationScreen) {

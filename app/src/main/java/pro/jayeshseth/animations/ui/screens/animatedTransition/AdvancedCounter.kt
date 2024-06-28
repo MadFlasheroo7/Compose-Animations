@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pro.jayeshseth.animations.ui.composables.InteractiveButton
+import pro.jayeshseth.commoncomponents.InteractiveButton
 
 data class Digit(val singleDigit: Char, val fullNumber: Int, val place: Int) {
     override fun equals(other: Any?): Boolean {
@@ -89,11 +89,11 @@ fun AdvancedIncrementCounter() {
                         }
                     }
             }
-
             Row(Modifier.fillMaxWidth()) {
                 InteractiveButton(
                     text = "Increase",
                     onClick = { count++ },
+                    onLongPress = { count++ },
                     padding = PaddingValues(top = 12.dp, end = 12.dp),
                     height = 60.dp,
                     modifier = Modifier.weight(1f)
@@ -101,6 +101,7 @@ fun AdvancedIncrementCounter() {
                 InteractiveButton(
                     text = "Decrease",
                     onClick = { count-- },
+                    onLongPress = { count-- },
                     padding = PaddingValues(top = 12.dp),
                     height = 60.dp,
                     modifier = Modifier.weight(1f)

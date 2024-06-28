@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import pro.jayeshseth.animations.ui.composables.InteractiveButton
+import pro.jayeshseth.commoncomponents.InteractiveButton
 
 @Composable
 fun AnimatedNav(
@@ -18,7 +18,6 @@ fun AnimatedNav(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         InteractiveButton(
             text = "Navigate With Scale",
             onClick = scaleNav

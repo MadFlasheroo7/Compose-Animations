@@ -35,8 +35,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pro.jayeshseth.animations.ui.composables.InteractiveButton
 import pro.jayeshseth.animations.util.DURATION
+import pro.jayeshseth.commoncomponents.InteractiveButton
 
 @Composable
 fun AnimateValueAsState() {
@@ -80,7 +80,8 @@ fun AnimateFloatAsState() {
 
             val alpha: Float by animateFloatAsState(
                 if (enabled) 1f else 0.5f,
-                animationSpec = tween(DURATION, easing = LinearEasing), label = "animate float value"
+                animationSpec = tween(DURATION, easing = LinearEasing),
+                label = "animate float value"
             )
             Box(
                 Modifier

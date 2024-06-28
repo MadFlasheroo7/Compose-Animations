@@ -24,9 +24,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pro.jayeshseth.animations.ui.composables.CatImage
-import pro.jayeshseth.animations.ui.composables.InteractiveButton
 import pro.jayeshseth.animations.R
+import pro.jayeshseth.animations.ui.composables.CatImage
+import pro.jayeshseth.commoncomponents.InteractiveButton
 
 @Composable
 fun HungryCat() {
