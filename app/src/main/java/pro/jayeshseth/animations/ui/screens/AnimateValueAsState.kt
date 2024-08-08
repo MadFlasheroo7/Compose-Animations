@@ -37,12 +37,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pro.jayeshseth.animations.util.DURATION
 import pro.jayeshseth.commoncomponents.InteractiveButton
+import pro.jayeshseth.commoncomponents.StatusBarAwareThemedColumn
 
 @Composable
 fun AnimateValueAsState() {
     LazyColumn {
         item {
-            Column(
+            StatusBarAwareThemedColumn(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 modifier = Modifier
                     .statusBarsPadding()

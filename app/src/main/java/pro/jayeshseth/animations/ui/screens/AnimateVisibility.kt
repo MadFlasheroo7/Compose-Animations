@@ -4,7 +4,6 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,12 +23,13 @@ import pro.jayeshseth.animations.ui.screens.animateVisibility.SlideInHorizontall
 import pro.jayeshseth.animations.ui.screens.animateVisibility.SlideInVertically
 import pro.jayeshseth.animations.util.AnimationScreen
 import pro.jayeshseth.animations.util.DURATION
+import pro.jayeshseth.commoncomponents.StatusBarAwareThemedColumn
 
 @Composable
 fun VisibilityAnimation() {
     LazyColumn {
         item {
-            Column(
+            StatusBarAwareThemedColumn(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 modifier = Modifier
                     .systemBarsPadding()
