@@ -38,21 +38,21 @@ room = "2.5.2"
 spotless = "6.20.0"
 target-sdk = "34"
 vanniktechMavenPublish = "0.25.3"
-version-code = "3"
-version-name = "1.0.0"
+version-code = "4"
+version-name = "1.0.1-beta05"
 appcompat = "1.7.0"
 com-google-android-material-material = "1.12.0"  # X.Y.Z; X = Major, Y = minor, Z = Patch level
 
 [libraries]
 # Accompanist
-accompanist-adaptive = { group = "com.google.accompanist", name = "accompanist-adaptive", version.ref = "accompanist" }
-accompanist-drawablePainter = { group = "com.google.accompanist", name = "accompanist-drawablepainter", version.ref = "accompanist" }
-accompanist-navigationAnimation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist" }
-accompanist-navigationMaterial = { group = "com.google.accompanist", name = "accompanist-navigation-material", version.ref = "accompanist" }
-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
-accompanist-placeHolder = { group = "com.google.accompanist", name = "accompanist-placeholder", version.ref = "accompanist" }
-accompanist-systemUIController = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
-accompanist-testharness = { group = "com.google.accompanist", name = "accompanist-testharness", version.ref = "accompanist" }
+#accompanist-adaptive = { group = "com.google.accompanist", name = "accompanist-adaptive", version.ref = "accompanist" }
+#accompanist-drawablePainter = { group = "com.google.accompanist", name = "accompanist-drawablepainter", version.ref = "accompanist" }
+#accompanist-navigationAnimation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist" }
+#accompanist-navigationMaterial = { group = "com.google.accompanist", name = "accompanist-navigation-material", version.ref = "accompanist" }
+#accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
+#accompanist-placeHolder = { group = "com.google.accompanist", name = "accompanist-placeholder", version.ref = "accompanist" }
+#accompanist-systemUIController = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
+#accompanist-testharness = { group = "com.google.accompanist", name = "accompanist-testharness", version.ref = "accompanist" }
 
 # [AndroidX Deps]
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
