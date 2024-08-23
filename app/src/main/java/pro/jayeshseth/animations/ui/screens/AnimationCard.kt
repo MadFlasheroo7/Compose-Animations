@@ -1,5 +1,8 @@
 package pro.jayeshseth.animations.ui.screens
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,7 +29,8 @@ fun AnimationCard(animationScreen: AnimationScreen) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(12.dp)
+                .animateContentSize(tween(500)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -37,7 +41,11 @@ fun AnimationCard(animationScreen: AnimationScreen) {
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold
             )
-            animationScreen.content(isVisible)
+            Box(
+                Modifier.animateContentSize(tween(500))
+            ) {
+                animationScreen.content(isVisible)
+            }
             InteractiveButton(
                 text = "Animate",
                 onClick = { isVisible = !isVisible },
