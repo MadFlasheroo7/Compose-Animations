@@ -52,6 +52,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.commonmodule)
     implementation(libs.cascade)
     implementation(libs.cascade.compose)
     implementation(libs.lottie)
@@ -65,15 +66,11 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.material3)
     implementation(libs.navigation.compose)
-//    implementation(libs.coil.kt)
+    implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    // migrate deprecated deps
-//    implementation("com.google.accompanist:accompanist-navigation-animation:0.29.1-alpha")
-    implementation(libs.commonmodule)
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.29.1-alpha")
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.android.test.compose.ui.test.junit4)
     debugImplementation(libs.compose.ui.tooling)

@@ -10,7 +10,10 @@ import pro.jayeshseth.animations.ui.screens.AnimatedTransition
 import pro.jayeshseth.animations.ui.screens.BouncyRope
 import pro.jayeshseth.animations.ui.screens.HomeScreen
 import pro.jayeshseth.animations.ui.screens.InfiniteRotation
+import pro.jayeshseth.animations.ui.screens.ItemPlacementAnimation
+import pro.jayeshseth.animations.ui.screens.SlideItemPlacement
 import pro.jayeshseth.animations.ui.screens.SwipeRefresh
+import pro.jayeshseth.animations.ui.screens.TrippyBlinders
 import pro.jayeshseth.animations.ui.screens.VisibilityAnimation
 
 @Composable
@@ -29,7 +32,8 @@ fun NavGraph() {
                 navToAnimateInfiniteRotation = { navController.navigate("INFINITE_ROTATION") },
                 navToSwipeRefresh = { navController.navigate("SWIPE_REFRESH") },
                 navToBouncyRopes = { navController.navigate("BOUNCY_ROPE") },
-                navToAnimateValueAsState = { navController.navigate("ANIMATE_VALUE_AS_STATE") }
+                navToAnimateValueAsState = { navController.navigate("ANIMATE_VALUE_AS_STATE") },
+                navToAnimatedListItemPlacement = { navController.navigate("ITEM_PLACEMENT_ANIMATION") }
             )
         }
         composable("ANIMATE_VISIBILITY") {
@@ -55,6 +59,18 @@ fun NavGraph() {
         }
         composable("ANIMATE_VALUE_AS_STATE") {
             AnimateValueAsState()
+        }
+        composable("SLIDE_IN_OUT") {
+            SlideItemPlacement()
+        }
+        composable("ITEM_PLACEMENT_ANIMATION") {
+            ItemPlacementAnimation(
+                navToTrippyBlinders = { navController.navigate("TRIPPY_BLINDER") },
+                navToSlideInOut = { navController.navigate("SLIDE_IN_OUT") }
+            )
+        }
+        composable("TRIPPY_BLINDER") {
+            TrippyBlinders()
         }
     }
 }

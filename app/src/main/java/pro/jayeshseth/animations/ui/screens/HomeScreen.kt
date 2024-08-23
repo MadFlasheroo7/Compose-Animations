@@ -26,16 +26,17 @@ fun HomeScreen(
     navToAnimateInfiniteRotation: () -> Unit,
     navToSwipeRefresh: () -> Unit,
     navToBouncyRopes: () -> Unit,
-    navToAnimateValueAsState: () -> Unit
+    navToAnimateValueAsState: () -> Unit,
+    navToAnimatedListItemPlacement: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     HomeScaffold(
-        innerScrollState = scrollState,
+        verticalScrollState = scrollState,
         topAppBarScrollBehavior = scrollBehavior,
         title = {
             Text(
-                text = "Animations in Jetpack Compose",
+                text = "Animations",
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -50,6 +51,10 @@ fun HomeScreen(
             InteractiveButton(
                 text = "Animate Visibility",
                 onClick = navToAnimateVisibility,
+            )
+            InteractiveButton(
+                text = "Animated List Item Placement",
+                onClick = navToAnimatedListItemPlacement,
             )
             InteractiveButton(
                 text = "Animated Content",
@@ -77,6 +82,10 @@ fun HomeScreen(
             )
             InteractiveButton(
                 text = "Bouncy Ropes",
+                onClick = navToBouncyRopes
+            )
+            InteractiveButton(
+                text = "About",
                 onClick = navToBouncyRopes
             )
         }
