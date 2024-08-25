@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.theapache64.rebugger.Rebugger
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -32,4 +33,17 @@ fun Toggler(
             enabled = enabled
         )
     }
+
+    Rebugger(
+        composableName = "Toggler",
+        trackMap = mapOf(
+            "title" to title,
+            "checked" to checked,
+            "onCheckedChanged" to onCheckedChanged,
+            "modifier" to modifier,
+            "enabled" to enabled,
+            "Arrangement.SpaceBetween" to Arrangement.SpaceBetween,
+            "Alignment.CenterVertically" to Alignment.CenterVertically,
+        ),
+    )
 }

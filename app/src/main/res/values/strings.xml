@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Animations</string>
+    <string name="about">Compose Animations is a playground designed to explore and showcase the animation capabilities of Jetpack Compose, featuring contributions from the community. Whenever possible, I link these community-built animations back to their original creators. If you enjoyed using this app, I\'d love to hear from you! And if you use or share any community animations, please make sure to give credit to the original authors. Thanks for using the app, and as always, keep composing 💚💚💚!</string>
 </resources>

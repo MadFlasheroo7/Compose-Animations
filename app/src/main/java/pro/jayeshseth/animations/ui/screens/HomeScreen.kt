@@ -27,7 +27,8 @@ fun HomeScreen(
     navToSwipeRefresh: () -> Unit,
     navToBouncyRopes: () -> Unit,
     navToAnimateValueAsState: () -> Unit,
-    navToAnimatedListItemPlacement: () -> Unit
+    navToAnimatedListItemPlacement: () -> Unit,
+    navToAbout: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
@@ -86,7 +87,7 @@ fun HomeScreen(
             )
             InteractiveButton(
                 text = "About",
-                onClick = navToBouncyRopes
+                onClick = navToAbout
             )
         }
     }

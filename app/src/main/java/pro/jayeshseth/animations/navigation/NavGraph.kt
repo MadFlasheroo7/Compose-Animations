@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import pro.jayeshseth.animations.ui.screens.AboutScreen
 import pro.jayeshseth.animations.ui.screens.AnimateValueAsState
 import pro.jayeshseth.animations.ui.screens.AnimatedGestures
 import pro.jayeshseth.animations.ui.screens.AnimatedTransition
@@ -33,7 +34,8 @@ fun NavGraph() {
                 navToSwipeRefresh = { navController.navigate("SWIPE_REFRESH") },
                 navToBouncyRopes = { navController.navigate("BOUNCY_ROPE") },
                 navToAnimateValueAsState = { navController.navigate("ANIMATE_VALUE_AS_STATE") },
-                navToAnimatedListItemPlacement = { navController.navigate("ITEM_PLACEMENT_ANIMATION") }
+                navToAnimatedListItemPlacement = { navController.navigate("ITEM_PLACEMENT_ANIMATION") },
+                navToAbout = { navController.navigate("ABOUT_SCREEN") }
             )
         }
         composable("ANIMATE_VISIBILITY") {
@@ -71,6 +73,9 @@ fun NavGraph() {
         }
         composable("TRIPPY_BLINDER") {
             TrippyBlinders()
+        }
+        composable("ABOUT_SCREEN") {
+            AboutScreen()
         }
     }
 }

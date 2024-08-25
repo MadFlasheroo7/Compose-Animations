@@ -14,6 +14,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,7 +25,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.rounded.Link
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,6 +47,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +56,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -86,12 +90,20 @@ fun SlideItemPlacement(modifier: Modifier = Modifier) {
     val stiffnessList = remember { StiffnessList }
     var selectedStiffness by remember { mutableStateOf(stiffnessList[0]) }
 
+    val local = LocalUriHandler.current
     HomeScaffold(
         topAppBarScrollBehavior = scrollBehavior,
         modifier = modifier,
+        navigationIcon = {
+            IconButton(onClick = {
+                local.openUri("https://github.com/MadFlasheroo7/Compose-Animations/blob/main/app/src/main/java/pro/jayeshseth/animations/ui/screens/SlideItemPlacement.kt")
+            }) {
+                Icon(imageVector = Icons.Rounded.Link, contentDescription = null)
+            }
+        },
         actions = {
             IconButton(onClick = { isVisible = !isVisible }) {
-                Icon(imageVector = Icons.Default.Settings, contentDescription = null)
+                Icon(imageVector = Icons.Rounded.Settings, contentDescription = null)
             }
         },
         title = {
@@ -194,10 +206,13 @@ fun AnimationController(
     onStiffnessClick: (Pair<Float, String>) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val animationSpecs = listOf("tween", "spring")
+    val animationSpecs = remember { mutableListOf("Tween", "Spring") }
     var expanded by remember { mutableStateOf(false) }
     var dampingRatioExpanded by remember { mutableStateOf(false) }
     var stiffnessExpanded by remember { mutableStateOf(false) }
+    val updatedInitialValue = rememberUpdatedState(initialValue)
+    val updatedTweenDuration = rememberUpdatedState(tweenDuration)
+    val updatedInitialValueRange = rememberUpdatedState(initialValueRange)
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -237,10 +252,10 @@ fun AnimationController(
         )
         SliderTemplate(
             title = "Initial Value",
-            value = initialValue,
+            value = updatedInitialValue.value,
             step = 0.1f,
             onValueChange = onInitialValueChange,
-            valueRange = initialValueRange
+            valueRange = updatedInitialValueRange.value
         )
         SingleChoiceSegmentedButtonRow {
             animationSpecs.forEachIndexed { index, label ->
@@ -263,7 +278,7 @@ fun AnimationController(
                     Column {
                         SliderTemplate(
                             title = "Tween Duration",
-                            value = tweenDuration.toFloat(),
+                            value = updatedTweenDuration.value.toFloat(),
                             step = 5f,
                             onValueChange = { duration -> onTweenDurationChange(duration.toInt()) },
                             valueRange = 0f..1000f
@@ -387,6 +402,7 @@ private fun ListItem(
     easing: Easing,
     dampingRatio: Float,
     stiffness: Float,
+    isDarkMode: Boolean = isSystemInDarkTheme(),
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -422,8 +438,8 @@ private fun ListItem(
             .graphicsLayer {
                 shape = RoundedCornerShape(12.dp)
                 if (showShadow) shadowElevation = animatedProgress.value
-                if (showShadow) spotShadowColor = shadowColor
-                if (showShadow) ambientShadowColor = shadowColor
+                if (showShadow && isDarkMode) spotShadowColor = shadowColor
+                if (showShadow && isDarkMode) ambientShadowColor = shadowColor
                 if (isTranslateX) translationX = animatedProgress.value
                 if (isTranslateY) translationY = animatedProgress.value
             }) {

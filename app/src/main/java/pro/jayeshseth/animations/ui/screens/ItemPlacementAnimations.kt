@@ -28,10 +28,10 @@ fun ItemPlacementAnimation(
             text = "Slide In/Out",
             onClick = navToSlideInOut,
         )
-        InteractiveButton(
-            text = "Fidget Toy",
-            onClick = navToTrippyBlinders,
-        )
+//        InteractiveButton(
+//            text = "Fidget Toy",
+//            onClick = navToTrippyBlinders,
+//        )
         InteractiveButton(
             text = "Trippy Blinders",
             onClick = navToTrippyBlinders,

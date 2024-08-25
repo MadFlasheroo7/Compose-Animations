@@ -71,7 +71,7 @@ fun SwipeRefresh() {
                 ListItem(
                     catImage = item.catImage,
                     catName = item.catName,
-                    modifier = Modifier.animateItemPlacement(
+                    modifier = Modifier.animateItem(
                         spring(
                             dampingRatio = Spring.DampingRatioMediumBouncy,
                             stiffness = Spring.StiffnessLow

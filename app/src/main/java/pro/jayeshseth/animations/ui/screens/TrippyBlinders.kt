@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -65,7 +66,8 @@ fun TrippyBlinders(modifier: Modifier = Modifier) {
     ) {
         items(ITEM_COUNT) {
             TrippyBlinderItem(
-                index = it, shape = RoundedCornerShape(animatedShape),
+                index = it,
+                cardShape = RoundedCornerShape(animatedShape),
                 padding = animatedPadding
             )
         }
@@ -75,15 +77,18 @@ fun TrippyBlinders(modifier: Modifier = Modifier) {
 @Composable
 private fun TrippyBlinderItem(
     index: Int,
-    shape: Shape,
+    cardShape: Shape,
     padding: Dp,
     modifier: Modifier = Modifier
 ) {
+    val animatedIndex = rememberUpdatedState(index)
+    val animatedPadding = rememberUpdatedState(padding)
+    val animatedCardShape = rememberUpdatedState(cardShape)
     val animatedProgress =
-        remember { Animatable(initialValue = 360f) }
+        remember(animatedIndex.value) { Animatable(initialValue = 360f) }
     val context = LocalContext.current
     val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)!!
-    LaunchedEffect(index) {
+    LaunchedEffect(animatedIndex.value) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
         }
@@ -99,14 +104,14 @@ private fun TrippyBlinderItem(
         colors = CardDefaults.cardColors(
             containerColor = Color.Black
         ),
-        shape = shape,
+        shape = animatedCardShape.value,
         modifier = modifier
-            .padding(horizontal = padding)
+            .padding(horizontal = animatedPadding.value)
             .fillMaxWidth()
-            .graphicsLayer(
-                shadowElevation = animatedProgress.value,
-                shape = shape,
-                rotationX = animatedProgress.value,
-            )
+            .graphicsLayer {
+                shadowElevation = animatedProgress.value
+                shape = animatedCardShape.value
+                rotationX = animatedProgress.value
+            }
     ) { Spacer(Modifier.size(50.dp)) }
 }
