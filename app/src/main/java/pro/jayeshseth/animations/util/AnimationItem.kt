@@ -1,78 +1,44 @@
 package pro.jayeshseth.animations.util
 
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import pro.jayeshseth.animations.ui.screens.animateVisibility.DefaultAnimation
-import pro.jayeshseth.animations.ui.screens.animateVisibility.ExpandAndShrink
-import pro.jayeshseth.animations.ui.screens.animateVisibility.ExpandAndShrinkHorizontally
-import pro.jayeshseth.animations.ui.screens.animateVisibility.ExpandAndShrinkVertically
-import pro.jayeshseth.animations.ui.screens.animateVisibility.Fade
-import pro.jayeshseth.animations.ui.screens.animateVisibility.RandomSlide
-import pro.jayeshseth.animations.ui.screens.animateVisibility.Scale
-import pro.jayeshseth.animations.ui.screens.animateVisibility.Slide
-import pro.jayeshseth.animations.ui.screens.animateVisibility.SlideInHorizontally
-import pro.jayeshseth.animations.ui.screens.animateVisibility.SlideInVertically
+import androidx.compose.ui.Modifier
+import pro.jayeshseth.animations.ui.screens.AnimationCard
+import pro.jayeshseth.animations.ui.animations.animateVisibility.DefaultAnimation
+import pro.jayeshseth.animations.ui.animations.animateVisibility.ExpandAndShrink
+import pro.jayeshseth.animations.ui.animations.animateVisibility.ExpandAndShrinkHorizontally
+import pro.jayeshseth.animations.ui.animations.animateVisibility.ExpandAndShrinkVertically
+import pro.jayeshseth.animations.ui.animations.animateVisibility.Fade
+import pro.jayeshseth.animations.ui.animations.animateVisibility.HungryCat
+import pro.jayeshseth.animations.ui.animations.animateVisibility.RandomSlide
+import pro.jayeshseth.animations.ui.animations.animateVisibility.Scale
+import pro.jayeshseth.animations.ui.animations.animateVisibility.Slide
+import pro.jayeshseth.animations.ui.animations.animateVisibility.SlideInHorizontally
+import pro.jayeshseth.animations.ui.animations.animateVisibility.SlideInVertically
 
 const val DURATION = 1000
 
 data class AnimationItem(
-    val title: String,
+    val title: String? = null,
+    val source: String,
     val content: @Composable (isVisible: Boolean) -> Unit
 )
 
-/**
- * Alternate Way Of Populating Animations
- */
-private val animations: List<AnimationItem> by lazy {
-    mutableListOf(
-        AnimationItem(
-            title = "Default Animation",
-        ) { isVisible ->
-            DefaultAnimation(isVisible)
-        },
-        AnimationItem(
-            title = "Fade In & Out",
-        ) { isVisible ->
-            Fade(isVisible)
-        },
-        AnimationItem(
-            title = "Scale",
-        ) { isVisible ->
-            Scale(isVisible)
-        },
-        AnimationItem(
-            title = "Slide In & Out",
-        ) { isVisible ->
-            Slide(isVisible)
-        },
-        AnimationItem(
-            title = "Slide In & Out Horizontally",
-        ) { isVisible ->
-            SlideInHorizontally(isVisible)
-        },
-        AnimationItem(
-            title = "Slide In & Out Vertically",
-        ) { isVisible ->
-            SlideInVertically(isVisible)
-        },
-        AnimationItem(
-            title = "Expand In & Shrink Out",
-        ) { isVisible ->
-            ExpandAndShrink(isVisible)
-        },
-        AnimationItem(
-            title = "Expand In & Shrink Out Horizontally",
-        ) { isVisible ->
-            ExpandAndShrinkHorizontally(isVisible)
-        },
-        AnimationItem(
-            title = "Expand In & Shrink Out Vertically",
-        ) { isVisible ->
-            ExpandAndShrinkVertically(isVisible)
-        },
-        AnimationItem(
-            title = "Random Slide",
-        ) { isVisible ->
-            RandomSlide(isVisible)
-        },
-    )
-}
+
+//@Composable
+//fun ldd(modifier: Modifier = Modifier) {
+//    LazyColumn {
+//        items(animations) { animation->
+//            AnimationCard(
+//
+//                animationScreen = AnimationScreen(
+//                    title = animation.title,
+//                    content = {
+//                        animation.content(it)
+//                    }
+//                )
+//            )
+//        }
+//    }
+//}

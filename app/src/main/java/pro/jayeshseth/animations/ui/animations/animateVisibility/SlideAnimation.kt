@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens.animateVisibility
+package pro.jayeshseth.animations.ui.animations.animateVisibility
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing

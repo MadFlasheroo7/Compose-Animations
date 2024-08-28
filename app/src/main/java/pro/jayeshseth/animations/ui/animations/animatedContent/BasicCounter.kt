@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens.animatedTransition
+package pro.jayeshseth.animations.ui.animations.animatedContent
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeOut
@@ -24,25 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
-data class Digit(val singleDigit: Char, val fullNumber: Int, val place: Int) {
-    override fun equals(other: Any?): Boolean {
-        return when (other) {
-            is Digit -> singleDigit == other.singleDigit
-            else -> super.equals(other)
-        }
-    }
-
-    override fun hashCode(): Int {
-        return singleDigit.hashCode()
-    }
-}
-
-operator fun Digit.compareTo(other: Digit): Int {
-    return fullNumber.compareTo(other.fullNumber)
-}
-
 @Composable
-fun AdvancedIncrementCounter() {
+fun BasicIncrementCounter() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -54,7 +37,7 @@ fun AdvancedIncrementCounter() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Advanced Animated Counter",
+                text = "Basic Animated Counter",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp),
@@ -62,33 +45,23 @@ fun AdvancedIncrementCounter() {
                 fontWeight = FontWeight.SemiBold
             )
 
-            Row {
-                count.toString().reversed()
-                    .mapIndexed { index, char -> Digit(char, count, index) }
-                    .reversed()
-                    .forEach { digit ->
-                        AnimatedContent(
-                            targetState = digit,
-                            transitionSpec = {
-                                if (targetState > initialState) {
-                                    // Enter Transition            Exit Transition
-                                    slideInVertically { -it } togetherWith (slideOutVertically { it } + fadeOut())
-                                } else {
-                                    // Exit Transition
-                                    slideInVertically { it } togetherWith (slideOutVertically { -it } + fadeOut())
-                                }
-                            },
-                            label = "text animation"
-                        ) { updatedCount ->
-                            Text(
-                                text = "${updatedCount.singleDigit}",
-                                fontSize = 90.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-
-                        }
+            AnimatedContent(
+                targetState = count,
+                transitionSpec = {
+                    if (targetState > initialState) {
+                        slideInVertically { -it } togetherWith slideOutVertically { it } + fadeOut()
+                    } else {
+                        slideInVertically { it } togetherWith slideOutVertically { -it } + fadeOut()
                     }
+                }, label = "basic text animation"
+            ) { updatedCount ->
+                Text(
+                    text = "$updatedCount",
+                    fontSize = 90.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
+
             Row(Modifier.fillMaxWidth()) {
                 InteractiveButton(
                     text = "Increase",

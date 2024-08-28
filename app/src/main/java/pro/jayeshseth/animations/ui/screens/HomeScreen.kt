@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import pro.jayeshseth.animations.navigation.NavDestinations
 import pro.jayeshseth.commoncomponents.HomeScaffold
 import pro.jayeshseth.commoncomponents.InteractiveButton
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedColumn
@@ -19,6 +20,7 @@ import pro.jayeshseth.commoncomponents.StatusBarAwareThemedColumn
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+//    navAction: (route: String) -> Unit,
     navToAnimateVisibility: () -> Unit,
     navToAnimateContent: () -> Unit,
     navToAnimateGesture: () -> Unit,

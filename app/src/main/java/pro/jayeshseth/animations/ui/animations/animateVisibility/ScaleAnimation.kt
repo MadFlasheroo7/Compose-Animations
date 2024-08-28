@@ -1,24 +1,20 @@
-package pro.jayeshseth.animations.ui.screens.animateVisibility
+package pro.jayeshseth.animations.ui.animations.animateVisibility
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import pro.jayeshseth.animations.ui.composables.CatImage
 import pro.jayeshseth.animations.util.DURATION
 
 @Composable
-fun Fade(isVisible: Boolean) {
+fun Scale(isVisible: Boolean) {
     AnimatedVisibility(
         visible = isVisible,
-        enter = fadeIn(
-            animationSpec = tween(DURATION, easing = LinearEasing)
-        ),
-        exit = fadeOut(
-            animationSpec = tween(DURATION, easing = LinearEasing)
-        )
+        enter = scaleIn(animationSpec = tween(DURATION, easing = LinearEasing)),
+        exit = scaleOut(animationSpec = tween(DURATION, easing = LinearEasing))
     ) {
         CatImage()
     }

@@ -1,16 +1,24 @@
-package pro.jayeshseth.animations.ui.screens.animateVisibility
+package pro.jayeshseth.animations.ui.animations.animateVisibility
 
 import android.media.MediaPlayer
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
+import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Link
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,6 +36,9 @@ import pro.jayeshseth.animations.R
 import pro.jayeshseth.animations.ui.composables.CatImage
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
+/**
+ * A hungry cat is a angry cat 🐈😾
+ */
 @Composable
 fun HungryCat() {
     val mediaPlayer = MediaPlayer.create(LocalContext.current, R.raw.angry_cat)
@@ -36,18 +47,26 @@ fun HungryCat() {
         val randNum = mutableListOf(-200..200).random()
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Hungry Cat",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold
-            )
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Hungry Cat",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .basicMarquee()
+                        .weight(1f),
+                )
+                IconButton({}, modifier = Modifier) {
+                    Icon(Icons.Rounded.Link, contentDescription = "link icon")
+                }
+            }
             AnimatedVisibility(
                 visible = isVisible,
                 enter = slideIn(animationSpec = tween(500, easing = LinearEasing)) {
