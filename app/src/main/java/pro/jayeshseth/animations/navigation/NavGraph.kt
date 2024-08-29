@@ -17,64 +17,61 @@ import pro.jayeshseth.animations.ui.screens.SwipeRefresh
 import pro.jayeshseth.animations.ui.screens.TrippyBlinders
 import pro.jayeshseth.animations.ui.screens.VisibilityAnimation
 
+typealias OnClickLink = (path: String) -> Unit
+
 @Composable
-fun NavGraph() {
+fun NavGraph(
+    onClickLink: OnClickLink
+) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = "HOME_SCREEN"
+        startDestination = NavDestinations.Home.route
     ) {
-        composable("HOME_SCREEN") {
+        composable(NavDestinations.Home.route) {
             HomeScreen(
-                navToAnimateVisibility = { navController.navigate("ANIMATE_VISIBILITY") },
-                navToAnimateContent = { navController.navigate("ANIMATE_CONTENT") },
-                navToAnimateGesture = { navController.navigate("ANIMATE_GESTURES") },
-                navToAnimateNav = { navController.navigate("ANIMATED_NAV_GRAPH") },
-                navToAnimateInfiniteRotation = { navController.navigate("INFINITE_ROTATION") },
-                navToSwipeRefresh = { navController.navigate("SWIPE_REFRESH") },
-                navToBouncyRopes = { navController.navigate("BOUNCY_ROPE") },
-                navToAnimateValueAsState = { navController.navigate("ANIMATE_VALUE_AS_STATE") },
-                navToAnimatedListItemPlacement = { navController.navigate("ITEM_PLACEMENT_ANIMATION") },
-                navToAbout = { navController.navigate("ABOUT_SCREEN") }
+                navAction = { route ->
+                    navController.navigate(route)
+                }
             )
         }
-        composable("ANIMATE_VISIBILITY") {
-            VisibilityAnimation()
+        composable(NavDestinations.AnimateVisibility.route) {
+            VisibilityAnimation(onClickLink)
         }
-        composable("ANIMATE_CONTENT") {
+        composable(NavDestinations.AnimateContent.route) {
             AnimatedTransition()
         }
-        composable("ANIMATE_GESTURES") {
+        composable(NavDestinations.AnimateGesture.route) {
             AnimatedGestures()
         }
-        composable("INFINITE_ROTATION") {
+        composable(NavDestinations.InfiniteRotation.route) {
             InfiniteRotation()
         }
-        composable("ANIMATED_NAV_GRAPH") {
+        composable(NavDestinations.AnimateNavGraph.route) {
             AnimatedNavGraph()
         }
-        composable("SWIPE_REFRESH") {
+        composable(NavDestinations.SwipeRefresh.route) {
             SwipeRefresh()
         }
-        composable("BOUNCY_ROPE") {
+        composable(NavDestinations.BouncyRope.route) {
             BouncyRope()
         }
-        composable("ANIMATE_VALUE_AS_STATE") {
-            AnimateValueAsState()
+        composable(NavDestinations.AnimateValueAsState.route) {
+            AnimateValueAsState(onClickLink)
         }
-        composable("SLIDE_IN_OUT") {
-            SlideItemPlacement()
+        composable(NavDestinations.SlideInOut.route) {
+            SlideItemPlacement(onClickLink)
         }
-        composable("ITEM_PLACEMENT_ANIMATION") {
+        composable(NavDestinations.AnimatedListItemPlacement.route) {
             ItemPlacementAnimation(
-                navToTrippyBlinders = { navController.navigate("TRIPPY_BLINDER") },
-                navToSlideInOut = { navController.navigate("SLIDE_IN_OUT") }
+                navToTrippyBlinders = { navController.navigate(NavDestinations.TrippyBlinders.route) },
+                navToSlideInOut = { navController.navigate(NavDestinations.SlideInOut.route) }
             )
         }
-        composable("TRIPPY_BLINDER") {
+        composable(NavDestinations.TrippyBlinders.route) {
             TrippyBlinders()
         }
-        composable("ABOUT_SCREEN") {
+        composable(NavDestinations.AboutScreen.route) {
             AboutScreen()
         }
     }

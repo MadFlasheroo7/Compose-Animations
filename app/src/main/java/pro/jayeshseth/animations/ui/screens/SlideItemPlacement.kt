@@ -56,11 +56,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import pro.jayeshseth.animations.R
+import pro.jayeshseth.animations.navigation.OnClickLink
 import pro.jayeshseth.animations.ui.composables.DropDownTemplate
 import pro.jayeshseth.animations.ui.composables.SliderTemplate
 import pro.jayeshseth.animations.ui.composables.Toggler
@@ -72,7 +72,10 @@ import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SlideItemPlacement(modifier: Modifier = Modifier) {
+fun SlideItemPlacement(
+    onClickLink: OnClickLink,
+    modifier: Modifier = Modifier
+) {
     var isVisible by remember { mutableStateOf(false) }
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
@@ -90,13 +93,12 @@ fun SlideItemPlacement(modifier: Modifier = Modifier) {
     val stiffnessList = remember { StiffnessList }
     var selectedStiffness by remember { mutableStateOf(stiffnessList[0]) }
 
-    val local = LocalUriHandler.current
     HomeScaffold(
         topAppBarScrollBehavior = scrollBehavior,
         modifier = modifier,
         navigationIcon = {
             IconButton(onClick = {
-                local.openUri("https://github.com/MadFlasheroo7/Compose-Animations/blob/main/app/src/main/java/pro/jayeshseth/animations/ui/screens/SlideItemPlacement.kt")
+                onClickLink("screens/SlideItemPlacement.kt")
             }) {
                 Icon(imageVector = Icons.Rounded.Link, contentDescription = null)
             }

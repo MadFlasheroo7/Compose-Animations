@@ -1,8 +1,9 @@
 package pro.jayeshseth.animations.ui.screens
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -13,29 +14,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import pro.jayeshseth.animations.navigation.NavDestinations
+import pro.jayeshseth.animations.util.AnimationScreen
 import pro.jayeshseth.commoncomponents.HomeScaffold
 import pro.jayeshseth.commoncomponents.InteractiveButton
-import pro.jayeshseth.commoncomponents.StatusBarAwareThemedColumn
+import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
-//    navAction: (route: String) -> Unit,
-    navToAnimateVisibility: () -> Unit,
-    navToAnimateContent: () -> Unit,
-    navToAnimateGesture: () -> Unit,
-    navToAnimateNav: () -> Unit,
-    navToAnimateInfiniteRotation: () -> Unit,
-    navToSwipeRefresh: () -> Unit,
-    navToBouncyRopes: () -> Unit,
-    navToAnimateValueAsState: () -> Unit,
-    navToAnimatedListItemPlacement: () -> Unit,
-    navToAbout: () -> Unit
-) {
-    val scrollState = rememberScrollState()
+fun HomeScreen(navAction: (route: String) -> Unit) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     HomeScaffold(
-        verticalScrollState = scrollState,
         topAppBarScrollBehavior = scrollBehavior,
         title = {
             Text(
@@ -45,52 +33,69 @@ fun HomeScreen(
             )
         }
     ) {
-        StatusBarAwareThemedColumn(
+        StatusBarAwareThemedLazyColumn(
             statusBarColor = Color.Transparent,
             modifier = Modifier
-                .padding(it)
-                .navigationBarsPadding()
         ) {
-            InteractiveButton(
-                text = "Animate Visibility",
-                onClick = navToAnimateVisibility,
-            )
-            InteractiveButton(
-                text = "Animated List Item Placement",
-                onClick = navToAnimatedListItemPlacement,
-            )
-            InteractiveButton(
-                text = "Animated Content",
-                onClick = navToAnimateContent,
-            )
-            InteractiveButton(
-                text = "Animate Value As State",
-                onClick = navToAnimateValueAsState
-            )
-            InteractiveButton(
-                text = "Animated Gesture",
-                onClick = navToAnimateGesture,
-            )
-            InteractiveButton(
-                text = "Infinite Rotation",
-                onClick = navToAnimateInfiniteRotation
-            )
-            InteractiveButton(
-                text = "Swipe To Refresh",
-                onClick = navToSwipeRefresh
-            )
-            InteractiveButton(
-                text = "Nav Animation",
-                onClick = navToAnimateNav
-            )
-            InteractiveButton(
-                text = "Bouncy Ropes",
-                onClick = navToBouncyRopes
-            )
-            InteractiveButton(
-                text = "About",
-                onClick = navToAbout
-            )
+            item {
+                Spacer(Modifier.padding(top = it.calculateTopPadding()))
+            }
+            items(animationScreens) { animationScreen ->
+                InteractiveButton(
+                    text = animationScreen.title,
+                    onClick = {
+                        navAction(animationScreen.route)
+                    })
+            }
+            item { Spacer(Modifier.navigationBarsPadding()) }
         }
     }
+}
+
+/**
+ * list of animation screens
+ */
+private val animationScreens: List<AnimationScreen> by lazy {
+    mutableListOf(
+        AnimationScreen(
+            title = "Animate Visibility",
+            route = NavDestinations.AnimateVisibility.route
+        ),
+        AnimationScreen(
+            title = "Animate List Item Placement",
+            route = NavDestinations.AnimatedListItemPlacement.route
+        ),
+        AnimationScreen(
+            title = "Animate Content",
+            route = NavDestinations.AnimateContent.route
+        ),
+        AnimationScreen(
+            title = "Animate Value As State",
+            route = NavDestinations.AnimateValueAsState.route
+        ),
+        AnimationScreen(
+            title = "Animated Gesture",
+            route = NavDestinations.AnimateGesture.route
+        ),
+        AnimationScreen(
+            title = "Infinite Rotation",
+            route = NavDestinations.InfiniteRotation.route
+        ),
+        AnimationScreen(
+            title = "Swipe To Refresh",
+            route = NavDestinations.SwipeRefresh.route
+        ),
+        AnimationScreen(
+            title = "Nav Animation",
+            route = NavDestinations.AnimateNavGraph.route
+        ),
+        AnimationScreen(
+            title = "Bouncy Ropes",
+            route = NavDestinations.BouncyRope.route
+        ),
+        AnimationScreen(
+            title = "About",
+            route = NavDestinations.AboutScreen.route
+        )
+    )
 }

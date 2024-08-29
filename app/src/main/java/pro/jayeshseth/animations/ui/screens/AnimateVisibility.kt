@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import pro.jayeshseth.animations.navigation.OnClickLink
 import pro.jayeshseth.animations.ui.animations.animateVisibility.DefaultAnimation
 import pro.jayeshseth.animations.ui.animations.animateVisibility.ExpandAndShrink
 import pro.jayeshseth.animations.ui.animations.animateVisibility.ExpandAndShrinkHorizontally
@@ -29,8 +30,7 @@ import pro.jayeshseth.animations.util.DURATION
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @Composable
-fun VisibilityAnimation(onClickLink: (path: String) -> Unit) {
-
+fun VisibilityAnimation(onClickLink: OnClickLink) {
     StatusBarAwareThemedLazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
