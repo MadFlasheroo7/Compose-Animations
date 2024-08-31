@@ -17,7 +17,7 @@ if you like to read more about it check out the full blog [here](https://blog.re
 - [AnimatedNavigation](app/src/main/java/com/example/animations/ui/screens/AniamtedNav.kt)
 
 # Video
-
+https://github.com/user-attachments/assets/300ffa7c-f1d6-446b-bb81-23fd1823f0f0
 
 # TODO
 - [ ] more item placement animation
