@@ -12,10 +12,12 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Link
@@ -28,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,11 +43,13 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import pro.jayeshseth.animations.R
 import pro.jayeshseth.animations.navigation.OnClickLink
 import pro.jayeshseth.animations.ui.composables.AnimationController
 import pro.jayeshseth.animations.ui.composables.AnimationItem
 import pro.jayeshseth.animations.ui.composables.Toggler
 import pro.jayeshseth.animations.util.AnimationControllerState
+import pro.jayeshseth.animations.util.AudioPlayer
 import pro.jayeshseth.animations.util.DampingRatioList
 import pro.jayeshseth.animations.util.EasingList
 import pro.jayeshseth.animations.util.StiffnessList
@@ -71,12 +76,15 @@ fun ScaleItemPlacement(
     val selectedDampingRatio by remember { mutableStateOf(dampingRatioList[0]) }
     val stiffnessList = remember { StiffnessList }
     val selectedStiffness by remember { mutableStateOf(stiffnessList[0]) }
+    val lazyListState = rememberLazyListState()
+    val context = LocalContext.current
 
     val state = remember {
         mutableStateOf(
             AnimationControllerState(
                 vibrationEffect = true,
                 showShadow = true,
+                shepardTone = true,
                 initialValue = 0.5f,
                 initialValueRange = -5f..5f,
                 initialValueSteps = 0.1f,
@@ -90,6 +98,22 @@ fun ScaleItemPlacement(
                 stiffness = selectedStiffness
             )
         )
+    }
+
+    if (state.value.shepardTone) {
+        LaunchedEffect(lazyListState.isScrollInProgress) {
+            if (lazyListState.isScrollInProgress) {
+                AudioPlayer.play(context, R.raw.shepard_tone)
+            } else {
+                AudioPlayer.stop()
+            }
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            AudioPlayer.stop()
+        }
     }
 
     HomeScaffold(
@@ -120,6 +144,7 @@ fun ScaleItemPlacement(
         }
     ) {
         StatusBarAwareThemedLazyColumn(
+            state = lazyListState,
             statusBarColor = Color.Transparent
         ) {
             item {
@@ -176,21 +201,23 @@ private fun ScaleAnimationController(
         modifier = modifier,
         roundToInt = false,
         content = {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Toggler(
-                    title = "Scale X",
-                    checked = scaleX,
-                    onCheckedChanged = onScaleXChanged
-                )
-                Toggler(
-                    title = "Scale Y",
-                    checked = scaleY,
-                    onCheckedChanged = onScaleYChanged
-                )
+            Column {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Toggler(
+                        title = "Scale X",
+                        checked = scaleX,
+                        onCheckedChanged = onScaleXChanged
+                    )
+                    Toggler(
+                        title = "Scale Y",
+                        checked = scaleY,
+                        onCheckedChanged = onScaleYChanged
+                    )
+                }
             }
         },
     )

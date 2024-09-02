@@ -7,6 +7,7 @@ private typealias DampingRatioPair = Pair<Float, String>
 private typealias StiffnessPair = Pair<Float, String>
 
 data class AnimationControllerState(
+    val shepardTone: Boolean,
     val vibrationEffect: Boolean,
     val showShadow: Boolean,
     val initialValue: Float,

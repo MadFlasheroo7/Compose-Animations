@@ -59,6 +59,12 @@ fun AnimationController(
     ) {
         content()
         Toggler(
+            title = "Shepard Tone",
+            checked = state.shepardTone,
+            onCheckedChanged = { onStateUpdate(state.copy(shepardTone = it)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Toggler(
             title = "Vibration Effect",
             checked = state.vibrationEffect,
             onCheckedChanged = { onStateUpdate(state.copy(vibrationEffect = it)) },

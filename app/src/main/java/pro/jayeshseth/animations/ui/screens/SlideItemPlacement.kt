@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Link
@@ -28,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,11 +42,13 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import pro.jayeshseth.animations.R
 import pro.jayeshseth.animations.navigation.OnClickLink
 import pro.jayeshseth.animations.ui.composables.AnimationController
 import pro.jayeshseth.animations.ui.composables.AnimationItem
 import pro.jayeshseth.animations.ui.composables.Toggler
 import pro.jayeshseth.animations.util.AnimationControllerState
+import pro.jayeshseth.animations.util.AudioPlayer
 import pro.jayeshseth.animations.util.DampingRatioList
 import pro.jayeshseth.animations.util.EasingList
 import pro.jayeshseth.animations.util.StiffnessList
@@ -71,12 +75,15 @@ fun SlideItemPlacement(
     val selectedDampingRatio by remember { mutableStateOf(dampingRatioList[0]) }
     val stiffnessList = remember { StiffnessList }
     val selectedStiffness by remember { mutableStateOf(stiffnessList[0]) }
+    val lazyListState = rememberLazyListState()
+    val context = LocalContext.current
 
     val state = remember {
         mutableStateOf(
             AnimationControllerState(
                 vibrationEffect = true,
                 showShadow = true,
+                shepardTone = true,
                 initialValue = 300f,
                 initialValueRange = -1000f..1000f,
                 tweenDuration = 300,
@@ -90,6 +97,22 @@ fun SlideItemPlacement(
                 initialValueSteps = 0.1f
             )
         )
+    }
+
+    if (state.value.shepardTone) {
+        LaunchedEffect(lazyListState.isScrollInProgress) {
+            if (lazyListState.isScrollInProgress) {
+                AudioPlayer.play(context, R.raw.shepard_tone)
+            } else {
+                AudioPlayer.stop()
+            }
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            AudioPlayer.stop()
+        }
     }
 
     HomeScaffold(
@@ -120,6 +143,7 @@ fun SlideItemPlacement(
         }
     ) {
         StatusBarAwareThemedLazyColumn(
+            state = lazyListState,
             statusBarColor = Color.Transparent
         ) {
             item {
