@@ -14,7 +14,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -52,19 +51,18 @@ import pro.jayeshseth.commoncomponents.HomeScaffold
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 /**
- * Scale item placement animation by scaling X and Y position of the item
+ * Fade item placement animation by fading the opacity of the item
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScaleItemPlacement(
+fun FadeItemPlacement(
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
     var isVisible by remember { mutableStateOf(false) }
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-    val scaleX = remember { mutableStateOf(true) }
-    val scaleY = remember { mutableStateOf(false) }
+    val fade = remember { mutableStateOf(true) }
     val easingList = remember { EasingList }
     val selectedEasing by remember { mutableStateOf(easingList[0]) }
     val dampingRatioList = remember { DampingRatioList }
@@ -77,9 +75,8 @@ fun ScaleItemPlacement(
             AnimationControllerState(
                 vibrationEffect = true,
                 showShadow = true,
-                initialValue = 0.5f,
-                initialValueRange = -5f..5f,
-                initialValueSteps = 0.1f,
+                initialValue = 0f,
+                initialValueRange = -1f..1f,
                 tweenDuration = 300,
                 selectedIndex = 0,
                 easingList = easingList,
@@ -87,7 +84,8 @@ fun ScaleItemPlacement(
                 dampingRatioList = dampingRatioList,
                 dampingRatio = selectedDampingRatio,
                 stiffnessList = stiffnessList,
-                stiffness = selectedStiffness
+                stiffness = selectedStiffness,
+                initialValueSteps = 0.1f
             )
         )
     }
@@ -110,7 +108,7 @@ fun ScaleItemPlacement(
         title = {
             if (!isVisible) {
                 Text(
-                    "Scale"
+                    "Fade"
                 )
             } else {
                 Text(
@@ -131,21 +129,18 @@ fun ScaleItemPlacement(
                     enter = slideInVertically(tween(500)),
                     exit = slideOutVertically(tween(500)),
                 ) {
-                    ScaleAnimationController(
+                    FadeAnimationController(
                         state = state.value,
                         onStateUpdate = { state.value = it },
-                        scaleX = scaleX.value,
-                        onScaleXChanged = { scaleX.value = it },
-                        scaleY = scaleY.value,
-                        onScaleYChanged = { scaleY.value = it },
+                        fade = fade.value,
+                        onFadeChanged = { fade.value = it }
                     )
                 }
             }
             items(100000) {
-                ScaleListItem(
+                FadeListItem(
                     index = it,
-                    isScaleX = scaleX.value,
-                    isScaleY = scaleY.value,
+                    fade = fade.value,
                     isVibration = state.value.vibrationEffect,
                     initialValue = state.value.initialValue,
                     tweenDuration = state.value.tweenDuration,
@@ -161,13 +156,11 @@ fun ScaleItemPlacement(
 }
 
 @Composable
-private fun ScaleAnimationController(
+private fun FadeAnimationController(
     state: AnimationControllerState,
     onStateUpdate: (AnimationControllerState) -> Unit,
-    scaleX: Boolean,
-    onScaleXChanged: (Boolean) -> Unit,
-    scaleY: Boolean,
-    onScaleYChanged: (Boolean) -> Unit,
+    fade: Boolean,
+    onFadeChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     AnimationController(
@@ -179,17 +172,11 @@ private fun ScaleAnimationController(
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
             ) {
                 Toggler(
-                    title = "Scale X",
-                    checked = scaleX,
-                    onCheckedChanged = onScaleXChanged
-                )
-                Toggler(
-                    title = "Scale Y",
-                    checked = scaleY,
-                    onCheckedChanged = onScaleYChanged
+                    title = "Fade",
+                    checked = fade,
+                    onCheckedChanged = onFadeChanged
                 )
             }
         },
@@ -197,11 +184,10 @@ private fun ScaleAnimationController(
 }
 
 @Composable
-private fun ScaleListItem(
+private fun FadeListItem(
     index: Int,
     initialValue: Float,
-    isScaleX: Boolean,
-    isScaleY: Boolean,
+    fade: Boolean,
     showShadow: Boolean,
     isTween: Boolean,
     isVibration: Boolean,
@@ -246,8 +232,7 @@ private fun ScaleListItem(
                 if (showShadow) shadowElevation = animatedProgress.value
                 if (showShadow && isDarkMode) spotShadowColor = shadowColor
                 if (showShadow && isDarkMode) ambientShadowColor = shadowColor
-                if (isScaleX) scaleX = animatedProgress.value
-                if (isScaleY) scaleY = animatedProgress.value
+                if (fade) alpha = animatedProgress.value
             }
     )
 }

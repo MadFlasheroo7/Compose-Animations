@@ -9,6 +9,7 @@ import pro.jayeshseth.animations.ui.screens.AnimateValueAsState
 import pro.jayeshseth.animations.ui.screens.AnimatedGestures
 import pro.jayeshseth.animations.ui.screens.AnimatedTransition
 import pro.jayeshseth.animations.ui.screens.BouncyRope
+import pro.jayeshseth.animations.ui.screens.FadeItemPlacement
 import pro.jayeshseth.animations.ui.screens.HomeScreen
 import pro.jayeshseth.animations.ui.screens.InfiniteRotation
 import pro.jayeshseth.animations.ui.screens.ItemPlacementAnimation
@@ -68,7 +69,11 @@ fun NavGraph(
                 navToTrippyBlinders = { navController.navigate(NavDestinations.TrippyBlinders.route) },
                 navToSlideInOut = { navController.navigate(NavDestinations.SlideInOut.route) },
                 navToScale = { navController.navigate(NavDestinations.ScaleItemPlacement.route) },
+                navToFade = { navController.navigate(NavDestinations.FadeItemPlacement.route) },
             )
+        }
+        composable(NavDestinations.FadeItemPlacement.route) {
+            FadeItemPlacement(onClickLink)
         }
         composable(NavDestinations.ScaleItemPlacement.route) {
             ScaleItemPlacement(onClickLink)

@@ -15,6 +15,7 @@ fun ItemPlacementAnimation(
     navToTrippyBlinders: () -> Unit,
     navToSlideInOut: () -> Unit,
     navToScale: () -> Unit,
+    navToFade: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     StatusBarAwareThemedColumn(
@@ -26,12 +27,16 @@ fun ItemPlacementAnimation(
             .padding(horizontal = 20.dp)
     ) {
         InteractiveButton(
-            text = "Slide In/Out",
+            text = "Slide",
             onClick = navToSlideInOut,
         )
         InteractiveButton(
             text = "Scale",
             onClick = navToScale,
+        )
+        InteractiveButton(
+            text = "Fade",
+            onClick = navToFade,
         )
 //        InteractiveButton(
 //            text = "Fidget Toy",
