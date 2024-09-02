@@ -2,7 +2,7 @@ package pro.jayeshseth.animations.ui.screens
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.EaseInOutCubic
+import androidx.compose.animation.core.EaseInOutQuad
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
@@ -40,16 +40,20 @@ fun AnimationCard(
     onClickLink: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val animatedProgress = remember { Animatable(500f) }
+    val animatedProgress = remember { Animatable(0.5f) }
 
     LaunchedEffect(index) {
         animatedProgress.animateTo(
-            targetValue = 0f,
-            animationSpec = tween(500, easing = EaseInOutCubic)
+            targetValue = 1f,
+            animationSpec = tween(500, easing = EaseInOutQuad)
         )
     }
     Card(modifier = modifier
-        .graphicsLayer { translationX = animatedProgress.value }
+        .graphicsLayer {
+//            shifting to scale animation
+//            translationX = animatedProgress.value
+            scaleX = animatedProgress.value
+        }
     ) {
         var isVisible by remember { mutableStateOf(true) }
         Column(

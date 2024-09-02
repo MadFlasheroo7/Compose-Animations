@@ -1,5 +1,6 @@
 package pro.jayeshseth.animations.ui.composables
 
+import android.icu.text.DecimalFormat
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,10 +27,15 @@ fun SliderTemplate(
     value: Float,
     step: Float,
     onValueChange: (Float) -> Unit,
-    valueRange: ClosedFloatingPointRange<Float>
+    valueRange: ClosedFloatingPointRange<Float>,
+    modifier: Modifier = Modifier,
+    roundToInt: Boolean = true,
 ) {
     val sliderValue = rememberUpdatedState(value)
+    val snappedFloatValue =
+        rememberUpdatedState(snapSliderValue(valueRange.start, sliderValue.value, step))
     ControllerTemplate(
+        modifier = modifier,
         title = {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -44,9 +50,8 @@ fun SliderTemplate(
                 CompositionLocalProvider(
                     LocalContentColor provides MaterialTheme.colorScheme.onBackground,
                 ) {
-                    val snappedValue = snapSliderValue(valueRange.start, sliderValue.value, step)
                     Text(
-                        text = "${snappedValue.roundToInt()}",
+                        text = "${if (roundToInt) snappedFloatValue.value.roundToInt() else snappedFloatValue.value}",
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
@@ -83,7 +88,7 @@ private fun snapSliderValue(start: Float, value: Float, step: Float): Float {
     val distance = value - start
     val stepsFromStart = (distance / step).roundToInt()
     val snappedDistance = stepsFromStart * step
-    return start + snappedDistance
+    return DecimalFormat("#.##").format(start + snappedDistance).toFloat()
 }
 
 @Preview(showBackground = true)

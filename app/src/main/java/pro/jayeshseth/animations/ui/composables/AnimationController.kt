@@ -38,7 +38,8 @@ fun AnimationController(
     state: AnimationControllerState,
     onStateUpdate: (AnimationControllerState) -> Unit,
     content: @Composable () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    roundToInt: Boolean = true
 ) {
     val animationSpecs = remember { mutableListOf("Tween", "Spring") }
     var expanded by remember { mutableStateOf(false) }
@@ -72,9 +73,10 @@ fun AnimationController(
         SliderTemplate(
             title = "Initial Value",
             value = updatedInitialValue.value,
-            step = 0.1f,
+            step = state.initialValueSteps,
             onValueChange = { onStateUpdate(state.copy(initialValue = it)) },
-            valueRange = updatedInitialValueRange.value
+            valueRange = updatedInitialValueRange.value,
+            roundToInt = roundToInt
         )
         SingleChoiceSegmentedButtonRow {
             animationSpecs.forEachIndexed { index, label ->

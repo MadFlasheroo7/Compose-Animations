@@ -56,15 +56,15 @@ import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SlideItemPlacement(
+fun ScaleItemPlacement(
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
     var isVisible by remember { mutableStateOf(false) }
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-    val translateX = remember { mutableStateOf(true) }
-    val translateY = remember { mutableStateOf(false) }
+    val scaleX = remember { mutableStateOf(true) }
+    val scaleY = remember { mutableStateOf(false) }
     val easingList = remember { EasingList }
     val selectedEasing by remember { mutableStateOf(easingList[0]) }
     val dampingRatioList = remember { DampingRatioList }
@@ -77,8 +77,9 @@ fun SlideItemPlacement(
             AnimationControllerState(
                 vibrationEffect = true,
                 showShadow = true,
-                initialValue = 300f,
-                initialValueRange = -1000f..1000f,
+                initialValue = 0.5f,
+                initialValueRange = -5f..5f,
+                initialValueSteps = 0.1f,
                 tweenDuration = 300,
                 selectedIndex = 0,
                 easingList = easingList,
@@ -86,8 +87,7 @@ fun SlideItemPlacement(
                 dampingRatioList = dampingRatioList,
                 dampingRatio = selectedDampingRatio,
                 stiffnessList = stiffnessList,
-                stiffness = selectedStiffness,
-                initialValueSteps = 0.1f
+                stiffness = selectedStiffness
             )
         )
     }
@@ -110,7 +110,7 @@ fun SlideItemPlacement(
         title = {
             if (!isVisible) {
                 Text(
-                    "Slide In / Out"
+                    "Scale"
                 )
             } else {
                 Text(
@@ -131,21 +131,21 @@ fun SlideItemPlacement(
                     enter = slideInVertically(tween(500)),
                     exit = slideOutVertically(tween(500)),
                 ) {
-                    SlideAnimationController(
+                    ScaleAnimationController(
                         state = state.value,
                         onStateUpdate = { state.value = it },
-                        translateX = translateX.value,
-                        onTranslateXChanged = { translateX.value = it },
-                        translateY = translateY.value,
-                        onTranslateYChanged = { translateY.value = it },
+                        scaleX = scaleX.value,
+                        onScaleXChanged = { scaleX.value = it },
+                        scaleY = scaleY.value,
+                        onScaleYChanged = { scaleY.value = it },
                     )
                 }
             }
             items(100000) {
-                SlideListItem(
+                ScaleListItem(
                     index = it,
-                    isTranslateX = translateX.value,
-                    isTranslateY = translateY.value,
+                    isScaleX = scaleX.value,
+                    isScaleY = scaleY.value,
                     isVibration = state.value.vibrationEffect,
                     initialValue = state.value.initialValue,
                     tweenDuration = state.value.tweenDuration,
@@ -161,19 +161,20 @@ fun SlideItemPlacement(
 }
 
 @Composable
-private fun SlideAnimationController(
+private fun ScaleAnimationController(
     state: AnimationControllerState,
     onStateUpdate: (AnimationControllerState) -> Unit,
-    translateX: Boolean,
-    onTranslateXChanged: (Boolean) -> Unit,
-    translateY: Boolean,
-    onTranslateYChanged: (Boolean) -> Unit,
+    scaleX: Boolean,
+    onScaleXChanged: (Boolean) -> Unit,
+    scaleY: Boolean,
+    onScaleYChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     AnimationController(
         state = state,
         onStateUpdate = onStateUpdate,
         modifier = modifier,
+        roundToInt = false,
         content = {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -181,14 +182,14 @@ private fun SlideAnimationController(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Toggler(
-                    title = "Translate X",
-                    checked = translateX,
-                    onCheckedChanged = onTranslateXChanged
+                    title = "Scale X",
+                    checked = scaleX,
+                    onCheckedChanged = onScaleXChanged
                 )
                 Toggler(
-                    title = "Translate Y",
-                    checked = translateY,
-                    onCheckedChanged = onTranslateYChanged
+                    title = "Scale Y",
+                    checked = scaleY,
+                    onCheckedChanged = onScaleYChanged
                 )
             }
         },
@@ -196,11 +197,11 @@ private fun SlideAnimationController(
 }
 
 @Composable
-private fun SlideListItem(
+private fun ScaleListItem(
     index: Int,
     initialValue: Float,
-    isTranslateX: Boolean,
-    isTranslateY: Boolean,
+    isScaleX: Boolean,
+    isScaleY: Boolean,
     showShadow: Boolean,
     isTween: Boolean,
     isVibration: Boolean,
@@ -224,12 +225,12 @@ private fun SlideListItem(
         }
         if (isTween) {
             animatedProgress.animateTo(
-                targetValue = 0f,
+                targetValue = 1f,
                 animationSpec = tween(tweenDuration, easing = easing)
             )
         } else {
             animatedProgress.animateTo(
-                targetValue = 0f,
+                targetValue = 1f,
                 animationSpec = spring(
                     dampingRatio = dampingRatio,
                     stiffness = stiffness,
@@ -245,8 +246,8 @@ private fun SlideListItem(
                 if (showShadow) shadowElevation = animatedProgress.value
                 if (showShadow && isDarkMode) spotShadowColor = shadowColor
                 if (showShadow && isDarkMode) ambientShadowColor = shadowColor
-                if (isTranslateX) translationX = animatedProgress.value
-                if (isTranslateY) translationY = animatedProgress.value
+                if (isScaleX) scaleX = animatedProgress.value
+                if (isScaleY) scaleY = animatedProgress.value
             }
     )
 }

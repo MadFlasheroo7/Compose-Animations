@@ -10,6 +10,7 @@ data class AnimationControllerState(
     val vibrationEffect: Boolean,
     val showShadow: Boolean,
     val initialValue: Float,
+    val initialValueSteps: Float,
     val initialValueRange: ClosedFloatingPointRange<Float>,
     val tweenDuration: Int,
     val selectedIndex: Int,

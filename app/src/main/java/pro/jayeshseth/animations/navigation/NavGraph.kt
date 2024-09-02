@@ -12,6 +12,7 @@ import pro.jayeshseth.animations.ui.screens.BouncyRope
 import pro.jayeshseth.animations.ui.screens.HomeScreen
 import pro.jayeshseth.animations.ui.screens.InfiniteRotation
 import pro.jayeshseth.animations.ui.screens.ItemPlacementAnimation
+import pro.jayeshseth.animations.ui.screens.ScaleItemPlacement
 import pro.jayeshseth.animations.ui.screens.SlideItemPlacement
 import pro.jayeshseth.animations.ui.screens.SwipeRefresh
 import pro.jayeshseth.animations.ui.screens.TrippyBlinders
@@ -65,8 +66,12 @@ fun NavGraph(
         composable(NavDestinations.AnimatedListItemPlacement.route) {
             ItemPlacementAnimation(
                 navToTrippyBlinders = { navController.navigate(NavDestinations.TrippyBlinders.route) },
-                navToSlideInOut = { navController.navigate(NavDestinations.SlideInOut.route) }
+                navToSlideInOut = { navController.navigate(NavDestinations.SlideInOut.route) },
+                navToScale = { navController.navigate(NavDestinations.ScaleItemPlacement.route) },
             )
+        }
+        composable(NavDestinations.ScaleItemPlacement.route) {
+            ScaleItemPlacement(onClickLink)
         }
         composable(NavDestinations.TrippyBlinders.route) {
             TrippyBlinders()

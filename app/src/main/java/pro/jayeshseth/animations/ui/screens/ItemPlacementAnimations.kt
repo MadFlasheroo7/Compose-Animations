@@ -14,6 +14,7 @@ import pro.jayeshseth.commoncomponents.StatusBarAwareThemedColumn
 fun ItemPlacementAnimation(
     navToTrippyBlinders: () -> Unit,
     navToSlideInOut: () -> Unit,
+    navToScale: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     StatusBarAwareThemedColumn(
@@ -27,6 +28,10 @@ fun ItemPlacementAnimation(
         InteractiveButton(
             text = "Slide In/Out",
             onClick = navToSlideInOut,
+        )
+        InteractiveButton(
+            text = "Scale",
+            onClick = navToScale,
         )
 //        InteractiveButton(
 //            text = "Fidget Toy",
