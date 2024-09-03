@@ -118,7 +118,7 @@ fun FadeItemPlacement(
         modifier = modifier,
         navigationIcon = {
             IconButton(onClick = {
-                onClickLink("screens/SlideItemPlacement.kt")
+                onClickLink("screens/FadeItemPlacement.kt")
             }) {
                 Icon(imageVector = Icons.Rounded.Link, contentDescription = null)
             }

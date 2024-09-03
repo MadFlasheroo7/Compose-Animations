@@ -121,7 +121,7 @@ fun ScaleItemPlacement(
         modifier = modifier,
         navigationIcon = {
             IconButton(onClick = {
-                onClickLink("screens/SlideItemPlacement.kt")
+                onClickLink("screens/ScaleItemPlacement.kt")
             }) {
                 Icon(imageVector = Icons.Rounded.Link, contentDescription = null)
             }
