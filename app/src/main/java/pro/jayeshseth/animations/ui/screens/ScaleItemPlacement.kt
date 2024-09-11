@@ -38,7 +38,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -83,7 +85,7 @@ fun ScaleItemPlacement(
         mutableStateOf(
             AnimationControllerState(
                 vibrationEffect = true,
-                showShadow = true,
+                showShadow = false,
                 shepardTone = false,
                 initialValue = 0.5f,
                 initialValueRange = -5f..5f,
@@ -95,7 +97,11 @@ fun ScaleItemPlacement(
                 dampingRatioList = dampingRatioList,
                 dampingRatio = selectedDampingRatio,
                 stiffnessList = stiffnessList,
-                stiffness = selectedStiffness
+                stiffness = selectedStiffness,
+                blurValueSteps = 0.1f,
+                blurValue = 100f,
+                blurValueRange = 0f..500f,
+                blurEffect = true
             )
         )
     }
@@ -179,6 +185,8 @@ fun ScaleItemPlacement(
                     isTween = state.value.selectedIndex == 0,
                     stiffness = state.value.stiffness.first,
                     dampingRatio = state.value.dampingRatio.first,
+                    blurValue = state.value.blurValue,
+                    doBlur = state.value.blurEffect,
                 )
             }
         }
@@ -227,6 +235,8 @@ private fun ScaleAnimationController(
 private fun ScaleListItem(
     index: Int,
     initialValue: Float,
+    doBlur: Boolean,
+    blurValue: Float,
     isScaleX: Boolean,
     isScaleY: Boolean,
     showShadow: Boolean,
@@ -241,6 +251,7 @@ private fun ScaleListItem(
 ) {
     val context = LocalContext.current
     val animatedProgress = remember { Animatable(initialValue) }
+    val animatedBlur = remember { Animatable(blurValue) }
     val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
     val shadowColor = MaterialTheme.colorScheme.primary
 
@@ -265,6 +276,23 @@ private fun ScaleListItem(
             )
         }
     }
+    LaunchedEffect(index) {
+        if (doBlur && isTween) {
+            animatedBlur.animateTo(
+                targetValue = 0f,
+                animationSpec = tween(tweenDuration, easing = easing)
+            )
+        } else {
+            animatedBlur.animateTo(
+                targetValue = 0f,
+                animationSpec = spring(
+                    dampingRatio = dampingRatio,
+                    stiffness = stiffness,
+                )
+            )
+        }
+
+    }
     AnimationItem(
         modifier = modifier
             .padding(8.dp)
@@ -275,6 +303,13 @@ private fun ScaleListItem(
                 if (showShadow && isDarkMode) ambientShadowColor = shadowColor
                 if (isScaleX) scaleX = animatedProgress.value
                 if (isScaleY) scaleY = animatedProgress.value
+                if (doBlur && animatedBlur.value > 0f) {
+                    renderEffect = BlurEffect(
+                        animatedBlur.value,
+                        animatedBlur.value,
+                        TileMode.Decal
+                    )
+                }
             }
     )
 }

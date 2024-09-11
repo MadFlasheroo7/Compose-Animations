@@ -37,7 +37,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -82,10 +84,13 @@ fun SlideItemPlacement(
         mutableStateOf(
             AnimationControllerState(
                 vibrationEffect = true,
-                showShadow = true,
-                shepardTone = true,
+                showShadow = false,
+                shepardTone = false,
                 initialValue = 300f,
                 initialValueRange = -1000f..1000f,
+                blurValue = 100f,
+                blurValueRange = 0f..500f,
+                blurEffect = true,
                 tweenDuration = 300,
                 selectedIndex = 0,
                 easingList = easingList,
@@ -94,7 +99,8 @@ fun SlideItemPlacement(
                 dampingRatio = selectedDampingRatio,
                 stiffnessList = stiffnessList,
                 stiffness = selectedStiffness,
-                initialValueSteps = 0.1f
+                initialValueSteps = 0.1f,
+                blurValueSteps = 0.1f
             )
         )
     }
@@ -170,6 +176,8 @@ fun SlideItemPlacement(
                     index = it,
                     isTranslateX = translateX.value,
                     isTranslateY = translateY.value,
+                    blurValue = state.value.blurValue,
+                    doBlur = state.value.blurEffect,
                     isVibration = state.value.vibrationEffect,
                     initialValue = state.value.initialValue,
                     tweenDuration = state.value.tweenDuration,
@@ -223,9 +231,11 @@ private fun SlideAnimationController(
 private fun SlideListItem(
     index: Int,
     initialValue: Float,
+    blurValue: Float,
     isTranslateX: Boolean,
     isTranslateY: Boolean,
     showShadow: Boolean,
+    doBlur: Boolean,
     isTween: Boolean,
     isVibration: Boolean,
     tweenDuration: Int,
@@ -237,6 +247,7 @@ private fun SlideListItem(
 ) {
     val context = LocalContext.current
     val animatedProgress = remember { Animatable(initialValue) }
+    val animatedBlur = remember { Animatable(blurValue) }
     val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
     val shadowColor = MaterialTheme.colorScheme.primary
 
@@ -261,6 +272,23 @@ private fun SlideListItem(
             )
         }
     }
+    LaunchedEffect(index) {
+        if (doBlur && isTween) {
+            animatedBlur.animateTo(
+                targetValue = 0f,
+                animationSpec = tween(tweenDuration, easing = easing)
+            )
+        } else {
+            animatedBlur.animateTo(
+                targetValue = 0f,
+                animationSpec = spring(
+                    dampingRatio = dampingRatio,
+                    stiffness = stiffness,
+                )
+            )
+        }
+
+    }
     AnimationItem(
         modifier = modifier
             .padding(8.dp)
@@ -271,6 +299,13 @@ private fun SlideListItem(
                 if (showShadow && isDarkMode) ambientShadowColor = shadowColor
                 if (isTranslateX) translationX = animatedProgress.value
                 if (isTranslateY) translationY = animatedProgress.value
+                if (doBlur && animatedBlur.value > 0f) {
+                    renderEffect = BlurEffect(
+                        animatedBlur.value,
+                        animatedBlur.value,
+                        TileMode.Decal
+                    )
+                }
             }
     )
 }

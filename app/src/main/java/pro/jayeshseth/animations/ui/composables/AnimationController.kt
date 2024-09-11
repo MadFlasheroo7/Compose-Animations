@@ -6,6 +6,7 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
@@ -46,8 +47,10 @@ fun AnimationController(
     var dampingRatioExpanded by remember { mutableStateOf(false) }
     var stiffnessExpanded by remember { mutableStateOf(false) }
     val updatedInitialValue = rememberUpdatedState(state.initialValue)
+    val updatedBlurValue = rememberUpdatedState(state.blurValue)
     val updatedTweenDuration = rememberUpdatedState(state.tweenDuration)
     val updatedInitialValueRange = rememberUpdatedState(state.initialValueRange)
+    val updatedBlurValueRange = rememberUpdatedState(state.blurValueRange)
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,30 +61,62 @@ fun AnimationController(
             .animateContentSize(tween(450))
     ) {
         content()
-        Toggler(
-            title = "Shepard Tone",
-            checked = state.shepardTone,
-            onCheckedChanged = { onStateUpdate(state.copy(shepardTone = it)) },
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
-        )
-        Toggler(
-            title = "Vibration Effect",
-            checked = state.vibrationEffect,
-            onCheckedChanged = { onStateUpdate(state.copy(vibrationEffect = it)) },
+        ) {
+            Toggler(
+                title = "Shadow",
+                checked = state.showShadow,
+                onCheckedChanged = {
+                    onStateUpdate(
+                        state.copy(
+                            showShadow = it,
+                            blurEffect = false
+                        )
+                    )
+                },
+            )
+            Toggler(
+                title = "Blur Effect",
+                checked = state.blurEffect,
+                onCheckedChanged = { blurEffect ->
+                    onStateUpdate(state.copy(blurEffect = blurEffect, showShadow = false))
+                },
+            )
+        }
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
-        )
-        Toggler(
-            title = "Shadow",
-            checked = state.showShadow,
-            onCheckedChanged = { onStateUpdate(state.copy(showShadow = it)) },
-            modifier = Modifier.fillMaxWidth()
-        )
+        ) {
+            Toggler(
+                title = "Shepard Tone",
+                checked = state.shepardTone,
+                onCheckedChanged = { onStateUpdate(state.copy(shepardTone = it)) },
+            )
+            Toggler(
+                title = "Vibration Effect",
+                checked = state.vibrationEffect,
+                onCheckedChanged = { onStateUpdate(state.copy(vibrationEffect = it)) },
+            )
+        }
+
         SliderTemplate(
             title = "Initial Value",
             value = updatedInitialValue.value,
             step = state.initialValueSteps,
             onValueChange = { onStateUpdate(state.copy(initialValue = it)) },
             valueRange = updatedInitialValueRange.value,
+            roundToInt = roundToInt
+        )
+        SliderTemplate(
+            title = "Blur Value",
+            value = updatedBlurValue.value,
+            step = state.blurValueSteps,
+            onValueChange = { onStateUpdate(state.copy(blurValue = it)) },
+            valueRange = updatedBlurValueRange.value,
             roundToInt = roundToInt
         )
         SingleChoiceSegmentedButtonRow {

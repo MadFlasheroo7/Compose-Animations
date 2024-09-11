@@ -36,7 +36,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -80,7 +82,7 @@ fun FadeItemPlacement(
         mutableStateOf(
             AnimationControllerState(
                 vibrationEffect = true,
-                showShadow = true,
+                showShadow = false,
                 shepardTone = false,
                 initialValue = 0f,
                 initialValueRange = -1f..1f,
@@ -92,7 +94,11 @@ fun FadeItemPlacement(
                 dampingRatio = selectedDampingRatio,
                 stiffnessList = stiffnessList,
                 stiffness = selectedStiffness,
-                initialValueSteps = 0.1f
+                initialValueSteps = 0.1f,
+                blurValueSteps = 0.1f,
+                blurValue = 100f,
+                blurValueRange = 0f..500f,
+                blurEffect = true
             )
         )
     }
@@ -173,6 +179,8 @@ fun FadeItemPlacement(
                     isTween = state.value.selectedIndex == 0,
                     stiffness = state.value.stiffness.first,
                     dampingRatio = state.value.dampingRatio.first,
+                    blurValue = state.value.blurValue,
+                    doBlur = state.value.blurEffect,
                 )
             }
         }
@@ -212,6 +220,8 @@ private fun FadeListItem(
     index: Int,
     initialValue: Float,
     fade: Boolean,
+    doBlur: Boolean,
+    blurValue: Float,
     showShadow: Boolean,
     isTween: Boolean,
     isVibration: Boolean,
@@ -224,6 +234,7 @@ private fun FadeListItem(
 ) {
     val context = LocalContext.current
     val animatedProgress = remember { Animatable(initialValue) }
+    val animatedBlur = remember { Animatable(blurValue) }
     val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
     val shadowColor = MaterialTheme.colorScheme.primary
 
@@ -248,6 +259,23 @@ private fun FadeListItem(
             )
         }
     }
+    LaunchedEffect(index) {
+        if (doBlur && isTween) {
+            animatedBlur.animateTo(
+                targetValue = 0f,
+                animationSpec = tween(tweenDuration, easing = easing)
+            )
+        } else {
+            animatedBlur.animateTo(
+                targetValue = 0f,
+                animationSpec = spring(
+                    dampingRatio = dampingRatio,
+                    stiffness = stiffness,
+                )
+            )
+        }
+    }
+
     AnimationItem(
         modifier = modifier
             .padding(8.dp)
@@ -257,6 +285,13 @@ private fun FadeListItem(
                 if (showShadow && isDarkMode) spotShadowColor = shadowColor
                 if (showShadow && isDarkMode) ambientShadowColor = shadowColor
                 if (fade) alpha = animatedProgress.value
+                if (doBlur && animatedBlur.value > 0f) {
+                    renderEffect = BlurEffect(
+                        animatedBlur.value,
+                        animatedBlur.value,
+                        TileMode.Decal
+                    )
+                }
             }
     )
 }
