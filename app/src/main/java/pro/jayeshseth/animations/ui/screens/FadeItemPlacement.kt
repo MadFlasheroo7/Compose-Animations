@@ -81,7 +81,7 @@ fun FadeItemPlacement(
             AnimationControllerState(
                 vibrationEffect = true,
                 showShadow = true,
-                shepardTone = true,
+                shepardTone = false,
                 initialValue = 0f,
                 initialValueRange = -1f..1f,
                 tweenDuration = 300,

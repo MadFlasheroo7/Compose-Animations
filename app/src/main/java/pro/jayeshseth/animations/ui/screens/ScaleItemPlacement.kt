@@ -84,7 +84,7 @@ fun ScaleItemPlacement(
             AnimationControllerState(
                 vibrationEffect = true,
                 showShadow = true,
-                shepardTone = true,
+                shepardTone = false,
                 initialValue = 0.5f,
                 initialValueRange = -5f..5f,
                 initialValueSteps = 0.1f,
