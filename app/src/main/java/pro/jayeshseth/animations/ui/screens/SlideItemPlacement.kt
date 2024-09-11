@@ -88,7 +88,7 @@ fun SlideItemPlacement(
                 shepardTone = false,
                 initialValue = 300f,
                 initialValueRange = -1000f..1000f,
-                blurValue = 100f,
+                blurValue = 200f,
                 blurValueRange = 0f..500f,
                 blurEffect = true,
                 tweenDuration = 300,

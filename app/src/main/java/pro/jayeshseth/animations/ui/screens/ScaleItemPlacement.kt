@@ -99,7 +99,7 @@ fun ScaleItemPlacement(
                 stiffnessList = stiffnessList,
                 stiffness = selectedStiffness,
                 blurValueSteps = 0.1f,
-                blurValue = 100f,
+                blurValue = 200f,
                 blurValueRange = 0f..500f,
                 blurEffect = true
             )
