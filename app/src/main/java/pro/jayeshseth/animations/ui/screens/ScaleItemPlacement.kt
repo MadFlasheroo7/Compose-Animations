@@ -109,7 +109,7 @@ fun ScaleItemPlacement(
     if (state.value.shepardTone) {
         LaunchedEffect(lazyListState.isScrollInProgress) {
             if (lazyListState.isScrollInProgress) {
-                AudioPlayer.play(context, R.raw.shepard_tone)
+                AudioPlayer.play(context, R.raw.wind_chimes)
             } else {
                 AudioPlayer.stop()
             }

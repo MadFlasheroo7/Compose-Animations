@@ -16,4 +16,5 @@ sealed class NavDestinations(val route: String) {
     data object SlideInOut : NavDestinations("SLIDE_IN_OUT")
     data object ScaleItemPlacement : NavDestinations("SCALE_ITEM_PLACEMENT")
     data object FadeItemPlacement : NavDestinations("FADE_ITEM_PLACEMENT")
+    data object Community : NavDestinations("COMMUNITY")
 }

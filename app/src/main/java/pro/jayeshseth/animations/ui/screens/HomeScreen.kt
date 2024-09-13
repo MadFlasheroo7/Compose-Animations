@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -33,6 +34,7 @@ fun HomeScreen(navAction: (route: String) -> Unit) {
             )
         }
     ) {
+//        SearchBar() { }
         StatusBarAwareThemedLazyColumn(
             statusBarColor = Color.Transparent,
             modifier = Modifier
@@ -92,6 +94,10 @@ private val animationScreens: List<AnimationScreen> by lazy {
         AnimationScreen(
             title = "Bouncy Ropes",
             route = NavDestinations.BouncyRope.route
+        ),
+        AnimationScreen(
+            title = "Community",
+            route = NavDestinations.Community.route
         ),
         AnimationScreen(
             title = "About",

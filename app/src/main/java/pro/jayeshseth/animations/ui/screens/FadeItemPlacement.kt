@@ -106,7 +106,7 @@ fun FadeItemPlacement(
     if (state.value.shepardTone) {
         LaunchedEffect(lazyListState.isScrollInProgress) {
             if (lazyListState.isScrollInProgress) {
-                AudioPlayer.play(context, R.raw.shepard_tone)
+                AudioPlayer.play(context, R.raw.water_fall_smooth_relaxing)
             } else {
                 AudioPlayer.stop()
             }
