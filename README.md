@@ -28,6 +28,11 @@ https://github.com/user-attachments/assets/300ffa7c-f1d6-446b-bb81-23fd1823f0f0
 # Contribution
 Compose Animation was built with the goal of public contributions so go find issues in the existing code, improve over it
 build new ones. Only "rule" per say if you are not the original author of the animation kindly credit the original author.
+and also read contribution guidelines to resolve build errors 😅.
+
+[CONTRIBUTING.md](CONTRIBUTING.md)
+
+> Note: This Project requires common modules to be built locally(for now) read CONTRIBUTING.md for more
 
 # Credit
 - Bouncy Rope is modified version of Rebecca Franks's animations you can check it out [here](https://github.com/riggaroo/compose-playtime)
