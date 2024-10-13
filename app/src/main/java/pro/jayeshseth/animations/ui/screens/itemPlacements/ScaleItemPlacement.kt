@@ -3,13 +3,18 @@ package pro.jayeshseth.animations.ui.screens.itemPlacements
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Easing
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,6 +48,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import pro.jayeshseth.animations.R
@@ -138,13 +144,33 @@ fun ScaleItemPlacement(
             }
         },
         title = {
-            if (!isVisible) {
+            AnimatedContent(
+                targetState = isVisible,
+                transitionSpec = {
+                    if (targetState > initialState) {
+                        slideInVertically(animationSpec = tween(easing = LinearEasing)) { -it } + fadeIn(
+                            animationSpec = tween(easing = LinearEasing)
+                        ) togetherWith slideOutVertically { it } + fadeOut(
+                            animationSpec = tween(easing = LinearEasing)
+                        )
+                    } else {
+                        slideInVertically(animationSpec = tween(easing = LinearEasing)) { it } + fadeIn(
+                            animationSpec = tween(easing = LinearEasing)
+                        ) togetherWith slideOutVertically(animationSpec = tween(easing = LinearEasing)) { -it } + fadeOut(
+                            animationSpec = tween(easing = LinearEasing)
+                        )
+                    }
+                },
+                label = "title transitions animation"
+            ) {
                 Text(
-                    "Scale"
-                )
-            } else {
-                Text(
-                    "Animation Controller"
+                    if (it) {
+                        "Animation Controller"
+                    } else {
+                        "Scale"
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
                 )
             }
         }
