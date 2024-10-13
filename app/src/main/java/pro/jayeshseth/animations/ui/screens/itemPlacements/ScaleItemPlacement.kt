@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens
+package pro.jayeshseth.animations.ui.screens.itemPlacements
 
 import android.os.Build
 import android.os.VibrationEffect
@@ -127,7 +127,7 @@ fun ScaleItemPlacement(
         modifier = modifier,
         navigationIcon = {
             IconButton(onClick = {
-                onClickLink("screens/ScaleItemPlacement.kt")
+                onClickLink("screens/itemPlacements/ScaleItemPlacement.kt")
             }) {
                 Icon(imageVector = Icons.Rounded.Link, contentDescription = null)
             }

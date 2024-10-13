@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens
+package pro.jayeshseth.animations.ui.screens.itemPlacements
 
 import android.os.Build
 import android.os.VibrationEffect
@@ -124,7 +124,7 @@ fun FadeItemPlacement(
         modifier = modifier,
         navigationIcon = {
             IconButton(onClick = {
-                onClickLink("screens/FadeItemPlacement.kt")
+                onClickLink("screens/itemPlacements/FadeItemPlacement.kt")
             }) {
                 Icon(imageVector = Icons.Rounded.Link, contentDescription = null)
             }

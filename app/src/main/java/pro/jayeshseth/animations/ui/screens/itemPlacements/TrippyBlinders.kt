@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens
+package pro.jayeshseth.animations.ui.screens.itemPlacements
 
 import android.os.Build
 import android.os.VibrationEffect
