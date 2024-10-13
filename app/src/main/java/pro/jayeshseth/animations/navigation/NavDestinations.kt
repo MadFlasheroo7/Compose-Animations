@@ -18,4 +18,5 @@ sealed class NavDestinations(val route: String) {
     data object FadeItemPlacement : NavDestinations("FADE_ITEM_PLACEMENT")
     data object Community : NavDestinations("COMMUNITY")
     data object PastEasterEggs : NavDestinations("PAST_EASTER_EGGS")
+    data object PhysicsLayoutAboutScreen : NavDestinations("PHYSICS_LAYOUT_ABOUT_SCREEN")
 }
