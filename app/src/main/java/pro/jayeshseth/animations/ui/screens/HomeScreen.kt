@@ -34,7 +34,6 @@ fun HomeScreen(navAction: (route: String) -> Unit) {
             )
         }
     ) {
-//        SearchBar() { }
         StatusBarAwareThemedLazyColumn(
             statusBarColor = Color.Transparent,
             modifier = Modifier
