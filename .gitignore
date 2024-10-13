@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+/.idea/git_toolbox_blame.xml
+/.idea/git_toolbox_prj.xml
