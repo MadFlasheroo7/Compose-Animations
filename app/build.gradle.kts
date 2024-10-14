@@ -30,6 +30,12 @@ android {
                 "proguard-rules.pro"
             )
         }
+        create("beta") {
+            initWith(getByName("debug"))
+            isDefault = true
+            applicationIdSuffix = ".beta"
+            versionNameSuffix = libs.versions.version.nameBetaSuffix.get()
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -70,7 +76,7 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
-    implementation ("io.github.klassenkonstantin:physics-layout:0.4.1")
+    implementation("io.github.klassenkonstantin:physics-layout:0.4.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
