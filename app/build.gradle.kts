@@ -30,6 +30,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+        debug {
+            applicationIdSuffix = ".debug"
+        }
         create("beta") {
             initWith(getByName("debug"))
             isDefault = true
