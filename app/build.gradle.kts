@@ -32,11 +32,7 @@ android {
         }
         debug {
             applicationIdSuffix = ".debug"
-        }
-        create("beta") {
-            initWith(getByName("debug"))
             isDefault = true
-            applicationIdSuffix = ".beta"
             versionNameSuffix = libs.versions.version.nameBetaSuffix.get()
         }
     }
