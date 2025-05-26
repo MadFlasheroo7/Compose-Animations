@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens
+package pro.jayeshseth.animations.ui.screens.itemPlacements
 
 import android.os.Build
 import android.os.VibrationEffect
@@ -126,7 +126,7 @@ fun SlideItemPlacement(
         modifier = modifier,
         navigationIcon = {
             IconButton(onClick = {
-                onClickLink("screens/SlideItemPlacement.kt")
+                onClickLink("screens/itemPlacements/SlideItemPlacement.kt")
             }) {
                 Icon(imageVector = Icons.Rounded.Link, contentDescription = null)
             }

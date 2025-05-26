@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -22,13 +21,13 @@ import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navAction: (route: String) -> Unit) {
+fun EasterEggScreen(navAction: (route: String) -> Unit) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     HomeScaffold(
         topAppBarScrollBehavior = scrollBehavior,
         title = {
             Text(
-                text = "Animations",
+                text = "Easter Eggs",
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -41,7 +40,7 @@ fun HomeScreen(navAction: (route: String) -> Unit) {
             item {
                 Spacer(Modifier.padding(top = it.calculateTopPadding()))
             }
-            items(animationScreens) { animationScreen ->
+            items(easterEggs) { animationScreen ->
                 InteractiveButton(
                     text = animationScreen.title,
                     onClick = {
@@ -54,57 +53,13 @@ fun HomeScreen(navAction: (route: String) -> Unit) {
 }
 
 /**
- * list of animation screens
+ * list of easter eggs
  */
-private val animationScreens: List<AnimationScreen> by lazy {
+private val easterEggs: List<AnimationScreen> by lazy {
     mutableListOf(
         AnimationScreen(
-            title = "Animate Visibility",
-            route = NavDestinations.AnimateVisibility.route
-        ),
-        AnimationScreen(
-            title = "Animate List Item Placement",
-            route = NavDestinations.AnimatedListItemPlacement.route
-        ),
-        AnimationScreen(
-            title = "Animate Content",
-            route = NavDestinations.AnimateContent.route
-        ),
-        AnimationScreen(
-            title = "Animate Value As State",
-            route = NavDestinations.AnimateValueAsState.route
-        ),
-        AnimationScreen(
-            title = "Animated Gesture",
-            route = NavDestinations.AnimateGesture.route
-        ),
-        AnimationScreen(
-            title = "Infinite Rotation",
-            route = NavDestinations.InfiniteRotation.route
-        ),
-        AnimationScreen(
-            title = "Swipe To Refresh",
-            route = NavDestinations.SwipeRefresh.route
-        ),
-        AnimationScreen(
-            title = "Nav Animation",
-            route = NavDestinations.AnimateNavGraph.route
-        ),
-        AnimationScreen(
-            title = "Bouncy Ropes",
-            route = NavDestinations.BouncyRope.route
-        ),
-        AnimationScreen(
-            title = "Community",
-            route = NavDestinations.Community.route
-        ),
-        AnimationScreen(
-            title = "About",
-            route = NavDestinations.AboutScreen.route
-        ),
-        AnimationScreen(
-            title = "Past Easter Eggs",
-            route = NavDestinations.PastEasterEggs.route
+            title = "Physics Layout About Screen",
+            route = NavDestinations.PhysicsLayoutAboutScreen.route
         )
     )
 }

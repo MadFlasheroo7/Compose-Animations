@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens
+package pro.jayeshseth.animations.ui.screens.infiniteTransistions
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode

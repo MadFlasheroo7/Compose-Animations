@@ -9,15 +9,17 @@ import pro.jayeshseth.animations.ui.screens.AnimateValueAsState
 import pro.jayeshseth.animations.ui.screens.AnimatedGestures
 import pro.jayeshseth.animations.ui.screens.AnimatedTransition
 import pro.jayeshseth.animations.ui.screens.BouncyRope
-import pro.jayeshseth.animations.ui.screens.FadeItemPlacement
+import pro.jayeshseth.animations.ui.screens.EasterEggScreen
 import pro.jayeshseth.animations.ui.screens.HomeScreen
-import pro.jayeshseth.animations.ui.screens.InfiniteRotation
 import pro.jayeshseth.animations.ui.screens.ItemPlacementAnimation
-import pro.jayeshseth.animations.ui.screens.ScaleItemPlacement
-import pro.jayeshseth.animations.ui.screens.SlideItemPlacement
 import pro.jayeshseth.animations.ui.screens.SwipeRefresh
-import pro.jayeshseth.animations.ui.screens.TrippyBlinders
 import pro.jayeshseth.animations.ui.screens.VisibilityAnimation
+import pro.jayeshseth.animations.ui.screens.easterEggs.PhysicsLayoutAboutScreen
+import pro.jayeshseth.animations.ui.screens.infiniteTransistions.InfiniteRotation
+import pro.jayeshseth.animations.ui.screens.itemPlacements.FadeItemPlacement
+import pro.jayeshseth.animations.ui.screens.itemPlacements.ScaleItemPlacement
+import pro.jayeshseth.animations.ui.screens.itemPlacements.SlideItemPlacement
+import pro.jayeshseth.animations.ui.screens.itemPlacements.TrippyBlinders
 
 typealias OnClickLink = (path: String) -> Unit
 
@@ -83,6 +85,15 @@ fun NavGraph(
         }
         composable(NavDestinations.AboutScreen.route) {
             AboutScreen()
+        }
+        composable(NavDestinations.Community.route) {
+            AboutScreen()
+        }
+        composable(NavDestinations.PastEasterEggs.route) {
+            EasterEggScreen { navController.navigate(it) }
+        }
+        composable(NavDestinations.PhysicsLayoutAboutScreen.route) {
+            PhysicsLayoutAboutScreen()
         }
     }
 }
