@@ -33,6 +33,7 @@ navigation-hilt = "1.0.0"
 nexusPlugin = "2.0.0"
 okhttp = "4.10.0"
 palette = "1.0.0"
+physicsLayout = "0.4.1"
 rebugger = "1.0.0-rc03"
 retrofit = "2.9.0"
 room = "2.5.2"
@@ -41,6 +42,10 @@ target-sdk = "36"
 appcompat = "1.7.0"
 com-google-android-material-material = "1.12.0"
 vanniktechMavenPublish = "0.25.3"
+nav3Core = "1.0.0-alpha02"
+nav3Material = "1.0.0-SNAPSHOT"
+nav3Lifecycle = "1.0.0-alpha01"
+kotlinxSerializationCore = "1.8.1"
 # versioning
 version-code = "8"
 version-name = "1.0.5" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
@@ -65,8 +70,8 @@ androidx-window = { module = "androidx.window:window", version.ref = "androidx-w
 # Benchmark
 
 # Cascade
-cascade = {group = "me.saket.cascade", name = "cascade", version.ref = "cascade"}
-cascade-compose = {group = "me.saket.cascade", name = "cascade-compose", version.ref = "cascade"}
+cascade = { group = "me.saket.cascade", name = "cascade", version.ref = "cascade" }
+cascade-compose = { group = "me.saket.cascade", name = "cascade-compose", version.ref = "cascade" }
 
 # Coil
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
@@ -79,6 +84,7 @@ compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = 
 compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
 compose-material = { group = "androidx.compose.material", name = "material" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-material3-navigation3 = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation3", version.ref = "nav3Material" }
 compose-material3-window = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -98,10 +104,13 @@ coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 
 # Lottie
-lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie"}
+lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 
 # Navigation
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "nav3Core" }
+navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "nav3Core" }
+
 
 # Palette
 palette = { group = "androidx.palette", name = "palette", version.ref = "palette" }
@@ -109,6 +118,10 @@ palette = { group = "androidx.palette", name = "palette", version.ref = "palette
 # Kotlin
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
+
+# Lifecycle
+lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "nav3Lifecycle" }
 
 # [Test Dependencies]
 # Android Tests
@@ -124,6 +137,7 @@ androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "com-google-android-material-material" }
+physics-layout = { module = "io.github.klassenkonstantin:physics-layout", version.ref = "physicsLayout" }
 rebugger = { module = "io.github.theapache64:rebugger", version.ref = "rebugger" }
 
 [plugins]

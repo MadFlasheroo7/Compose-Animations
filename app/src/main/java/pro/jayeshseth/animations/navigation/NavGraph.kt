@@ -1,9 +1,10 @@
 package pro.jayeshseth.animations.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.entry
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
 import pro.jayeshseth.animations.ui.screens.AboutScreen
 import pro.jayeshseth.animations.ui.screens.AnimateValueAsState
 import pro.jayeshseth.animations.ui.screens.AnimatedGestures
@@ -22,78 +23,76 @@ import pro.jayeshseth.animations.ui.screens.itemPlacements.SlideItemPlacement
 import pro.jayeshseth.animations.ui.screens.itemPlacements.TrippyBlinders
 
 typealias OnClickLink = (path: String) -> Unit
+typealias OnNavAction = (NavDestinations) -> Unit
 
 @Composable
-fun NavGraph(
-    onClickLink: OnClickLink
-) {
-    val navController = rememberNavController()
-    NavHost(
-        navController = navController,
-        startDestination = NavDestinations.Home.route
-    ) {
-        composable(NavDestinations.Home.route) {
-            HomeScreen(
-                navAction = { route ->
-                    navController.navigate(route)
+fun NavGraph(onClickLink: OnClickLink) {
+    val backStack = rememberNavBackStack(NavDestinations.Home)
+    NavDisplay(
+        backStack = backStack,
+        onBack = { backStack.removeLastOrNull() },
+        entryProvider = entryProvider {
+            entry<NavDestinations.Home> {
+                HomeScreen { route ->
+                    backStack.add(route)
                 }
-            )
+            }
+            entry<NavDestinations.AnimateVisibility> {
+                VisibilityAnimation(onClickLink)
+            }
+            entry<NavDestinations.AnimateContent> {
+                AnimatedTransition()
+            }
+            entry<NavDestinations.AnimateGesture> {
+                AnimatedGestures()
+            }
+            entry<NavDestinations.AnimateNavGraph> {
+                AnimatedNavGraph()
+            }
+            entry<NavDestinations.InfiniteRotation> {
+                InfiniteRotation()
+            }
+            entry<NavDestinations.SwipeRefresh> {
+                SwipeRefresh()
+            }
+            entry<NavDestinations.BouncyRope> {
+                BouncyRope()
+            }
+            entry<NavDestinations.AnimateValueAsState> {
+                AnimateValueAsState(onClickLink)
+            }
+            entry<NavDestinations.AnimatedListItemPlacement> {
+                ItemPlacementAnimation(
+                    navToTrippyBlinders = { backStack.add(NavDestinations.TrippyBlinders) },
+                    navToSlideInOut = { backStack.add(NavDestinations.SlideInOut) },
+                    navToScale = { backStack.add(NavDestinations.ScaleItemPlacement) },
+                    navToFade = { backStack.add(NavDestinations.FadeItemPlacement) },
+                )
+            }
+            entry<NavDestinations.TrippyBlinders> {
+                TrippyBlinders()
+            }
+            entry<NavDestinations.AboutScreen> {
+                AboutScreen()
+            }
+            entry<NavDestinations.SlideInOut> {
+                SlideItemPlacement(onClickLink)
+            }
+            entry<NavDestinations.ScaleItemPlacement> {
+                ScaleItemPlacement(onClickLink)
+            }
+            entry<NavDestinations.FadeItemPlacement> {
+                FadeItemPlacement(onClickLink)
+            }
+            entry<NavDestinations.Community> {
+                AboutScreen()
+            }
+            entry<NavDestinations.PastEasterEggs> {
+                EasterEggScreen { backStack.add(it) }
+            }
+            entry<NavDestinations.PhysicsLayoutAboutScreen> {
+                PhysicsLayoutAboutScreen()
+            }
         }
-        composable(NavDestinations.AnimateVisibility.route) {
-            VisibilityAnimation(onClickLink)
-        }
-        composable(NavDestinations.AnimateContent.route) {
-            AnimatedTransition()
-        }
-        composable(NavDestinations.AnimateGesture.route) {
-            AnimatedGestures()
-        }
-        composable(NavDestinations.InfiniteRotation.route) {
-            InfiniteRotation()
-        }
-        composable(NavDestinations.AnimateNavGraph.route) {
-            AnimatedNavGraph()
-        }
-        composable(NavDestinations.SwipeRefresh.route) {
-            SwipeRefresh()
-        }
-        composable(NavDestinations.BouncyRope.route) {
-            BouncyRope()
-        }
-        composable(NavDestinations.AnimateValueAsState.route) {
-            AnimateValueAsState(onClickLink)
-        }
-        composable(NavDestinations.SlideInOut.route) {
-            SlideItemPlacement(onClickLink)
-        }
-        composable(NavDestinations.AnimatedListItemPlacement.route) {
-            ItemPlacementAnimation(
-                navToTrippyBlinders = { navController.navigate(NavDestinations.TrippyBlinders.route) },
-                navToSlideInOut = { navController.navigate(NavDestinations.SlideInOut.route) },
-                navToScale = { navController.navigate(NavDestinations.ScaleItemPlacement.route) },
-                navToFade = { navController.navigate(NavDestinations.FadeItemPlacement.route) },
-            )
-        }
-        composable(NavDestinations.FadeItemPlacement.route) {
-            FadeItemPlacement(onClickLink)
-        }
-        composable(NavDestinations.ScaleItemPlacement.route) {
-            ScaleItemPlacement(onClickLink)
-        }
-        composable(NavDestinations.TrippyBlinders.route) {
-            TrippyBlinders()
-        }
-        composable(NavDestinations.AboutScreen.route) {
-            AboutScreen()
-        }
-        composable(NavDestinations.Community.route) {
-            AboutScreen()
-        }
-        composable(NavDestinations.PastEasterEggs.route) {
-            EasterEggScreen { navController.navigate(it) }
-        }
-        composable(NavDestinations.PhysicsLayoutAboutScreen.route) {
-            PhysicsLayoutAboutScreen()
-        }
-    }
+    )
 }

@@ -3,14 +3,19 @@ package pro.jayeshseth.animations.ui.screens
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pro.jayeshseth.animations.navigation.OnClickLink
 import pro.jayeshseth.animations.ui.animations.animateVisibility.DefaultAnimation
@@ -34,6 +39,9 @@ fun VisibilityAnimation(onClickLink: OnClickLink) {
     StatusBarAwareThemedLazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
+            .fillMaxSize()
+            .clip(RoundedCornerShape(50.dp))
+            .background(Color.Red)
             .padding(horizontal = 20.dp)
             .animateContentSize(
                 tween(DURATION, easing = LinearEasing)

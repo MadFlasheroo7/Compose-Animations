@@ -1,22 +1,25 @@
 package pro.jayeshseth.animations.navigation
 
-sealed class NavDestinations(val route: String) {
-    data object Home : NavDestinations("HOME_SCREEN")
-    data object AnimateVisibility : NavDestinations("ANIMATE_VISIBILITY")
-    data object AnimateContent : NavDestinations("ANIMATE_CONTENT")
-    data object AnimateGesture : NavDestinations("ANIMATE_GESTURES")
-    data object AnimateNavGraph : NavDestinations("ANIMATED_NAV_GRAPH")
-    data object InfiniteRotation : NavDestinations("INFINITE_ROTATION")
-    data object SwipeRefresh : NavDestinations("SWIPE_REFRESH")
-    data object BouncyRope : NavDestinations("BOUNCY_ROPE")
-    data object AnimateValueAsState : NavDestinations("ANIMATE_VALUE_AS_STATE")
-    data object AnimatedListItemPlacement : NavDestinations("ITEM_PLACEMENT_ANIMATION")
-    data object TrippyBlinders : NavDestinations("TRIPPY_BLINDERS")
-    data object AboutScreen : NavDestinations("ABOUT_SCREEN")
-    data object SlideInOut : NavDestinations("SLIDE_IN_OUT")
-    data object ScaleItemPlacement : NavDestinations("SCALE_ITEM_PLACEMENT")
-    data object FadeItemPlacement : NavDestinations("FADE_ITEM_PLACEMENT")
-    data object Community : NavDestinations("COMMUNITY")
-    data object PastEasterEggs : NavDestinations("PAST_EASTER_EGGS")
-    data object PhysicsLayoutAboutScreen : NavDestinations("PHYSICS_LAYOUT_ABOUT_SCREEN")
+import androidx.navigation3.runtime.NavKey
+import kotlinx.serialization.Serializable
+
+sealed class NavDestinations : NavKey {
+    @Serializable data object Home : NavDestinations()
+    @Serializable data object AnimateVisibility : NavDestinations()
+    @Serializable data object AnimateContent : NavDestinations()
+    @Serializable data object AnimateGesture : NavDestinations()
+    @Serializable data object AnimateNavGraph : NavDestinations()
+    @Serializable data object InfiniteRotation : NavDestinations()
+    @Serializable data object SwipeRefresh : NavDestinations()
+    @Serializable data object BouncyRope : NavDestinations()
+    @Serializable data object AnimateValueAsState : NavDestinations()
+    @Serializable data object AnimatedListItemPlacement : NavDestinations()
+    @Serializable data object TrippyBlinders : NavDestinations()
+    @Serializable data object AboutScreen : NavDestinations()
+    @Serializable data object SlideInOut : NavDestinations()
+    @Serializable data object ScaleItemPlacement : NavDestinations()
+    @Serializable data object FadeItemPlacement : NavDestinations()
+    @Serializable data object Community : NavDestinations()
+    @Serializable data object PastEasterEggs : NavDestinations()
+    @Serializable data object PhysicsLayoutAboutScreen : NavDestinations()
 }
