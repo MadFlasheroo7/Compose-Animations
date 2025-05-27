@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import pro.jayeshseth.animations.navigation.NavDestinations
+import pro.jayeshseth.animations.navigation.OnNavAction
 import pro.jayeshseth.animations.util.AnimationScreen
 import pro.jayeshseth.commoncomponents.HomeScaffold
 import pro.jayeshseth.commoncomponents.InteractiveButton
@@ -21,7 +22,7 @@ import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EasterEggScreen(navAction: (route: String) -> Unit) {
+fun EasterEggScreen(navAction: OnNavAction) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     HomeScaffold(
         topAppBarScrollBehavior = scrollBehavior,
@@ -59,7 +60,7 @@ private val easterEggs: List<AnimationScreen> by lazy {
     mutableListOf(
         AnimationScreen(
             title = "Physics Layout About Screen",
-            route = NavDestinations.PhysicsLayoutAboutScreen.route
+            route = NavDestinations.PhysicsLayoutAboutScreen
         )
     )
 }
