@@ -1,10 +1,20 @@
 package pro.jayeshseth.animations.navigation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.navEntryDecorator
 import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import pro.jayeshseth.animations.ui.screens.AboutScreen
 import pro.jayeshseth.animations.ui.screens.AnimateValueAsState
 import pro.jayeshseth.animations.ui.screens.AnimatedGestures
@@ -28,9 +38,23 @@ typealias OnNavAction = (NavDestinations) -> Unit
 @Composable
 fun NavGraph(onClickLink: OnClickLink) {
     val backStack = rememberNavBackStack(NavDestinations.Home)
+    val entryWithClippedBackgroundDecorator = navEntryDecorator<Any> { entry ->
+        Box(
+            Modifier
+                .clip(RoundedCornerShape(50.dp))
+                .background(MaterialTheme.colorScheme.background)
+        ) {
+            entry.content(entry.key)
+        }
+    }
     NavDisplay(
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
+        entryDecorators = listOf(
+            entryWithClippedBackgroundDecorator,
+            rememberSceneSetupNavEntryDecorator(),
+            rememberSavedStateNavEntryDecorator()
+        ),
         entryProvider = entryProvider {
             entry<NavDestinations.Home> {
                 HomeScreen { route ->

@@ -40,8 +40,6 @@ fun VisibilityAnimation(onClickLink: OnClickLink) {
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
             .fillMaxSize()
-            .clip(RoundedCornerShape(50.dp))
-            .background(Color.Red)
             .padding(horizontal = 20.dp)
             .animateContentSize(
                 tween(DURATION, easing = LinearEasing)
