@@ -105,7 +105,7 @@ fun AnimationController(
 
         SliderTemplate(
             title = "Initial Value",
-            value = updatedInitialValue.value,
+            value = { updatedInitialValue.value },
             step = state.initialValueSteps,
             onValueChange = { onStateUpdate(state.copy(initialValue = it)) },
             valueRange = updatedInitialValueRange.value,
@@ -113,7 +113,7 @@ fun AnimationController(
         )
         SliderTemplate(
             title = "Blur Value",
-            value = updatedBlurValue.value,
+            value = { updatedBlurValue.value },
             step = state.blurValueSteps,
             onValueChange = { onStateUpdate(state.copy(blurValue = it)) },
             valueRange = updatedBlurValueRange.value,
@@ -142,7 +142,7 @@ fun AnimationController(
                     Column {
                         SliderTemplate(
                             title = "Tween Duration",
-                            value = updatedTweenDuration.value.toFloat(),
+                            value = { updatedTweenDuration.value.toFloat() },
                             step = 5f,
                             onValueChange = { duration -> onStateUpdate(state.copy(tweenDuration = duration.toInt())) },
                             valueRange = 0f..1000f

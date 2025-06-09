@@ -22,4 +22,6 @@ sealed class NavDestinations : NavKey {
     @Serializable data object Community : NavDestinations()
     @Serializable data object PastEasterEggs : NavDestinations()
     @Serializable data object PhysicsLayoutAboutScreen : NavDestinations()
+    @Serializable data object Shaders : NavDestinations()
+    @Serializable data object RainbowCircle : NavDestinations()
 }

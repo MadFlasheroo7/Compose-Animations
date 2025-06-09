@@ -31,6 +31,8 @@ import pro.jayeshseth.animations.ui.screens.itemPlacements.FadeItemPlacement
 import pro.jayeshseth.animations.ui.screens.itemPlacements.ScaleItemPlacement
 import pro.jayeshseth.animations.ui.screens.itemPlacements.SlideItemPlacement
 import pro.jayeshseth.animations.ui.screens.itemPlacements.TrippyBlinders
+import pro.jayeshseth.animations.ui.screens.shaders.RainbowCircle
+import pro.jayeshseth.animations.ui.screens.shaders.Shaders
 
 typealias OnClickLink = (path: String) -> Unit
 typealias OnNavAction = (NavDestinations) -> Unit
@@ -41,7 +43,7 @@ fun NavGraph(onClickLink: OnClickLink) {
     val entryWithClippedBackgroundDecorator = navEntryDecorator<Any> { entry ->
         Box(
             Modifier
-                .clip(RoundedCornerShape(50.dp))
+                .clip(RoundedCornerShape(45.dp))
                 .background(MaterialTheme.colorScheme.background)
         ) {
             entry.content(entry.key)
@@ -116,6 +118,12 @@ fun NavGraph(onClickLink: OnClickLink) {
             }
             entry<NavDestinations.PhysicsLayoutAboutScreen> {
                 PhysicsLayoutAboutScreen()
+            }
+            entry<NavDestinations.Shaders> {
+                Shaders() { backStack.add(it) }
+            }
+            entry<NavDestinations.RainbowCircle> {
+                RainbowCircle()
             }
         }
     )

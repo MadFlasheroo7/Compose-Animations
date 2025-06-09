@@ -94,17 +94,21 @@ private val animationScreens: List<AnimationScreen> by lazy {
             title = "Bouncy Ropes",
             route = NavDestinations.BouncyRope
         ),
-/*        AnimationScreen(
-            title = "Community",
-            route = NavDestinations.Community.route
-        ),*/
+        /*        AnimationScreen(
+                    title = "Community",
+                    route = NavDestinations.Community.route
+                ),*/
+        AnimationScreen(
+            title = "Shader",
+            route = NavDestinations.RainbowCircle
+        ),
         AnimationScreen(
             title = "About",
             route = NavDestinations.AboutScreen
         ),
-/*        AnimationScreen(
-            title = "Past Easter Eggs",
-            route = NavDestinations.PastEasterEggs.route
-        )*/
+        /*        AnimationScreen(
+                    title = "Past Easter Eggs",
+                    route = NavDestinations.PastEasterEggs.route
+                )*/
     )
 }

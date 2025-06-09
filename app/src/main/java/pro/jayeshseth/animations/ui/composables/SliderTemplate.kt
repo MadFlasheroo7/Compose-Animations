@@ -19,12 +19,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import pro.jayeshseth.animations.util.ComposeFriendlyFloat
 import kotlin.math.roundToInt
 
 @Composable
 fun SliderTemplate(
     title: String,
-    value: Float,
+    value: ComposeFriendlyFloat,
     step: Float,
     onValueChange: (Float) -> Unit,
     valueRange: ClosedFloatingPointRange<Float>,
@@ -33,7 +34,7 @@ fun SliderTemplate(
 ) {
     val sliderValue = rememberUpdatedState(value)
     val snappedFloatValue =
-        rememberUpdatedState(snapSliderValue(valueRange.start, sliderValue.value, step))
+        rememberUpdatedState(snapSliderValue(valueRange.start, sliderValue.value(), step))
     ControllerTemplate(
         modifier = modifier,
         title = {
@@ -59,7 +60,7 @@ fun SliderTemplate(
         },
         content = {
             Slider(
-                value = sliderValue.value,
+                value = sliderValue.value(),
                 onValueChange = onValueChange,
                 onValueChangeFinished = { },
                 valueRange = valueRange,
@@ -99,7 +100,7 @@ private fun Preview() {
     }
     SliderTemplate(
         title = "title",
-        value = value.floatValue,
+        value = { value.floatValue },
         step = 0.1f,
         onValueChange = {
             value.floatValue = it
