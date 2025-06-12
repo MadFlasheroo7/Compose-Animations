@@ -2,11 +2,13 @@ package pro.jayeshseth.animations.ui.composables
 
 import android.icu.text.DecimalFormat
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -17,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.jayeshseth.animations.util.ComposeFriendlyFloat
@@ -31,6 +34,8 @@ fun SliderTemplate(
     valueRange: ClosedFloatingPointRange<Float>,
     modifier: Modifier = Modifier,
     roundToInt: Boolean = true,
+    titlePadding: PaddingValues = PaddingValues(),
+    style: TextStyle = LocalTextStyle.current,
 ) {
     val sliderValue = rememberUpdatedState(value)
     val snappedFloatValue =
@@ -43,9 +48,11 @@ fun SliderTemplate(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(titlePadding),
             ) {
                 Text(
                     text = title,
+                    style = style,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
                 CompositionLocalProvider(
@@ -67,7 +74,7 @@ fun SliderTemplate(
                 steps = getSteps(valueRange, step),
                 modifier = Modifier
                     .padding(top = 2.dp, bottom = 12.dp)
-                    .height(24.dp),
+                    .height(40.dp),
             )
         }
     )

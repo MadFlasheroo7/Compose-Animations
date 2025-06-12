@@ -1,11 +1,13 @@
 package pro.jayeshseth.animations.util
 
 import androidx.compose.animation.core.Easing
+import androidx.compose.runtime.Stable
 
 private typealias EasingPair = Pair<Easing, String>
 private typealias DampingRatioPair = Pair<Float, String>
 private typealias StiffnessPair = Pair<Float, String>
 
+@Stable
 data class AnimationControllerState(
     val shepardTone: Boolean,
     val vibrationEffect: Boolean,

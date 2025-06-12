@@ -1,5 +1,7 @@
 package pro.jayeshseth.animations.ui.screens.shaders
 
+import android.content.ClipData
+import android.content.ClipDescription
 import android.content.res.Configuration
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -8,8 +10,11 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -21,13 +26,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,25 +47,40 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ShaderBrush
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.LocalClipboard
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewDynamicColors
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.ui.composables.AnimatedTab
+import pro.jayeshseth.animations.ui.composables.CodeBlockWithLineNumbers
+import pro.jayeshseth.animations.ui.composables.CopyIconButton
 import pro.jayeshseth.animations.ui.composables.SliderTemplate
 import pro.jayeshseth.animations.ui.composables.TabsRow
 import pro.jayeshseth.animations.ui.shaders.RainbowCircleShader
 import pro.jayeshseth.animations.util.AnimationTabs
+import pro.jayeshseth.animations.util.Fields
+import pro.jayeshseth.animations.util.RainbowCircleState
 import pro.jayeshseth.animations.util.animationTabsList
+import pro.jayeshseth.animations.util.lazyNavBarPadding
+import pro.jayeshseth.animations.util.sourceCode.RainbowShaderCode
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun RainbowCircle(modifier: Modifier = Modifier) {
     val pagerState = rememberPagerState { animationTabsList().size }
-    val scope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope { Dispatchers.Default }
     val rainbowCircleShader = remember { RainbowCircleShader() }
     val time = remember { mutableFloatStateOf(0f) }
 
@@ -75,10 +101,13 @@ fun RainbowCircle(modifier: Modifier = Modifier) {
         )
     }
 
+    val shaderBrush = remember { derivedStateOf { ShaderBrush(rainbowCircleShader) } }
     LaunchedEffect(Unit) {
-        while (true) {
-            time.floatValue += rainbowCircleState.value.speed
-            delay(60L)
+        scope.launch {
+            while (true) {
+                time.floatValue += rainbowCircleState.value.speed
+                delay(60L)
+            }
         }
     }
 
@@ -106,33 +135,31 @@ fun RainbowCircle(modifier: Modifier = Modifier) {
                     }
                 )
                 .drawWithCache {
-                    val shaderBrush = ShaderBrush(rainbowCircleShader)
-                    rainbowCircleShader.updateTime(time.floatValue)
-                    rainbowCircleShader.updatePattern(rainbowCircleState.value.pattern)
-                    rainbowCircleShader.updateExpand(rainbowCircleState.value.expand)
-                    rainbowCircleShader.updateBrightness(rainbowCircleState.value.brightness)
-                    rainbowCircleShader.updateLayers(rainbowCircleState.value.layers)
-                    rainbowCircleShader.updateSize(rainbowCircleState.value.size)
-                    rainbowCircleShader.updateResolution(Size(size.width, size.height))
-                    rainbowCircleShader.updateColor(
-                        rainbowCircleState.value.red,
-                        rainbowCircleState.value.green,
-                        rainbowCircleState.value.blue,
-                        rainbowCircleState.value.alpha
-                    )
                     onDrawBehind {
-                        drawRect(shaderBrush)
+                        rainbowCircleShader.updateTime(time.floatValue)
+                        rainbowCircleShader.updatePattern(rainbowCircleState.value.pattern)
+                        rainbowCircleShader.updateExpand(rainbowCircleState.value.expand)
+                        rainbowCircleShader.updateBrightness(rainbowCircleState.value.brightness)
+                        rainbowCircleShader.updateLayers(rainbowCircleState.value.layers)
+                        rainbowCircleShader.updateSize(rainbowCircleState.value.size)
+                        rainbowCircleShader.updateResolution(Size(size.width, size.height))
+                        rainbowCircleShader.updateColor(
+                            rainbowCircleState.value.red,
+                            rainbowCircleState.value.green,
+                            rainbowCircleState.value.blue,
+                            rainbowCircleState.value.alpha
+                        )
+                        drawRect(shaderBrush.value)
                     }
                 }
         )
-
-
+        
         Column(
             Modifier
                 .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
                 .background(MaterialTheme.colorScheme.surfaceContainerHigh)
                 .weight(1f)
-                .padding(16.dp)
+                .padding(start = 16.dp, top = 16.dp, end = 16.dp)
         ) {
             TabsRow(
                 tabsList = animationTabsList(),
@@ -141,7 +168,7 @@ fun RainbowCircle(modifier: Modifier = Modifier) {
                     AnimatedTab(
                         isSelected = pagerState.currentPage == index,
                         onClick = {
-                            scope.launch {
+                            scope.launch(Dispatchers.Main) {
                                 pagerState.animateScrollToPage(index)
                             }
                         },
@@ -161,12 +188,15 @@ fun RainbowCircle(modifier: Modifier = Modifier) {
                 when (animationTabsList()[page]) {
                     AnimationTabs.Settings -> {
                         Sliders(
-                            rainbowCircleState = rainbowCircleState.value,
+                            rainbowCircleState = { rainbowCircleState.value },
                             onRainbowCircleStateChange = { rainbowCircleState.value = it }
                         )
                     }
 
-                    AnimationTabs.Code -> {}
+                    AnimationTabs.Code -> {
+                        CodePreview(rainbowCircleState = rainbowCircleState.value)
+                    }
+
                     AnimationTabs.Source -> {}
                 }
             }
@@ -174,37 +204,103 @@ fun RainbowCircle(modifier: Modifier = Modifier) {
     }
 }
 
-sealed class Fields {
-    data class SliderData(
-        val title: String,
-        val value: Float,
-        val step: Float,
-        val onValueChange: (Float) -> Unit,
-        val valueRange: ClosedFloatingPointRange<Float>,
-        val roundToInt: Boolean,
-    ) : Fields()
+@Composable
+private fun CodePreview(rainbowCircleState: RainbowCircleState, modifier: Modifier = Modifier) {
+    val tabsList = remember { mutableStateListOf("AGSL", "Compose") }
+    val selectedTab = remember { mutableIntStateOf(0) }
+    val scope = rememberCoroutineScope()
+    val clipboardManager = LocalClipboardManager.current
+    val clipboardManagerr = LocalClipboard.current
+
+    var code by remember(selectedTab.intValue) {
+        mutableStateOf(
+            if (selectedTab.intValue == 0) {
+                RainbowShaderCode(rainbowCircleState).shaderCode()
+            } else {
+                RainbowShaderCode(rainbowCircleState).composeCode()
+            }
+        )
+    }
+    LazyColumn(
+        modifier = modifier.fillMaxSize()
+    ) {
+        stickyHeader {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                CopyIconButton(
+                    onClick = {
+                        scope.launch {
+                            clipboardManagerr.setClipEntry(
+                                clipEntry = ClipEntry(
+                                    clipData = ClipData(
+                                        ClipDescription(
+                                            "Rainbow Shader Code",
+                                            arrayOf("text/plain")
+                                        ),
+                                        ClipData.Item(code)
+                                    )
+                                )
+                            )
+                        }
+//                        clipboardManager.setText(
+//                            CodeGenerator.highlightedCode(
+//                                RainbowShaderCode(
+//                                    rainbowCircleState
+//                                ).code()
+//                            )
+//                        )
+                    },
+                    modifier = Modifier.fillMaxHeight()
+                )
+                TabsRow(
+                    tabsList = tabsList,
+                    selectedIndex = selectedTab.intValue,
+                    modifier = Modifier.padding(start = 16.dp),
+                    tabComponent = { index, tabTitle ->
+                        AnimatedTab(
+                            isSelected = selectedTab.intValue == index,
+                            onClick = {
+                                selectedTab.intValue = index
+                            },
+                        ) {
+                            Text(tabTitle, overflow = TextOverflow.Ellipsis, maxLines = 1)
+                        }
+                    }
+                )
+            }
+        }
+
+        item {
+            val text = code.split("\n")
+            CodeBlockWithLineNumbers(
+                text, modifier = Modifier
+                    .windowInsetsPadding(
+                        WindowInsets(
+                            left = WindowInsets.safeGestures.getLeft(
+                                LocalDensity.current,
+                                LayoutDirection.Ltr
+                            ),
+                            right = WindowInsets.safeGestures.getRight(
+                                LocalDensity.current,
+                                LayoutDirection.Ltr
+                            ),
+                        )
+                    )
+            )
+        }
+
+        lazyNavBarPadding()
+    }
 }
-
-data class RainbowCircleState(
-    val size: Float,
-    val red: Float,
-    val blue: Float,
-    val green: Float,
-    val alpha: Float,
-    val speed: Float,
-    val layers: Float,
-    val brightness: Float,
-    val pattern: Float,
-    val expand: Float
-)
-
 
 @Composable
 private fun Sliders(
-    rainbowCircleState: RainbowCircleState,
+    rainbowCircleState: () -> RainbowCircleState,
     onRainbowCircleStateChange: (RainbowCircleState) -> Unit
 ) {
-    val sliderData = slidersList(rainbowCircleState) { onRainbowCircleStateChange(it) }
+    val sliderData = slidersList(rainbowCircleState()) { onRainbowCircleStateChange(it) }
 
     LazyColumn(
         contentPadding = PaddingValues(
@@ -232,14 +328,21 @@ private fun Sliders(
                 step = data.step,
                 onValueChange = { value -> data.onValueChange(value) },
                 valueRange = data.valueRange,
-                roundToInt = data.roundToInt
+                roundToInt = data.roundToInt,
+                titlePadding = PaddingValues(vertical = 10.dp),
+                style = TextStyle(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold
+                )
             )
         }
+        lazyNavBarPadding()
     }
 }
 
 @Stable
-fun slidersList(
+private fun slidersList(
     sliderData: RainbowCircleState,
     onSliderDataChange: (RainbowCircleState) -> Unit
 ): List<Fields.SliderData> {
@@ -348,6 +451,7 @@ fun slidersList(
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
+@PreviewDynamicColors
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun PreviewRainbowCircle() {
