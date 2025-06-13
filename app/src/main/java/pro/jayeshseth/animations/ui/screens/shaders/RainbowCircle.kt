@@ -60,6 +60,7 @@ import androidx.compose.ui.tooling.preview.PreviewDynamicColors
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.theapache64.rebugger.Rebugger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -69,6 +70,7 @@ import pro.jayeshseth.animations.ui.composables.CopyIconButton
 import pro.jayeshseth.animations.ui.composables.SliderTemplate
 import pro.jayeshseth.animations.ui.composables.TabsRow
 import pro.jayeshseth.animations.ui.shaders.RainbowCircleShader
+import pro.jayeshseth.animations.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.util.AnimationTabs
 import pro.jayeshseth.animations.util.Fields
 import pro.jayeshseth.animations.util.RainbowCircleState
@@ -92,7 +94,7 @@ fun RainbowCircle(modifier: Modifier = Modifier) {
                 blue = 4.0f,
                 green = 2.0f,
                 alpha = 1.0f,
-                speed = 0.1f,
+                speed = 0.05f,
                 layers = 200.0f,
                 brightness = 30000.0f,
                 pattern = 2.4f,
@@ -106,7 +108,7 @@ fun RainbowCircle(modifier: Modifier = Modifier) {
         scope.launch {
             while (true) {
                 time.floatValue += rainbowCircleState.value.speed
-                delay(60L)
+                delay(100)
             }
         }
     }
@@ -136,24 +138,24 @@ fun RainbowCircle(modifier: Modifier = Modifier) {
                 )
                 .drawWithCache {
                     onDrawBehind {
-                        rainbowCircleShader.updateTime(time.floatValue)
-                        rainbowCircleShader.updatePattern(rainbowCircleState.value.pattern)
-                        rainbowCircleShader.updateExpand(rainbowCircleState.value.expand)
-                        rainbowCircleShader.updateBrightness(rainbowCircleState.value.brightness)
-                        rainbowCircleShader.updateLayers(rainbowCircleState.value.layers)
-                        rainbowCircleShader.updateSize(rainbowCircleState.value.size)
+                        rainbowCircleShader.updateTime({ time.floatValue })
+                        rainbowCircleShader.updatePattern({ rainbowCircleState.value.pattern })
+                        rainbowCircleShader.updateExpand({ rainbowCircleState.value.expand })
+                        rainbowCircleShader.updateBrightness({ rainbowCircleState.value.brightness })
+                        rainbowCircleShader.updateLayers({ rainbowCircleState.value.layers })
+                        rainbowCircleShader.updateSize({ rainbowCircleState.value.size })
                         rainbowCircleShader.updateResolution(Size(size.width, size.height))
                         rainbowCircleShader.updateColor(
-                            rainbowCircleState.value.red,
-                            rainbowCircleState.value.green,
-                            rainbowCircleState.value.blue,
-                            rainbowCircleState.value.alpha
+                            { rainbowCircleState.value.red },
+                            { rainbowCircleState.value.green },
+                            { rainbowCircleState.value.blue },
+                            { rainbowCircleState.value.alpha }
                         )
                         drawRect(shaderBrush.value)
                     }
                 }
         )
-        
+
         Column(
             Modifier
                 .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
@@ -293,6 +295,15 @@ private fun CodePreview(rainbowCircleState: RainbowCircleState, modifier: Modifi
 
         lazyNavBarPadding()
     }
+
+    Rebugger(
+        composableName = "code preview",
+        trackMap = mapOf(
+            "code" to code,
+            "selectedTab" to selectedTab.intValue,
+            "rainbowCircleState" to rainbowCircleState,
+        )
+    )
 }
 
 @Composable
@@ -325,7 +336,7 @@ private fun Sliders(
             SliderTemplate(
                 title = data.title,
                 value = { data.value },
-                step = data.step,
+                step = { data.step },
                 onValueChange = { value -> data.onValueChange(value) },
                 valueRange = data.valueRange,
                 roundToInt = data.roundToInt,
@@ -360,7 +371,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Expand",
             value = sliderData.expand,
-            step = 0.1f,
+            step = 0f,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(expand = it))
             },
@@ -440,7 +451,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Brightness",
             value = sliderData.brightness,
-            step = 1f,
+            step = 0f,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(brightness = it))
             },
@@ -455,5 +466,7 @@ private fun slidersList(
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun PreviewRainbowCircle() {
-    RainbowCircle()
+    AnimationsTheme {
+        RainbowCircle()
+    }
 }

@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.geometry.Size
+import pro.jayeshseth.animations.util.ComposeFriendlyFloat
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Stable
@@ -18,69 +19,69 @@ class RainbowCircleShader : RuntimeShader(shader) {
         )
     }
 
-    fun updateTime(time: Float) {
+    fun updateTime(time: ComposeFriendlyFloat) {
         setFloatUniform(
             /* uniformName = */ "iTime",
-            /* value = */ time,
+            /* value = */ time(),
         )
     }
 
     fun updateColor(
-        red: Float,
-        green: Float,
-        blue: Float,
-        alpha: Float,
+        red: ComposeFriendlyFloat,
+        green: ComposeFriendlyFloat,
+        blue: ComposeFriendlyFloat,
+        alpha: ComposeFriendlyFloat,
     ) {
         setFloatUniform(
             /* uniformName = */ "red",
-            /* value = */ red,
+            /* value = */ red(),
         )
         setFloatUniform(
             /* uniformName = */ "green",
-            /* value = */ green,
+            /* value = */ green(),
         )
         setFloatUniform(
             /* uniformName = */ "blue",
-            /* value = */ blue,
+            /* value = */ blue(),
         )
         setFloatUniform(
             /* uniformName = */ "alpha",
-            /* value = */ alpha,
+            /* value = */ alpha(),
         )
     }
 
-    fun updateSize(size: Float) {
+    fun updateSize(size: ComposeFriendlyFloat) {
         setFloatUniform(
             /* uniformName = */ "size",
-            /* value = */ size,
+            /* value = */ size(),
         )
     }
 
-    fun updateLayers(layers: Float) {
+    fun updateLayers(layers: ComposeFriendlyFloat) {
         setFloatUniform(
             /* uniformName = */ "layers",
-            /* value = */ layers,
+            /* value = */ layers(),
         )
     }
 
-    fun updateBrightness(brightness: Float) {
+    fun updateBrightness(brightness: ComposeFriendlyFloat) {
         setFloatUniform(
             /* uniformName = */ "bright",
-            /* value = */ brightness,
+            /* value = */ brightness(),
         )
     }
 
-    fun updatePattern(pattern: Float) {
+    fun updatePattern(pattern: ComposeFriendlyFloat) {
         setFloatUniform(
             /* uniformName = */ "pattern",
-            /* value = */ pattern,
+            /* value = */ pattern(),
         )
     }
 
-    fun updateExpand(expand: Float) {
+    fun updateExpand(expand: ComposeFriendlyFloat) {
         setFloatUniform(
             /* uniformName = */ "expand",
-            /* value = */ expand,
+            /* value = */ expand(),
         )
     }
 
@@ -98,7 +99,7 @@ class RainbowCircleShader : RuntimeShader(shader) {
                 float a;
         
             for (float i=0; i<4e2; i++) {
-                a = i/layers-1.;
+                a = i/layers - 1.;
                 p = cos(i * pattern + iTime + float2(0,11)) * sqrt(expand - a * a);
                 c = u / iResolution.y + float2(p.x, a) / (p.y + size);
                 o += (cos(i + half4(red,blue,green,alpha)) + 1.) / dot(c,c) * (1. - p.y) / bright;

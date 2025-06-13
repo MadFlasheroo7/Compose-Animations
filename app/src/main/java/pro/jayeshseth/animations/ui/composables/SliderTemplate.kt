@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.theapache64.rebugger.Rebugger
 import pro.jayeshseth.animations.util.ComposeFriendlyFloat
 import kotlin.math.roundToInt
 
@@ -29,7 +30,7 @@ import kotlin.math.roundToInt
 fun SliderTemplate(
     title: String,
     value: ComposeFriendlyFloat,
-    step: Float,
+    step: ComposeFriendlyFloat,
     onValueChange: (Float) -> Unit,
     valueRange: ClosedFloatingPointRange<Float>,
     modifier: Modifier = Modifier,
@@ -39,7 +40,7 @@ fun SliderTemplate(
 ) {
     val sliderValue = rememberUpdatedState(value)
     val snappedFloatValue =
-        rememberUpdatedState(snapSliderValue(valueRange.start, sliderValue.value(), step))
+        rememberUpdatedState(snapSliderValue(valueRange.start, sliderValue.value(), step()))
     ControllerTemplate(
         modifier = modifier,
         title = {
@@ -71,12 +72,25 @@ fun SliderTemplate(
                 onValueChange = onValueChange,
                 onValueChangeFinished = { },
                 valueRange = valueRange,
-                steps = getSteps(valueRange, step),
+                steps = getSteps(valueRange, step()),
                 modifier = Modifier
                     .padding(top = 2.dp, bottom = 12.dp)
                     .height(40.dp),
             )
         }
+    )
+    Rebugger(
+        composableName = "SliderTemplate",
+        trackMap = mapOf(
+            "title" to title,
+            "value" to value,
+            "step" to step,
+            "onValueChange" to onValueChange,
+            "valueRange" to valueRange,
+            "roundToInt" to roundToInt,
+            "titlePadding" to titlePadding,
+            "style" to style,
+        )
     )
 }
 
@@ -108,7 +122,7 @@ private fun Preview() {
     SliderTemplate(
         title = "title",
         value = { value.floatValue },
-        step = 0.1f,
+        step = { 0.1f },
         onValueChange = {
             value.floatValue = it
         },

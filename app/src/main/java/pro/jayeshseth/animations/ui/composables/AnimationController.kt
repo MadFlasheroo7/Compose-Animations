@@ -106,7 +106,7 @@ fun AnimationController(
         SliderTemplate(
             title = "Initial Value",
             value = { updatedInitialValue.value },
-            step = state.initialValueSteps,
+            step = { state.initialValueSteps },
             onValueChange = { onStateUpdate(state.copy(initialValue = it)) },
             valueRange = updatedInitialValueRange.value,
             roundToInt = roundToInt
@@ -114,7 +114,7 @@ fun AnimationController(
         SliderTemplate(
             title = "Blur Value",
             value = { updatedBlurValue.value },
-            step = state.blurValueSteps,
+            step = { state.blurValueSteps },
             onValueChange = { onStateUpdate(state.copy(blurValue = it)) },
             valueRange = updatedBlurValueRange.value,
             roundToInt = roundToInt
@@ -143,7 +143,7 @@ fun AnimationController(
                         SliderTemplate(
                             title = "Tween Duration",
                             value = { updatedTweenDuration.value.toFloat() },
-                            step = 5f,
+                            step = { 5f },
                             onValueChange = { duration -> onStateUpdate(state.copy(tweenDuration = duration.toInt())) },
                             valueRange = 0f..1000f
                         )

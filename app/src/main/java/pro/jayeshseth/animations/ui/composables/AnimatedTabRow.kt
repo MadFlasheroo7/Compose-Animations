@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.PreviewDynamicColors
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.theapache64.rebugger.Rebugger
 import pro.jayeshseth.animations.ui.theme.AnimationsTheme
 
 @Composable
@@ -102,6 +103,16 @@ fun TabButton(
             .padding(horizontal = 16.dp, vertical = 10.dp)
             .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(50))
             .zIndex(1f)
+    )
+
+    Rebugger(
+        composableName = "tab button",
+        trackMap = mapOf(
+            "tabPositions" to tabPositions,
+            "currentIndex" to currentIndex,
+            "indicatorStart" to indicatorStart,
+            "indicatorEnd" to indicatorEnd,
+        )
     )
 }
 

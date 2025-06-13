@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.theapache64.rebugger.Rebugger
 import com.wakaztahir.codeeditor.highlight.theme.CodeThemeType
 import pro.jayeshseth.animations.util.codePreviewer.CodeGenerator
 
@@ -79,4 +80,14 @@ fun CodeBlockWithLineNumbers(text: List<String>, modifier: Modifier = Modifier) 
             }
         }
     }
+    Rebugger(
+        composableName = "code preview",
+        trackMap = mapOf(
+            "code" to text,
+            "maxDigit" to maxDigits,
+            "indexWidth" to indexWidth,
+            "sampleIndexText" to sampleIndexText
+
+        )
+    )
 }

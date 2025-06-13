@@ -38,13 +38,14 @@ class RainbowShaderCode(
                 float2 u = fragCoord.xy * 2.0 - iResolution.xy; 
                 float a;
         
-            for (float i=0; i<4e2; i++) {
-                a = i/${state.layers.toExponent()}-1.;
-                p = cos(i * ${state.pattern} + iTime + float2(0,11)) * sqrt(${state.expand} - a * a);
-                c = u / iResolution.y + float2(p.x, a) / (p.y + ${state.size});
-                o += (cos(i + half4(${state.red.round()}, ${state.green.round()}, ${state.blue.round()}, ${state.alpha.round()})) + 1.) / dot(c,c) * (1. - p.y) / ${state.brightness.toExponent()};
+                for (float i=0; i<4e2; i++) {
+                    a = i/${state.layers.toExponent()}-1.;
+                    p = cos(i * ${state.pattern} + iTime + float2(0,11)) * sqrt(${state.expand} - a * a);
+                    c = u / iResolution.y + float2(p.x, a) / (p.y + ${state.size});
+                    o += (cos(i + half4(${state.red.round()}, ${state.green.round()}, ${state.blue.round()}, ${state.alpha.round()})) + 1.) / dot(c,c) * (1. - p.y) / ${state.brightness.toExponent()};
+                }
+                return o;
             }
-            return o;
         """.trimIndent()
     }
 }
