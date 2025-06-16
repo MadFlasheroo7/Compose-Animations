@@ -27,7 +27,11 @@ fun Shaders(
     ) {
         InteractiveButton(
             text = "Rainbow Circle",
-            onClick = { navAction(NavDestinations.RainbowCircle) },
+            onClick = { navAction(NavDestinations.RainbowCircleShader) },
+        )
+        InteractiveButton(
+            text = "Interstellar Space",
+            onClick = { navAction(NavDestinations.InterstellarShader) },
         )
     }
 }

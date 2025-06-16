@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -77,6 +76,7 @@ import pro.jayeshseth.animations.util.RainbowCircleState
 import pro.jayeshseth.animations.util.animationTabsList
 import pro.jayeshseth.animations.util.lazyNavBarPadding
 import pro.jayeshseth.animations.util.sourceCode.RainbowShaderCode
+import pro.jayeshseth.commoncomponents.InteractiveButton
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
@@ -199,9 +199,30 @@ fun RainbowCircle(modifier: Modifier = Modifier) {
                         CodePreview(rainbowCircleState = rainbowCircleState.value)
                     }
 
-                    AnimationTabs.Source -> {}
+                    AnimationTabs.Source -> {
+                        LinksButtons()
+                    }
                 }
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun LinksButtons() {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        item {
+            InteractiveButton(
+                text = "Blog",
+                height = 70.dp,
+                onClick = { }
+            )
+            InteractiveButton(
+                text = "Github",
+                height = 70.dp,
+                onClick = { },
+            )
         }
     }
 }

@@ -100,7 +100,7 @@ private val animationScreens: List<AnimationScreen> by lazy {
                 ),*/
         AnimationScreen(
             title = "Shader",
-            route = NavDestinations.RainbowCircle
+            route = NavDestinations.Shaders
         ),
         AnimationScreen(
             title = "About",
