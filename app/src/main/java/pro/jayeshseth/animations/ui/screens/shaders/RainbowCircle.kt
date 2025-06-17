@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipDescription
 import android.content.res.Configuration
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -68,7 +70,9 @@ import pro.jayeshseth.animations.ui.composables.CodeBlockWithLineNumbers
 import pro.jayeshseth.animations.ui.composables.CopyIconButton
 import pro.jayeshseth.animations.ui.composables.SliderTemplate
 import pro.jayeshseth.animations.ui.composables.TabsRow
+import pro.jayeshseth.animations.ui.composables.Toggler
 import pro.jayeshseth.animations.ui.shaders.RainbowCircleShader
+import pro.jayeshseth.animations.ui.shaders.ShaderIterationLevel
 import pro.jayeshseth.animations.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.util.AnimationTabs
 import pro.jayeshseth.animations.util.Fields
@@ -78,132 +82,152 @@ import pro.jayeshseth.animations.util.lazyNavBarPadding
 import pro.jayeshseth.animations.util.sourceCode.RainbowShaderCode
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun RainbowCircle(modifier: Modifier = Modifier) {
-    val pagerState = rememberPagerState { animationTabsList().size }
-    val scope = rememberCoroutineScope { Dispatchers.Default }
-    val rainbowCircleShader = remember { RainbowCircleShader() }
-    val time = remember { mutableFloatStateOf(0f) }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        val pagerState = rememberPagerState { animationTabsList().size }
+        val scope = rememberCoroutineScope { Dispatchers.Default }
+        val time = remember { mutableFloatStateOf(0f) }
+        var iterationLevel by remember { mutableStateOf(ShaderIterationLevel.LOW) }
+        val rainbowCircleShader = remember(iterationLevel) {
+            Log.d("RainbowCircle", "Recreating RainbowCircleShader with level: $iterationLevel")
+            RainbowCircleShader(iterationLevel)
+        }
+        val shaderBrush =
+            remember(iterationLevel) { derivedStateOf { ShaderBrush(rainbowCircleShader) } }
 
-    val rainbowCircleState = remember {
-        mutableStateOf(
-            RainbowCircleState(
-                size = 2f,
-                red = 0f,
-                blue = 4.0f,
-                green = 2.0f,
-                alpha = 1.0f,
-                speed = 0.05f,
-                layers = 200.0f,
-                brightness = 30000.0f,
-                pattern = 2.4f,
-                expand = 1.0f
+        val rainbowCircleState = remember(shaderBrush) {
+            mutableStateOf(
+                RainbowCircleState(
+                    size = 2f,
+                    red = 0f,
+                    blue = 4.0f,
+                    green = 2.0f,
+                    alpha = 1.0f,
+                    speed = 0.05f,
+                    layers = if (iterationLevel == ShaderIterationLevel.HIGH) 200.0f else 100.0f,
+                    brightness = 30000.0f,
+                    pattern = 2.4f,
+                    expand = 1.0f,
+                    reduceDots = iterationLevel == ShaderIterationLevel.LOW
+                )
             )
-        )
-    }
+        }
 
-    val shaderBrush = remember { derivedStateOf { ShaderBrush(rainbowCircleShader) } }
-    LaunchedEffect(Unit) {
-        scope.launch {
-            while (true) {
-                time.floatValue += rainbowCircleState.value.speed
-                delay(100)
+        LaunchedEffect(Unit) {
+            scope.launch {
+                while (true) {
+                    time.floatValue += rainbowCircleState.value.speed
+                    delay(100)
+                }
             }
         }
-    }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.fillMaxSize()
-    ) {
-        Box(
-            Modifier
-                .fillMaxSize()
-                .weight(1f)
-                .then(
-                    if (isSystemInDarkTheme().not()) {
-                        Modifier.background(
-                            brush = Brush.radialGradient(
-                                colors = listOf(
-                                    Color.Black,
-                                    Color.Black,
-                                    MaterialTheme.colorScheme.background,
-                                ),
-                            )
-                        )
-                    } else {
-                        Modifier
-                    }
-                )
-                .drawWithCache {
-                    onDrawBehind {
-                        rainbowCircleShader.updateTime({ time.floatValue })
-                        rainbowCircleShader.updatePattern({ rainbowCircleState.value.pattern })
-                        rainbowCircleShader.updateExpand({ rainbowCircleState.value.expand })
-                        rainbowCircleShader.updateBrightness({ rainbowCircleState.value.brightness })
-                        rainbowCircleShader.updateLayers({ rainbowCircleState.value.layers })
-                        rainbowCircleShader.updateSize({ rainbowCircleState.value.size })
-                        rainbowCircleShader.updateResolution(Size(size.width, size.height))
-                        rainbowCircleShader.updateColor(
-                            { rainbowCircleState.value.red },
-                            { rainbowCircleState.value.green },
-                            { rainbowCircleState.value.blue },
-                            { rainbowCircleState.value.alpha }
-                        )
-                        drawRect(shaderBrush.value)
-                    }
-                }
-        )
+        LaunchedEffect(rainbowCircleState.value.reduceDots) {
+            iterationLevel = if (rainbowCircleState.value.reduceDots) {
+                ShaderIterationLevel.LOW
+            } else {
+                ShaderIterationLevel.HIGH
+            }
+            Log.d("iteration", "${rainbowCircleShader.toString()}")
+        }
 
         Column(
-            Modifier
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                .weight(1f)
-                .padding(start = 16.dp, top = 16.dp, end = 16.dp)
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier.fillMaxSize()
         ) {
-            TabsRow(
-                tabsList = animationTabsList(),
-                selectedIndex = pagerState.currentPage,
-                tabComponent = { index, tab ->
-                    AnimatedTab(
-                        isSelected = pagerState.currentPage == index,
-                        onClick = {
-                            scope.launch(Dispatchers.Main) {
-                                pagerState.animateScrollToPage(index)
-                            }
-                        },
-                    ) {
-                        Icon(
-                            painter = painterResource(id = tab.icon),
-                            contentDescription = tab.title,
-                            tint = LocalContentColor.current
-                        )
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+                    .then(
+                        if (isSystemInDarkTheme().not()) {
+                            Modifier.background(
+                                brush = Brush.radialGradient(
+                                    colors = listOf(
+                                        Color.Black,
+                                        Color.Black,
+                                        MaterialTheme.colorScheme.background,
+                                    ),
+                                )
+                            )
+                        } else {
+                            Modifier
+                        }
+                    )
+                    .drawWithCache {
+                        onDrawBehind {
+                            rainbowCircleShader.updateTime({ time.floatValue })
+                            rainbowCircleShader.updatePattern({ rainbowCircleState.value.pattern })
+                            rainbowCircleShader.updateExpand({ rainbowCircleState.value.expand })
+                            rainbowCircleShader.updateBrightness({ rainbowCircleState.value.brightness })
+                            rainbowCircleShader.updateLayers({ rainbowCircleState.value.layers })
+                            rainbowCircleShader.updateSize({ rainbowCircleState.value.size })
+                            rainbowCircleShader.updateResolution(Size(size.width, size.height))
+                            rainbowCircleShader.updateColor(
+                                { rainbowCircleState.value.red },
+                                { rainbowCircleState.value.green },
+                                { rainbowCircleState.value.blue },
+                                { rainbowCircleState.value.alpha }
+                            )
+                            drawRect(shaderBrush.value)
+                        }
                     }
-                }
             )
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier.fillMaxSize()
-            ) { page ->
-                when (animationTabsList()[page]) {
-                    AnimationTabs.Settings -> {
-                        Sliders(
-                            rainbowCircleState = { rainbowCircleState.value },
-                            onRainbowCircleStateChange = { rainbowCircleState.value = it }
-                        )
-                    }
 
-                    AnimationTabs.Code -> {
-                        CodePreview(rainbowCircleState = rainbowCircleState.value)
+            Column(
+                Modifier
+                    .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
+                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                    .weight(1f)
+                    .padding(start = 16.dp, top = 16.dp, end = 16.dp)
+            ) {
+                TabsRow(
+                    tabsList = animationTabsList(),
+                    selectedIndex = pagerState.currentPage,
+                    tabComponent = { index, tab ->
+                        AnimatedTab(
+                            isSelected = pagerState.currentPage == index,
+                            onClick = {
+                                scope.launch(Dispatchers.Main) {
+                                    pagerState.animateScrollToPage(index)
+                                }
+                            },
+                        ) {
+                            Icon(
+                                painter = painterResource(id = tab.icon),
+                                contentDescription = tab.title,
+                                tint = LocalContentColor.current
+                            )
+                        }
                     }
+                )
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier.fillMaxSize()
+                ) { page ->
+                    when (animationTabsList()[page]) {
+                        AnimationTabs.Settings -> {
+                            Configurations(
+                                rainbowCircleState = { rainbowCircleState.value },
+                                onRainbowCircleStateChange = { rainbowCircleState.value = it }
+                            )
+                        }
 
-                    AnimationTabs.Source -> {
-                        LinksButtons()
+                        AnimationTabs.Code -> {
+                            CodePreview(iterationLevel, rainbowCircleState.value)
+                        }
+
+                        AnimationTabs.Source -> {
+                            LinksButtons()
+                        }
                     }
                 }
             }
+        }
+    } else {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("Unavailable")
         }
     }
 }
@@ -227,8 +251,13 @@ private fun LinksButtons() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-private fun CodePreview(rainbowCircleState: RainbowCircleState, modifier: Modifier = Modifier) {
+private fun CodePreview(
+    iterationLevel: ShaderIterationLevel,
+    rainbowCircleState: RainbowCircleState,
+    modifier: Modifier = Modifier
+) {
     val tabsList = remember { mutableStateListOf("AGSL", "Compose") }
     val selectedTab = remember { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope()
@@ -238,9 +267,9 @@ private fun CodePreview(rainbowCircleState: RainbowCircleState, modifier: Modifi
     var code by remember(selectedTab.intValue) {
         mutableStateOf(
             if (selectedTab.intValue == 0) {
-                RainbowShaderCode(rainbowCircleState).shaderCode()
+                RainbowShaderCode(rainbowCircleState, iterationLevel).shaderCode()
             } else {
-                RainbowShaderCode(rainbowCircleState).composeCode()
+                RainbowShaderCode(rainbowCircleState, iterationLevel).composeCode()
             }
         )
     }
@@ -267,13 +296,6 @@ private fun CodePreview(rainbowCircleState: RainbowCircleState, modifier: Modifi
                                 )
                             )
                         }
-//                        clipboardManager.setText(
-//                            CodeGenerator.highlightedCode(
-//                                RainbowShaderCode(
-//                                    rainbowCircleState
-//                                ).code()
-//                            )
-//                        )
                     },
                     modifier = Modifier.fillMaxHeight()
                 )
@@ -328,7 +350,7 @@ private fun CodePreview(rainbowCircleState: RainbowCircleState, modifier: Modifi
 }
 
 @Composable
-private fun Sliders(
+private fun Configurations(
     rainbowCircleState: () -> RainbowCircleState,
     onRainbowCircleStateChange: (RainbowCircleState) -> Unit
 ) {
@@ -354,20 +376,39 @@ private fun Sliders(
             )
     ) {
         items(sliderData) { data ->
-            SliderTemplate(
-                title = data.title,
-                value = { data.value },
-                step = { data.step },
-                onValueChange = { value -> data.onValueChange(value) },
-                valueRange = data.valueRange,
-                roundToInt = data.roundToInt,
-                titlePadding = PaddingValues(vertical = 10.dp),
-                style = TextStyle(
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            )
+            when (data) {
+                is Fields.SliderData -> {
+                    SliderTemplate(
+                        title = data.title,
+                        value = { data.value },
+                        step = { data.step },
+                        onValueChange = { value -> data.onValueChange(value) },
+                        valueRange = data.valueRange,
+                        roundToInt = data.roundToInt,
+                        titlePadding = PaddingValues(vertical = 10.dp),
+                        style = TextStyle(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+
+                is Fields.ToggleData -> {
+                    Toggler(
+                        title = data.title,
+                        checked = data.value,
+                        onCheckedChanged = data.onValueChange,
+                        style = TextStyle(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold
+                        ),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+
         }
         lazyNavBarPadding()
     }
@@ -377,8 +418,15 @@ private fun Sliders(
 private fun slidersList(
     sliderData: RainbowCircleState,
     onSliderDataChange: (RainbowCircleState) -> Unit
-): List<Fields.SliderData> {
+): List<Fields> {
     return listOf(
+        Fields.ToggleData(
+            title = "Reduce Dots",
+            value = sliderData.reduceDots,
+            onValueChange = {
+                onSliderDataChange(sliderData.copy(reduceDots = it))
+            }
+        ),
         Fields.SliderData(
             title = "Pattern",
             value = sliderData.pattern,

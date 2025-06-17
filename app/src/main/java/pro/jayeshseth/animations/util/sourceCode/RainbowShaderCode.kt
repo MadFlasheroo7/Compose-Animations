@@ -1,14 +1,20 @@
 package pro.jayeshseth.animations.util.sourceCode
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Stable
+import pro.jayeshseth.animations.ui.shaders.ShaderIterationLevel
 import pro.jayeshseth.animations.util.RainbowCircleState
 import pro.jayeshseth.animations.util.round
 import pro.jayeshseth.animations.util.toExponent
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Stable
 class RainbowShaderCode(
-    val state: RainbowCircleState
+    val state: RainbowCircleState,
+    iterationLevel: ShaderIterationLevel,
 ) {
+    val iteration = if (iterationLevel == ShaderIterationLevel.HIGH) "4e2" else "2e2"
     fun composeCode(): String {
         return """
             Box(
@@ -38,7 +44,7 @@ class RainbowShaderCode(
                 float2 u = fragCoord.xy * 2.0 - iResolution.xy; 
                 float a;
         
-                for (float i=0; i<4e2; i++) {
+                for (float i=0; i<$iteration; i++) {
                     a = i/${state.layers.toExponent()}-1.;
                     p = cos(i * ${state.pattern} + iTime + float2(0,11)) * sqrt(${state.expand} - a * a);
                     c = u / iResolution.y + float2(p.x, a) / (p.y + ${state.size});

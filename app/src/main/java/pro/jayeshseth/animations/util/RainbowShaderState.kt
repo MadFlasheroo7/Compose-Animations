@@ -4,6 +4,7 @@ import androidx.compose.runtime.Stable
 
 @Stable
 data class RainbowCircleState(
+    val reduceDots: Boolean,
     val size: Float,
     val red: Float,
     val blue: Float,

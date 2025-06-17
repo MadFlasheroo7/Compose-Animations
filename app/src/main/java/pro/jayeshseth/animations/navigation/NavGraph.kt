@@ -34,6 +34,7 @@ import pro.jayeshseth.animations.ui.screens.itemPlacements.TrippyBlinders
 import pro.jayeshseth.animations.ui.screens.shaders.InterstellarShader
 import pro.jayeshseth.animations.ui.screens.shaders.RainbowCircle
 import pro.jayeshseth.animations.ui.screens.shaders.Shaders
+import pro.jayeshseth.animations.ui.screens.shaders.clipToDeviceCornerRadius
 
 typealias OnClickLink = (path: String) -> Unit
 typealias OnNavAction = (NavDestinations) -> Unit
@@ -44,7 +45,7 @@ fun NavGraph(onClickLink: OnClickLink) {
     val entryWithClippedBackgroundDecorator = navEntryDecorator<Any> { entry ->
         Box(
             Modifier
-                .clip(RoundedCornerShape(45.dp))
+                .clipToDeviceCornerRadius()
                 .background(MaterialTheme.colorScheme.background)
         ) {
             entry.content(entry.key)
