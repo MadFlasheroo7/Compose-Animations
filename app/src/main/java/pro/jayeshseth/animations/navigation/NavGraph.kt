@@ -31,7 +31,7 @@ import pro.jayeshseth.animations.ui.screens.itemPlacements.FadeItemPlacement
 import pro.jayeshseth.animations.ui.screens.itemPlacements.ScaleItemPlacement
 import pro.jayeshseth.animations.ui.screens.itemPlacements.SlideItemPlacement
 import pro.jayeshseth.animations.ui.screens.itemPlacements.TrippyBlinders
-import pro.jayeshseth.animations.ui.screens.shaders.InterstellarShader
+import pro.jayeshseth.animations.ui.screens.shaders.InterstellarShaderScreen
 import pro.jayeshseth.animations.ui.screens.shaders.RainbowCircle
 import pro.jayeshseth.animations.ui.screens.shaders.Shaders
 import pro.jayeshseth.animations.ui.screens.shaders.clipToDeviceCornerRadius
@@ -128,7 +128,7 @@ fun NavGraph(onClickLink: OnClickLink) {
                 RainbowCircle()
             }
             entry<NavDestinations.InterstellarShader> {
-                InterstellarShader()
+                InterstellarShaderScreen()
             }
         }
     )

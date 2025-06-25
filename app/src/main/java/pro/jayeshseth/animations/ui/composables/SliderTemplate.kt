@@ -1,6 +1,7 @@
 package pro.jayeshseth.animations.ui.composables
 
 import android.icu.text.DecimalFormat
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -37,6 +38,7 @@ fun SliderTemplate(
     roundToInt: Boolean = true,
     titlePadding: PaddingValues = PaddingValues(),
     style: TextStyle = LocalTextStyle.current,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
     val sliderValue = rememberUpdatedState(value)
     val snappedFloatValue =
@@ -73,6 +75,7 @@ fun SliderTemplate(
                 onValueChangeFinished = { },
                 valueRange = valueRange,
                 steps = getSteps(valueRange, step()),
+                interactionSource = interactionSource,
                 modifier = Modifier
                     .padding(top = 2.dp, bottom = 12.dp)
                     .height(40.dp),

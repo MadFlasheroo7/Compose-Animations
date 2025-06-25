@@ -107,19 +107,18 @@ fun RainbowCircle(modifier: Modifier = Modifier) {
                     speed = 0.05f,
                     layers = if (iterationLevel == ShaderIterationLevel.HIGH) 200.0f else 100.0f,
                     brightness = 30000.0f,
-                    pattern = 2.4f,
+                    pattern = 5.3f,
                     expand = 1.0f,
                     reduceDots = iterationLevel == ShaderIterationLevel.LOW
                 )
             )
         }
 
-        LaunchedEffect(Unit) {
-            scope.launch {
-                while (true) {
-                    time.floatValue += rainbowCircleState.value.speed
-                    delay(100)
-                }
+        LaunchedEffect(Unit, iterationLevel) {
+            while (true) {
+                time.floatValue += rainbowCircleState.value.speed
+                delay(100)
+                Log.d("time", "time:${time.floatValue}\nspeed: ${rainbowCircleState.value.speed}")
             }
         }
 
