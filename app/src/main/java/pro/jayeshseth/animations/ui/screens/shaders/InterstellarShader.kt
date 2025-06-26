@@ -1,6 +1,8 @@
 package pro.jayeshseth.animations.ui.screens.shaders
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipDescription
 import android.os.Build
 import android.view.RoundedCorner
 import androidx.activity.compose.LocalActivity
@@ -34,6 +36,7 @@ import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -51,11 +54,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -69,12 +75,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -85,6 +95,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.R
 import pro.jayeshseth.animations.ui.composables.AnimatedTab
+import pro.jayeshseth.animations.ui.composables.CodeBlockWithLineNumbers
+import pro.jayeshseth.animations.ui.composables.CopyIconButton
 import pro.jayeshseth.animations.ui.composables.FilledIconButton
 import pro.jayeshseth.animations.ui.composables.SliderTemplate
 import pro.jayeshseth.animations.ui.composables.TabsRow
@@ -96,6 +108,8 @@ import pro.jayeshseth.animations.util.Fields
 import pro.jayeshseth.animations.util.InterstellarSpaceState
 import pro.jayeshseth.animations.util.animationTabsList
 import pro.jayeshseth.animations.util.lazyNavBarPadding
+import pro.jayeshseth.animations.util.sourceCode.InterstellarShaderCode
+import pro.jayeshseth.commoncomponents.InteractiveButton
 
 const val DURATION = 450
 
@@ -369,11 +383,11 @@ private fun InterstellarShader(modifier: Modifier = Modifier) {
                                     }
 
                                     AnimationTabs.Code -> {
-//                            CodePreview(iterationLevel, rainbowCircleState.value)
+                                        CodePreview(interstellarSpaceState)
                                     }
 
                                     AnimationTabs.Source -> {
-//                            LinksButtons()
+                                        LinksButtons()
                                     }
                                 }
                             }
@@ -583,9 +597,114 @@ private fun slidersList(
             },
             valueRange = -0.03f..1.5f,
             roundToInt = false
-        ),
-
         )
+    )
+}
+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@Composable
+private fun CodePreview(
+    interstellarSpaceState: InterstellarSpaceState,
+    modifier: Modifier = Modifier
+) {
+    val tabsList = remember { mutableStateListOf("AGSL", "Compose") }
+    val selectedTab = remember { mutableIntStateOf(0) }
+    val scope = rememberCoroutineScope()
+    val clipboardManager = LocalClipboard.current
+
+    var code by remember(selectedTab.intValue) {
+        mutableStateOf(
+            if (selectedTab.intValue == 0) {
+                InterstellarShaderCode(interstellarSpaceState).shaderCode()
+            } else {
+                InterstellarShaderCode(interstellarSpaceState).composeCode()
+            }
+        )
+    }
+    LazyColumn(
+        modifier = modifier.fillMaxSize()
+    ) {
+        stickyHeader {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                CopyIconButton(
+                    onClick = {
+                        scope.launch {
+                            clipboardManager.setClipEntry(
+                                clipEntry = ClipEntry(
+                                    clipData = ClipData(
+                                        ClipDescription(
+                                            "interstellar Shader Code",
+                                            arrayOf("text/plain")
+                                        ),
+                                        ClipData.Item(code)
+                                    )
+                                )
+                            )
+                        }
+                    },
+                    modifier = Modifier.fillMaxHeight()
+                )
+                TabsRow(
+                    tabsList = tabsList,
+                    selectedIndex = selectedTab.intValue,
+                    modifier = Modifier.padding(start = 16.dp),
+                    tabComponent = { index, tabTitle ->
+                        AnimatedTab(
+                            isSelected = selectedTab.intValue == index,
+                            onClick = {
+                                selectedTab.intValue = index
+                            },
+                        ) {
+                            Text(tabTitle, overflow = TextOverflow.Ellipsis, maxLines = 1)
+                        }
+                    }
+                )
+            }
+        }
+
+        item {
+            val text = code.split("\n")
+            CodeBlockWithLineNumbers(
+                text, modifier = Modifier
+                    .windowInsetsPadding(
+                        WindowInsets(
+                            left = WindowInsets.safeGestures.getLeft(
+                                LocalDensity.current,
+                                LayoutDirection.Ltr
+                            ),
+                            right = WindowInsets.safeGestures.getRight(
+                                LocalDensity.current,
+                                LayoutDirection.Ltr
+                            ),
+                        )
+                    )
+            )
+        }
+
+        lazyNavBarPadding()
+    }
+}
+
+@Preview
+@Composable
+private fun LinksButtons() {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        item {
+            InteractiveButton(
+                text = "Blog",
+                height = 70.dp,
+                onClick = { }
+            )
+            InteractiveButton(
+                text = "Github",
+                height = 70.dp,
+                onClick = { },
+            )
+        }
+    }
 }
 
 

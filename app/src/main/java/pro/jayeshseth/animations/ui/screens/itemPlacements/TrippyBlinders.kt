@@ -45,19 +45,17 @@ private const val ITEM_COUNT = 1000000
 
 @Composable
 fun TrippyBlinders(modifier: Modifier = Modifier) {
-
     val view = LocalView.current
     val activity = LocalActivity.current
     val context = LocalContext.current
+    val window = activity?.window
+    val fallbackWindow = (context as Activity).window
+    val controller = WindowInsetsControllerCompat(
+        window ?: fallbackWindow,
+        view
+    )
     if (!view.isInEditMode) {
         DisposableEffect(Unit) {
-            val window = activity?.window
-            val fallbackWindow = (context as Activity).window
-
-            val controller = WindowInsetsControllerCompat(
-                window ?: fallbackWindow,
-                view
-            )
             controller.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             controller.hide(WindowInsetsCompat.Type.systemBars())
