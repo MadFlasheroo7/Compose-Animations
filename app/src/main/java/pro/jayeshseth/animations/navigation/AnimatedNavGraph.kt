@@ -15,9 +15,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import pro.jayeshseth.animations.ui.screens.AnimatedNav
-import pro.jayeshseth.animations.ui.screens.animatedNav.ScaleNav
-import pro.jayeshseth.animations.ui.screens.animatedNav.SlideNav
+import pro.jayeshseth.animations.ui.animatedNav.ScaleNav
+import pro.jayeshseth.animations.ui.animatedNav.SlideNav
 
+/**
+ * Nav Graph with custom animations
+ *
+ * **why separate nav graph?**
+ *
+ * *this nav graph was initially from accompanist library then migrated to compose-navigation now is sample of nav2*
+ */
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AnimatedNavGraph() {

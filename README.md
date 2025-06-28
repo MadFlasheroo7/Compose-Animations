@@ -48,9 +48,25 @@ iteration time(so yes will be migrating to CMP so we can directly copy paste ani
 - [ ] - rive
 - [ ] - 3D objects (Filament)
 - [ ] - sensors based animations
-
-
 - [ ] - multi module???
+- [ ] - overhaul entire UI
+
+# Multi-Module Project Structure (🚧 WIP - maybe)
+```markdown
+Compose-Animations[Animations]      # Root Project
+├── app                             # Primary App Module
+├── art                             # contains screenshots and videos of the library usage 
+├── build-logic                     # contains conventional plugins to mitigate code duplication
+│
+├── default-apis                    # module for out of the box animation apis
+├── community-built                 # module for community built animations
+├── shaders                         # module for all shader related animations
+│   ├── agsl                        # contains all agsl animations
+│
+├── filament                        # module for all filament related animations 
+├── sensors                         # module for all sensors related animations
+├── shapes                          # module for all shapes related animations
+```
 
 # Contribution
 

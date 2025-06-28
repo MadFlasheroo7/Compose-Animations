@@ -9,7 +9,7 @@ import com.wakaztahir.codeeditor.highlight.utils.parseCodeAsAnnotatedString
 
 @Stable
 object CodeGenerator {
-    private val language = CodeLang.Dart
+    private val language = CodeLang.Java
     private val parser = PrettifyParser()
 
     fun highlightedCode(

@@ -2,17 +2,17 @@ package pro.jayeshseth.animations.util
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import java.util.Locale
 
 /**
  * Converts a float to a simplified scientific notation string (e.g., 300.0 -> "3e2").
  */
 fun Float.toExponent(): String {
-
-//    fun toSimpleExponent(number: Double): String {
     // Handle the zero case separately, as DecimalFormat might format it oddly.
     if (this == 0.0f) {
         return "0e0"
@@ -35,7 +35,6 @@ fun Float.toExponent(): String {
 
     // 4. Combine the cleaned-up parts into the final desired format.
     return "${mantissa}e${exponent}"
-//    }
 }
 
 fun Float.round(): String {
@@ -48,4 +47,8 @@ fun LazyListScope.lazyNavBarPadding() {
 
 fun LazyListScope.lazyStatusBarPadding() {
     item { Spacer(Modifier.statusBarsPadding()) }
+}
+
+fun LazyListScope.lazySpacer(size: Dp) {
+    item { Spacer(Modifier.size(size)) }
 }

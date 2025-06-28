@@ -2,12 +2,9 @@ package pro.jayeshseth.animations.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.navEntryDecorator
@@ -25,20 +22,21 @@ import pro.jayeshseth.animations.ui.screens.HomeScreen
 import pro.jayeshseth.animations.ui.screens.ItemPlacementAnimation
 import pro.jayeshseth.animations.ui.screens.SwipeRefresh
 import pro.jayeshseth.animations.ui.screens.VisibilityAnimation
-import pro.jayeshseth.animations.ui.screens.easterEggs.PhysicsLayoutAboutScreen
-import pro.jayeshseth.animations.ui.screens.infiniteTransistions.InfiniteRotation
-import pro.jayeshseth.animations.ui.screens.itemPlacements.FadeItemPlacement
-import pro.jayeshseth.animations.ui.screens.itemPlacements.ScaleItemPlacement
-import pro.jayeshseth.animations.ui.screens.itemPlacements.SlideItemPlacement
-import pro.jayeshseth.animations.ui.screens.itemPlacements.TrippyBlinders
-import pro.jayeshseth.animations.ui.screens.shaders.InterstellarShaderScreen
-import pro.jayeshseth.animations.ui.screens.shaders.RainbowCircle
-import pro.jayeshseth.animations.ui.screens.shaders.Shaders
-import pro.jayeshseth.animations.ui.screens.shaders.clipToDeviceCornerRadius
+import pro.jayeshseth.animations.ui.easterEggs.PhysicsLayoutAboutScreen
+import pro.jayeshseth.animations.ui.defaultApis.infiniteTransistions.InfiniteRotation
+import pro.jayeshseth.animations.ui.itemPlacements.FadeItemPlacement
+import pro.jayeshseth.animations.ui.itemPlacements.ScaleItemPlacement
+import pro.jayeshseth.animations.ui.itemPlacements.SlideItemPlacement
+import pro.jayeshseth.animations.ui.itemPlacements.TrippyBlinders
+import pro.jayeshseth.animations.ui.shaders.interstellarSpace.InterstellarShaderScreen
+import pro.jayeshseth.animations.ui.shaders.rainbowCircle.RainbowCircle
+import pro.jayeshseth.animations.ui.screens.Shaders
+import pro.jayeshseth.animations.ui.shaders.interstellarSpace.clipToDeviceCornerRadius
+import pro.jayeshseth.animations.util.OnClickLink
 
-typealias OnClickLink = (path: String) -> Unit
-typealias OnNavAction = (NavDestinations) -> Unit
-
+/**
+ * Nav3 graph with custom animations and decorators
+ */
 @Composable
 fun NavGraph(onClickLink: OnClickLink) {
     val backStack = rememberNavBackStack(NavDestinations.Home)

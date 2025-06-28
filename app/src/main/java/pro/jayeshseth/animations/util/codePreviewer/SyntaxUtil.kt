@@ -3,6 +3,7 @@ package pro.jayeshseth.animations.util.codePreviewer
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
 
+// TODO work on custom impl code prev
 @Stable
 object SyntaxColors {
     val keyword = Color(0xFFCC7832)
