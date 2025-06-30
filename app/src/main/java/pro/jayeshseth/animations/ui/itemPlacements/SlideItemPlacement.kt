@@ -182,10 +182,10 @@ fun SlideItemPlacement(
                     initialValue = state.value.initialValue,
                     tweenDuration = state.value.tweenDuration,
                     showShadow = state.value.showShadow,
-                    easing = state.value.easing.first,
+                    easing = state.value.easing.easing,
                     isTween = state.value.selectedIndex == 0,
-                    stiffness = state.value.stiffness.first,
-                    dampingRatio = state.value.dampingRatio.first,
+                    stiffness = state.value.stiffness.stiffness,
+                    dampingRatio = state.value.dampingRatio.dampingRatio,
                 )
             }
         }

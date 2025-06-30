@@ -1,11 +1,6 @@
 package pro.jayeshseth.animations.util
 
-import androidx.compose.animation.core.Easing
 import androidx.compose.runtime.Stable
-
-private typealias EasingPair = Pair<Easing, String>
-private typealias DampingRatioPair = Pair<Float, String>
-private typealias StiffnessPair = Pair<Float, String>
 
 @Stable
 data class AnimationControllerState(
@@ -21,10 +16,10 @@ data class AnimationControllerState(
     val blurValueRange: ClosedFloatingPointRange<Float>,
     val tweenDuration: Int,
     val selectedIndex: Int,
-    val easingList: List<EasingPair>,
-    val easing: EasingPair,
-    val dampingRatioList: List<DampingRatioPair>,
-    val dampingRatio: DampingRatioPair,
-    val stiffnessList: List<StiffnessPair>,
-    val stiffness: StiffnessPair,
+    val easingList: List<EasingOption>,
+    val easing: EasingOption,
+    val dampingRatioList: List<DampingRatioOption>,
+    val dampingRatio: DampingRatioOption,
+    val stiffnessList: List<StiffnessOption>,
+    val stiffness: StiffnessOption,
 )

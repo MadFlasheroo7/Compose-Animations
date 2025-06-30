@@ -32,46 +32,52 @@ import androidx.compose.animation.core.EaseOutQuad
 import androidx.compose.animation.core.EaseOutQuart
 import androidx.compose.animation.core.EaseOutQuint
 import androidx.compose.animation.core.EaseOutSine
+import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 
+data class EasingOption(
+    val easing: Easing,
+    val name: String
+)
+
 val EasingList = mutableListOf(
-    Pair(LinearEasing, "LinearEasing"),
-    Pair(FastOutSlowInEasing, "FastOutSlowInEasing"),
-    Pair(FastOutLinearInEasing, "FastOutLinearInEasing"),
-    Pair(LinearOutSlowInEasing, "LinearOutSlowInEasing"),
-    Pair(Ease, "Ease"),
-    Pair(EaseIn, "EaseIn"),
-    Pair(EaseOut, "EaseOut"),
-    Pair(EaseInSine, "EaseInSine"),
-    Pair(EaseOutSine, "EaseOutSine"),
-    Pair(EaseInOutSine, "EaseInOutSine"),
-    Pair(EaseInCubic, "EaseInCubic"),
-    Pair(EaseInOutCubic, "EaseInOutCubic"),
-    Pair(EaseInQuint, "EaseInQuint"),
-    Pair(EaseOutQuint, "EaseOutQuint"),
-    Pair(EaseInOutQuint, "EaseInOutQuint"),
-    Pair(EaseInCirc, "EaseInCirc"),
-    Pair(EaseOutCirc, "EaseOutCirc"),
-    Pair(EaseInOutCirc, "EaseInOutCirc"),
-    Pair(EaseInQuad, "EaseInQuad"),
-    Pair(EaseOutQuad, "EaseOutQuad"),
-    Pair(EaseInOutQuad, "EaseInOutQuad"),
-    Pair(EaseInQuart, "EaseInQuart"),
-    Pair(EaseOutQuart, "EaseOutQuart"),
-    Pair(EaseInOutQuart, "EaseInOutQuart"),
-    Pair(EaseInExpo, "EaseInExpo"),
-    Pair(EaseOutExpo, "EaseOutExpo"),
-    Pair(EaseInOutExpo, "EaseInOutExpo"),
-    Pair(EaseInBack, "EaseInBack"),
-    Pair(EaseOutBack, "EaseOutBack"),
-    Pair(EaseInOutBack, "EaseInOutBack"),
-    Pair(EaseInElastic, "EaseInElastic"),
-    Pair(EaseOutElastic, "EaseOutElastic"),
-    Pair(EaseInOutElastic, "EaseInOutElastic"),
-    Pair(EaseInBounce, "EaseInBounce"),
-    Pair(EaseOutBounce, "EaseOutBounce"),
-    Pair(EaseInOutBounce, "EaseInOutBounce")
+    EasingOption(LinearEasing, "LinearEasing"),
+    EasingOption(FastOutSlowInEasing, "FastOutSlowInEasing"),
+    EasingOption(FastOutLinearInEasing, "FastOutLinearInEasing"),
+    EasingOption(LinearOutSlowInEasing, "LinearOutSlowInEasing"),
+    EasingOption(Ease, "Ease"),
+    EasingOption(EaseIn, "EaseIn"),
+    EasingOption(EaseOut, "EaseOut"),
+    EasingOption(EaseInSine, "EaseInSine"),
+    EasingOption(EaseOutSine, "EaseOutSine"),
+    EasingOption(EaseInOutSine, "EaseInOutSine"),
+    EasingOption(EaseInCubic, "EaseInCubic"),
+    EasingOption(EaseInOutCubic, "EaseInOutCubic"),
+    EasingOption(EaseInQuint, "EaseInQuint"),
+    EasingOption(EaseOutQuint, "EaseOutQuint"),
+    EasingOption(EaseInOutQuint, "EaseInOutQuint"),
+    EasingOption(EaseInCirc, "EaseInCirc"),
+    EasingOption(EaseOutCirc, "EaseOutCirc"),
+    EasingOption(EaseInOutCirc, "EaseInOutCirc"),
+    EasingOption(EaseInQuad, "EaseInQuad"),
+    EasingOption(EaseOutQuad, "EaseOutQuad"),
+    EasingOption(EaseInOutQuad, "EaseInOutQuad"),
+    EasingOption(EaseInQuart, "EaseInQuart"),
+    EasingOption(EaseOutQuart, "EaseOutQuart"),
+    EasingOption(EaseInOutQuart, "EaseInOutQuart"),
+    EasingOption(EaseInExpo, "EaseInExpo"),
+    EasingOption(EaseOutExpo, "EaseOutExpo"),
+    EasingOption(EaseInOutExpo, "EaseInOutExpo"),
+    EasingOption(EaseInBack, "EaseInBack"),
+    EasingOption(EaseOutBack, "EaseOutBack"),
+    EasingOption(EaseInOutBack, "EaseInOutBack"),
+    EasingOption(EaseInElastic, "EaseInElastic"),
+    EasingOption(EaseOutElastic, "EaseOutElastic"),
+    EasingOption(EaseInOutElastic, "EaseInOutElastic"),
+    EasingOption(EaseInBounce, "EaseInBounce"),
+    EasingOption(EaseOutBounce, "EaseOutBounce"),
+    EasingOption(EaseInOutBounce, "EaseInOutBounce")
 )

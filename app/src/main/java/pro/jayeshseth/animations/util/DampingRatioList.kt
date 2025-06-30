@@ -2,9 +2,14 @@ package pro.jayeshseth.animations.util
 
 import androidx.compose.animation.core.Spring
 
+data class DampingRatioOption(
+    val dampingRatio: Float,
+    val name: String
+)
+
 val DampingRatioList = mutableListOf(
-    Pair(Spring.DampingRatioHighBouncy, "High Bouncy"),
-    Pair(Spring.DampingRatioMediumBouncy, "Medium Bouncy"),
-    Pair(Spring.DampingRatioLowBouncy, "Low Bouncy"),
-    Pair(Spring.DampingRatioNoBouncy, "No Bouncy"),
+    DampingRatioOption(Spring.DampingRatioHighBouncy, "High Bouncy"),
+    DampingRatioOption(Spring.DampingRatioMediumBouncy, "Medium Bouncy"),
+    DampingRatioOption(Spring.DampingRatioLowBouncy, "Low Bouncy"),
+    DampingRatioOption(Spring.DampingRatioNoBouncy, "No Bouncy"),
 )
