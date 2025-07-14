@@ -149,7 +149,7 @@ fun AnimationController(
                         )
 
                         DropDownTemplate(
-                            value = state.easing.second,
+                            value = state.easing.name,
                             expanded = expanded,
                             onExpandedChange = { expanded = it },
                             onDismissRequest = { expanded = false },
@@ -164,7 +164,7 @@ fun AnimationController(
                                     DropdownMenuItem(
                                         text = {
                                             Text(
-                                                easing.second,
+                                                easing.name,
                                                 style = MaterialTheme.typography.bodyLarge
                                             )
                                         },
@@ -184,7 +184,7 @@ fun AnimationController(
                 1 -> {
                     Column {
                         DropDownTemplate(
-                            value = state.dampingRatio.second,
+                            value = state.dampingRatio.name,
                             expanded = dampingRatioExpanded,
                             onExpandedChange = { dampingRatioExpanded = it },
                             onDismissRequest = { dampingRatioExpanded = false },
@@ -199,7 +199,7 @@ fun AnimationController(
                                     DropdownMenuItem(
                                         text = {
                                             Text(
-                                                ratio.second,
+                                                ratio.name,
                                                 style = MaterialTheme.typography.bodyLarge
                                             )
                                         },
@@ -215,7 +215,7 @@ fun AnimationController(
                             }
                         )
                         DropDownTemplate(
-                            value = state.stiffness.second,
+                            value = state.stiffness.name,
                             expanded = stiffnessExpanded,
                             onExpandedChange = { stiffnessExpanded = it },
                             onDismissRequest = { stiffnessExpanded = false },
@@ -230,7 +230,7 @@ fun AnimationController(
                                     DropdownMenuItem(
                                         text = {
                                             Text(
-                                                stiffness.second,
+                                                stiffness.name,
                                                 style = MaterialTheme.typography.bodyLarge
                                             )
                                         },

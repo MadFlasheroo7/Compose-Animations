@@ -601,7 +601,6 @@ private fun slidersList(
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun CodePreview(
     interstellarSpaceState: InterstellarSpaceState,

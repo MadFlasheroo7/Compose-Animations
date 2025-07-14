@@ -1,10 +1,11 @@
 package pro.jayeshseth.animations.ui.shaders.interstellarSpace
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import pro.jayeshseth.animations.ui.shaders.interstellarSpace.InterstellarSpaceState
 import pro.jayeshseth.animations.util.round
 
-@Stable
+@Immutable
 class InterstellarShaderCode(
     val state: InterstellarSpaceState,
 ) {

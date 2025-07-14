@@ -28,6 +28,8 @@ import pro.jayeshseth.animations.ui.itemPlacements.FadeItemPlacement
 import pro.jayeshseth.animations.ui.itemPlacements.ScaleItemPlacement
 import pro.jayeshseth.animations.ui.itemPlacements.SlideItemPlacement
 import pro.jayeshseth.animations.ui.itemPlacements.TrippyBlinders
+import pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring.TweenAndSpringScreen
+import pro.jayeshseth.animations.ui.screens.Playground
 import pro.jayeshseth.animations.ui.shaders.interstellarSpace.InterstellarShaderScreen
 import pro.jayeshseth.animations.ui.shaders.rainbowCircle.RainbowCircle
 import pro.jayeshseth.animations.ui.screens.Shaders
@@ -127,6 +129,12 @@ fun NavGraph(onClickLink: OnClickLink) {
             }
             entry<NavDestinations.InterstellarShader> {
                 InterstellarShaderScreen()
+            }
+            entry<NavDestinations.Playground> {
+                Playground { backStack.add(it) }
+            }
+            entry<NavDestinations.TweenAndSpring> {
+                TweenAndSpringScreen()
             }
         }
     )
