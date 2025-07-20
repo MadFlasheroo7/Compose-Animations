@@ -76,7 +76,7 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.navigation3.ui)
     implementation(libs.navigation3.runtime)
-
+    implementation("com.github.qawaz:compose-code-editor:2.0.3")
     implementation(libs.kotlin.stdlib)
     implementation(libs.kotlinx.serialization.core)
     implementation(libs.kotlinx.serialization.json)

@@ -47,8 +47,8 @@ nav3Material = "1.0.0-SNAPSHOT"
 nav3Lifecycle = "1.0.0-alpha01"
 kotlinxSerializationCore = "1.8.1"
 # versioning
-version-code = "8"
-version-name = "1.0.5" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
+version-code = "9"
+version-name = "1.0.7" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
 version-nameBetaSuffix = "-beta01"
 
 [libraries]

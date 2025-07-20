@@ -14,8 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import pro.jayeshseth.animations.navigation.NavDestinations
-import pro.jayeshseth.animations.navigation.OnNavAction
 import pro.jayeshseth.animations.util.AnimationScreen
+import pro.jayeshseth.animations.util.OnNavAction
 import pro.jayeshseth.commoncomponents.HomeScaffold
 import pro.jayeshseth.commoncomponents.InteractiveButton
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
@@ -67,6 +67,10 @@ private val animationScreens: List<AnimationScreen> by lazy {
             route = NavDestinations.AnimatedListItemPlacement
         ),
         AnimationScreen(
+            title = "Playground",
+            route = NavDestinations.Playground
+        ),
+        AnimationScreen(
             title = "Animate Content",
             route = NavDestinations.AnimateContent
         ),
@@ -94,17 +98,21 @@ private val animationScreens: List<AnimationScreen> by lazy {
             title = "Bouncy Ropes",
             route = NavDestinations.BouncyRope
         ),
-/*        AnimationScreen(
-            title = "Community",
-            route = NavDestinations.Community.route
-        ),*/
+        /*        AnimationScreen(
+                    title = "Community",
+                    route = NavDestinations.Community.route
+                ),*/
+        AnimationScreen(
+            title = "Shader",
+            route = NavDestinations.Shaders
+        ),
         AnimationScreen(
             title = "About",
             route = NavDestinations.AboutScreen
         ),
-/*        AnimationScreen(
-            title = "Past Easter Eggs",
-            route = NavDestinations.PastEasterEggs.route
-        )*/
+        /*        AnimationScreen(
+                    title = "Past Easter Eggs",
+                    route = NavDestinations.PastEasterEggs.route
+                )*/
     )
 }

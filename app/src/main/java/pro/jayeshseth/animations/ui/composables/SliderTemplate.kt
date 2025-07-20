@@ -1,12 +1,15 @@
 package pro.jayeshseth.animations.ui.composables
 
 import android.icu.text.DecimalFormat
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -17,23 +20,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.theapache64.rebugger.Rebugger
+import pro.jayeshseth.animations.util.ComposeFriendlyFloat
 import kotlin.math.roundToInt
 
 @Composable
 fun SliderTemplate(
     title: String,
-    value: Float,
-    step: Float,
+    value: ComposeFriendlyFloat,
+    step: ComposeFriendlyFloat,
     onValueChange: (Float) -> Unit,
     valueRange: ClosedFloatingPointRange<Float>,
     modifier: Modifier = Modifier,
     roundToInt: Boolean = true,
+    titlePadding: PaddingValues = PaddingValues(),
+    style: TextStyle = LocalTextStyle.current,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
     val sliderValue = rememberUpdatedState(value)
     val snappedFloatValue =
-        rememberUpdatedState(snapSliderValue(valueRange.start, sliderValue.value, step))
+        rememberUpdatedState(snapSliderValue(valueRange.start, sliderValue.value(), step()))
     ControllerTemplate(
         modifier = modifier,
         title = {
@@ -42,9 +51,11 @@ fun SliderTemplate(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(titlePadding),
             ) {
                 Text(
                     text = title,
+                    style = style,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
                 CompositionLocalProvider(
@@ -59,16 +70,30 @@ fun SliderTemplate(
         },
         content = {
             Slider(
-                value = sliderValue.value,
+                value = sliderValue.value(),
                 onValueChange = onValueChange,
                 onValueChangeFinished = { },
                 valueRange = valueRange,
-                steps = getSteps(valueRange, step),
+                steps = getSteps(valueRange, step()),
+                interactionSource = interactionSource,
                 modifier = Modifier
                     .padding(top = 2.dp, bottom = 12.dp)
-                    .height(24.dp),
+                    .height(40.dp),
             )
         }
+    )
+    Rebugger(
+        composableName = "SliderTemplate",
+        trackMap = mapOf(
+            "title" to title,
+            "value" to value,
+            "step" to step,
+            "onValueChange" to onValueChange,
+            "valueRange" to valueRange,
+            "roundToInt" to roundToInt,
+            "titlePadding" to titlePadding,
+            "style" to style,
+        )
     )
 }
 
@@ -99,8 +124,8 @@ private fun Preview() {
     }
     SliderTemplate(
         title = "title",
-        value = value.floatValue,
-        step = 0.1f,
+        value = { value.floatValue },
+        step = { 0.1f },
         onValueChange = {
             value.floatValue = it
         },

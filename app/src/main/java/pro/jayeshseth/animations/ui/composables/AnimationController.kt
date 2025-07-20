@@ -105,16 +105,16 @@ fun AnimationController(
 
         SliderTemplate(
             title = "Initial Value",
-            value = updatedInitialValue.value,
-            step = state.initialValueSteps,
+            value = { updatedInitialValue.value },
+            step = { state.initialValueSteps },
             onValueChange = { onStateUpdate(state.copy(initialValue = it)) },
             valueRange = updatedInitialValueRange.value,
             roundToInt = roundToInt
         )
         SliderTemplate(
             title = "Blur Value",
-            value = updatedBlurValue.value,
-            step = state.blurValueSteps,
+            value = { updatedBlurValue.value },
+            step = { state.blurValueSteps },
             onValueChange = { onStateUpdate(state.copy(blurValue = it)) },
             valueRange = updatedBlurValueRange.value,
             roundToInt = roundToInt
@@ -142,14 +142,14 @@ fun AnimationController(
                     Column {
                         SliderTemplate(
                             title = "Tween Duration",
-                            value = updatedTweenDuration.value.toFloat(),
-                            step = 5f,
+                            value = { updatedTweenDuration.value.toFloat() },
+                            step = { 5f },
                             onValueChange = { duration -> onStateUpdate(state.copy(tweenDuration = duration.toInt())) },
                             valueRange = 0f..1000f
                         )
 
                         DropDownTemplate(
-                            value = state.easing.second,
+                            value = state.easing.name,
                             expanded = expanded,
                             onExpandedChange = { expanded = it },
                             onDismissRequest = { expanded = false },
@@ -164,7 +164,7 @@ fun AnimationController(
                                     DropdownMenuItem(
                                         text = {
                                             Text(
-                                                easing.second,
+                                                easing.name,
                                                 style = MaterialTheme.typography.bodyLarge
                                             )
                                         },
@@ -184,7 +184,7 @@ fun AnimationController(
                 1 -> {
                     Column {
                         DropDownTemplate(
-                            value = state.dampingRatio.second,
+                            value = state.dampingRatio.name,
                             expanded = dampingRatioExpanded,
                             onExpandedChange = { dampingRatioExpanded = it },
                             onDismissRequest = { dampingRatioExpanded = false },
@@ -199,7 +199,7 @@ fun AnimationController(
                                     DropdownMenuItem(
                                         text = {
                                             Text(
-                                                ratio.second,
+                                                ratio.name,
                                                 style = MaterialTheme.typography.bodyLarge
                                             )
                                         },
@@ -215,7 +215,7 @@ fun AnimationController(
                             }
                         )
                         DropDownTemplate(
-                            value = state.stiffness.second,
+                            value = state.stiffness.name,
                             expanded = stiffnessExpanded,
                             onExpandedChange = { stiffnessExpanded = it },
                             onDismissRequest = { stiffnessExpanded = false },
@@ -230,7 +230,7 @@ fun AnimationController(
                                     DropdownMenuItem(
                                         text = {
                                             Text(
-                                                stiffness.second,
+                                                stiffness.name,
                                                 style = MaterialTheme.typography.bodyLarge
                                             )
                                         },

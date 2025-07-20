@@ -3,6 +3,10 @@ package pro.jayeshseth.animations.navigation
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
+/**
+ * Holds all the destinations used in this app
+ */
+//TODO multi module?
 sealed class NavDestinations : NavKey {
     @Serializable data object Home : NavDestinations()
     @Serializable data object AnimateVisibility : NavDestinations()
@@ -22,4 +26,10 @@ sealed class NavDestinations : NavKey {
     @Serializable data object Community : NavDestinations()
     @Serializable data object PastEasterEggs : NavDestinations()
     @Serializable data object PhysicsLayoutAboutScreen : NavDestinations()
+    @Serializable data object Shaders : NavDestinations()
+    @Serializable data object RainbowCircleShader : NavDestinations()
+    @Serializable data object InterstellarShader : NavDestinations()
+    @Serializable data object Playground : NavDestinations()
+    @Serializable data object AnimationSpec : NavDestinations()
+    @Serializable data object TweenAndSpring : NavDestinations()
 }

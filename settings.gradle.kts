@@ -14,6 +14,7 @@ pluginManagement {
         maven {
             url = uri("https://androidx.dev/snapshots/builds/13508953/artifacts/repository")
         }
+        maven { url = uri("https://jitpack.io") }
     }
 }
 dependencyResolutionManagement {
@@ -25,6 +26,7 @@ dependencyResolutionManagement {
         maven {
             url = uri("https://androidx.dev/snapshots/builds/13508953/artifacts/repository")
         }
+        maven { url = uri("https://jitpack.io") }
     }
 }
 rootProject.name = "Animations"
