@@ -13,7 +13,7 @@ import pro.jayeshseth.animations.navigation.NavGraph
 import pro.jayeshseth.animations.ui.theme.AnimationsTheme
 
 const val BASE_URL =
-    "https://github.com/MadFlasheroo7/Compose-Animations/tree/main/app/src/main/java/pro/jayeshseth/animations/ui"
+    "https://github.com/MadFlasheroo7/Compose-Animations/tree/beta/app/src/main/java/pro/jayeshseth/animations/ui"
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,9 +28,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavGraph {
-                        urlHandler.openUri("$BASE_URL/$it")
-                    }
+                    NavGraph { urlHandler.openUri("$BASE_URL/$it") }
                 }
             }
         }

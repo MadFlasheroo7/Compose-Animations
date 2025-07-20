@@ -1,5 +1,6 @@
 package pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring
 
+import android.util.Log
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,10 +46,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,15 +63,18 @@ import pro.jayeshseth.animations.ui.composables.Toggler
 import pro.jayeshseth.animations.util.AnimationTabs
 import pro.jayeshseth.animations.util.DampingRatioList
 import pro.jayeshseth.animations.util.EasingList
+import pro.jayeshseth.animations.util.OnClickLink
 import pro.jayeshseth.animations.util.StiffnessList
 import pro.jayeshseth.animations.util.animationTabsList
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
 enum class PlaygroundPreviewTabs { Chart, Preview }
 
-@Preview
 @Composable
-fun TweenAndSpringScreen(modifier: Modifier = Modifier) {
+fun TweenAndSpringScreen(
+    onClickLink: OnClickLink,
+    modifier: Modifier = Modifier
+) {
     val previewTabs = remember { PlaygroundPreviewTabs.entries }
     val specTabs = remember { TweenNSpringSpec.entries }
     val contentPagerState = rememberPagerState { previewTabs.size }
@@ -180,13 +185,13 @@ fun TweenAndSpringScreen(modifier: Modifier = Modifier) {
                     }
 
                     AnimationTabs.Source -> {
+                        LinksButtons(onClickLink)
                     }
                 }
             }
         }
     }
 }
-
 
 @Composable
 private fun Configurations(
@@ -278,6 +283,29 @@ private fun Configurations(
     }
 }
 
+@Composable
+private fun LinksButtons(
+    onClickLink: OnClickLink,
+) {
+    val urlLauncher = LocalUriHandler.current
+    val blog = "https://blog.realogs.in/animating-jetpack-compose-ui/"
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        item {
+            InteractiveButton(
+                text = "Blog",
+                height = 70.dp,
+                onClick = { urlLauncher.openUri(blog) }
+            )
+            InteractiveButton(
+                text = "Github",
+                height = 70.dp,
+                onClick = { onClickLink("playground/animationSpecs/tweenAndSpring/TweenAndSpring.kt") },
+            )
+        }
+    }
+}
+
+
 // TODO Generalize chart
 @Composable
 private fun AnimationChart(
@@ -332,11 +360,11 @@ private fun AnimationChart(
 
     val animationProgress = remember { Animatable(0f) }
 
-    val easing by remember {
+    val easing by remember(state) {
         mutableStateOf(
             when {
-                state.applySpecToPath -> state.easing.easing
-                state.useCustomEasing -> CubicBezierEasing(
+                state.useCustomEasing.not() && state.applySpecToPath -> state.easing.easing
+                state.useCustomEasing && state.applySpecToPath -> CubicBezierEasing(
                     state.cubicA,
                     state.cubicB,
                     state.cubicC,
@@ -368,37 +396,23 @@ private fun AnimationChart(
     LaunchedEffect(replay, points, state, animationType) {
         animationProgress.snapTo(0f)
 
-        when {
-            animationType == TweenNSpringSpec.Tween -> {
-                animationProgress.animateTo(
-                    1f,
-                    animationSpec = tween(
-                        durationMillis = state.durationMillis,
-                        delayMillis = state.delayMillis,
-                        easing = easing
-                    )
+        if (animationType == TweenNSpringSpec.Spring && state.applySpecToPath) {
+            animationProgress.animateTo(
+                1f,
+                animationSpec = spring(
+                    dampingRatio = dampingRatio,
+                    stiffness = stiffness
                 )
-            }
-
-            animationType == TweenNSpringSpec.Spring && state.applySpecToPath -> {
-                animationProgress.animateTo(
-                    1f,
-                    animationSpec = spring(
-                        dampingRatio = dampingRatio,
-                        stiffness = stiffness
-                    )
+            )
+        } else {
+            animationProgress.animateTo(
+                1f,
+                animationSpec = tween(
+                    durationMillis = state.durationMillis,
+                    delayMillis = state.delayMillis,
+                    easing = easing
                 )
-            }
-
-            else -> {
-                animationProgress.animateTo(
-                    1f,
-                    animationSpec = tween(
-                        durationMillis = 1000,
-                        easing = FastOutSlowInEasing
-                    )
-                )
-            }
+            )
         }
     }
     if (points.isNotEmpty()) {

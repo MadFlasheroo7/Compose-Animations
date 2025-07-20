@@ -126,7 +126,7 @@ fun SlideItemPlacement(
         modifier = modifier,
         navigationIcon = {
             IconButton(onClick = {
-                onClickLink("screens/itemPlacements/SlideItemPlacement.kt")
+                onClickLink("itemPlacements/SlideItemPlacement.kt")
             }) {
                 Icon(imageVector = Icons.Rounded.Link, contentDescription = null)
             }

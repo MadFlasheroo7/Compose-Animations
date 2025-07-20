@@ -67,6 +67,10 @@ private val animationScreens: List<AnimationScreen> by lazy {
             route = NavDestinations.AnimatedListItemPlacement
         ),
         AnimationScreen(
+            title = "Playground",
+            route = NavDestinations.Playground
+        ),
+        AnimationScreen(
             title = "Animate Content",
             route = NavDestinations.AnimateContent
         ),
@@ -101,10 +105,6 @@ private val animationScreens: List<AnimationScreen> by lazy {
         AnimationScreen(
             title = "Shader",
             route = NavDestinations.Shaders
-        ),
-        AnimationScreen(
-            title = "Playground",
-            route = NavDestinations.Playground
         ),
         AnimationScreen(
             title = "About",

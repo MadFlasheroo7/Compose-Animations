@@ -30,5 +30,6 @@ sealed class NavDestinations : NavKey {
     @Serializable data object RainbowCircleShader : NavDestinations()
     @Serializable data object InterstellarShader : NavDestinations()
     @Serializable data object Playground : NavDestinations()
+    @Serializable data object AnimationSpec : NavDestinations()
     @Serializable data object TweenAndSpring : NavDestinations()
 }

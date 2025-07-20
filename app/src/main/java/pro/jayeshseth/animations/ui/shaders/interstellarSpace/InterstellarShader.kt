@@ -79,12 +79,12 @@ import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -101,14 +101,13 @@ import pro.jayeshseth.animations.ui.composables.FilledIconButton
 import pro.jayeshseth.animations.ui.composables.SliderTemplate
 import pro.jayeshseth.animations.ui.composables.TabsRow
 import pro.jayeshseth.animations.ui.composables.Toggler
-import pro.jayeshseth.animations.ui.shaders.interstellarSpace.InterstellarSpaceShader
+import pro.jayeshseth.animations.ui.screens.FeatureUnavailableScreen
 import pro.jayeshseth.animations.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.util.AnimationTabs
 import pro.jayeshseth.animations.util.Fields
-import pro.jayeshseth.animations.ui.shaders.interstellarSpace.InterstellarSpaceState
+import pro.jayeshseth.animations.util.OnClickLink
 import pro.jayeshseth.animations.util.animationTabsList
 import pro.jayeshseth.animations.util.lazyNavBarPadding
-import pro.jayeshseth.animations.ui.shaders.interstellarSpace.InterstellarShaderCode
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
 const val DURATION = 450
@@ -123,51 +122,24 @@ val boundsTransform = BoundsTransform { initialBounds, targetBounds ->
 }
 
 @Composable
-fun Modifier.clipToDeviceCornerRadius(): Modifier {
-    val defaultRadius = 0.dp
-    val view = LocalView.current
-    val rootInsets = view.rootWindowInsets
-    val density = LocalDensity.current
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        val topLeftCorner = rootInsets.getRoundedCorner(RoundedCorner.POSITION_TOP_LEFT)
-        val topRightCorner = rootInsets.getRoundedCorner(RoundedCorner.POSITION_TOP_RIGHT)
-        val bottomLeftCorner = rootInsets.getRoundedCorner(RoundedCorner.POSITION_BOTTOM_LEFT)
-        val bottomRightCorner = rootInsets.getRoundedCorner(RoundedCorner.POSITION_BOTTOM_RIGHT)
-
-        val topLeftRadius = topLeftCorner?.radius
-        val topRightRadius = topRightCorner?.radius
-        val bottomLeftRadius = bottomLeftCorner?.radius
-        val bottomRightRadius = bottomRightCorner?.radius
-
-        return with(density) {
-            clip(
-                RoundedCornerShape(
-                    topStart = topLeftRadius?.toDp() ?: 0.dp,
-                    topEnd = topRightRadius?.toDp() ?: 0.dp,
-                    bottomStart = bottomLeftRadius?.toDp() ?: 0.dp,
-                    bottomEnd = bottomRightRadius?.toDp() ?: 0.dp
-                )
-            )
-        }
-    } else {
-        return clip(RoundedCornerShape(defaultRadius))
-    }
-}
-
-@Composable
-fun InterstellarShaderScreen(modifier: Modifier = Modifier) {
+fun InterstellarShaderScreen(
+    onClickLink: OnClickLink,
+    modifier: Modifier = Modifier
+) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        InterstellarShader()
+        InterstellarShader(onClickLink, modifier)
     } else {
-
+        FeatureUnavailableScreen("Feature Unavailable for api below ${Build.VERSION_CODES.TIRAMISU}")
     }
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-private fun InterstellarShader(modifier: Modifier = Modifier) {
+private fun InterstellarShader(
+    onClickLink: OnClickLink,
+    modifier: Modifier = Modifier
+) {
     val view = LocalView.current
     val activity = LocalActivity.current
     val context = LocalContext.current
@@ -221,7 +193,7 @@ private fun InterstellarShader(modifier: Modifier = Modifier) {
 
     SharedTransitionLayout {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .pointerInput(Unit) {
                     detectDragGestures { change, _ ->
@@ -387,7 +359,7 @@ private fun InterstellarShader(modifier: Modifier = Modifier) {
                                     }
 
                                     AnimationTabs.Source -> {
-                                        LinksButtons()
+                                        LinksButtons(onClickLink)
                                     }
                                 }
                             }
@@ -687,20 +659,30 @@ private fun CodePreview(
     }
 }
 
-@Preview
 @Composable
-private fun LinksButtons() {
+private fun LinksButtons(
+    onClickLink: OnClickLink,
+) {
+    val urlLauncher = LocalUriHandler.current
+    val blog = "https://blog.realogs.in/composing-pixels/"
+    val shaderSource =
+        "https://shaders.skia.org/?id=e0ec9ef204763445036d8a157b1b5c8929829c3e1ee0a265ed984aeddc8929e2"
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
             InteractiveButton(
                 text = "Blog",
                 height = 70.dp,
-                onClick = { }
+                onClick = { urlLauncher.openUri(blog) }
+            )
+            InteractiveButton(
+                text = "Shader Source",
+                height = 70.dp,
+                onClick = { urlLauncher.openUri(shaderSource) }
             )
             InteractiveButton(
                 text = "Github",
                 height = 70.dp,
-                onClick = { },
+                onClick = { onClickLink("shaders/interstellarSpace/InterstellarShader.kt") },
             )
         }
     }
@@ -711,6 +693,6 @@ private fun LinksButtons() {
 @Composable
 private fun PreviewInterstellarSpace() {
     AnimationsTheme {
-        InterstellarShaderScreen()
+        InterstellarShaderScreen({})
     }
 }

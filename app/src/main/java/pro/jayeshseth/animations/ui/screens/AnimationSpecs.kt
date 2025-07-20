@@ -12,9 +12,8 @@ import pro.jayeshseth.animations.util.OnNavAction
 import pro.jayeshseth.commoncomponents.InteractiveButton
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedColumn
 
-
 @Composable
-fun Playground(
+fun AnimationSpecs(
     modifier: Modifier = Modifier,
     navAction: OnNavAction
 ) {
@@ -27,8 +26,8 @@ fun Playground(
             .padding(horizontal = 20.dp)
     ) {
         InteractiveButton(
-            text = "Animation Specs",
-            onClick = { navAction(NavDestinations.AnimationSpec) },
+            text = "Tween And Spring",
+            onClick = { navAction(NavDestinations.TweenAndSpring) },
         )
     }
 }
