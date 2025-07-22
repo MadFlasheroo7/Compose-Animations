@@ -1,6 +1,5 @@
 package pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring
 
-import android.util.Log
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
@@ -18,6 +17,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -57,7 +57,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.ui.composables.AnimatedChart
 import pro.jayeshseth.animations.ui.composables.AnimatedTab
-import pro.jayeshseth.animations.ui.composables.CatImage
+import pro.jayeshseth.animations.ui.composables.PreviewGrid
 import pro.jayeshseth.animations.ui.composables.TabsRow
 import pro.jayeshseth.animations.ui.composables.Toggler
 import pro.jayeshseth.animations.util.AnimationTabs
@@ -108,6 +108,20 @@ fun TweenAndSpringScreen(
             )
         )
     }
+    val previewSpec by remember(state.value.useCustomEasing) {
+        mutableStateOf(
+            if (state.value.useCustomEasing) {
+                CubicBezierEasing(
+                    state.value.cubicA,
+                    state.value.cubicB,
+                    state.value.cubicC,
+                    state.value.cubicD
+                )
+            } else {
+                state.value.easing.easing
+            }
+        )
+    }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -128,7 +142,13 @@ fun TweenAndSpringScreen(
                     }
 
                     PlaygroundPreviewTabs.Preview -> {
-                        CatImage()
+                        PreviewGrid(
+                            state.value,
+                            replay,
+                            Modifier
+                                .padding(16.dp)
+                                .safeContentPadding()
+                        )
                     }
                 }
             }
