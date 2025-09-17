@@ -12,7 +12,7 @@ pluginManagement {
         mavenLocal()
         gradlePluginPortal()
         maven {
-            url = uri("https://androidx.dev/snapshots/builds/13508953/artifacts/repository")
+            url = uri("https://androidx.dev/snapshots/builds/13617490/artifacts/repository")
         }
         maven { url = uri("https://jitpack.io") }
     }
@@ -24,7 +24,7 @@ dependencyResolutionManagement {
         mavenCentral()
         mavenLocal()
         maven {
-            url = uri("https://androidx.dev/snapshots/builds/13508953/artifacts/repository")
+            url = uri("https://androidx.dev/snapshots/builds/13617490/artifacts/repository")
         }
         maven { url = uri("https://jitpack.io") }
     }

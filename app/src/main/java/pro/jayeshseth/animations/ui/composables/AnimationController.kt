@@ -3,6 +3,7 @@ package pro.jayeshseth.animations.ui.composables
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -46,7 +47,10 @@ fun AnimationController(
     var expanded by remember { mutableStateOf(false) }
     var dampingRatioExpanded by remember { mutableStateOf(false) }
     var stiffnessExpanded by remember { mutableStateOf(false) }
-    val updatedInitialValue = rememberUpdatedState(state.initialValue)
+    val updatedInitialValue by animateFloatAsState(
+        targetValue = state.initialValue,
+//        animationSpec = tween(500)
+    )
     val updatedBlurValue = rememberUpdatedState(state.blurValue)
     val updatedTweenDuration = rememberUpdatedState(state.tweenDuration)
     val updatedInitialValueRange = rememberUpdatedState(state.initialValueRange)
@@ -105,7 +109,7 @@ fun AnimationController(
 
         SliderTemplate(
             title = "Initial Value",
-            value = { updatedInitialValue.value },
+            value = { updatedInitialValue },
             step = { state.initialValueSteps },
             onValueChange = { onStateUpdate(state.copy(initialValue = it)) },
             valueRange = updatedInitialValueRange.value,

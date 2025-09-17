@@ -7,9 +7,11 @@ data class DampingRatioOption(
     val name: String
 )
 
-val DampingRatioList = mutableListOf(
-    DampingRatioOption(Spring.DampingRatioHighBouncy, "High Bouncy"),
-    DampingRatioOption(Spring.DampingRatioMediumBouncy, "Medium Bouncy"),
-    DampingRatioOption(Spring.DampingRatioLowBouncy, "Low Bouncy"),
-    DampingRatioOption(Spring.DampingRatioNoBouncy, "No Bouncy"),
-)
+val DampingRatioList by lazy {
+    mutableListOf(
+        DampingRatioOption(Spring.DampingRatioHighBouncy, "High Bouncy"),
+        DampingRatioOption(Spring.DampingRatioMediumBouncy, "Medium Bouncy"),
+        DampingRatioOption(Spring.DampingRatioLowBouncy, "Low Bouncy"),
+        DampingRatioOption(Spring.DampingRatioNoBouncy, "No Bouncy"),
+    )
+}
