@@ -14,10 +14,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import pro.jayeshseth.animations.navigation.NavDestinations
+import pro.jayeshseth.animations.ui.composables.InteractiveButton
 import pro.jayeshseth.animations.util.AnimationScreen
 import pro.jayeshseth.animations.util.OnNavAction
 import pro.jayeshseth.commoncomponents.HomeScaffold
-import pro.jayeshseth.commoncomponents.InteractiveButton
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
