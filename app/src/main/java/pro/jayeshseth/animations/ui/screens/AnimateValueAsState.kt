@@ -57,18 +57,18 @@ private val animations: List<AnimationItem> by lazy {
     mutableListOf(
         AnimationItem(
             title = "Animate Float As State",
-            source = "animations/animateValue/AnimateFloat.kt"
+            source = "defaultApis/animateValue/AnimateFloat.kt"
         ) { AnimateFloatAsState(it) },
         AnimationItem(
             title = "Animate Dp As State",
-            source = "animations/animateValue/AnimateDp.kt"
+            source = "defaultApis/animateValue/AnimateDp.kt"
         ) { AnimateDpAsState(it) },
         AnimationItem(
-            source = "animations/animateValue/AnimateOffset.kt"
+            source = "defaultApis/animateValue/AnimateOffset.kt"
         ) { AnimateOffsetAsState() },
         AnimationItem(
             title = "Animate Color As State",
-            source = "animations/animateValue/AnimateColor.kt"
+            source = "defaultApis/animateValue/AnimateColor.kt"
         ) { AnimateColorAsState(it) }
     )
 }

@@ -66,64 +66,64 @@ private val animations: List<AnimationItem> by lazy {
     mutableListOf(
         AnimationItem(
             title = "Default Animation",
-            source = "animations/animateVisibility/DefaultAnimation.kt"
+            source = "defaultApis/animateVisibility/DefaultAnimation.kt"
         ) { isVisible ->
             DefaultAnimation(isVisible)
         },
         AnimationItem(
             title = "Fade In & Out",
-            source = "animations/animateVisibility/FadeAnimation.kt"
+            source = "defaultApis/animateVisibility/FadeAnimation.kt"
         ) { isVisible ->
             Fade(isVisible)
         },
         AnimationItem(
             title = "Scale",
-            source = "animations/animateVisibility/ScaleAnimation.kt"
+            source = "defaultApis/animateVisibility/ScaleAnimation.kt"
         ) { isVisible ->
             Scale(isVisible)
         },
         AnimationItem(
             title = "Slide In & Out",
-            source = "animations/animateVisibility/SlideAnimation.kt"
+            source = "defaultApis/animateVisibility/SlideAnimation.kt"
         ) { isVisible ->
             Slide(isVisible)
         },
         AnimationItem(
             title = "Slide In & Out Horizontally",
-            source = "animations/animateVisibility/SlideAnimation.kt"
+            source = "defaultApis/animateVisibility/SlideAnimation.kt"
         ) { isVisible ->
             SlideInHorizontally(isVisible)
         },
         AnimationItem(
             title = "Slide In & Out Vertically",
-            source = "animations/animateVisibility/SlideAnimation.kt"
+            source = "defaultApis/animateVisibility/SlideAnimation.kt"
         ) { isVisible ->
             SlideInVertically(isVisible)
         },
         AnimationItem(
             title = "Expand In & Shrink Out",
-            source = "animations/animateVisibility/ExpandAndShrinkAnimation.kt"
+            source = "defaultApis/animateVisibility/ExpandAndShrinkAnimation.kt"
         ) { isVisible ->
             ExpandAndShrink(isVisible)
         },
         AnimationItem(
             title = "Expand In & Shrink Out Horizontally",
-            source = "animations/animateVisibility/ExpandAndShrinkAnimation.kt"
+            source = "defaultApis/animateVisibility/ExpandAndShrinkAnimation.kt"
         ) { isVisible ->
             ExpandAndShrinkHorizontally(isVisible)
         },
         AnimationItem(
             title = "Expand In & Shrink Out Vertically",
-            source = "animations/animateVisibility/ExpandAndShrinkAnimation.kt"
+            source = "defaultApis/animateVisibility/ExpandAndShrinkAnimation.kt"
         ) { isVisible ->
             ExpandAndShrinkVertically(isVisible)
         },
         AnimationItem(
             title = "Random Slide",
-            source = "animations/animateVisibility/SlideAnimation.kt"
+            source = "defaultApis/animateVisibility/SlideAnimation.kt"
         ) { isVisible ->
             RandomSlide(isVisible)
         },
-        AnimationItem(source = "animations/animateVisibility/HungryCat.kt") { HungryCat() }
+        AnimationItem(source = "defaultApis/animateVisibility/HungryCat.kt") { HungryCat() }
     )
 }
