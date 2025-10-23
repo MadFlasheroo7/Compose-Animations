@@ -43,23 +43,23 @@ import pro.jayeshseth.animations.util.OnClickLink
 @Composable
 fun NavGraph(onClickLink: OnClickLink) {
     val backStack = rememberNavBackStack(NavDestinations.Home)
-//    val entryWithClippedBackgroundDecorator = navEntryDecorator<Any> { entry ->
-//        Box(
-//            Modifier
-//                .clipToDeviceCornerRadius()
-//                .background(MaterialTheme.colorScheme.background)
-//        ) {
-//            entry.content(entry.key)
-//        }
-//    }
+    val entryWithClippedBackgroundDecorator = navEntryDecorator<Any> { entry ->
+        Box(
+            Modifier
+                .clipToDeviceCornerRadius()
+                .background(MaterialTheme.colorScheme.background)
+        ) {
+            entry.Content()
+        }
+    }
     NavDisplay(
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
-//        entryDecorators = listOf(
-//            entryWithClippedBackgroundDecorator,
-//            rememberSceneSetupNavEntryDecorator(),
-//            rememberSavedStateNavEntryDecorator()
-//        ),
+        entryDecorators = listOf(
+            entryWithClippedBackgroundDecorator,
+            rememberSceneSetupNavEntryDecorator(),
+            rememberSavedStateNavEntryDecorator()
+        ),
         entryProvider = entryProvider {
             entry<NavDestinations.Home> {
                 HomeScreen { route ->
