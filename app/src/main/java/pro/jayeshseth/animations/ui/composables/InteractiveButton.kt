@@ -97,7 +97,7 @@ fun InteractiveButton(
     )
 
     val shadowColor by animateColorAsState(
-        targetValue = if (buttonInteracted) Color.Cyan else Color.Transparent,
+        targetValue = if (buttonInteracted) MaterialTheme.colorScheme.tertiary else Color.Transparent,
         animationSpec = tween(500),
         label = "animated button color",
     )
