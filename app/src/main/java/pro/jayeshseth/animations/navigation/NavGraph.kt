@@ -49,7 +49,7 @@ fun NavGraph(onClickLink: OnClickLink) {
                 .clipToDeviceCornerRadius()
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            entry.content(entry.key)
+            entry.Content()
         }
     }
     NavDisplay(

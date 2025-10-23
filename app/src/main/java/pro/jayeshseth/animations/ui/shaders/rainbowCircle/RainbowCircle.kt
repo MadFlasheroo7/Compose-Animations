@@ -6,6 +6,9 @@ import android.content.res.Configuration
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -110,6 +113,20 @@ private fun InnerRainbowCircle(
     val shaderBrush =
         remember(iterationLevel) { derivedStateOf { ShaderBrush(rainbowCircleShader) } }
 
+    val anim by remember { mutableStateOf(Animatable(200f)) }
+
+    LaunchedEffect(iterationLevel) {
+        anim.animateTo(
+            targetValue = if (iterationLevel == ShaderIterationLevel.HIGH) 200.0f else 100.0f,
+            animationSpec = tween(1000)
+        )
+    }
+
+    val layers by animateFloatAsState(
+        targetValue = if (iterationLevel == ShaderIterationLevel.HIGH) 200.0f else 100.0f,
+        animationSpec = tween(1000)
+    )
+
     val rainbowCircleState = remember(shaderBrush) {
         mutableStateOf(
             RainbowCircleState(
@@ -127,6 +144,41 @@ private fun InnerRainbowCircle(
             )
         )
     }
+
+    val animatedPattern by animateFloatAsState(
+        targetValue = rainbowCircleState.value.pattern,
+        animationSpec = tween(1000)
+    )
+
+    val animatedExpansion by animateFloatAsState(
+        targetValue = rainbowCircleState.value.expand,
+        animationSpec = tween(1000)
+    )
+
+    val animatedBrightness by animateFloatAsState(
+        targetValue = rainbowCircleState.value.brightness,
+        animationSpec = tween(1000)
+    )
+
+    val animatedLayers by animateFloatAsState(
+        targetValue = rainbowCircleState.value.layers,
+        animationSpec = tween(1000)
+    )
+
+    val animatedSize by animateFloatAsState(
+        targetValue = rainbowCircleState.value.size,
+        animationSpec = tween(1000)
+    )
+
+    val animatedSpeed by animateFloatAsState(
+        targetValue = rainbowCircleState.value.speed,
+        animationSpec = tween(1000)
+    )
+
+    val animatedAlpha by animateFloatAsState(
+        targetValue = rainbowCircleState.value.alpha,
+        animationSpec = tween(1000)
+    )
 
     LaunchedEffect(Unit, iterationLevel) {
         while (true) {
@@ -171,17 +223,17 @@ private fun InnerRainbowCircle(
                 .drawWithCache {
                     onDrawBehind {
                         rainbowCircleShader.updateTime({ time.floatValue })
-                        rainbowCircleShader.updatePattern({ rainbowCircleState.value.pattern })
-                        rainbowCircleShader.updateExpand({ rainbowCircleState.value.expand })
-                        rainbowCircleShader.updateBrightness({ rainbowCircleState.value.brightness })
-                        rainbowCircleShader.updateLayers({ rainbowCircleState.value.layers })
-                        rainbowCircleShader.updateSize({ rainbowCircleState.value.size })
+                        rainbowCircleShader.updatePattern({ animatedPattern })
+                        rainbowCircleShader.updateExpand({ animatedExpansion })
+                        rainbowCircleShader.updateBrightness({ animatedBrightness })
+                        rainbowCircleShader.updateLayers({ animatedLayers })
+                        rainbowCircleShader.updateSize({ animatedSize })
                         rainbowCircleShader.updateResolution(Size(size.width, size.height))
                         rainbowCircleShader.updateColor(
                             { rainbowCircleState.value.red },
                             { rainbowCircleState.value.green },
                             { rainbowCircleState.value.blue },
-                            { rainbowCircleState.value.alpha }
+                            { animatedAlpha }
                         )
                         drawRect(shaderBrush.value)
                     }

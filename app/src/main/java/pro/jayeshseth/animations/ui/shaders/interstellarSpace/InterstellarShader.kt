@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.ClipData
 import android.content.ClipDescription
 import android.os.Build
-import android.view.RoundedCorner
 import androidx.activity.compose.LocalActivity
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
@@ -168,6 +167,53 @@ private fun InterstellarShader(
             InterstellarSpaceState()
         )
     }
+
+    val animatedSpeed by animateFloatAsState(
+        targetValue = interstellarSpaceState.speed,
+        animationSpec = tween(1000)
+    )
+
+    val animatedBrightness by animateFloatAsState(
+        targetValue = interstellarSpaceState.brightness,
+        animationSpec = tween(1000)
+    )
+
+    val animatedForm by animateFloatAsState(
+        targetValue = interstellarSpaceState.formuparam,
+        animationSpec = tween(1000)
+    )
+
+    val animatedStepSize by animateFloatAsState(
+        targetValue = interstellarSpaceState.stepsize,
+        animationSpec = tween(1000)
+    )
+
+    val animatedZoom by animateFloatAsState(
+        targetValue = interstellarSpaceState.zoom,
+        animationSpec = tween(1000)
+    )
+
+    val animatedTile by animateFloatAsState(
+        targetValue = interstellarSpaceState.tile,
+        animationSpec = tween(1000)
+    )
+
+    val animatedDarkMatter by animateFloatAsState(
+        targetValue = interstellarSpaceState.darkmatter,
+        animationSpec = tween(1000)
+    )
+
+    val animatedDistFading by animateFloatAsState(
+        targetValue = interstellarSpaceState.distFading,
+        animationSpec = tween(1000)
+    )
+
+    val animatedSaturation by animateFloatAsState(
+        targetValue = interstellarSpaceState.saturation,
+        animationSpec = tween(1000)
+    )
+
+
     val time = infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 100f,
@@ -205,17 +251,15 @@ private fun InterstellarShader(
                         shader.updateResolution(size)
                         shader.updateTime({ time.value })
                         shader.updateMouse({ touchPosition.first }, { touchPosition.second })
-                        shader.updateBrightness({ interstellarSpaceState.brightness })
-                        shader.updateDarkmatter({ interstellarSpaceState.darkmatter })
-                        shader.updateDistFading { interstellarSpaceState.distFading }
-                        shader.updateFormuparam { interstellarSpaceState.formuparam }
-//                        shader.updateIterations { interstellarSpaceState.iterations }
-                        shader.updateSaturation { interstellarSpaceState.saturation }
-                        shader.updateSpeed { interstellarSpaceState.speed }
-                        shader.updateStepsize { interstellarSpaceState.stepsize }
-                        shader.updateTile { interstellarSpaceState.tile }
-//                        shader.updateVolSteps { interstellarSpaceState.volSteps }
-                        shader.updateZoom { interstellarSpaceState.zoom }
+                        shader.updateBrightness({ animatedBrightness })
+                        shader.updateDarkmatter({ animatedDarkMatter })
+                        shader.updateDistFading { animatedDistFading }
+                        shader.updateFormuparam { animatedForm }
+                        shader.updateSaturation { animatedSaturation }
+                        shader.updateSpeed { animatedSpeed }
+                        shader.updateStepsize { animatedStepSize }
+                        shader.updateTile { animatedTile }
+                        shader.updateZoom { animatedZoom }
                         drawRect(shaderBrush.value)
                     }
                 }

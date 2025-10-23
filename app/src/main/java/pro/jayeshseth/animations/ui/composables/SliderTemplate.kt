@@ -1,6 +1,8 @@
 package pro.jayeshseth.animations.ui.composables
 
 import android.icu.text.DecimalFormat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +17,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -41,6 +44,10 @@ fun SliderTemplate(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
     val sliderValue = rememberUpdatedState(value)
+    val animatedSliderValue by animateFloatAsState(
+        targetValue = sliderValue.value(),
+//        animationSpec = tween(durationMillis = 500)
+    )
     val snappedFloatValue =
         rememberUpdatedState(snapSliderValue(valueRange.start, sliderValue.value(), step()))
     ControllerTemplate(
@@ -70,7 +77,7 @@ fun SliderTemplate(
         },
         content = {
             Slider(
-                value = sliderValue.value(),
+                value = animatedSliderValue,
                 onValueChange = onValueChange,
                 onValueChangeFinished = { },
                 valueRange = valueRange,

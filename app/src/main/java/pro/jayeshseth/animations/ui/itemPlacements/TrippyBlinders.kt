@@ -25,8 +25,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -86,6 +88,17 @@ fun TrippyBlinders(modifier: Modifier = Modifier) {
     LaunchedEffect(Unit) {
         lazyListState.scrollToItem(ITEM_COUNT / 2)
     }
+
+    var isInitialLoad by remember { mutableStateOf(true) }
+
+    // Track when user starts scrolling to disable initial load flag
+    LaunchedEffect(lazyListState.isScrollInProgress) {
+        if (lazyListState.isScrollInProgress) {
+            isInitialLoad = false
+        }
+    }
+
+
     SystemBarAwareThemedLazyColumn(
         state = lazyListState,
         verticalArrangement = Arrangement.spacedBy(animatedSpace),
@@ -97,7 +110,8 @@ fun TrippyBlinders(modifier: Modifier = Modifier) {
             TrippyBlinderItem(
                 index = it,
                 cardShape = RoundedCornerShape(animatedShape),
-                padding = animatedPadding
+                padding = animatedPadding,
+                isInitialLoad = isInitialLoad
             )
         }
     }
@@ -108,6 +122,7 @@ private fun TrippyBlinderItem(
     index: Int,
     cardShape: Shape,
     padding: Dp,
+    isInitialLoad: Boolean,
     modifier: Modifier = Modifier
 ) {
     val animatedIndex = rememberUpdatedState(index)
@@ -117,17 +132,30 @@ private fun TrippyBlinderItem(
         remember(animatedIndex.value) { Animatable(initialValue = 360f) }
     val context = LocalContext.current
     val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)!!
+
+    var hasAnimated by remember { mutableStateOf(false) }
+
     LaunchedEffect(animatedIndex.value) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
-        }
-        animatedProgress.animateTo(
-            targetValue = 0f,
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioHighBouncy,
-                stiffness = Spring.StiffnessVeryLow
+        if (!isInitialLoad || hasAnimated) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+            }
+
+            if (hasAnimated) {
+                animatedProgress.snapTo(360f)
+            }
+
+            animatedProgress.animateTo(
+                targetValue = 0f,
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioHighBouncy,
+                    stiffness = Spring.StiffnessVeryLow
+                )
             )
-        )
+            hasAnimated = true
+        } else {
+            animatedProgress.snapTo(0f)
+        }
     }
     Card(
         colors = CardDefaults.cardColors(
