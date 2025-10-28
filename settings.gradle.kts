@@ -34,3 +34,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Animations"
 include (":app")
+include(":defaultApis")
