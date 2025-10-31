@@ -38,7 +38,7 @@ include(":app")
 // Core Modules
 include(":core:ui")
 include(":core:model")
-include(":core:util")
+include(":core:navigation")
 
 // Features/Animations Modules
 include(":features:defaultApis")
