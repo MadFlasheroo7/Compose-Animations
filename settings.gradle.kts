@@ -34,6 +34,10 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Animations"
 include (":app")
+// Core Modules
 include(":core:ui")
 include(":core:model")
+include(":core:utils")
+
+// Animations Modules
 include(":defaultApis")
