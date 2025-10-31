@@ -25,7 +25,11 @@ final_module_structure="$base_dir/$module_name/src/main/kotlin/$(echo "$package_
 
 echo "Generating Module..."
 
-mkdir -p "$final_module_structure"
+sub_dirs=("animations" "screens" "components")
+
+for dir in "${sub_dirs[@]}"; do
+  mkdir -p "$final_module_structure/$dir"
+done
 
 sed "s/package_id/$package_id/g" ../base/build.gradle.kts > "$base_dir/$module_name/build.gradle.kts"
 touch "$base_dir/$module_name/.gitignore" && cp "../base/.gitignore" "$base_dir/$module_name/.gitignore"
@@ -37,4 +41,5 @@ echo "$include_line" >> "$root_settings_gradle"
 
 echo "!! Summary !!"
 echo "Created $module_name at $final_module_structure"
+echo "with sub dir - ${sub_dirs[*]}"
 echo "NOTE: !! Remember to sync android studio !!"
