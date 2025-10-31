@@ -12,7 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import pro.jayeshseth.animations.util.DURATION
+import pro.jayeshseth.animations.core.model.DURATION
 
 @Composable
 fun AnimateFloatAsState(trigger: Boolean) {

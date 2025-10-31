@@ -12,15 +12,15 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import pro.jayeshseth.animations.core.model.AnimationContent
+import pro.jayeshseth.animations.core.model.AnimationItem
+import pro.jayeshseth.animations.core.model.DURATION
+import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.ui.composables.AnimationCard
 import pro.jayeshseth.animations.ui.defaultApis.animateValue.AnimateColorAsState
 import pro.jayeshseth.animations.ui.defaultApis.animateValue.AnimateDpAsState
 import pro.jayeshseth.animations.ui.defaultApis.animateValue.AnimateFloatAsState
 import pro.jayeshseth.animations.ui.defaultApis.animateValue.AnimateOffsetAsState
-import pro.jayeshseth.animations.util.AnimationContent
-import pro.jayeshseth.animations.util.AnimationItem
-import pro.jayeshseth.animations.util.DURATION
-import pro.jayeshseth.animations.util.OnClickLink
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @Composable

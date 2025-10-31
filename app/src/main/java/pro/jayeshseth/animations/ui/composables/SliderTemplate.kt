@@ -2,7 +2,6 @@ package pro.jayeshseth.animations.ui.composables
 
 import android.icu.text.DecimalFormat
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,7 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.theapache64.rebugger.Rebugger
-import pro.jayeshseth.animations.util.ComposeFriendlyFloat
+import pro.jayeshseth.animations.core.model.ComposeFriendlyFloat
 import kotlin.math.roundToInt
 
 @Composable

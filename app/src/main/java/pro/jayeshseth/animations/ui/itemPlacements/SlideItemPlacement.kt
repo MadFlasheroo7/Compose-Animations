@@ -45,15 +45,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import pro.jayeshseth.animations.R
+import pro.jayeshseth.animations.core.model.AnimationControllerState
+import pro.jayeshseth.animations.core.model.AudioPlayer
+import pro.jayeshseth.animations.core.model.DampingRatioList
+import pro.jayeshseth.animations.core.model.EasingList
+import pro.jayeshseth.animations.core.model.OnClickLink
+import pro.jayeshseth.animations.core.model.StiffnessList
 import pro.jayeshseth.animations.ui.composables.AnimationController
 import pro.jayeshseth.animations.ui.composables.AnimationItem
 import pro.jayeshseth.animations.ui.composables.Toggler
-import pro.jayeshseth.animations.util.AnimationControllerState
-import pro.jayeshseth.animations.util.AudioPlayer
-import pro.jayeshseth.animations.util.DampingRatioList
-import pro.jayeshseth.animations.util.EasingList
-import pro.jayeshseth.animations.util.OnClickLink
-import pro.jayeshseth.animations.util.StiffnessList
 import pro.jayeshseth.commoncomponents.HomeScaffold
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 

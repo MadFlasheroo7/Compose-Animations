@@ -1,9 +1,7 @@
 package pro.jayeshseth.animations.ui.shaders.interstellarSpace
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
-import pro.jayeshseth.animations.ui.shaders.interstellarSpace.InterstellarSpaceState
-import pro.jayeshseth.animations.util.round
+import pro.jayeshseth.animations.core.model.round
 
 @Immutable
 class InterstellarShaderCode(

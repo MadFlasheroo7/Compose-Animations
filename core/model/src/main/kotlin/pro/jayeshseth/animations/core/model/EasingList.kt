@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.util
+package pro.jayeshseth.animations.core.model
 
 import androidx.compose.animation.core.Ease
 import androidx.compose.animation.core.EaseIn

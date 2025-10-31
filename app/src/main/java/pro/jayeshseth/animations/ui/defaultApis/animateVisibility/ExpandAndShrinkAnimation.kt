@@ -10,8 +10,8 @@ import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.runtime.Composable
+import pro.jayeshseth.animations.core.model.DURATION
 import pro.jayeshseth.animations.ui.composables.CatImage
-import pro.jayeshseth.animations.util.DURATION
 
 @Composable
 fun ExpandAndShrink(isVisible: Boolean) {

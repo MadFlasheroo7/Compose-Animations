@@ -27,11 +27,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import pro.jayeshseth.animations.core.model.lazyNavBarPadding
 import pro.jayeshseth.animations.ui.composables.AnimatedTab
 import pro.jayeshseth.animations.ui.composables.CodeBlockWithLineNumbers
 import pro.jayeshseth.animations.ui.composables.CopyIconButton
 import pro.jayeshseth.animations.ui.composables.TabsRow
-import pro.jayeshseth.animations.util.lazyNavBarPadding
 
 @Composable
 fun CodePreview(

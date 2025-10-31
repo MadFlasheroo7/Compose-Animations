@@ -3,6 +3,8 @@ package pro.jayeshseth.animations.navigation
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
+typealias OnNavAction = (NavDestinations) -> Unit
+
 /**
  * Holds all the destinations used in this app
  */

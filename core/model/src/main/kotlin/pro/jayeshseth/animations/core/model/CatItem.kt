@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.util
+package pro.jayeshseth.animations.core.model
 
 data class CatItem(
     val id: Int,

@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.util
+package pro.jayeshseth.animations.core.model
 
 sealed class Fields {
     data class SliderData(

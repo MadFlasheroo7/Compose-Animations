@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pro.jayeshseth.animations.BASE_URL
-import pro.jayeshseth.animations.util.DURATION
+import pro.jayeshseth.animations.core.model.DURATION
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
 const val OffsetPath = "${BASE_URL}/animations/animateValue/AnimateOffset.kt"

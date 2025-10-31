@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.util
+package pro.jayeshseth.animations.core.model
 
 import android.content.Context
 import android.media.MediaPlayer

@@ -55,17 +55,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import pro.jayeshseth.animations.core.model.AnimationTabs
+import pro.jayeshseth.animations.core.model.DampingRatioList
+import pro.jayeshseth.animations.core.model.EasingList
+import pro.jayeshseth.animations.core.model.OnClickLink
+import pro.jayeshseth.animations.core.model.StiffnessList
+import pro.jayeshseth.animations.core.model.animationTabsList
 import pro.jayeshseth.animations.ui.composables.AnimatedChart
 import pro.jayeshseth.animations.ui.composables.AnimatedTab
 import pro.jayeshseth.animations.ui.composables.PreviewGrid
 import pro.jayeshseth.animations.ui.composables.TabsRow
 import pro.jayeshseth.animations.ui.composables.Toggler
-import pro.jayeshseth.animations.util.AnimationTabs
-import pro.jayeshseth.animations.util.DampingRatioList
-import pro.jayeshseth.animations.util.EasingList
-import pro.jayeshseth.animations.util.OnClickLink
-import pro.jayeshseth.animations.util.StiffnessList
-import pro.jayeshseth.animations.util.animationTabsList
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
 enum class PlaygroundPreviewTabs { Chart, Preview }

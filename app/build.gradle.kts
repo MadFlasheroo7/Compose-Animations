@@ -41,7 +41,10 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.model)
     implementation(projects.defaultApis)
+
+
     implementation(libs.commonmodule)
     implementation(libs.cascade)
     implementation(libs.cascade.compose)

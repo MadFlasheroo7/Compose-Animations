@@ -69,6 +69,11 @@ import com.theapache64.rebugger.Rebugger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import pro.jayeshseth.animations.core.model.AnimationTabs
+import pro.jayeshseth.animations.core.model.Fields
+import pro.jayeshseth.animations.core.model.OnClickLink
+import pro.jayeshseth.animations.core.model.animationTabsList
+import pro.jayeshseth.animations.core.model.lazyNavBarPadding
 import pro.jayeshseth.animations.ui.composables.AnimatedTab
 import pro.jayeshseth.animations.ui.composables.CodeBlockWithLineNumbers
 import pro.jayeshseth.animations.ui.composables.CopyIconButton
@@ -77,11 +82,6 @@ import pro.jayeshseth.animations.ui.composables.TabsRow
 import pro.jayeshseth.animations.ui.composables.Toggler
 import pro.jayeshseth.animations.ui.screens.FeatureUnavailableScreen
 import pro.jayeshseth.animations.ui.theme.AnimationsTheme
-import pro.jayeshseth.animations.util.AnimationTabs
-import pro.jayeshseth.animations.util.Fields
-import pro.jayeshseth.animations.util.OnClickLink
-import pro.jayeshseth.animations.util.animationTabsList
-import pro.jayeshseth.animations.util.lazyNavBarPadding
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
 @Composable

@@ -5,12 +5,12 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.geometry.Size
-import pro.jayeshseth.animations.util.ComposeFriendlyFloat
-import pro.jayeshseth.animations.util.ComposeFriendlyInt
+import pro.jayeshseth.animations.core.model.ComposeFriendlyFloat
+import pro.jayeshseth.animations.core.model.ComposeFriendlyInt
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Stable
-class InterstellarSpaceShader(): RuntimeShader(shader) {
+class InterstellarSpaceShader() : RuntimeShader(shader) {
 
     fun updateResolution(size: Size) {
         setFloatUniform(

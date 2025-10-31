@@ -6,8 +6,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
+import pro.jayeshseth.animations.core.model.DURATION
 import pro.jayeshseth.animations.ui.composables.CatImage
-import pro.jayeshseth.animations.util.DURATION
 
 @Composable
 fun Scale(isVisible: Boolean) {

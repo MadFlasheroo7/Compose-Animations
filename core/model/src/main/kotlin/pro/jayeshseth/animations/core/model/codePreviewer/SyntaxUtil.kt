@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.util.codePreviewer
+package pro.jayeshseth.animations.core.model.codePreviewer
 
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color

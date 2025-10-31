@@ -20,10 +20,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import pro.jayeshseth.animations.ui.composables.ListItem
-import pro.jayeshseth.animations.util.CatItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import pro.jayeshseth.animations.core.model.CatItem
+import pro.jayeshseth.animations.ui.composables.ListItem
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable

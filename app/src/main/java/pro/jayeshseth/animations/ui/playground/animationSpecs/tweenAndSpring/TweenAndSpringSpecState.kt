@@ -1,9 +1,9 @@
 package pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring
 
 import androidx.compose.runtime.Stable
-import pro.jayeshseth.animations.util.DampingRatioOption
-import pro.jayeshseth.animations.util.EasingOption
-import pro.jayeshseth.animations.util.StiffnessOption
+import pro.jayeshseth.animations.core.model.DampingRatioOption
+import pro.jayeshseth.animations.core.model.EasingOption
+import pro.jayeshseth.animations.core.model.StiffnessOption
 import kotlin.enums.EnumEntries
 
 @Stable

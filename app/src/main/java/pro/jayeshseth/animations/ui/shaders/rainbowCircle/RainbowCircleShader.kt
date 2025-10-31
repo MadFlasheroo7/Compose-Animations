@@ -5,7 +5,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.geometry.Size
-import pro.jayeshseth.animations.util.ComposeFriendlyFloat
+import pro.jayeshseth.animations.core.model.ComposeFriendlyFloat
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 enum class ShaderIterationLevel(val shader: String) {

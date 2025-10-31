@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.theapache64.rebugger.Rebugger
 import com.wakaztahir.codeeditor.highlight.theme.CodeThemeType
-import pro.jayeshseth.animations.util.codePreviewer.CodeGenerator
+import pro.jayeshseth.animations.core.model.codePreviewer.CodeGenerator
 
 @Composable
 fun CodeBlockWithLineNumbers(text: List<String>, modifier: Modifier = Modifier) {

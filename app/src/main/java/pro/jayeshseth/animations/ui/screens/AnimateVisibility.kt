@@ -13,6 +13,10 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import pro.jayeshseth.animations.core.model.AnimationContent
+import pro.jayeshseth.animations.core.model.AnimationItem
+import pro.jayeshseth.animations.core.model.DURATION
+import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.ui.composables.AnimationCard
 import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.DefaultAnimation
 import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.ExpandAndShrink
@@ -25,10 +29,6 @@ import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.Scale
 import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.Slide
 import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.SlideInHorizontally
 import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.SlideInVertically
-import pro.jayeshseth.animations.util.AnimationContent
-import pro.jayeshseth.animations.util.AnimationItem
-import pro.jayeshseth.animations.util.DURATION
-import pro.jayeshseth.animations.util.OnClickLink
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @Composable

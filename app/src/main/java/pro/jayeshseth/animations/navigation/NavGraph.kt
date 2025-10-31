@@ -12,6 +12,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
+import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.ui.components.clipToDeviceCornerRadius
 import pro.jayeshseth.animations.ui.defaultApis.infiniteTransistions.InfiniteRotation
 import pro.jayeshseth.animations.ui.easterEggs.PhysicsLayoutAboutScreen
@@ -35,7 +36,6 @@ import pro.jayeshseth.animations.ui.screens.SwipeRefresh
 import pro.jayeshseth.animations.ui.screens.VisibilityAnimation
 import pro.jayeshseth.animations.ui.shaders.interstellarSpace.InterstellarShaderScreen
 import pro.jayeshseth.animations.ui.shaders.rainbowCircle.RainbowCircle
-import pro.jayeshseth.animations.util.OnClickLink
 
 /**
  * Nav3 graph with custom animations and decorators

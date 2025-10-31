@@ -1,11 +1,8 @@
-package pro.jayeshseth.animations.util
+package pro.jayeshseth.animations.core.model
 
 import androidx.compose.runtime.Composable
 
-const val DURATION = 1000
-
-data class AnimationItem(
+data class AnimationContent(
     val title: String? = null,
-    val source: String,
     val content: @Composable (trigger: Boolean) -> Unit
 )

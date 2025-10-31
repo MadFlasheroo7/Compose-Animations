@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.util
+package pro.jayeshseth.animations.core.model
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
+import java.text.DecimalFormat
 import java.util.Locale
 
 /**
@@ -20,7 +21,7 @@ fun Float.toExponent(): String {
 
     // 1. Use DecimalFormat to get a standard scientific notation string.
     // The pattern "0.0E0" ensures we get one digit before the decimal.
-    val decimalFormat = java.text.DecimalFormat("0.0E0")
+    val decimalFormat = DecimalFormat("0.0E0")
     val formattedString = decimalFormat.format(this) // This will produce something like "3.0E2"
 
     // 2. Split the string into the number part (mantissa) and the exponent part.

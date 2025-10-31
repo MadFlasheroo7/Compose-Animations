@@ -30,7 +30,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pro.jayeshseth.animations.util.AnimationContent
+import pro.jayeshseth.animations.core.model.AnimationContent
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
 @Composable
@@ -48,12 +48,13 @@ fun AnimationCard(
             animationSpec = tween(500, easing = EaseInOutQuad)
         )
     }
-    Card(modifier = modifier
-        .graphicsLayer {
+    Card(
+        modifier = modifier
+            .graphicsLayer {
 //            shifting to scale animation
 //            translationX = animatedProgress.value
-            scaleX = animatedProgress.value
-        }
+                scaleX = animatedProgress.value
+            }
     ) {
         var isVisible by remember { mutableStateOf(true) }
         Column(
@@ -70,7 +71,7 @@ fun AnimationCard(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = animationContent.title,
+                        text = animationContent.title!!,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier

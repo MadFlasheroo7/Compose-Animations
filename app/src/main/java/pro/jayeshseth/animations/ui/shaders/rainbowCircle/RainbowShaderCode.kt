@@ -3,8 +3,8 @@ package pro.jayeshseth.animations.ui.shaders.rainbowCircle
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Stable
-import pro.jayeshseth.animations.util.round
-import pro.jayeshseth.animations.util.toExponent
+import pro.jayeshseth.animations.core.model.round
+import pro.jayeshseth.animations.core.model.toExponent
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Stable
