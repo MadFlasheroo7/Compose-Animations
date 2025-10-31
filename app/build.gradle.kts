@@ -42,7 +42,7 @@ android {
 
 dependencies {
     implementation(projects.core.model)
-    implementation(projects.defaultApis)
+    implementation(projects.features.defaultApis)
 
 
     implementation(libs.commonmodule)

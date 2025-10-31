@@ -1,4 +1,5 @@
 @file:Suppress("UnstableApiUsage")
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -33,11 +34,11 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Animations"
-include (":app")
+include(":app")
 // Core Modules
 include(":core:ui")
 include(":core:model")
 include(":core:util")
 
-// Animations Modules
-include(":defaultApis")
+// Features/Animations Modules
+include(":features:defaultApis")
