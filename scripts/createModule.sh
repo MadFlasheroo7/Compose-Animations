@@ -19,18 +19,19 @@ if [[ -z "$package_id" ]]; then
   exit 1
 fi
 
+base_dir="../features"
 root_settings_gradle="../settings.gradle.kts"
-final_module_structure="../$module_name/src/main/kotlin/$(echo "$package_id" | tr '.' '/')"
+final_module_structure="$base_dir/$module_name/src/main/kotlin/$(echo "$package_id" | tr '.' '/')"
 
 echo "Generating Module..."
 
 mkdir -p "$final_module_structure"
 
-sed "s/package_id/$package_id/g" ../base/build.gradle.kts > "../$module_name/build.gradle.kts"
-touch "../$module_name/.gitignore" && cp "../base/.gitignore" "../$module_name/.gitignore"
-touch "../$module_name/proguard-rules.pro" && cp "../base/proguard-rules.pro" "../$module_name/proguard-rules.pro"
+sed "s/package_id/$package_id/g" ../base/build.gradle.kts > "$base_dir/$module_name/build.gradle.kts"
+touch "$base_dir/$module_name/.gitignore" && cp "../base/.gitignore" "$base_dir/$module_name/.gitignore"
+touch "$base_dir/$module_name/proguard-rules.pro" && cp "../base/proguard-rules.pro" "$base_dir/$module_name/proguard-rules.pro"
 
-include_line="include(\":$module_name\")"
+include_line="include(\":features:$module_name\")"
 
 echo "$include_line" >> "$root_settings_gradle"
 
