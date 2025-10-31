@@ -35,4 +35,5 @@ dependencyResolutionManagement {
 rootProject.name = "Animations"
 include (":app")
 include(":core:ui")
+include(":core:model")
 include(":defaultApis")
