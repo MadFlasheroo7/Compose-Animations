@@ -1,5 +1,6 @@
 package pro.jayeshseth.animations.core.navigation
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -31,6 +32,7 @@ import kotlinx.serialization.serializer
  * data class ProfileScreen(val userId: String) : Route()
  * ```
  */
+@Immutable
 @Serializable(with = RoutePolymorphicSerializer::class)
 open class Route
 
