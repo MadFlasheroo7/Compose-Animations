@@ -37,6 +37,7 @@ rootProject.name = "Animations"
 include(":app")
 // Core Modules
 include(":core:ui")
+include(":core:utils")
 include(":core:model")
 include(":core:navigation")
 
