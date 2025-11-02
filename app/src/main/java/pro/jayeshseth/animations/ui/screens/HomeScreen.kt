@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
 import pro.jayeshseth.animations.navigation.NavDestinations
 import pro.jayeshseth.animations.navigation.OnNavAction
 import pro.jayeshseth.animations.ui.composables.InteractiveButton
@@ -60,7 +61,7 @@ private val animationScreens: List<AnimationScreen> by lazy {
     mutableListOf(
         AnimationScreen(
             title = "Animate Visibility",
-            route = NavDestinations.AnimateVisibility
+            route = DefaultApisRoutes.AnimateVisibilityRoute
         ),
         AnimationScreen(
             title = "Animate List Item Placement",
@@ -72,7 +73,7 @@ private val animationScreens: List<AnimationScreen> by lazy {
         ),
         AnimationScreen(
             title = "Animate Content",
-            route = NavDestinations.AnimateContent
+            route = DefaultApisRoutes.AnimateContentRoute
         ),
         AnimationScreen(
             title = "Animate Value As State",
@@ -80,11 +81,11 @@ private val animationScreens: List<AnimationScreen> by lazy {
         ),
         AnimationScreen(
             title = "Animated Gesture",
-            route = NavDestinations.AnimateGesture
+            route = DefaultApisRoutes.AnimateGestureRoute
         ),
         AnimationScreen(
             title = "Infinite Rotation",
-            route = NavDestinations.InfiniteRotation
+            route = DefaultApisRoutes.InfiniteRotationRoute
         ),
         AnimationScreen(
             title = "Swipe To Refresh",

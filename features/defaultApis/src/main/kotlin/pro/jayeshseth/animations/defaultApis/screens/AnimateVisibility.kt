@@ -32,7 +32,7 @@ import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.SlideI
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @Composable
-fun VisibilityAnimation(onClickLink: OnClickLink) {
+fun VisibilityAnimations(onClickLink: OnClickLink) {
     StatusBarAwareThemedLazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier

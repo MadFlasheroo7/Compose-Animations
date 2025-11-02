@@ -14,7 +14,7 @@ import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.rememberNavigator
 import pro.jayeshseth.animations.core.ui.modifiers.clipToDeviceCornerRadius
-import pro.jayeshseth.animations.defaultApis.animations.infiniteTransistions.InfiniteRotation
+import pro.jayeshseth.animations.defaultApis.navigation.defaultApis
 import pro.jayeshseth.animations.ui.easterEggs.PhysicsLayoutAboutScreen
 import pro.jayeshseth.animations.ui.itemPlacements.FadeItemPlacement
 import pro.jayeshseth.animations.ui.itemPlacements.ScaleItemPlacement
@@ -22,9 +22,6 @@ import pro.jayeshseth.animations.ui.itemPlacements.SlideItemPlacement
 import pro.jayeshseth.animations.ui.itemPlacements.TrippyBlinders
 import pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring.TweenAndSpringScreen
 import pro.jayeshseth.animations.ui.screens.AboutScreen
-import pro.jayeshseth.animations.defaultApis.screens.AnimateValueAsState
-import pro.jayeshseth.animations.defaultApis.screens.AnimatedGestures
-import pro.jayeshseth.animations.defaultApis.screens.AnimatedTransition
 import pro.jayeshseth.animations.ui.screens.AnimationSpecs
 import pro.jayeshseth.animations.ui.screens.BouncyRope
 import pro.jayeshseth.animations.ui.screens.EasterEggScreen
@@ -33,7 +30,6 @@ import pro.jayeshseth.animations.ui.screens.ItemPlacementAnimation
 import pro.jayeshseth.animations.ui.screens.Playground
 import pro.jayeshseth.animations.ui.screens.Shaders
 import pro.jayeshseth.animations.ui.screens.SwipeRefresh
-import pro.jayeshseth.animations.defaultApis.screens.VisibilityAnimation
 import pro.jayeshseth.animations.ui.shaders.interstellarSpace.InterstellarShaderScreen
 import pro.jayeshseth.animations.ui.shaders.rainbowCircle.RainbowCircle
 
@@ -61,34 +57,20 @@ fun NavGraph(onClickLink: OnClickLink) {
             rememberSavedStateNavEntryDecorator()
         ),
         entryProvider = entryProvider {
-            entry< NavDestinations.Home> {
+            entry<NavDestinations.Home> {
                 HomeScreen { route ->
                     backStack.navigate(route)
                 }
             }
-            entry<NavDestinations.AnimateVisibility> {
-                VisibilityAnimation(onClickLink)
-            }
-            entry<NavDestinations.AnimateContent> {
-                AnimatedTransition()
-            }
-            entry<NavDestinations.AnimateGesture> {
-                AnimatedGestures()
-            }
+            defaultApis(onClickLink)
             entry<NavDestinations.AnimateNavGraph> {
                 AnimatedNavGraph()
-            }
-            entry<NavDestinations.InfiniteRotation> {
-                InfiniteRotation()
             }
             entry<NavDestinations.SwipeRefresh> {
                 SwipeRefresh()
             }
             entry<NavDestinations.BouncyRope> {
                 BouncyRope()
-            }
-            entry<NavDestinations.AnimateValueAsState> {
-                AnimateValueAsState(onClickLink)
             }
             entry<NavDestinations.AnimatedListItemPlacement> {
                 ItemPlacementAnimation(

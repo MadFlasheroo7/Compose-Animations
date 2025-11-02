@@ -3,7 +3,7 @@ package pro.jayeshseth.animations.navigation
 import kotlinx.serialization.Serializable
 import pro.jayeshseth.animations.core.navigation.Route
 
-typealias OnNavAction = (NavDestinations) -> Unit
+typealias OnNavAction = (Route) -> Unit
 
 /**
  * Holds all the destinations used in this app
@@ -11,11 +11,7 @@ typealias OnNavAction = (NavDestinations) -> Unit
 //TODO multi module?
 sealed class NavDestinations : Route() {
     @Serializable data object Home : NavDestinations()
-    @Serializable data object AnimateVisibility : NavDestinations()
-    @Serializable data object AnimateContent : NavDestinations()
-    @Serializable data object AnimateGesture : NavDestinations()
     @Serializable data object AnimateNavGraph : NavDestinations()
-    @Serializable data object InfiniteRotation : NavDestinations()
     @Serializable data object SwipeRefresh : NavDestinations()
     @Serializable data object BouncyRope : NavDestinations()
     @Serializable data object AnimateValueAsState : NavDestinations()
