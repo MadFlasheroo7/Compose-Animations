@@ -8,13 +8,13 @@ import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.entry
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.navEntryDecorator
-import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import pro.jayeshseth.animations.core.model.OnClickLink
-import pro.jayeshseth.animations.ui.components.clipToDeviceCornerRadius
-import pro.jayeshseth.animations.ui.defaultApis.infiniteTransistions.InfiniteRotation
+import pro.jayeshseth.animations.core.navigation.rememberNavigator
+import pro.jayeshseth.animations.core.ui.modifiers.clipToDeviceCornerRadius
+import pro.jayeshseth.animations.defaultApis.animations.infiniteTransistions.InfiniteRotation
 import pro.jayeshseth.animations.ui.easterEggs.PhysicsLayoutAboutScreen
 import pro.jayeshseth.animations.ui.itemPlacements.FadeItemPlacement
 import pro.jayeshseth.animations.ui.itemPlacements.ScaleItemPlacement
@@ -22,9 +22,9 @@ import pro.jayeshseth.animations.ui.itemPlacements.SlideItemPlacement
 import pro.jayeshseth.animations.ui.itemPlacements.TrippyBlinders
 import pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring.TweenAndSpringScreen
 import pro.jayeshseth.animations.ui.screens.AboutScreen
-import pro.jayeshseth.animations.ui.screens.AnimateValueAsState
-import pro.jayeshseth.animations.ui.screens.AnimatedGestures
-import pro.jayeshseth.animations.ui.screens.AnimatedTransition
+import pro.jayeshseth.animations.defaultApis.screens.AnimateValueAsState
+import pro.jayeshseth.animations.defaultApis.screens.AnimatedGestures
+import pro.jayeshseth.animations.defaultApis.screens.AnimatedTransition
 import pro.jayeshseth.animations.ui.screens.AnimationSpecs
 import pro.jayeshseth.animations.ui.screens.BouncyRope
 import pro.jayeshseth.animations.ui.screens.EasterEggScreen
@@ -33,7 +33,7 @@ import pro.jayeshseth.animations.ui.screens.ItemPlacementAnimation
 import pro.jayeshseth.animations.ui.screens.Playground
 import pro.jayeshseth.animations.ui.screens.Shaders
 import pro.jayeshseth.animations.ui.screens.SwipeRefresh
-import pro.jayeshseth.animations.ui.screens.VisibilityAnimation
+import pro.jayeshseth.animations.defaultApis.screens.VisibilityAnimation
 import pro.jayeshseth.animations.ui.shaders.interstellarSpace.InterstellarShaderScreen
 import pro.jayeshseth.animations.ui.shaders.rainbowCircle.RainbowCircle
 
@@ -42,7 +42,7 @@ import pro.jayeshseth.animations.ui.shaders.rainbowCircle.RainbowCircle
  */
 @Composable
 fun NavGraph(onClickLink: OnClickLink) {
-    val backStack = rememberNavBackStack(NavDestinations.Home)
+    val backStack = rememberNavigator(NavDestinations.Home)
     val entryWithClippedBackgroundDecorator = navEntryDecorator<Any> { entry ->
         Box(
             Modifier
@@ -53,17 +53,17 @@ fun NavGraph(onClickLink: OnClickLink) {
         }
     }
     NavDisplay(
-        backStack = backStack,
-        onBack = { backStack.removeLastOrNull() },
+        backStack = backStack.backStack,
+        onBack = { backStack.navBack() },
         entryDecorators = listOf(
             entryWithClippedBackgroundDecorator,
             rememberSceneSetupNavEntryDecorator(),
             rememberSavedStateNavEntryDecorator()
         ),
         entryProvider = entryProvider {
-            entry<NavDestinations.Home> {
+            entry< NavDestinations.Home> {
                 HomeScreen { route ->
-                    backStack.add(route)
+                    backStack.navigate(route)
                 }
             }
             entry<NavDestinations.AnimateVisibility> {
@@ -92,10 +92,10 @@ fun NavGraph(onClickLink: OnClickLink) {
             }
             entry<NavDestinations.AnimatedListItemPlacement> {
                 ItemPlacementAnimation(
-                    navToTrippyBlinders = { backStack.add(NavDestinations.TrippyBlinders) },
-                    navToSlideInOut = { backStack.add(NavDestinations.SlideInOut) },
-                    navToScale = { backStack.add(NavDestinations.ScaleItemPlacement) },
-                    navToFade = { backStack.add(NavDestinations.FadeItemPlacement) },
+                    navToTrippyBlinders = { backStack.navigate(NavDestinations.TrippyBlinders) },
+                    navToSlideInOut = { backStack.navigate(NavDestinations.SlideInOut) },
+                    navToScale = { backStack.navigate(NavDestinations.ScaleItemPlacement) },
+                    navToFade = { backStack.navigate(NavDestinations.FadeItemPlacement) },
                 )
             }
             entry<NavDestinations.TrippyBlinders> {
@@ -117,13 +117,13 @@ fun NavGraph(onClickLink: OnClickLink) {
                 AboutScreen()
             }
             entry<NavDestinations.PastEasterEggs> {
-                EasterEggScreen { backStack.add(it) }
+                EasterEggScreen { backStack.navigate(it) }
             }
             entry<NavDestinations.PhysicsLayoutAboutScreen> {
                 PhysicsLayoutAboutScreen()
             }
             entry<NavDestinations.Shaders> {
-                Shaders() { backStack.add(it) }
+                Shaders() { backStack.navigate(it) }
             }
             entry<NavDestinations.RainbowCircleShader> {
                 RainbowCircle(onClickLink)
@@ -132,13 +132,13 @@ fun NavGraph(onClickLink: OnClickLink) {
                 InterstellarShaderScreen(onClickLink)
             }
             entry<NavDestinations.Playground> {
-                Playground { backStack.add(it) }
+                Playground { backStack.navigate(it) }
             }
             entry<NavDestinations.TweenAndSpring> {
                 TweenAndSpringScreen(onClickLink)
             }
             entry<NavDestinations.AnimationSpec> {
-                AnimationSpecs { backStack.add(it) }
+                AnimationSpecs { backStack.navigate(it) }
             }
         }
     )

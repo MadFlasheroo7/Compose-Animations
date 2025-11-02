@@ -1,7 +1,7 @@
 package pro.jayeshseth.animations.navigation
 
-import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
+import pro.jayeshseth.animations.core.navigation.Route
 
 typealias OnNavAction = (NavDestinations) -> Unit
 
@@ -9,7 +9,7 @@ typealias OnNavAction = (NavDestinations) -> Unit
  * Holds all the destinations used in this app
  */
 //TODO multi module?
-sealed class NavDestinations : NavKey {
+sealed class NavDestinations : Route() {
     @Serializable data object Home : NavDestinations()
     @Serializable data object AnimateVisibility : NavDestinations()
     @Serializable data object AnimateContent : NavDestinations()
