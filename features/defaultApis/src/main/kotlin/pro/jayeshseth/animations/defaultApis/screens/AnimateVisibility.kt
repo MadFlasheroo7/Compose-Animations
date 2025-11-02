@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens
+package pro.jayeshseth.animations.defaultApis.screens
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
@@ -17,18 +17,18 @@ import pro.jayeshseth.animations.core.model.AnimationContent
 import pro.jayeshseth.animations.core.model.AnimationItem
 import pro.jayeshseth.animations.core.model.DURATION
 import pro.jayeshseth.animations.core.model.OnClickLink
-import pro.jayeshseth.animations.ui.composables.AnimationCard
-import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.DefaultAnimation
-import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.ExpandAndShrink
-import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.ExpandAndShrinkHorizontally
-import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.ExpandAndShrinkVertically
-import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.Fade
-import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.HungryCat
-import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.RandomSlide
-import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.Scale
-import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.Slide
-import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.SlideInHorizontally
-import pro.jayeshseth.animations.ui.defaultApis.animateVisibility.SlideInVertically
+import pro.jayeshseth.animations.core.ui.components.AnimationCard
+import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.DefaultAnimation
+import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.ExpandAndShrink
+import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.ExpandAndShrinkHorizontally
+import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.ExpandAndShrinkVertically
+import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.Fade
+import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.HungryCat
+import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.RandomSlide
+import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.Scale
+import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.Slide
+import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.SlideInHorizontally
+import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.SlideInVertically
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @Composable

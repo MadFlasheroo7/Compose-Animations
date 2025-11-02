@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens
+package pro.jayeshseth.animations.defaultApis.screens
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
@@ -16,11 +16,11 @@ import pro.jayeshseth.animations.core.model.AnimationContent
 import pro.jayeshseth.animations.core.model.AnimationItem
 import pro.jayeshseth.animations.core.model.DURATION
 import pro.jayeshseth.animations.core.model.OnClickLink
-import pro.jayeshseth.animations.ui.composables.AnimationCard
-import pro.jayeshseth.animations.ui.defaultApis.animateValue.AnimateColorAsState
-import pro.jayeshseth.animations.ui.defaultApis.animateValue.AnimateDpAsState
-import pro.jayeshseth.animations.ui.defaultApis.animateValue.AnimateFloatAsState
-import pro.jayeshseth.animations.ui.defaultApis.animateValue.AnimateOffsetAsState
+import pro.jayeshseth.animations.core.ui.components.AnimationCard
+import pro.jayeshseth.animations.defaultApis.animations.animateValue.AnimateColorAsState
+import pro.jayeshseth.animations.defaultApis.animations.animateValue.AnimateDpAsState
+import pro.jayeshseth.animations.defaultApis.animations.animateValue.AnimateFloatAsState
+import pro.jayeshseth.animations.defaultApis.animations.animateValue.AnimateOffsetAsState
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @Composable

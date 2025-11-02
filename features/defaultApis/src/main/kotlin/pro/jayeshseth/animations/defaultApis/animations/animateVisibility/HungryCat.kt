@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.defaultApis.animateVisibility
+package pro.jayeshseth.animations.defaultApis.animations.animateVisibility
 
 import android.media.MediaPlayer
 import androidx.compose.animation.AnimatedVisibility
@@ -31,9 +31,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pro.jayeshseth.animations.BASE_URL
-import pro.jayeshseth.animations.R
-import pro.jayeshseth.animations.ui.composables.CatImage
+import pro.jayeshseth.animations.core.ui.components.CatImage
+import pro.jayeshseth.animations.core.ui.media.AnimMedia
+import pro.jayeshseth.animations.core.utils.BASE_URL
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
 const val HungryCatPath = "$BASE_URL/animations/animateVisibility/HungryCat.kt"
@@ -44,7 +44,7 @@ const val HungryCatPath = "$BASE_URL/animations/animateVisibility/HungryCat.kt"
 @Composable
 fun HungryCat() {
     val urlLauncher = LocalUriHandler.current
-    val mediaPlayer = MediaPlayer.create(LocalContext.current, R.raw.angry_cat)
+    val mediaPlayer = MediaPlayer.create(LocalContext.current, AnimMedia.HungryCat)
     Card {
         var isVisible by remember { mutableStateOf(true) }
         val randNum = mutableListOf(-200..200).random()

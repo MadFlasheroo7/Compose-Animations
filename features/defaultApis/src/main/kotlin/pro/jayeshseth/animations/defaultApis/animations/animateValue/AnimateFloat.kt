@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.defaultApis.animateValue
+package pro.jayeshseth.animations.defaultApis.animations.animateValue
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState

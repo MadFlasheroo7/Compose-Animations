@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens
+package pro.jayeshseth.animations.defaultApis.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,8 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import pro.jayeshseth.animations.ui.defaultApis.animatedContent.AdvancedIncrementCounter
-import pro.jayeshseth.animations.ui.defaultApis.animatedContent.BasicIncrementCounter
+import pro.jayeshseth.animations.defaultApis.animations.animatedContent.AdvancedIncrementCounter
+import pro.jayeshseth.animations.defaultApis.animations.animatedContent.BasicIncrementCounter
 
 @Composable
 fun AnimatedTransition() {

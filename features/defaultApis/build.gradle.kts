@@ -5,3 +5,11 @@ plugins {
 android {
     namespace = "pro.jayeshseth.animations.defaultApis"
 }
+
+dependencies {
+    implementation(projects.core.ui)
+    implementation(projects.core.utils)
+    implementation(projects.core.model)
+    implementation(projects.core.navigation)
+    implementation(libs.commonmodule)
+}

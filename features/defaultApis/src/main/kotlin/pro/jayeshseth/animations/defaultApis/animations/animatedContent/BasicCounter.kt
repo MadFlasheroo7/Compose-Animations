@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.defaultApis.animatedContent
+package pro.jayeshseth.animations.defaultApis.animations.animatedContent
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeOut
@@ -29,7 +29,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pro.jayeshseth.animations.BASE_URL
+import pro.jayeshseth.animations.core.utils.BASE_URL
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
 const val BasicCounterPath = "$BASE_URL/defaultApis2/animatedContent/BasicCounter.kt"

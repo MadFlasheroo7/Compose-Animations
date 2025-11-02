@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens
+package pro.jayeshseth.animations.defaultApis.screens
 
 import android.util.Log
 import androidx.compose.animation.core.Animatable
@@ -24,7 +24,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import pro.jayeshseth.animations.ui.composables.CatImage
+import pro.jayeshseth.animations.core.ui.components.CatImage
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt

@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.defaultApis.animateVisibility
+package pro.jayeshseth.animations.defaultApis.animations.animateVisibility
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
@@ -11,7 +11,7 @@ import androidx.compose.animation.shrinkOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.runtime.Composable
 import pro.jayeshseth.animations.core.model.DURATION
-import pro.jayeshseth.animations.ui.composables.CatImage
+import pro.jayeshseth.animations.core.ui.components.CatImage
 
 @Composable
 fun ExpandAndShrink(isVisible: Boolean) {

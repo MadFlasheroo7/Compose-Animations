@@ -1,8 +1,8 @@
-package pro.jayeshseth.animations.ui.defaultApis.animateVisibility
+package pro.jayeshseth.animations.defaultApis.animations.animateVisibility
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.runtime.Composable
-import pro.jayeshseth.animations.ui.composables.CatImage
+import pro.jayeshseth.animations.core.ui.components.CatImage
 
 /**
  * Default Visibility Animation it uses

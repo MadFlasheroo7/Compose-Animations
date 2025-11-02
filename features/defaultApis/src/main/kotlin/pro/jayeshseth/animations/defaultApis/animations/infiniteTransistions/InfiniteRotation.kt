@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.defaultApis.infiniteTransistions
+package pro.jayeshseth.animations.defaultApis.animations.infiniteTransistions
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pro.jayeshseth.animations.R
+import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 
 @Composable
 fun InfiniteRotation() {
@@ -70,7 +70,7 @@ fun InfiniteRotation() {
                 )
                 Image(
                     painter = painterResource(
-                        id = R.drawable.fan
+                        id = AnimIcons.fan
                     ),
                     contentDescription = "Fan",
                     modifier = Modifier

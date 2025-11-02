@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.defaultApis.animateVisibility
+package pro.jayeshseth.animations.defaultApis.animations.animateVisibility
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
@@ -7,7 +7,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import pro.jayeshseth.animations.core.model.DURATION
-import pro.jayeshseth.animations.ui.composables.CatImage
+import pro.jayeshseth.animations.core.ui.components.CatImage
 
 @Composable
 fun Fade(isVisible: Boolean) {
