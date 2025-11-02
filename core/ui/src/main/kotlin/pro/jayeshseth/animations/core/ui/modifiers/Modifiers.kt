@@ -1,7 +1,8 @@
-package pro.jayeshseth.animations.ui.components
+package pro.jayeshseth.animations.core.ui.modifiers
 
 import android.os.Build
 import android.view.RoundedCorner
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,6 +14,7 @@ import androidx.compose.ui.unit.dp
 /**
  * Modifier to clip to the device's corner radius if the device exposes it.
  */
+@RequiresApi(Build.VERSION_CODES.M)
 @Composable
 fun Modifier.clipToDeviceCornerRadius(): Modifier {
     val defaultRadius = 0.dp

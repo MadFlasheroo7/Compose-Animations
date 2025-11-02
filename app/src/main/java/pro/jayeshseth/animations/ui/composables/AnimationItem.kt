@@ -15,7 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import pro.jayeshseth.animations.R
+import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 
 /**
  * A common animation item for all item placement animations
@@ -32,7 +32,7 @@ fun AnimationItem(modifier: Modifier = Modifier) {
                 .padding(8.dp), verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(R.drawable.cat),
+                painter = painterResource(AnimIcons.cat),
                 contentDescription = "",
                 modifier = Modifier
                     .size(50.dp)

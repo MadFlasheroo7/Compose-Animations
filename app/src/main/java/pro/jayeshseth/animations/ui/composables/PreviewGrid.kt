@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import pro.jayeshseth.animations.core.ui.components.CatImage
 import pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring.TweenAndSpringSpecState
 import pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring.TweenNSpringSpec
 
