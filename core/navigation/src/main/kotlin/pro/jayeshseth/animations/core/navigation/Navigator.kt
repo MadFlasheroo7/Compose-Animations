@@ -51,8 +51,6 @@ class Navigator(private var startRoute: Route) {
                 val savedState = SavedState()
                 savedState.write {
                     putSavedState(KEY_START_ROUTE, encodeToSavedState(navigator.startRoute))
-                    Log.d("route", "encodecoded ${navigator.startRoute::class.simpleName}")
-
                     putSavedStateList(
                         KEY_BACK_STACK,
                         navigator.backStack.map { encodeToSavedState(it) }
@@ -63,8 +61,6 @@ class Navigator(private var startRoute: Route) {
             restore = { savedState ->
                 savedState.read {
                     val startRoute = decodeFromSavedState<Route>(getSavedState(KEY_START_ROUTE))
-                    Log.d("route", "decoded ${startRoute::class.simpleName}")
-
                     val navigator = Navigator(startRoute)
 
                     getSavedStateListOrNull(KEY_BACK_STACK)
