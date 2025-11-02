@@ -92,12 +92,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import pro.jayeshseth.animations.R
 import pro.jayeshseth.animations.core.model.AnimationTabs
 import pro.jayeshseth.animations.core.model.Fields
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.model.animationTabsList
 import pro.jayeshseth.animations.core.model.lazyNavBarPadding
+import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 import pro.jayeshseth.animations.ui.composables.AnimatedTab
 import pro.jayeshseth.animations.ui.composables.CodeBlockWithLineNumbers
 import pro.jayeshseth.animations.ui.composables.CopyIconButton
@@ -433,7 +433,7 @@ private fun InterstellarShader(
                             }
                         ) {
                             Icon(
-                                painter = painterResource(R.drawable.faders),
+                                painter = painterResource(AnimIcons.settings),
                                 contentDescription = "",
                                 modifier = Modifier
                                     .sharedBounds(
