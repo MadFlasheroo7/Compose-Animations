@@ -44,3 +44,4 @@ include(":core:navigation")
 // Features/Animations Modules
 include(":features:defaultApis")
 include(":features:playground")
+include(":features:itemPlacements")
