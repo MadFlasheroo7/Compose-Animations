@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.composables
+package pro.jayeshseth.animations.itemPlacements.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row

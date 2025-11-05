@@ -36,7 +36,7 @@ import pro.jayeshseth.animations.core.ui.media.AnimMedia
 import pro.jayeshseth.animations.core.utils.BASE_URL
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
-const val HungryCatPath = "$BASE_URL/animations/animateVisibility/HungryCat.kt"
+val HungryCatPath = "$BASE_URL/animations/animateVisibility/HungryCat.kt"
 
 /**
  * A hungry cat is a angry cat 🐈😾

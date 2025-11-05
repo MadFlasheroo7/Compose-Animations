@@ -15,19 +15,14 @@ import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.rememberNavigator
 import pro.jayeshseth.animations.core.ui.modifiers.clipToDeviceCornerRadius
 import pro.jayeshseth.animations.defaultApis.navigation.defaultApis
+import pro.jayeshseth.animations.itemPlacements.navigation.itemPlacements
 import pro.jayeshseth.animations.playground.navigation.playground
 import pro.jayeshseth.animations.ui.easterEggs.PhysicsLayoutAboutScreen
-import pro.jayeshseth.animations.ui.itemPlacements.FadeItemPlacement
-import pro.jayeshseth.animations.ui.itemPlacements.ScaleItemPlacement
-import pro.jayeshseth.animations.ui.itemPlacements.SlideItemPlacement
-import pro.jayeshseth.animations.ui.itemPlacements.TrippyBlinders
 import pro.jayeshseth.animations.ui.screens.AboutScreen
 import pro.jayeshseth.animations.ui.screens.BouncyRope
 import pro.jayeshseth.animations.ui.screens.EasterEggScreen
 import pro.jayeshseth.animations.ui.screens.HomeScreen
-import pro.jayeshseth.animations.ui.screens.ItemPlacementAnimation
 import pro.jayeshseth.animations.ui.screens.Shaders
-import pro.jayeshseth.animations.ui.screens.SwipeRefresh
 import pro.jayeshseth.animations.ui.shaders.interstellarSpace.InterstellarShaderScreen
 import pro.jayeshseth.animations.ui.shaders.rainbowCircle.RainbowCircle
 
@@ -62,38 +57,39 @@ fun NavGraph(onClickLink: OnClickLink) {
             }
             defaultApis(onClickLink)
             playground(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
+            itemPlacements(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
             entry<NavDestinations.AnimateNavGraph> {
                 AnimatedNavGraph()
             }
-            entry<NavDestinations.SwipeRefresh> {
-                SwipeRefresh()
-            }
+//            entry<NavDestinations.SwipeRefresh> {
+//                SwipeRefresh()
+//            }
             entry<NavDestinations.BouncyRope> {
                 BouncyRope()
             }
-            entry<NavDestinations.AnimatedListItemPlacement> {
-                ItemPlacementAnimation(
-                    navToTrippyBlinders = { backStack.navigate(NavDestinations.TrippyBlinders) },
-                    navToSlideInOut = { backStack.navigate(NavDestinations.SlideInOut) },
-                    navToScale = { backStack.navigate(NavDestinations.ScaleItemPlacement) },
-                    navToFade = { backStack.navigate(NavDestinations.FadeItemPlacement) },
-                )
-            }
-            entry<NavDestinations.TrippyBlinders> {
-                TrippyBlinders()
-            }
+//            entry<NavDestinations.AnimatedListItemPlacement> {
+//                ItemPlacementAnimation(
+//                    navToTrippyBlinders = { backStack.navigate(NavDestinations.TrippyBlinders) },
+//                    navToSlideInOut = { backStack.navigate(NavDestinations.SlideInOut) },
+//                    navToScale = { backStack.navigate(NavDestinations.ScaleItemPlacement) },
+//                    navToFade = { backStack.navigate(NavDestinations.FadeItemPlacement) },
+//                )
+//            }
+//            entry<NavDestinations.TrippyBlinders> {
+//                TrippyBlinders()
+//            }
             entry<NavDestinations.AboutScreen> {
                 AboutScreen()
             }
-            entry<NavDestinations.SlideInOut> {
-                SlideItemPlacement(onClickLink)
-            }
-            entry<NavDestinations.ScaleItemPlacement> {
-                ScaleItemPlacement(onClickLink)
-            }
-            entry<NavDestinations.FadeItemPlacement> {
-                FadeItemPlacement(onClickLink)
-            }
+//            entry<NavDestinations.SlideInOut> {
+//                SlideItemPlacement(onClickLink)
+//            }
+//            entry<NavDestinations.ScaleItemPlacement> {
+//                ScaleItemPlacement(onClickLink)
+//            }
+//            entry<NavDestinations.FadeItemPlacement> {
+//                FadeItemPlacement(onClickLink)
+//            }
             entry<NavDestinations.Community> {
                 AboutScreen()
             }

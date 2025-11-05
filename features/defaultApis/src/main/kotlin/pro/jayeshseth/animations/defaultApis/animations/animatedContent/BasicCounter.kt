@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import pro.jayeshseth.animations.core.utils.BASE_URL
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
-const val BasicCounterPath = "$BASE_URL/defaultApis2/animatedContent/BasicCounter.kt"
+val BasicCounterPath = "$BASE_URL/defaultApis2/animatedContent/BasicCounter.kt"
 
 @Composable
 fun BasicIncrementCounter() {

@@ -3,5 +3,8 @@ plugins {
 }
 
 android {
+    buildFeatures {
+        buildConfig = true
+    }
     namespace = "pro.jayeshseth.animations.core.utils"
 }

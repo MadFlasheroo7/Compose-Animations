@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens
+package pro.jayeshseth.animations.itemPlacements.screens.swipeRefresh
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.core.model.CatItem
-import pro.jayeshseth.animations.ui.composables.ListItem
+import pro.jayeshseth.animations.itemPlacements.components.ListItem
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable

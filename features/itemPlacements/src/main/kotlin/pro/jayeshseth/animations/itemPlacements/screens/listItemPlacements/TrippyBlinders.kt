@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.itemPlacements
+package pro.jayeshseth.animations.itemPlacements.screens.listItemPlacements
 
 import android.app.Activity
 import android.os.Build

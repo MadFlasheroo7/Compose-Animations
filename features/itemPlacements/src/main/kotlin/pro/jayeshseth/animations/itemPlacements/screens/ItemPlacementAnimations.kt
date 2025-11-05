@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens
+package pro.jayeshseth.animations.itemPlacements.screens
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -7,15 +7,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import pro.jayeshseth.animations.core.navigation.OnNavAction
+import pro.jayeshseth.animations.itemPlacements.navigation.ItemPlacementRoutes
 import pro.jayeshseth.commoncomponents.InteractiveButton
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedColumn
 
 @Composable
 fun ItemPlacementAnimation(
-    navToTrippyBlinders: () -> Unit,
-    navToSlideInOut: () -> Unit,
-    navToScale: () -> Unit,
-    navToFade: () -> Unit,
+    onNavAction: OnNavAction,
     modifier: Modifier = Modifier
 ) {
     StatusBarAwareThemedColumn(
@@ -28,15 +27,21 @@ fun ItemPlacementAnimation(
     ) {
         InteractiveButton(
             text = "Slide",
-            onClick = navToSlideInOut,
+            onClick = {
+                onNavAction(ItemPlacementRoutes.SlideItemPlacementRoute)
+            },
         )
         InteractiveButton(
             text = "Scale",
-            onClick = navToScale,
+            onClick = {
+                onNavAction(ItemPlacementRoutes.ScaleItemPlacementRoute)
+            },
         )
         InteractiveButton(
             text = "Fade",
-            onClick = navToFade,
+            onClick = {
+                onNavAction(ItemPlacementRoutes.FadeItemPlacementRoute)
+            },
         )
 //        InteractiveButton(
 //            text = "Fidget Toy",
@@ -44,7 +49,9 @@ fun ItemPlacementAnimation(
 //        )
         InteractiveButton(
             text = "Trippy Blinders",
-            onClick = navToTrippyBlinders,
+            onClick = {
+                onNavAction(ItemPlacementRoutes.TrippyBlindersRoute)
+            },
         )
     }
 }

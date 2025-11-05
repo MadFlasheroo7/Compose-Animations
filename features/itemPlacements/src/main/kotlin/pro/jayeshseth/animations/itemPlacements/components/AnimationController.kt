@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.composables
+package pro.jayeshseth.animations.itemPlacements.components
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize

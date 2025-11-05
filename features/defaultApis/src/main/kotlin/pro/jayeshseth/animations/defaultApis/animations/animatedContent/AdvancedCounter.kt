@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import pro.jayeshseth.animations.core.utils.BASE_URL
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
-const val AdvanceCounterPath = "$BASE_URL/defaultApis/animatedContent/AdvancedCounter.kt"
+val AdvanceCounterPath = "$BASE_URL/defaultApis/animatedContent/AdvancedCounter.kt"
 
 data class Digit(val singleDigit: Char, val fullNumber: Int, val place: Int) {
     override fun equals(other: Any?): Boolean {

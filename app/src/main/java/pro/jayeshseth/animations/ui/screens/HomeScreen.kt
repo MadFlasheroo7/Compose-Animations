@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import pro.jayeshseth.animations.core.navigation.OnNavAction
 import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
+import pro.jayeshseth.animations.itemPlacements.navigation.ItemPlacementRoutes
 import pro.jayeshseth.animations.navigation.NavDestinations
 import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
 import pro.jayeshseth.animations.ui.composables.InteractiveButton
@@ -66,7 +67,7 @@ private val animationScreens: List<AnimationScreen> by lazy {
         ),
         AnimationScreen(
             title = "Animate List Item Placement",
-            route = NavDestinations.AnimatedListItemPlacement
+            route = ItemPlacementRoutes.AnimatedListItemPlacementRoute
         ),
         AnimationScreen(
             title = "Playground",
@@ -90,7 +91,7 @@ private val animationScreens: List<AnimationScreen> by lazy {
         ),
         AnimationScreen(
             title = "Swipe To Refresh",
-            route = NavDestinations.SwipeRefresh
+            route = ItemPlacementRoutes.SwipeRefreshRoute
         ),
         AnimationScreen(
             title = "Nav Animation",

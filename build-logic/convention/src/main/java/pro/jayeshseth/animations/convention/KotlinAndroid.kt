@@ -20,6 +20,10 @@ internal fun Project.configureKotlinAndroid(
             targetCompatibility = JavaVersion.VERSION_17
         }
 
+        buildFeatures {
+            buildConfig = true
+        }
+
         tasks.withType<KotlinCompile> {
             compilerOptions {
                 jvmTarget.set(JvmTarget.fromTarget(libs.findVersion("jvm-target").get().toString()))

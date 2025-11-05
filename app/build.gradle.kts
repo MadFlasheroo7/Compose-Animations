@@ -47,6 +47,7 @@ dependencies {
     implementation(projects.core.navigation)
     implementation(projects.features.defaultApis)
     implementation(projects.features.playground)
+    implementation(projects.features.itemPlacements)
 
 
     implementation(libs.commonmodule)
@@ -58,8 +59,7 @@ dependencies {
     implementation(libs.compose.code.editor)
     implementation(libs.kotlin.stdlib)
     implementation(libs.lifecycle.viewmodel.navigation3)
-    implementation(libs.coil.kt)
-    implementation(libs.coil.kt.compose)
+
     implementation(libs.physics.layout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

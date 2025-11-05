@@ -36,7 +36,7 @@ import pro.jayeshseth.animations.core.model.DURATION
 import pro.jayeshseth.animations.core.utils.BASE_URL
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
-const val OffsetPath = "${BASE_URL}/animations/animateValue/AnimateOffset.kt"
+val OffsetPath = "${BASE_URL}/animations/animateValue/AnimateOffset.kt"
 
 @Composable
 fun AnimateOffsetAsState() {

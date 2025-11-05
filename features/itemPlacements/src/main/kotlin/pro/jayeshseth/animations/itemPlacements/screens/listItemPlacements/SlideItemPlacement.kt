@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.itemPlacements
+package pro.jayeshseth.animations.itemPlacements.screens.listItemPlacements
 
 import android.os.Build
 import android.os.VibrationEffect
@@ -44,16 +44,16 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import pro.jayeshseth.animations.R
 import pro.jayeshseth.animations.core.model.AnimationControllerState
 import pro.jayeshseth.animations.core.model.AudioPlayer
 import pro.jayeshseth.animations.core.model.DampingRatioList
 import pro.jayeshseth.animations.core.model.EasingList
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.model.StiffnessList
-import pro.jayeshseth.animations.ui.composables.AnimationController
-import pro.jayeshseth.animations.ui.composables.AnimationItem
 import pro.jayeshseth.animations.core.ui.components.Toggler
+import pro.jayeshseth.animations.core.ui.media.AnimMedia
+import pro.jayeshseth.animations.itemPlacements.components.AnimationController
+import pro.jayeshseth.animations.itemPlacements.components.AnimationItem
 import pro.jayeshseth.commoncomponents.HomeScaffold
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
@@ -108,7 +108,7 @@ fun SlideItemPlacement(
     if (state.value.shepardTone) {
         LaunchedEffect(lazyListState.isScrollInProgress) {
             if (lazyListState.isScrollInProgress) {
-                AudioPlayer.play(context, R.raw.shepard_tone)
+                AudioPlayer.play(context, AnimMedia.shepardTone)
             } else {
                 AudioPlayer.stop()
             }

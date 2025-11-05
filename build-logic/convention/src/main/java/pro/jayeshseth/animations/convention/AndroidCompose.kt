@@ -14,6 +14,7 @@ internal fun Project.configureAndroidCompose(
         pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
 
         buildFeatures {
+            buildConfig = true
             compose = true
         }
 
