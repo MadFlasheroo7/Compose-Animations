@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.composables
+package pro.jayeshseth.animations.core.ui.components
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateDp
@@ -35,7 +35,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.theapache64.rebugger.Rebugger
-import pro.jayeshseth.animations.ui.theme.AnimationsTheme
 
 @Composable
 fun <T> TabsRow(
@@ -155,7 +154,7 @@ fun PreviewTab() {
 
     var state by remember { mutableStateOf(0) }
     val titles = listOf("Tab 1", "Tab 2", "Tab 3")
-    AnimationsTheme {
+    MaterialTheme {
         Box(
             modifier = Modifier.padding(16.dp)
         ) {

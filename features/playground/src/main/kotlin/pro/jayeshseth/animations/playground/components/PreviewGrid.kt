@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.composables
+package pro.jayeshseth.animations.playground.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
@@ -25,9 +25,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import pro.jayeshseth.animations.playground.model.TweenAndSpringSpecState
+import pro.jayeshseth.animations.playground.model.TweenNSpringSpec
 import pro.jayeshseth.animations.core.ui.components.CatImage
-import pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring.TweenAndSpringSpecState
-import pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring.TweenNSpringSpec
 
 @Composable
 fun PreviewGrid(

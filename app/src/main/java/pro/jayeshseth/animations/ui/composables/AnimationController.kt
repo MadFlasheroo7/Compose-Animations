@@ -30,6 +30,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import pro.jayeshseth.animations.core.model.AnimationControllerState
+import pro.jayeshseth.animations.core.ui.components.DropDownTemplate
+import pro.jayeshseth.animations.core.ui.components.SliderTemplate
+import pro.jayeshseth.animations.core.ui.components.Toggler
 
 /**
  * A common animation controller for all item placement animations

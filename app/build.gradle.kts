@@ -46,6 +46,7 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.core.navigation)
     implementation(projects.features.defaultApis)
+    implementation(projects.features.playground)
 
 
     implementation(libs.commonmodule)
@@ -54,7 +55,7 @@ dependencies {
     implementation(libs.lottie)
     implementation(libs.core.ktx)
     implementation(libs.rebugger)
-    implementation("com.github.qawaz:compose-code-editor:2.0.3")
+    implementation(libs.compose.code.editor)
     implementation(libs.kotlin.stdlib)
     implementation(libs.lifecycle.viewmodel.navigation3)
     implementation(libs.coil.kt)

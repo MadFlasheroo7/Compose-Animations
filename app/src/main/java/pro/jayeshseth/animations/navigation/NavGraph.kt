@@ -15,19 +15,17 @@ import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.rememberNavigator
 import pro.jayeshseth.animations.core.ui.modifiers.clipToDeviceCornerRadius
 import pro.jayeshseth.animations.defaultApis.navigation.defaultApis
+import pro.jayeshseth.animations.playground.navigation.playground
 import pro.jayeshseth.animations.ui.easterEggs.PhysicsLayoutAboutScreen
 import pro.jayeshseth.animations.ui.itemPlacements.FadeItemPlacement
 import pro.jayeshseth.animations.ui.itemPlacements.ScaleItemPlacement
 import pro.jayeshseth.animations.ui.itemPlacements.SlideItemPlacement
 import pro.jayeshseth.animations.ui.itemPlacements.TrippyBlinders
-import pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring.TweenAndSpringScreen
 import pro.jayeshseth.animations.ui.screens.AboutScreen
-import pro.jayeshseth.animations.ui.screens.AnimationSpecs
 import pro.jayeshseth.animations.ui.screens.BouncyRope
 import pro.jayeshseth.animations.ui.screens.EasterEggScreen
 import pro.jayeshseth.animations.ui.screens.HomeScreen
 import pro.jayeshseth.animations.ui.screens.ItemPlacementAnimation
-import pro.jayeshseth.animations.ui.screens.Playground
 import pro.jayeshseth.animations.ui.screens.Shaders
 import pro.jayeshseth.animations.ui.screens.SwipeRefresh
 import pro.jayeshseth.animations.ui.shaders.interstellarSpace.InterstellarShaderScreen
@@ -63,6 +61,7 @@ fun NavGraph(onClickLink: OnClickLink) {
                 }
             }
             defaultApis(onClickLink)
+            playground(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
             entry<NavDestinations.AnimateNavGraph> {
                 AnimatedNavGraph()
             }
@@ -113,15 +112,15 @@ fun NavGraph(onClickLink: OnClickLink) {
             entry<NavDestinations.InterstellarShader> {
                 InterstellarShaderScreen(onClickLink)
             }
-            entry<NavDestinations.Playground> {
-                Playground { backStack.navigate(it) }
-            }
-            entry<NavDestinations.TweenAndSpring> {
-                TweenAndSpringScreen(onClickLink)
-            }
-            entry<NavDestinations.AnimationSpec> {
-                AnimationSpecs { backStack.navigate(it) }
-            }
+//            entry<NavDestinations.Playground> {
+//                Playground { backStack.navigate(it) }
+//            }
+//            entry<NavDestinations.TweenAndSpring> {
+//                TweenAndSpringScreen(onClickLink)
+//            }
+//            entry<NavDestinations.AnimationSpec> {
+//                AnimationSpecs { backStack.navigate(it) }
+//            }
         }
     )
 }

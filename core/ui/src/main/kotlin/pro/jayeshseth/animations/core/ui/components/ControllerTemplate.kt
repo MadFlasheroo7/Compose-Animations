@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.composables
+package pro.jayeshseth.animations.core.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring
+package pro.jayeshseth.animations.playground.screens.tweenAndSpring
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
@@ -61,11 +61,16 @@ import pro.jayeshseth.animations.core.model.EasingList
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.model.StiffnessList
 import pro.jayeshseth.animations.core.model.animationTabsList
-import pro.jayeshseth.animations.ui.composables.AnimatedChart
-import pro.jayeshseth.animations.ui.composables.AnimatedTab
-import pro.jayeshseth.animations.ui.composables.PreviewGrid
-import pro.jayeshseth.animations.ui.composables.TabsRow
-import pro.jayeshseth.animations.ui.composables.Toggler
+import pro.jayeshseth.animations.core.ui.components.AnimatedChart
+import pro.jayeshseth.animations.core.ui.components.AnimatedTab
+import pro.jayeshseth.animations.core.ui.components.TabsRow
+import pro.jayeshseth.animations.core.ui.components.Toggler
+import pro.jayeshseth.animations.playground.components.CodePreview
+import pro.jayeshseth.animations.playground.components.PreviewGrid
+import pro.jayeshseth.animations.playground.components.SpringOptions
+import pro.jayeshseth.animations.playground.components.TweenOptions
+import pro.jayeshseth.animations.playground.model.TweenAndSpringSpecState
+import pro.jayeshseth.animations.playground.model.TweenNSpringSpec
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
 enum class PlaygroundPreviewTabs { Chart, Preview }

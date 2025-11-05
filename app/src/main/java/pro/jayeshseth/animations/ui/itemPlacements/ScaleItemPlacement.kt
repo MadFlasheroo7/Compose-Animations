@@ -60,7 +60,7 @@ import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.model.StiffnessList
 import pro.jayeshseth.animations.ui.composables.AnimationController
 import pro.jayeshseth.animations.ui.composables.AnimationItem
-import pro.jayeshseth.animations.ui.composables.Toggler
+import pro.jayeshseth.animations.core.ui.components.Toggler
 import pro.jayeshseth.commoncomponents.HomeScaffold
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 

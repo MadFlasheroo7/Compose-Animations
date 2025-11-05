@@ -9,4 +9,7 @@ android {
 dependencies {
     implementation(projects.core.model)
     implementation(libs.commonmodule)
+    implementation(libs.rebugger)
+    implementation(libs.compose.code.editor)
+
 }

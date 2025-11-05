@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.composables
+package pro.jayeshseth.animations.core.ui.components
 
 import android.icu.text.DecimalFormat
 import androidx.compose.animation.core.animateFloatAsState

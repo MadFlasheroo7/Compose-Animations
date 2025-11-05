@@ -13,9 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import pro.jayeshseth.animations.core.navigation.OnNavAction
 import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
 import pro.jayeshseth.animations.navigation.NavDestinations
-import pro.jayeshseth.animations.navigation.OnNavAction
+import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
 import pro.jayeshseth.animations.ui.composables.InteractiveButton
 import pro.jayeshseth.animations.util.AnimationScreen
 import pro.jayeshseth.commoncomponents.HomeScaffold
@@ -69,7 +70,7 @@ private val animationScreens: List<AnimationScreen> by lazy {
         ),
         AnimationScreen(
             title = "Playground",
-            route = NavDestinations.Playground
+            route = PlaygroundRoutes.PlaygroundRoute
         ),
         AnimationScreen(
             title = "Animate Content",

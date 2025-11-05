@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring
+package pro.jayeshseth.animations.playground.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.slideInVertically
@@ -28,9 +28,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pro.jayeshseth.animations.ui.composables.DropDownTemplate
-import pro.jayeshseth.animations.ui.composables.SliderTemplate
-import pro.jayeshseth.animations.ui.composables.Toggler
+import pro.jayeshseth.animations.core.ui.components.DropDownTemplate
+import pro.jayeshseth.animations.core.ui.components.SliderTemplate
+import pro.jayeshseth.animations.core.ui.components.Toggler
+import pro.jayeshseth.animations.playground.model.TweenAndSpringSpecState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

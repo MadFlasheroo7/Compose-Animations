@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring
+package pro.jayeshseth.animations.playground.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.slideInVertically
@@ -32,12 +32,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pro.jayeshseth.animations.ui.composables.DropDownTemplate
-import pro.jayeshseth.animations.ui.composables.SliderTemplate
-import pro.jayeshseth.animations.ui.composables.Toggler
+import pro.jayeshseth.animations.core.model.DampingRatioOption
+import pro.jayeshseth.animations.core.model.EasingOption
+import pro.jayeshseth.animations.core.model.StiffnessOption
+import pro.jayeshseth.animations.core.ui.components.DropDownTemplate
+import pro.jayeshseth.animations.core.ui.components.SliderTemplate
+import pro.jayeshseth.animations.core.ui.components.Toggler
+import pro.jayeshseth.animations.playground.model.TweenAndSpringSpecState
+import pro.jayeshseth.animations.playground.model.TweenNSpringSpec
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -202,4 +208,37 @@ fun SpringOptions(
 
         }
     }
+}
+
+@Preview(showSystemUi = false, showBackground = true)
+@Composable
+private fun PreviewSpringOptions() {
+    SpringOptions(
+        state = TweenAndSpringSpecState(
+            specs = TweenNSpringSpec.entries,
+            selectedSpec = TweenNSpringSpec.Tween,
+            durationMillis = 1000,
+            delayMillis = 0,
+            easingList = emptyList(),
+            easing = EasingOption(
+                name = "Linear",
+                easing = { it }
+            ),
+            dampingRatioList = emptyList(),
+            dampingRatio = DampingRatioOption(
+                name = "No Damping",
+                dampingRatio = 0f
+            ),
+            stiffnessList = emptyList(),
+            stiffness = StiffnessOption(
+                name = "Medium",
+                stiffness = 500f
+            ),
+            cubicA = 0.1f,
+            cubicB = 0.2f,
+            cubicC = 0.3f,
+            cubicD = 0.4f,
+        ),
+        onStateUpdate = {}
+    )
 }

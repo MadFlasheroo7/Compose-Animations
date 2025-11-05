@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring
+package pro.jayeshseth.animations.playground.model
 
 import androidx.compose.runtime.Stable
 import pro.jayeshseth.animations.core.model.DampingRatioOption

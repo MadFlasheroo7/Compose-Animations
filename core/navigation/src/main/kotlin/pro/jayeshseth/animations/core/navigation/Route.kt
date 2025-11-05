@@ -12,6 +12,9 @@ import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 import kotlinx.serialization.serializer
 
+
+typealias OnNavAction = (Route) -> Unit
+
 /**
  * Base class for all navigation routes within the application.
  *

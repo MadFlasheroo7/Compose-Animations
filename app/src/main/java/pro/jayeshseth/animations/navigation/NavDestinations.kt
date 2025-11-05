@@ -3,7 +3,6 @@ package pro.jayeshseth.animations.navigation
 import kotlinx.serialization.Serializable
 import pro.jayeshseth.animations.core.navigation.Route
 
-typealias OnNavAction = (Route) -> Unit
 
 /**
  * Holds all the destinations used in this app
@@ -27,7 +26,4 @@ sealed class NavDestinations : Route() {
     @Serializable data object Shaders : NavDestinations()
     @Serializable data object RainbowCircleShader : NavDestinations()
     @Serializable data object InterstellarShader : NavDestinations()
-    @Serializable data object Playground : NavDestinations()
-    @Serializable data object AnimationSpec : NavDestinations()
-    @Serializable data object TweenAndSpring : NavDestinations()
 }

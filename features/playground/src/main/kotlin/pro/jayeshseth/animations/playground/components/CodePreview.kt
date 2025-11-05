@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring
+package pro.jayeshseth.animations.playground.components
 
 import android.content.ClipData
 import android.content.ClipDescription
@@ -28,10 +28,13 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.core.model.lazyNavBarPadding
-import pro.jayeshseth.animations.ui.composables.AnimatedTab
-import pro.jayeshseth.animations.ui.composables.CodeBlockWithLineNumbers
-import pro.jayeshseth.animations.ui.composables.CopyIconButton
-import pro.jayeshseth.animations.ui.composables.TabsRow
+import pro.jayeshseth.animations.core.ui.components.AnimatedTab
+import pro.jayeshseth.animations.core.ui.components.CodeBlockWithLineNumbers
+import pro.jayeshseth.animations.core.ui.components.CopyIconButton
+import pro.jayeshseth.animations.core.ui.components.TabsRow
+import pro.jayeshseth.animations.playground.model.TweenAndSpringCode
+import pro.jayeshseth.animations.playground.model.TweenAndSpringSpecState
+import pro.jayeshseth.animations.playground.model.TweenNSpringSpec
 
 @Composable
 fun CodePreview(

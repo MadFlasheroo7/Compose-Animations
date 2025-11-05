@@ -1,8 +1,9 @@
-package pro.jayeshseth.animations.ui.playground.animationSpecs.tweenAndSpring
+package pro.jayeshseth.animations.playground.model
 
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.runtime.Immutable
+import kotlin.text.format
 
 @Immutable
 class TweenAndSpringCode(

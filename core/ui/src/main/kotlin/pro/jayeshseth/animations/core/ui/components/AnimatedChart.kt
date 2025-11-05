@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.composables
+package pro.jayeshseth.animations.core.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
@@ -9,6 +9,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 
@@ -48,7 +49,7 @@ fun AnimatedChart(
 
                 // Animate path drawing
                 val pathMeasure =
-                    androidx.compose.ui.graphics.PathMeasure().apply { setPath(path, false) }
+                    PathMeasure().apply { setPath(path, false) }
                 val animatedPath = Path()
                 pathMeasure.getSegment(0f, pathMeasure.length * progress, animatedPath, true)
 
