@@ -32,6 +32,7 @@
             <option value="$PROJECT_DIR$/core/utils" />
             <option value="$PROJECT_DIR$/features" />
             <option value="$PROJECT_DIR$/features/defaultApis" />
+            <option value="$PROJECT_DIR$/features/easterEggs" />
             <option value="$PROJECT_DIR$/features/itemPlacements" />
             <option value="$PROJECT_DIR$/features/playground" />
             <option value="$PROJECT_DIR$/features/shaders" />

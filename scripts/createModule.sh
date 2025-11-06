@@ -25,7 +25,7 @@ final_module_structure="$base_dir/$module_name/src/main/kotlin/$(echo "$package_
 
 echo "Generating Module..."
 
-sub_dirs=("animations" "screens" "components")
+sub_dirs=("animations" "navigation" "screens" "components")
 
 for dir in "${sub_dirs[@]}"; do
   mkdir -p "$final_module_structure/$dir"
