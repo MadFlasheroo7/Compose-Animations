@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.easterEggs
+package pro.jayeshseth.animations.easterEggs.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -40,15 +40,15 @@ import de.apuri.physicslayout.lib.BodyConfig
 import de.apuri.physicslayout.lib.PhysicsLayout
 import de.apuri.physicslayout.lib.physicsBody
 import de.apuri.physicslayout.lib.simulation.rememberSimulation
-import pro.jayeshseth.animations.R
-import pro.jayeshseth.animations.ui.screens.GravitySensor
-import pro.jayeshseth.animations.ui.screens.SocialMedia
+import pro.jayeshseth.animations.easterEggs.R
+import pro.jayeshseth.animations.easterEggs.components.GravitySensor
+import pro.jayeshseth.animations.easterEggs.components.SocialMedia
 import pro.jayeshseth.commoncomponents.InteractiveButton
 import pro.jayeshseth.commoncomponents.SystemBarAwareThemedColumn
 
 /**
  * About Screen Easter Egg
- * When long pressed the source code button physics was applied with the help of [PhysicsLayout],
+ * When long pressed the source code button physics was applied with the help of [de.apuri.physicslayout.lib.PhysicsLayout],
  * to each word of the string(character was too heavy handle).
  *
  * [PhysicsLayout](https://github.com/KlassenKonstantin/ComposePhysicsLayout/tree/main) is built by [KlassenKonstantin](https://github.com/KlassenKonstantin)
@@ -66,7 +66,7 @@ fun PhysicsLayoutAboutScreen(modifier: Modifier = Modifier) {
         derivedStateOf {
             Modifier
                 .then(
-                    if (bool) Modifier
+                    if (bool) Modifier.Companion
                         .physicsBody() else Modifier
                 )
         }
@@ -82,7 +82,7 @@ fun PhysicsLayoutAboutScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxSize()
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                verticalAlignment = Alignment.CenterVertically, modifier = Modifier.Companion
                     .align(Alignment.TopCenter)
                     .windowInsetsPadding(WindowInsets.statusBars)
                     .padding(top = 25.dp)
@@ -97,7 +97,7 @@ fun PhysicsLayoutAboutScreen(modifier: Modifier = Modifier) {
                     text = " Animations ",
                     fontSize = 25.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.physicsBody(bodyConfig = BodyConfig(isStatic = true))
+                    modifier = Modifier.Companion.physicsBody(bodyConfig = BodyConfig(isStatic = true))
                 )
                 Text(
                     text = "\uD83D\uDC96",
@@ -107,7 +107,7 @@ fun PhysicsLayoutAboutScreen(modifier: Modifier = Modifier) {
                 )
             }
             Column(
-                modifier = Modifier
+                modifier = Modifier.Companion
                     .align(Alignment.Center)
                     .padding(top = 100.dp)
             ) {
@@ -131,7 +131,7 @@ fun PhysicsLayoutAboutScreen(modifier: Modifier = Modifier) {
             }
 
             SocialMedia(
-                modifier = Modifier
+                modifier = Modifier.Companion
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 200.dp)
                     .navigationBarsPadding()
@@ -139,7 +139,7 @@ fun PhysicsLayoutAboutScreen(modifier: Modifier = Modifier) {
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
+                modifier = Modifier.Companion
                     .align(Alignment.BottomCenter)
                     .padding(horizontal = 30.dp)
                     .navigationBarsPadding()

@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens
+package pro.jayeshseth.animations.easterEggs.screens
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -13,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import pro.jayeshseth.animations.core.navigation.AnimationScreen
 import pro.jayeshseth.animations.core.navigation.OnNavAction
-import pro.jayeshseth.animations.navigation.NavDestinations
-import pro.jayeshseth.animations.util.AnimationScreen
+import pro.jayeshseth.animations.easterEggs.navigation.EasterEggsRoutes
 import pro.jayeshseth.commoncomponents.HomeScaffold
 import pro.jayeshseth.commoncomponents.InteractiveButton
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
@@ -60,7 +60,7 @@ private val easterEggs: List<AnimationScreen> by lazy {
     mutableListOf(
         AnimationScreen(
             title = "Physics Layout About Screen",
-            route = NavDestinations.PhysicsLayoutAboutScreen
+            route = EasterEggsRoutes.PhysicsLayoutAboutRoute
         )
     )
 }

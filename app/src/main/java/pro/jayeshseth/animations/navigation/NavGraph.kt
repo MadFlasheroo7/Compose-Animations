@@ -15,13 +15,12 @@ import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.rememberNavigator
 import pro.jayeshseth.animations.core.ui.modifiers.clipToDeviceCornerRadius
 import pro.jayeshseth.animations.defaultApis.navigation.defaultApis
+import pro.jayeshseth.animations.easterEggs.navigation.easterEggs
 import pro.jayeshseth.animations.itemPlacements.navigation.itemPlacements
 import pro.jayeshseth.animations.playground.navigation.playground
 import pro.jayeshseth.animations.shaders.navigation.shaders
-import pro.jayeshseth.animations.ui.easterEggs.PhysicsLayoutAboutScreen
 import pro.jayeshseth.animations.ui.screens.AboutScreen
 import pro.jayeshseth.animations.ui.screens.BouncyRope
-import pro.jayeshseth.animations.ui.screens.EasterEggScreen
 import pro.jayeshseth.animations.ui.screens.HomeScreen
 
 /**
@@ -57,57 +56,19 @@ fun NavGraph(onClickLink: OnClickLink) {
             playground(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
             itemPlacements(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
             shaders(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
+            easterEggs { backStack.navigate(it) }
             entry<NavDestinations.AnimateNavGraph> {
                 AnimatedNavGraph()
             }
-//            entry<NavDestinations.SwipeRefresh> {
-//                SwipeRefresh()
-//            }
             entry<NavDestinations.BouncyRope> {
                 BouncyRope()
             }
-//            entry<NavDestinations.AnimatedListItemPlacement> {
-//                ItemPlacementAnimation(
-//                    navToTrippyBlinders = { backStack.navigate(NavDestinations.TrippyBlinders) },
-//                    navToSlideInOut = { backStack.navigate(NavDestinations.SlideInOut) },
-//                    navToScale = { backStack.navigate(NavDestinations.ScaleItemPlacement) },
-//                    navToFade = { backStack.navigate(NavDestinations.FadeItemPlacement) },
-//                )
-//            }
-//            entry<NavDestinations.TrippyBlinders> {
-//                TrippyBlinders()
-//            }
             entry<NavDestinations.AboutScreen> {
                 AboutScreen()
             }
-//            entry<NavDestinations.SlideInOut> {
-//                SlideItemPlacement(onClickLink)
-//            }
-//            entry<NavDestinations.ScaleItemPlacement> {
-//                ScaleItemPlacement(onClickLink)
-//            }
-//            entry<NavDestinations.FadeItemPlacement> {
-//                FadeItemPlacement(onClickLink)
-//            }
             entry<NavDestinations.Community> {
                 AboutScreen()
             }
-            entry<NavDestinations.PastEasterEggs> {
-                EasterEggScreen { backStack.navigate(it) }
-            }
-            entry<NavDestinations.PhysicsLayoutAboutScreen> {
-                PhysicsLayoutAboutScreen()
-            }
-
-//            entry<NavDestinations.Playground> {
-//                Playground { backStack.navigate(it) }
-//            }
-//            entry<NavDestinations.TweenAndSpring> {
-//                TweenAndSpringScreen(onClickLink)
-//            }
-//            entry<NavDestinations.AnimationSpec> {
-//                AnimationSpecs { backStack.navigate(it) }
-//            }
         }
     )
 }

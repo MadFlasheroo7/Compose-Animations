@@ -49,6 +49,7 @@ dependencies {
     implementation(projects.features.playground)
     implementation(projects.features.itemPlacements)
     implementation(projects.features.shaders)
+    implementation(projects.features.easterEggs)
 
 
     implementation(libs.commonmodule)
