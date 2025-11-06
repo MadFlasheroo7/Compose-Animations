@@ -66,6 +66,7 @@ fun NavGraph(onClickLink: OnClickLink) {
             entry<NavDestinations.AboutScreen> {
                 AboutScreen()
             }
+            // TODO add community
             entry<NavDestinations.Community> {
                 AboutScreen()
             }
