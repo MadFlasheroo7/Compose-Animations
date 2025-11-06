@@ -50,12 +50,12 @@ dependencies {
     implementation(projects.features.itemPlacements)
     implementation(projects.features.shaders)
     implementation(projects.features.easterEggs)
+    implementation(projects.features.navigation)
 
 
     implementation(libs.commonmodule)
     implementation(libs.cascade)
     implementation(libs.cascade.compose)
-    implementation(libs.lottie)
     implementation(libs.core.ktx)
     implementation(libs.rebugger)
     implementation(libs.compose.code.editor)

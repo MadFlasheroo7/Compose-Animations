@@ -13,15 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import pro.jayeshseth.animations.core.navigation.AnimationScreen
 import pro.jayeshseth.animations.core.navigation.OnNavAction
-import pro.jayeshseth.animations.core.navigation.Route
 import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
 import pro.jayeshseth.animations.itemPlacements.navigation.ItemPlacementRoutes
 import pro.jayeshseth.animations.navigation.NavDestinations
+import pro.jayeshseth.animations.navigation.navigation.NavigationRoutes
 import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
 import pro.jayeshseth.animations.shaders.navigation.ShaderRoutes
 import pro.jayeshseth.animations.ui.composables.InteractiveButton
-import pro.jayeshseth.animations.core.navigation.AnimationScreen
 import pro.jayeshseth.commoncomponents.HomeScaffold
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
@@ -81,7 +81,7 @@ private val animationScreens: List<AnimationScreen> by lazy {
         ),
         AnimationScreen(
             title = "Animate Value As State",
-            route = NavDestinations.AnimateValueAsState
+            route = DefaultApisRoutes.AnimateValueAsStateRoute
         ),
         AnimationScreen(
             title = "Animated Gesture",
@@ -97,7 +97,7 @@ private val animationScreens: List<AnimationScreen> by lazy {
         ),
         AnimationScreen(
             title = "Nav Animation",
-            route = NavDestinations.AnimateNavGraph
+            route = NavigationRoutes.Nav2GraphRoute
         ),
         AnimationScreen(
             title = "Bouncy Ropes",

@@ -8,4 +8,6 @@ object AnimMedia {
     val laser = R.raw.laser
     val windChimes = R.raw.wind_chimes
     val shepardTone = R.raw.shepard_tone
+    val catJson = R.raw.cat
+    val heyCatJson = R.raw.cat_hey
 }

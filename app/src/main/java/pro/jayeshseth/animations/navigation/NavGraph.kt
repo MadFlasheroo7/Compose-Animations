@@ -17,6 +17,7 @@ import pro.jayeshseth.animations.core.ui.modifiers.clipToDeviceCornerRadius
 import pro.jayeshseth.animations.defaultApis.navigation.defaultApis
 import pro.jayeshseth.animations.easterEggs.navigation.easterEggs
 import pro.jayeshseth.animations.itemPlacements.navigation.itemPlacements
+import pro.jayeshseth.animations.navigation.navigation.navigation
 import pro.jayeshseth.animations.playground.navigation.playground
 import pro.jayeshseth.animations.shaders.navigation.shaders
 import pro.jayeshseth.animations.ui.screens.AboutScreen
@@ -57,9 +58,7 @@ fun NavGraph(onClickLink: OnClickLink) {
             itemPlacements(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
             shaders(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
             easterEggs { backStack.navigate(it) }
-            entry<NavDestinations.AnimateNavGraph> {
-                AnimatedNavGraph()
-            }
+            navigation()
             entry<NavDestinations.BouncyRope> {
                 BouncyRope()
             }

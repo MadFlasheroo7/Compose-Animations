@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.navigation
+package pro.jayeshseth.animations.navigation.screens.nav2
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -14,9 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import pro.jayeshseth.animations.ui.screens.AnimatedNav
-import pro.jayeshseth.animations.ui.animatedNav.ScaleNav
-import pro.jayeshseth.animations.ui.animatedNav.SlideNav
+import pro.jayeshseth.animations.navigation.screens.nav2.animatedNav.ScaleNav
+import pro.jayeshseth.animations.navigation.screens.nav2.animatedNav.SlideNav
 
 /**
  * Nav Graph with custom animations

@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.animatedNav
+package pro.jayeshseth.animations.navigation.screens.nav2.animatedNav
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import pro.jayeshseth.animations.R
+import pro.jayeshseth.animations.core.ui.media.AnimMedia
 
 @Composable
 fun SlideNav() {
@@ -26,7 +26,7 @@ fun SlideNav() {
 
 @Composable
 fun LottieCat2() {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.cat_hey))
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(AnimMedia.heyCatJson))
     LottieAnimation(
         composition,
         iterations = LottieConstants.IterateForever
