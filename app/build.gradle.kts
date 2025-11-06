@@ -48,6 +48,7 @@ dependencies {
     implementation(projects.features.defaultApis)
     implementation(projects.features.playground)
     implementation(projects.features.itemPlacements)
+    implementation(projects.features.shaders)
 
 
     implementation(libs.commonmodule)

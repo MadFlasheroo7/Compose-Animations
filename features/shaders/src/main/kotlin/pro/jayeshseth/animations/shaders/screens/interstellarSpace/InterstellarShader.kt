@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.shaders.interstellarSpace
+package pro.jayeshseth.animations.shaders.screens.interstellarSpace
 
 import android.app.Activity
 import android.content.ClipData
@@ -97,16 +97,15 @@ import pro.jayeshseth.animations.core.model.Fields
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.model.animationTabsList
 import pro.jayeshseth.animations.core.model.lazyNavBarPadding
-import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
 import pro.jayeshseth.animations.core.ui.components.CodeBlockWithLineNumbers
 import pro.jayeshseth.animations.core.ui.components.CopyIconButton
-import pro.jayeshseth.animations.ui.composables.FilledIconButton
+import pro.jayeshseth.animations.core.ui.components.FeatureUnavailableScreen
+import pro.jayeshseth.animations.core.ui.components.FilledIconButton
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
 import pro.jayeshseth.animations.core.ui.components.TabsRow
 import pro.jayeshseth.animations.core.ui.components.Toggler
-import pro.jayeshseth.animations.ui.screens.FeatureUnavailableScreen
-import pro.jayeshseth.animations.ui.theme.AnimationsTheme
+import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
 const val DURATION = 450
@@ -736,7 +735,7 @@ private fun LinksButtons(
 @PreviewLightDark
 @Composable
 private fun PreviewInterstellarSpace() {
-    AnimationsTheme {
+    MaterialTheme {
         InterstellarShaderScreen({})
     }
 }

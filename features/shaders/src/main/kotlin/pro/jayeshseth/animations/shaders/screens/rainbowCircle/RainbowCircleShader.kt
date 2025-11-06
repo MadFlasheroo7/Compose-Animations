@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.shaders.rainbowCircle
+package pro.jayeshseth.animations.shaders.screens.rainbowCircle
 
 import android.graphics.RuntimeShader
 import android.os.Build

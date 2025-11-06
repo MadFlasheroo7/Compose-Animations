@@ -18,6 +18,7 @@ import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
 import pro.jayeshseth.animations.itemPlacements.navigation.ItemPlacementRoutes
 import pro.jayeshseth.animations.navigation.NavDestinations
 import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
+import pro.jayeshseth.animations.shaders.navigation.ShaderRoutes
 import pro.jayeshseth.animations.ui.composables.InteractiveButton
 import pro.jayeshseth.animations.util.AnimationScreen
 import pro.jayeshseth.commoncomponents.HomeScaffold
@@ -107,7 +108,7 @@ private val animationScreens: List<AnimationScreen> by lazy {
                 ),*/
         AnimationScreen(
             title = "Shader",
-            route = NavDestinations.Shaders
+            route = ShaderRoutes.ShaderGraphRoute
         ),
         AnimationScreen(
             title = "About",

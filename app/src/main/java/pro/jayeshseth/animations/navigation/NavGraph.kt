@@ -17,14 +17,12 @@ import pro.jayeshseth.animations.core.ui.modifiers.clipToDeviceCornerRadius
 import pro.jayeshseth.animations.defaultApis.navigation.defaultApis
 import pro.jayeshseth.animations.itemPlacements.navigation.itemPlacements
 import pro.jayeshseth.animations.playground.navigation.playground
+import pro.jayeshseth.animations.shaders.navigation.shaders
 import pro.jayeshseth.animations.ui.easterEggs.PhysicsLayoutAboutScreen
 import pro.jayeshseth.animations.ui.screens.AboutScreen
 import pro.jayeshseth.animations.ui.screens.BouncyRope
 import pro.jayeshseth.animations.ui.screens.EasterEggScreen
 import pro.jayeshseth.animations.ui.screens.HomeScreen
-import pro.jayeshseth.animations.ui.screens.Shaders
-import pro.jayeshseth.animations.ui.shaders.interstellarSpace.InterstellarShaderScreen
-import pro.jayeshseth.animations.ui.shaders.rainbowCircle.RainbowCircle
 
 /**
  * Nav3 graph with custom animations and decorators
@@ -58,6 +56,7 @@ fun NavGraph(onClickLink: OnClickLink) {
             defaultApis(onClickLink)
             playground(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
             itemPlacements(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
+            shaders(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
             entry<NavDestinations.AnimateNavGraph> {
                 AnimatedNavGraph()
             }
@@ -99,15 +98,7 @@ fun NavGraph(onClickLink: OnClickLink) {
             entry<NavDestinations.PhysicsLayoutAboutScreen> {
                 PhysicsLayoutAboutScreen()
             }
-            entry<NavDestinations.Shaders> {
-                Shaders() { backStack.navigate(it) }
-            }
-            entry<NavDestinations.RainbowCircleShader> {
-                RainbowCircle(onClickLink)
-            }
-            entry<NavDestinations.InterstellarShader> {
-                InterstellarShaderScreen(onClickLink)
-            }
+
 //            entry<NavDestinations.Playground> {
 //                Playground { backStack.navigate(it) }
 //            }

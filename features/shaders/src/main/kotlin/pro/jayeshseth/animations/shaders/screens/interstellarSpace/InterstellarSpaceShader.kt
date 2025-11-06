@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.shaders.interstellarSpace
+package pro.jayeshseth.animations.shaders.screens.interstellarSpace
 
 import android.graphics.RuntimeShader
 import android.os.Build

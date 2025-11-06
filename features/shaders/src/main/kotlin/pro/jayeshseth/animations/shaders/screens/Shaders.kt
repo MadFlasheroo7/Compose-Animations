@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens
+package pro.jayeshseth.animations.shaders.screens
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import pro.jayeshseth.animations.core.navigation.OnNavAction
-import pro.jayeshseth.animations.navigation.NavDestinations
+import pro.jayeshseth.animations.shaders.navigation.ShaderRoutes
 import pro.jayeshseth.commoncomponents.InteractiveButton
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedColumn
 
@@ -27,11 +27,15 @@ fun Shaders(
     ) {
         InteractiveButton(
             text = "Rainbow Circle",
-            onClick = { navAction(NavDestinations.RainbowCircleShader) },
+            onClick = {
+                navAction(
+                    ShaderRoutes.RainbowShaderRoute
+                )
+            },
         )
         InteractiveButton(
             text = "Interstellar Space",
-            onClick = { navAction(NavDestinations.InterstellarShader) },
+            onClick = { navAction(ShaderRoutes.InterstellarShaderRoute) },
         )
     }
 }

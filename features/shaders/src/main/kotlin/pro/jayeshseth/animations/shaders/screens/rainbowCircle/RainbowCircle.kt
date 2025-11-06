@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.shaders.rainbowCircle
+package pro.jayeshseth.animations.shaders.screens.rainbowCircle
 
 import android.content.ClipData
 import android.content.ClipDescription
@@ -77,11 +77,10 @@ import pro.jayeshseth.animations.core.model.lazyNavBarPadding
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
 import pro.jayeshseth.animations.core.ui.components.CodeBlockWithLineNumbers
 import pro.jayeshseth.animations.core.ui.components.CopyIconButton
+import pro.jayeshseth.animations.core.ui.components.FeatureUnavailableScreen
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
 import pro.jayeshseth.animations.core.ui.components.TabsRow
 import pro.jayeshseth.animations.core.ui.components.Toggler
-import pro.jayeshseth.animations.ui.screens.FeatureUnavailableScreen
-import pro.jayeshseth.animations.ui.theme.AnimationsTheme
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
 @Composable
@@ -605,7 +604,7 @@ private fun slidersList(
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun PreviewRainbowCircle() {
-    AnimationsTheme {
+    MaterialTheme {
         RainbowCircle({})
     }
 }
