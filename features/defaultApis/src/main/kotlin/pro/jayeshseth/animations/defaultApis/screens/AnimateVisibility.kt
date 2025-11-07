@@ -29,6 +29,7 @@ import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.Scale
 import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.Slide
 import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.SlideInHorizontally
 import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.SlideInVertically
+import pro.jayeshseth.animations.defaultApis.utils.BASE_FEATURE_ROUTE
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @Composable
@@ -66,64 +67,64 @@ private val animations: List<AnimationItem> by lazy {
     mutableListOf(
         AnimationItem(
             title = "Default Animation",
-            source = "defaultApis/animateVisibility/DefaultAnimation.kt"
+            source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/DefaultAnimation.kt"
         ) { isVisible ->
             DefaultAnimation(isVisible)
         },
         AnimationItem(
             title = "Fade In & Out",
-            source = "defaultApis/animateVisibility/FadeAnimation.kt"
+            source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/FadeAnimation.kt"
         ) { isVisible ->
             Fade(isVisible)
         },
         AnimationItem(
             title = "Scale",
-            source = "defaultApis/animateVisibility/ScaleAnimation.kt"
+            source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/ScaleAnimation.kt"
         ) { isVisible ->
             Scale(isVisible)
         },
         AnimationItem(
             title = "Slide In & Out",
-            source = "defaultApis/animateVisibility/SlideAnimation.kt"
+            source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/SlideAnimation.kt"
         ) { isVisible ->
             Slide(isVisible)
         },
         AnimationItem(
             title = "Slide In & Out Horizontally",
-            source = "defaultApis/animateVisibility/SlideAnimation.kt"
+            source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/SlideAnimation.kt"
         ) { isVisible ->
             SlideInHorizontally(isVisible)
         },
         AnimationItem(
             title = "Slide In & Out Vertically",
-            source = "defaultApis/animateVisibility/SlideAnimation.kt"
+            source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/SlideAnimation.kt"
         ) { isVisible ->
             SlideInVertically(isVisible)
         },
         AnimationItem(
             title = "Expand In & Shrink Out",
-            source = "defaultApis/animateVisibility/ExpandAndShrinkAnimation.kt"
+            source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/ExpandAndShrinkAnimation.kt"
         ) { isVisible ->
             ExpandAndShrink(isVisible)
         },
         AnimationItem(
             title = "Expand In & Shrink Out Horizontally",
-            source = "defaultApis/animateVisibility/ExpandAndShrinkAnimation.kt"
+            source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/ExpandAndShrinkAnimation.kt"
         ) { isVisible ->
             ExpandAndShrinkHorizontally(isVisible)
         },
         AnimationItem(
             title = "Expand In & Shrink Out Vertically",
-            source = "defaultApis/animateVisibility/ExpandAndShrinkAnimation.kt"
+            source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/ExpandAndShrinkAnimation.kt"
         ) { isVisible ->
             ExpandAndShrinkVertically(isVisible)
         },
         AnimationItem(
             title = "Random Slide",
-            source = "defaultApis/animateVisibility/SlideAnimation.kt"
+            source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/SlideAnimation.kt"
         ) { isVisible ->
             RandomSlide(isVisible)
         },
-        AnimationItem(source = "defaultApis/animateVisibility/HungryCat.kt") { HungryCat() }
+        AnimationItem(source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/HungryCat.kt") { HungryCat() }
     )
 }

@@ -53,6 +53,7 @@ import pro.jayeshseth.animations.core.ui.components.Toggler
 import pro.jayeshseth.animations.core.ui.media.AnimMedia
 import pro.jayeshseth.animations.itemPlacements.components.AnimationController
 import pro.jayeshseth.animations.itemPlacements.components.AnimationItem
+import pro.jayeshseth.animations.itemPlacements.utils.BASE_FEATURE_ROUTE
 import pro.jayeshseth.commoncomponents.HomeScaffold
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
@@ -124,7 +125,7 @@ fun FadeItemPlacement(
         modifier = modifier,
         navigationIcon = {
             IconButton(onClick = {
-                onClickLink("itemPlacements/FadeItemPlacement.kt")
+                onClickLink("$BASE_FEATURE_ROUTE/screens/listItemPlacements/FadeItemPlacement.kt")
             }) {
                 Icon(imageVector = Icons.Rounded.Link, contentDescription = null)
             }

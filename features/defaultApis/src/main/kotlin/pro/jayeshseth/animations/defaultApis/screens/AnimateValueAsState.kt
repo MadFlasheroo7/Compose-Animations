@@ -21,6 +21,7 @@ import pro.jayeshseth.animations.defaultApis.animations.animateValue.AnimateColo
 import pro.jayeshseth.animations.defaultApis.animations.animateValue.AnimateDpAsState
 import pro.jayeshseth.animations.defaultApis.animations.animateValue.AnimateFloatAsState
 import pro.jayeshseth.animations.defaultApis.animations.animateValue.AnimateOffsetAsState
+import pro.jayeshseth.animations.defaultApis.utils.BASE_FEATURE_ROUTE
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @Composable
@@ -57,18 +58,18 @@ private val animations: List<AnimationItem> by lazy {
     mutableListOf(
         AnimationItem(
             title = "Animate Float As State",
-            source = "defaultApis/animateValue/AnimateFloat.kt"
+            source = "${BASE_FEATURE_ROUTE}/animations/animateValue/AnimateFloat.kt"
         ) { AnimateFloatAsState(it) },
         AnimationItem(
             title = "Animate Dp As State",
-            source = "defaultApis/animateValue/AnimateDp.kt"
+            source = "${BASE_FEATURE_ROUTE}/animations/animateValue/AnimateDp.kt"
         ) { AnimateDpAsState(it) },
         AnimationItem(
-            source = "defaultApis/animateValue/AnimateOffset.kt"
+            source = "${BASE_FEATURE_ROUTE}/animations/animateValue/AnimateOffset.kt"
         ) { AnimateOffsetAsState() },
         AnimationItem(
             title = "Animate Color As State",
-            source = "defaultApis/animateValue/AnimateColor.kt"
+            source = "${BASE_FEATURE_ROUTE}/animations/animateValue/AnimateColor.kt"
         ) { AnimateColorAsState(it) }
     )
 }

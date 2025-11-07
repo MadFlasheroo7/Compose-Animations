@@ -53,12 +53,14 @@ fun NavGraph(onClickLink: OnClickLink) {
                     backStack.navigate(route)
                 }
             }
+            // Feature Graphs
             defaultApis(onClickLink)
             playground(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
             itemPlacements(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
             shaders(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
             easterEggs { backStack.navigate(it) }
             navigation()
+
             entry<NavDestinations.BouncyRope> {
                 BouncyRope()
             }

@@ -30,9 +30,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pro.jayeshseth.animations.core.utils.BASE_URL
+import pro.jayeshseth.animations.defaultApis.utils.BASE_FEATURE_ROUTE
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
-val BasicCounterPath = "$BASE_URL/defaultApis2/animatedContent/BasicCounter.kt"
+val BasicCounterPath = "$BASE_URL/$BASE_FEATURE_ROUTE/animations/animatedContent/BasicCounter.kt"
 
 @Composable
 fun BasicIncrementCounter() {

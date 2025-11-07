@@ -71,6 +71,7 @@ import pro.jayeshseth.animations.playground.components.SpringOptions
 import pro.jayeshseth.animations.playground.components.TweenOptions
 import pro.jayeshseth.animations.playground.model.TweenAndSpringSpecState
 import pro.jayeshseth.animations.playground.model.TweenNSpringSpec
+import pro.jayeshseth.animations.playground.utils.BASE_FEATURE_ROUTE
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
 enum class PlaygroundPreviewTabs { Chart, Preview }
@@ -324,7 +325,7 @@ private fun LinksButtons(
             InteractiveButton(
                 text = "Github",
                 height = 70.dp,
-                onClick = { onClickLink("playground/animationSpecs/tweenAndSpring/TweenAndSpring.kt") },
+                onClick = { onClickLink("$BASE_FEATURE_ROUTE/screens/tweenAndSpring/TweenAndSpring.kt") },
             )
         }
     }

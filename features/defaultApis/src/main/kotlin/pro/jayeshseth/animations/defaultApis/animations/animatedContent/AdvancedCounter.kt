@@ -30,9 +30,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pro.jayeshseth.animations.core.utils.BASE_URL
+import pro.jayeshseth.animations.defaultApis.utils.BASE_FEATURE_ROUTE
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
-val AdvanceCounterPath = "$BASE_URL/defaultApis/animatedContent/AdvancedCounter.kt"
+val AdvanceCounterPath = "$BASE_URL/$BASE_FEATURE_ROUTE/animations/animatedContent/AdvancedCounter.kt"
 
 data class Digit(val singleDigit: Char, val fullNumber: Int, val place: Int) {
     override fun equals(other: Any?): Boolean {

@@ -106,6 +106,7 @@ import pro.jayeshseth.animations.core.ui.components.SliderTemplate
 import pro.jayeshseth.animations.core.ui.components.TabsRow
 import pro.jayeshseth.animations.core.ui.components.Toggler
 import pro.jayeshseth.animations.core.ui.icons.AnimIcons
+import pro.jayeshseth.animations.shaders.utils.BASE_FEATURE_ROUTE
 import pro.jayeshseth.commoncomponents.InteractiveButton
 
 const val DURATION = 450
@@ -725,7 +726,7 @@ private fun LinksButtons(
             InteractiveButton(
                 text = "Github",
                 height = 70.dp,
-                onClick = { onClickLink("shaders/interstellarSpace/InterstellarShader.kt") },
+                onClick = { onClickLink("$BASE_FEATURE_ROUTE/screens/interstellarSpace/InterstellarShader.kt") },
             )
         }
     }
