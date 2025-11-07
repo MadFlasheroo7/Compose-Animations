@@ -1,5 +1,9 @@
 @file:Suppress("UnstableApiUsage")
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -30,4 +34,17 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Animations"
-include (":app")
+include(":app")
+// Core Modules
+include(":core:ui")
+include(":core:utils")
+include(":core:model")
+include(":core:navigation")
+
+// Features/Animations Modules
+include(":features:defaultApis")
+include(":features:playground")
+include(":features:itemPlacements")
+include(":features:shaders")
+include(":features:easterEggs")
+include(":features:navigation")

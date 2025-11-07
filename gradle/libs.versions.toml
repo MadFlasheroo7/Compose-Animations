@@ -12,6 +12,7 @@ commonmodule = "0.0.8"
 compile-sdk = "36"
 compose-bom = "2025.08.01"
 compose-compiler = "1.5.0"
+composeCodeEditor = "2.0.3"
 core-ktx = "1.17.0"
 core-splashscreen = "1.0.1"
 coroutines = "1.10.2"
@@ -81,6 +82,7 @@ coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 # Compose
 commonmodule = { module = "pro.jayeshseth.madappmodules:commonModules", version.ref = "commonmodule" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-code-editor = { module = "com.github.qawaz:compose-code-editor", version.ref = "composeCodeEditor" }
 compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
 compose-material = { group = "androidx.compose.material", name = "material" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
@@ -140,6 +142,12 @@ material = { group = "com.google.android.material", name = "material", version.r
 physics-layout = { module = "io.github.klassenkonstantin:physics-layout", version.ref = "physicsLayout" }
 rebugger = { module = "io.github.theapache64:rebugger", version.ref = "rebugger" }
 
+# Dependencies of the included build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+spotless-gradlePlugin = { group = "com.diffplug.spotless", name = "spotless-plugin-gradle", version.ref = "spotless" }
+
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
@@ -152,4 +160,19 @@ nexus-plugin = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "ne
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
+animations-application = { id = "animations.android.application" }
+animations-library = { id = "animations.android.library" }
+
 [bundles]
+androidx = [
+    "androidx-activity-compose", "androidx-activity-ktx", "androidx-window",
+]
+compose = [
+    "compose-ui", "compose-ui-util", "compose-ui-graphics",
+    "compose-ui-tooling", "compose-ui-tooling-preview", "compose-material",
+    "compose-material3", "compose-material3-window", "compose-ui-googleFonts",
+    "compose-material3-navigation3", "compose-material-iconsExtended"
+]
+navigation = [
+    "navigation-compose", "navigation3-runtime", "navigation3-ui"
+]

@@ -79,6 +79,7 @@ fun InteractiveButton(
     val isPressed by interactionSource.collectIsPressedAsState()
     val isHovered by interactionSource.collectIsHoveredAsState()
     val buttonInteracted = isPressed.or(isHovered || clickTracker > 0)
+    var canExecute by remember { mutableStateOf(false) }
 
     val animateColor by animateColorAsState(
         targetValue = if (buttonInteracted) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary,
@@ -151,8 +152,9 @@ fun InteractiveButton(
             val allFinished = results.all { it.endReason == AnimationEndReason.Finished }
             if (allFinished) {
                 println("✨ Animation complete!")
-                onClick()
-                delay(500)
+                delay(400)
+                if (canExecute) onClick()
+                if (canExecute) canExecute = false
                 clickTracker = 0
             }
         }
@@ -177,9 +179,13 @@ fun InteractiveButton(
                 interactionSource = interactionSource,
                 indication = ripple(),
                 onClick = {
+                    canExecute = true
                     clickTracker++
                 },
-                onLongClick = onLongClick
+                onLongClick = {
+                    canExecute = true
+                    clickTracker++
+                }
             )
     ) {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(12.dp)) {

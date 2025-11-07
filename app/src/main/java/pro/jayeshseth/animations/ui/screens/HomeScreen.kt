@@ -13,10 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import pro.jayeshseth.animations.core.navigation.AnimationScreen
+import pro.jayeshseth.animations.core.navigation.OnNavAction
+import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
+import pro.jayeshseth.animations.itemPlacements.navigation.ItemPlacementRoutes
 import pro.jayeshseth.animations.navigation.NavDestinations
+import pro.jayeshseth.animations.navigation.navigation.NavigationRoutes
+import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
+import pro.jayeshseth.animations.shaders.navigation.ShaderRoutes
 import pro.jayeshseth.animations.ui.composables.InteractiveButton
-import pro.jayeshseth.animations.util.AnimationScreen
-import pro.jayeshseth.animations.util.OnNavAction
 import pro.jayeshseth.commoncomponents.HomeScaffold
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
@@ -60,39 +65,39 @@ private val animationScreens: List<AnimationScreen> by lazy {
     mutableListOf(
         AnimationScreen(
             title = "Animate Visibility",
-            route = NavDestinations.AnimateVisibility
+            route = DefaultApisRoutes.AnimateVisibilityRoute
         ),
         AnimationScreen(
             title = "Animate List Item Placement",
-            route = NavDestinations.AnimatedListItemPlacement
+            route = ItemPlacementRoutes.AnimatedListItemPlacementRoute
         ),
         AnimationScreen(
             title = "Playground",
-            route = NavDestinations.Playground
+            route = PlaygroundRoutes.PlaygroundRoute
         ),
         AnimationScreen(
             title = "Animate Content",
-            route = NavDestinations.AnimateContent
+            route = DefaultApisRoutes.AnimateContentRoute
         ),
         AnimationScreen(
             title = "Animate Value As State",
-            route = NavDestinations.AnimateValueAsState
+            route = DefaultApisRoutes.AnimateValueAsStateRoute
         ),
         AnimationScreen(
             title = "Animated Gesture",
-            route = NavDestinations.AnimateGesture
+            route = DefaultApisRoutes.AnimateGestureRoute
         ),
         AnimationScreen(
             title = "Infinite Rotation",
-            route = NavDestinations.InfiniteRotation
+            route = DefaultApisRoutes.InfiniteRotationRoute
         ),
         AnimationScreen(
             title = "Swipe To Refresh",
-            route = NavDestinations.SwipeRefresh
+            route = ItemPlacementRoutes.SwipeRefreshRoute
         ),
         AnimationScreen(
             title = "Nav Animation",
-            route = NavDestinations.AnimateNavGraph
+            route = NavigationRoutes.Nav2GraphRoute
         ),
         AnimationScreen(
             title = "Bouncy Ropes",
@@ -104,7 +109,7 @@ private val animationScreens: List<AnimationScreen> by lazy {
                 ),*/
         AnimationScreen(
             title = "Shader",
-            route = NavDestinations.Shaders
+            route = ShaderRoutes.ShaderGraphRoute
         ),
         AnimationScreen(
             title = "About",

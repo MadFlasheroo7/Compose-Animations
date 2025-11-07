@@ -9,11 +9,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import pro.jayeshseth.animations.core.utils.BASE_URL
 import pro.jayeshseth.animations.navigation.NavGraph
 import pro.jayeshseth.animations.ui.theme.AnimationsTheme
-
-const val BASE_URL =
-    "https://github.com/MadFlasheroo7/Compose-Animations/tree/main/app/src/main/java/pro/jayeshseth/animations/ui"
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

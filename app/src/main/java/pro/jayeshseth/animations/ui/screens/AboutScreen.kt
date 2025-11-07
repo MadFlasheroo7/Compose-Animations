@@ -59,6 +59,7 @@ import de.apuri.physicslayout.lib.PhysicsLayout
 import de.apuri.physicslayout.lib.physicsBody
 import de.apuri.physicslayout.lib.simulation.rememberSimulation
 import pro.jayeshseth.animations.R
+import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 import pro.jayeshseth.commoncomponents.InteractiveButton
 import pro.jayeshseth.commoncomponents.SystemBarAwareThemedColumn
 
@@ -218,7 +219,7 @@ fun SocialMedia(modifier: Modifier = Modifier) {
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_github),
+                        painter = painterResource(AnimIcons.github),
                         contentDescription = "github",
                         modifier = Modifier
                             .size(60.dp)
@@ -232,7 +233,7 @@ fun SocialMedia(modifier: Modifier = Modifier) {
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_twitter),
+                        painter = painterResource(AnimIcons.twitter),
                         contentDescription = "twitter",
                         modifier = Modifier
                             .size(60.dp)
@@ -246,7 +247,7 @@ fun SocialMedia(modifier: Modifier = Modifier) {
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_linkedin),
+                        painter = painterResource(AnimIcons.linkedIn),
                         contentDescription = "linkedin",
                         modifier = Modifier
                             .size(60.dp)
@@ -265,7 +266,7 @@ fun SocialMedia(modifier: Modifier = Modifier) {
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_mastodon),
+                        painter = painterResource(AnimIcons.mastadon),
                         contentDescription = "mastadon",
                         modifier = Modifier
                             .size(60.dp)
@@ -279,7 +280,7 @@ fun SocialMedia(modifier: Modifier = Modifier) {
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_blogger),
+                        painter = painterResource(AnimIcons.blog),
                         contentDescription = "realogs",
                         modifier = Modifier
                             .size(60.dp)
@@ -293,7 +294,7 @@ fun SocialMedia(modifier: Modifier = Modifier) {
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_medium),
+                        painter = painterResource(AnimIcons.medium),
                         contentDescription = "medium",
                         modifier = Modifier
                             .size(60.dp)
