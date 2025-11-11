@@ -13,4 +13,6 @@ dependencies {
     implementation(libs.commonmodule)
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.compose)
+    implementation(libs.hypnoticcanvas)
+    implementation(libs.hypnoticcanvas.shaders)
 }

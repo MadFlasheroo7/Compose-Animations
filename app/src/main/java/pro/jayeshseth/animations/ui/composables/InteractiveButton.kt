@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
+import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
 
 @Preview
 @Composable
@@ -192,6 +193,7 @@ fun InteractiveButton(
             Text(
                 text = text,
                 color = animateTextColor,
+                fontFamily = syneFontFamily,
                 style = MaterialTheme.typography.titleMedium,
             )
         }

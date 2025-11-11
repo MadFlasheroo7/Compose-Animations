@@ -11,6 +11,8 @@ import androidx.navigation3.runtime.navEntryDecorator
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
+import com.mikepenz.hypnoticcanvas.shaderBackground
+import com.mikepenz.hypnoticcanvas.shaders.BlackCherryCosmos
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.rememberNavigator
 import pro.jayeshseth.animations.core.ui.modifiers.clipToDeviceCornerRadius
@@ -34,7 +36,8 @@ fun NavGraph(onClickLink: OnClickLink) {
         Box(
             Modifier
                 .clipToDeviceCornerRadius()
-                .background(MaterialTheme.colorScheme.background)
+                .shaderBackground(BlackCherryCosmos, speed = 0.2f)
+//                .background(MaterialTheme.colorScheme.background)
         ) {
             entry.Content()
         }

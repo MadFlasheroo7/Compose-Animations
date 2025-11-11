@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.theme
+package pro.jayeshseth.animations.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -51,6 +51,8 @@ kotlinxSerializationCore = "1.9.0"
 version-code = "10"
 version-name = "1.0.7" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
 version-nameBetaSuffix = "-beta01"
+haze = "1.6.10"
+hypnoticcanvas = "0.4.1"
 
 [libraries]
 # Accompanist
@@ -113,6 +115,8 @@ navigation-compose = { group = "androidx.navigation", name = "navigation-compose
 navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "nav3Core" }
 navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "nav3Core" }
 
+hypnoticcanvas = { module = "com.mikepenz.hypnoticcanvas:hypnoticcanvas", version.ref = "hypnoticcanvas" }
+hypnoticcanvas-shaders = { module = "com.mikepenz.hypnoticcanvas:hypnoticcanvas-shaders", version.ref = "hypnoticcanvas" }
 
 # Palette
 palette = { group = "androidx.palette", name = "palette", version.ref = "palette" }
@@ -124,6 +128,8 @@ kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 
 # Lifecycle
 lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "nav3Lifecycle" }
+
+haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 
 # [Test Dependencies]
 # Android Tests

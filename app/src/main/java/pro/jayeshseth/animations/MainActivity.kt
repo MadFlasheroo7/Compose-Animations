@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import pro.jayeshseth.animations.core.utils.BASE_URL
 import pro.jayeshseth.animations.navigation.NavGraph
-import pro.jayeshseth.animations.ui.theme.AnimationsTheme
+import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

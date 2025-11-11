@@ -4,6 +4,7 @@ import androidx.compose.runtime.Stable
 
 @Stable
 data class AnimationControllerState(
+    val delay: Long,
     val shepardTone: Boolean,
     val vibrationEffect: Boolean,
     val blurEffect: Boolean,

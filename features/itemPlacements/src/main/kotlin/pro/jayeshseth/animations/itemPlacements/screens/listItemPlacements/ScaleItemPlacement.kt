@@ -20,8 +20,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -51,6 +53,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.mikepenz.hypnoticcanvas.shaderBackground
+import com.mikepenz.hypnoticcanvas.shaders.GlossyGradients
+import kotlinx.coroutines.delay
 import pro.jayeshseth.animations.core.model.AnimationControllerState
 import pro.jayeshseth.animations.core.model.AudioPlayer
 import pro.jayeshseth.animations.core.model.DampingRatioList
@@ -63,6 +68,7 @@ import pro.jayeshseth.animations.itemPlacements.components.AnimationController
 import pro.jayeshseth.animations.itemPlacements.components.AnimationItem
 import pro.jayeshseth.animations.itemPlacements.utils.BASE_FEATURE_ROUTE
 import pro.jayeshseth.commoncomponents.HomeScaffold
+import pro.jayeshseth.commoncomponents.HomeScaffoldDefaults
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 /**
@@ -108,7 +114,8 @@ fun ScaleItemPlacement(
                 blurValueSteps = 0.1f,
                 blurValue = 200f,
                 blurValueRange = 0f..500f,
-                blurEffect = true
+                blurEffect = true,
+                delay = 1000
             )
         )
     }
@@ -214,6 +221,7 @@ fun ScaleItemPlacement(
                     dampingRatio = state.value.dampingRatio.dampingRatio,
                     blurValue = state.value.blurValue,
                     doBlur = state.value.blurEffect,
+                    delay = state.value.delay
                 )
             }
         }
@@ -273,6 +281,7 @@ private fun ScaleListItem(
     easing: Easing,
     dampingRatio: Float,
     stiffness: Float,
+    delay: Long,
     modifier: Modifier = Modifier,
     isDarkMode: Boolean = isSystemInDarkTheme()
 ) {
@@ -289,11 +298,13 @@ private fun ScaleListItem(
             }
         }
         if (isTween) {
+            delay(delay)
             animatedProgress.animateTo(
                 targetValue = 1f,
                 animationSpec = tween(tweenDuration, easing = easing)
             )
         } else {
+            delay(delay)
             animatedProgress.animateTo(
                 targetValue = 1f,
                 animationSpec = spring(
@@ -305,11 +316,13 @@ private fun ScaleListItem(
     }
     LaunchedEffect(index) {
         if (doBlur && isTween) {
+            delay(delay)
             animatedBlur.animateTo(
                 targetValue = 0f,
                 animationSpec = tween(tweenDuration, easing = easing)
             )
         } else {
+            delay(delay)
             animatedBlur.animateTo(
                 targetValue = 0f,
                 animationSpec = spring(

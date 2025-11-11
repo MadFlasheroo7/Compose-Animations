@@ -119,6 +119,14 @@ fun AnimationController(
             roundToInt = roundToInt
         )
         SliderTemplate(
+            title = "delay Value",
+            value = { state.delay.toFloat() },
+            step = { state.initialValueSteps },
+            onValueChange = { onStateUpdate(state.copy(delay = it.toLong())) },
+            valueRange = updatedBlurValueRange.value,
+            roundToInt = roundToInt
+        )
+        SliderTemplate(
             title = "Blur Value",
             value = { updatedBlurValue.value },
             step = { state.blurValueSteps },

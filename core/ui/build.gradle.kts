@@ -9,7 +9,10 @@ android {
 dependencies {
     implementation(projects.core.model)
     implementation(libs.commonmodule)
+    implementation(libs.haze)
     implementation(libs.rebugger)
     implementation(libs.compose.code.editor)
 
+    implementation(libs.hypnoticcanvas)
+    implementation(libs.hypnoticcanvas.shaders)
 }

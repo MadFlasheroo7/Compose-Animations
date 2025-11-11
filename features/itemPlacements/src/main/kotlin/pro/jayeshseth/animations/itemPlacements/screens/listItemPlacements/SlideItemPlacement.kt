@@ -101,7 +101,8 @@ fun SlideItemPlacement(
                 stiffnessList = stiffnessList,
                 stiffness = selectedStiffness,
                 initialValueSteps = 0.1f,
-                blurValueSteps = 0.1f
+                blurValueSteps = 0.1f,
+                delay = 1000
             )
         )
     }

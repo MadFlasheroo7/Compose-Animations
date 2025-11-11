@@ -99,7 +99,8 @@ fun FadeItemPlacement(
                 blurValueSteps = 0.1f,
                 blurValue = 200f,
                 blurValueRange = 0f..500f,
-                blurEffect = true
+                blurEffect = true,
+                delay = 1000
             )
         )
     }
