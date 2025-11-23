@@ -1,20 +1,23 @@
 package pro.jayeshseth.animations.ui.screens
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.navigation.AnimationScreen
 import pro.jayeshseth.animations.core.navigation.OnNavAction
+import pro.jayeshseth.animations.core.ui.components.LazyIntrinsicGrid
+import pro.jayeshseth.animations.core.ui.components.PrimaryInteractiveButton
 import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
 import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
 import pro.jayeshseth.animations.itemPlacements.navigation.ItemPlacementRoutes
@@ -22,40 +25,49 @@ import pro.jayeshseth.animations.navigation.NavDestinations
 import pro.jayeshseth.animations.navigation.navigation.NavigationRoutes
 import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
 import pro.jayeshseth.animations.shaders.navigation.ShaderRoutes
-import pro.jayeshseth.animations.ui.composables.InteractiveButton
-import pro.jayeshseth.commoncomponents.HomeScaffold
-import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navAction: OnNavAction) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    HomeScaffold(
-        topAppBarScrollBehavior = scrollBehavior,
-        title = {
-            Text(
-                text = "Animations",
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = syneFontFamily
+fun HomeScreen(
+    hazeState: HazeState,
+    navAction: OnNavAction = {}
+) {
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    Scaffold(
+        containerColor = Color.Transparent,
+        topBar = {
+            CenterAlignedTopAppBar(
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent,
+                ),
+                title = {
+                    Text(
+                        text = "Animations",
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = syneFontFamily
+                    )
+                }
             )
-        }
+        },
     ) {
-        StatusBarAwareThemedLazyColumn(
-            statusBarColor = Color.Transparent,
+        LazyIntrinsicGrid(
+            items = animationScreens,
+            columns = 2,
+            contentPadding = it,
+            span = { 2 },
             modifier = Modifier
-        ) {
-            item {
-                Spacer(Modifier.padding(top = it.calculateTopPadding()))
-            }
-            items(animationScreens) { animationScreen ->
-                InteractiveButton(
-                    text = animationScreen.title,
-                    onClick = {
-                        navAction(animationScreen.route)
-                    })
-            }
-            item { Spacer(Modifier.navigationBarsPadding()) }
+                .padding(horizontal = 20.dp)
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+        ) { item ->
+            PrimaryInteractiveButton(
+                hazeState = hazeState,
+                color = Color.White.copy(.8f),
+                text = item.title,
+                onClick = { navAction(item.route) }
+            )
         }
     }
 }
@@ -123,3 +135,57 @@ private val animationScreens: List<AnimationScreen> by lazy {
                 )*/
     )
 }
+
+
+//private val animationScreens: List<AnimationScreen> by lazy {
+//    mutableListOf(
+//        AnimationScreen(
+//            title = "Default Apis",
+//            route = DefaultApisRoutes.AnimateVisibilityRoute
+//        ),
+//        AnimationScreen(
+//            title = "Playground",
+//            route = DefaultApisRoutes.AnimateVisibilityRoute
+//        ),
+//        AnimationScreen(
+//            title = "Item Placements",
+//            route = DefaultApisRoutes.AnimateVisibilityRoute
+//        ),
+//        AnimationScreen(
+//            title = "Past Easter Eggs",
+//            route = DefaultApisRoutes.AnimateVisibilityRoute
+//        ),
+//        AnimationScreen(
+//            title = "Shapes & Morphing",
+//            route = DefaultApisRoutes.AnimateVisibilityRoute
+//        ),
+//        AnimationScreen(
+//            title = "Community",
+//            route = DefaultApisRoutes.AnimateVisibilityRoute
+//        ),
+//        AnimationScreen(
+//            title = "Shaders",
+//            route = DefaultApisRoutes.AnimateVisibilityRoute
+//        ),
+//
+//        /*        AnimationScreen(
+//                    title = "Community",
+//                    route = NavDestinations.Community.route
+//                ),*/
+//        AnimationScreen(
+//            title = "Shader",
+//            route = ShaderRoutes.ShaderGraphRoute
+//        ),
+//        AnimationScreen(
+//            title = "About",
+//            route = NavDestinations.AboutScreen
+//        ),
+//        /*        AnimationScreen(
+//                    title = "Past Easter Eggs",
+//                    route = NavDestinations.PastEasterEggs.route
+//                )*/
+//    )
+//}
+
+
+
