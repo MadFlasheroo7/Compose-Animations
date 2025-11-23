@@ -16,12 +16,17 @@ fun EntryProviderBuilder<Route>.defaultApis(
     hazeState: HazeState
 ) {
     entry<DefaultApisRoutes.AnimateVisibilityRoute> {
-        VisibilityAnimations(hazeState,onClickLink)
+        VisibilityAnimations(hazeState, onClickLink)
     }
     entry<DefaultApisRoutes.AnimateContentRoute> {
-        AnimatedTransition()
+        AnimatedTransition(hazeState)
     }
-    entry<DefaultApisRoutes.AnimateValueAsStateRoute> { AnimateValueAsState(hazeState,onClickLink) }
+    entry<DefaultApisRoutes.AnimateValueAsStateRoute> {
+        AnimateValueAsState(
+            hazeState,
+            onClickLink
+        )
+    }
     entry<DefaultApisRoutes.AnimateGestureRoute> { AnimatedGestures() }
     entry<DefaultApisRoutes.InfiniteRotationRoute> { InfiniteRotation() }
 }

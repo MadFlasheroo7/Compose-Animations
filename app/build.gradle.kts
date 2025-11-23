@@ -51,8 +51,8 @@ dependencies {
     implementation(projects.features.shaders)
     implementation(projects.features.easterEggs)
     implementation(projects.features.navigation)
-        implementation(libs.hypnoticcanvas)
-        implementation(libs.hypnoticcanvas.shaders)
+    implementation(libs.hypnoticcanvas)
+    implementation(libs.hypnoticcanvas.shaders)
 
     implementation(libs.commonmodule)
     implementation(libs.haze)
