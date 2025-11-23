@@ -1,8 +1,7 @@
 package pro.jayeshseth.animations.navigation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.entry
@@ -12,7 +11,9 @@ import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.mikepenz.hypnoticcanvas.shaderBackground
-import com.mikepenz.hypnoticcanvas.shaders.BlackCherryCosmos
+import com.mikepenz.hypnoticcanvas.shaders.InkFlow
+import dev.chrisbanes.haze.hazeSource
+import dev.chrisbanes.haze.rememberHazeState
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.rememberNavigator
 import pro.jayeshseth.animations.core.ui.modifiers.clipToDeviceCornerRadius
@@ -30,18 +31,25 @@ import pro.jayeshseth.animations.ui.screens.HomeScreen
  * Nav3 graph with custom animations and decorators
  */
 @Composable
-fun NavGraph(onClickLink: OnClickLink) {
+fun NavGraph(
+    onClickLink: OnClickLink
+) {
+    val hazeState = rememberHazeState()
     val backStack = rememberNavigator(NavDestinations.Home)
     val entryWithClippedBackgroundDecorator = navEntryDecorator<Any> { entry ->
         Box(
             Modifier
                 .clipToDeviceCornerRadius()
-                .shaderBackground(BlackCherryCosmos, speed = 0.2f)
-//                .background(MaterialTheme.colorScheme.background)
         ) {
             entry.Content()
         }
     }
+    Box(
+        Modifier
+            .fillMaxSize()
+            .hazeSource(hazeState)
+            .shaderBackground(InkFlow, speed = .2f)
+    )
     NavDisplay(
         backStack = backStack.backStack,
         onBack = { backStack.navBack() },
@@ -52,12 +60,12 @@ fun NavGraph(onClickLink: OnClickLink) {
         ),
         entryProvider = entryProvider {
             entry<NavDestinations.Home> {
-                HomeScreen { route ->
+                HomeScreen(hazeState = hazeState) { route ->
                     backStack.navigate(route)
                 }
             }
             // Feature Graphs
-            defaultApis(onClickLink)
+            defaultApis(onClickLink, hazeState)
             playground(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
             itemPlacements(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
             shaders(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
