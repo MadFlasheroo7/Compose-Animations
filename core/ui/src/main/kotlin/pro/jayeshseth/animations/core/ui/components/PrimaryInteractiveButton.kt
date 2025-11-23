@@ -1,15 +1,22 @@
-package pro.jayeshseth.animations.ui.composables
+package pro.jayeshseth.animations.core.ui.components
 
-import android.graphics.BlurMaskFilter
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationEndReason
+import androidx.compose.animation.core.EaseInCubic
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.graphics.res.animatedVectorResource
+import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
+import androidx.compose.animation.graphics.vector.AnimatedImageVector
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -21,11 +28,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
@@ -37,76 +45,72 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.innerShadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.RadialGradientShader
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.mikepenz.hypnoticcanvas.shaderBackground
+import com.mikepenz.hypnoticcanvas.shaders.InkFlow
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.HazeStyle
+import dev.chrisbanes.haze.hazeEffect
+import dev.chrisbanes.haze.hazeSource
+import dev.chrisbanes.haze.rememberHazeState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
-import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
-
-@Preview
-@Composable
-private fun PreviewInteractiveButton() {
-    Column(
-        Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        DInteractiveButton(text = "String", onClick = {
-            println("✨ Animation complete onclick triggred!")
-        })
-    }
-}
+import pro.jayeshseth.animations.core.ui.R
+import pro.jayeshseth.animations.core.ui.modifiers.glowingShadow
+import pro.jayeshseth.animations.core.ui.modifiers.shimmerBorder
+import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DInteractiveButton(
+fun PrimaryInteractiveButton(
+    hazeState: HazeState,
     text: String,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    hazeStyle: HazeStyle = HazeStyle.Unspecified,
     onLongClick: () -> Unit = {},
-    height: Dp = 100.dp,
-    padding: PaddingValues = PaddingValues(12.dp),
+    clickDelay: Long = 400,
+    color: Color = Color.Cyan,
+    onClick: () -> Unit,
 ) {
     var clickTracker by remember { mutableIntStateOf(0) }
-
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val isHovered by interactionSource.collectIsHoveredAsState()
     val buttonInteracted = isPressed.or(isHovered || clickTracker > 0)
+//    val buttonInteracted = true
     var canExecute by remember { mutableStateOf(false) }
 
-    val animateColor by animateColorAsState(
-        targetValue = if (buttonInteracted) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary,
-        animationSpec = tween(500),
-        label = "animated button color",
-    )
-    val animateTextColor by animateColorAsState(
-        targetValue = if (buttonInteracted) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onPrimary,
-        animationSpec = tween(500),
-        label = "animated button color",
-    )
     val buttonDp by animateDpAsState(
-        targetValue = if (buttonInteracted) 5.dp else 50.dp,
+        targetValue = if (buttonInteracted) 100.dp else 20.dp,
         animationSpec = tween(500),
         label = "animate button shape",
     )
 
     val shadowColor by animateColorAsState(
-        targetValue = if (buttonInteracted) MaterialTheme.colorScheme.tertiary else Color.Transparent,
+        targetValue = if (buttonInteracted) color else color.copy(.40f),
         animationSpec = tween(500),
         label = "animated button color",
     )
     val offsetX = remember { Animatable(0f) }
     val offsetY = remember { Animatable(0f) }
-
+    var moffsetX by remember { mutableStateOf(0f) }
+    var moffsetY by remember { mutableStateOf(0f) }
     val spread by remember { mutableStateOf(Animatable(0f)) }
+
+    val avd = rememberAnimatedVectorPainter(
+        animatedImageVector = AnimatedImageVector.animatedVectorResource(R.drawable.avd),
+        atEnd = !buttonInteracted
+    )
+
+    val shape = RoundedCornerShape(buttonDp)
 
     LaunchedEffect(buttonInteracted, clickTracker) {
         if (buttonInteracted) {
@@ -153,7 +157,10 @@ fun DInteractiveButton(
             val allFinished = results.all { it.endReason == AnimationEndReason.Finished }
             if (allFinished) {
                 println("✨ Animation complete!")
-                delay(400)
+                delay(clickDelay)
+                spread.snapTo(0f)
+                offsetX.snapTo(0f)
+                offsetY.snapTo(0f)
                 if (canExecute) onClick()
                 if (canExecute) canExecute = false
                 clickTracker = 0
@@ -161,13 +168,20 @@ fun DInteractiveButton(
         }
     }
 
-    Surface(
-        shape = RoundedCornerShape(size = buttonDp),
-        color = animateColor,
+    val infiniteTransition = rememberInfiniteTransition(label = "shimmer")
+    val translateAnim by infiniteTransition.animateFloat(
+        initialValue = -2f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(5500, easing = EaseInCubic),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "translate"
+    )
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier
-            .height(height)
             .fillMaxWidth()
-            .padding(padding)
             .glowingShadow(
                 borderRadius = buttonDp,
                 color = shadowColor,
@@ -176,6 +190,8 @@ fun DInteractiveButton(
                 offsetX = offsetX.value.dp,
                 offsetY = offsetY.value.dp
             )
+            .clip(shape)
+            .hazeEffect(state = hazeState, style = hazeStyle)
             .combinedClickable(
                 interactionSource = interactionSource,
                 indication = ripple(),
@@ -188,69 +204,74 @@ fun DInteractiveButton(
                     clickTracker++
                 }
             )
+            .glowingShadow(
+                borderRadius = buttonDp,
+                color = shadowColor,
+            )
+            .innerShadow(shape) {
+                this.color = shadowColor
+                this.radius = 10f
+                this.spread = 10f
+            }
+            .shimmerBorder(
+                cornerRadius = buttonDp,
+                animatedTranslation = translateAnim
+            )
     ) {
-        Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(12.dp)) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(18.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(
+                horizontal = 16.dp,
+                vertical = 25.dp
+            )
+        ) {
+            Icon(
+                painter = avd,
+                contentDescription = "",
+                tint = color,
+                modifier = Modifier.size(60.dp)
+            )
+
             Text(
                 text = text,
-                color = animateTextColor,
-                fontFamily = syneFontFamily,
-                style = MaterialTheme.typography.titleMedium,
+                color = color,
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.ExtraBold,
             )
         }
     }
 }
 
-
-/**
- * Draws a **Canvas** behind the modified content giving it a glowing effect
- *
- * @param color color of the glowing shadow
- * @param borderRadius border radius of the glowing shadow
- * @param blurRadius glow radius of the shadow
- * @param offsetX X offset of the shadow
- * @param offsetY Y offset of the shadow
- * @param spread spread radius of the shadow
- */
-fun Modifier.glowingShadow(
-    color: Color,
-    borderRadius: Dp = 0.dp,
-    blurRadius: Dp = 0.dp,
-    offsetX: Dp = 0.dp,
-    offsetY: Dp = 0.dp,
-    spread: Dp = 0.dp,
-): Modifier {
-    return this.drawBehind {
-        this.drawIntoCanvas {
-            val paint = Paint()
-            val frameworkPaint = paint.asFrameworkPaint()
-            val spreadPixel = spread.toPx()
-            val leftPixel = (0f - spreadPixel) + offsetX.toPx()
-            val topPixel = (0f - spreadPixel) + offsetY.toPx()
-            val rightPixel = (this.size.width + spreadPixel)
-            val bottomPixel = (this.size.height + spreadPixel)
-
-            if (blurRadius != 0.dp) {
-                frameworkPaint.maskFilter =
-                    (BlurMaskFilter(blurRadius.toPx(), BlurMaskFilter.Blur.NORMAL))
+@Preview
+@Composable
+private fun PreviewInteractiveButton() {
+    val hazeState = rememberHazeState()
+    AnimationsTheme {
+        Box(Modifier.fillMaxSize()) {
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .hazeSource(state = hazeState)
+                    .shaderBackground(InkFlow, speed = 0.2f)
+            )
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                contentPadding = PaddingValues(20.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(120) {
+                    PrimaryInteractiveButton(
+                        hazeState,
+                        color = Color.Magenta,
+                        text = "Shapes & Morphing", onClick = {
+                            println("✨ Animation complete onclick triggred!")
+                        })
+                }
             }
-//            frameworkPaint.color = color.toArgb()
-            frameworkPaint.shader = RadialGradientShader(
-                center = androidx.compose.ui.geometry.Offset(
-                    this.size.width / 2f,
-                    this.size.height / 2f
-                ),
-                radius = this.size.width / 2f,
-                colors = listOf(color.copy(alpha = 0f), color)
-            )
-            it.drawRoundRect(
-                left = leftPixel,
-                top = topPixel,
-                right = rightPixel,
-                bottom = bottomPixel,
-                radiusX = borderRadius.toPx(),
-                radiusY = borderRadius.toPx(),
-                paint = paint,
-            )
         }
     }
 }

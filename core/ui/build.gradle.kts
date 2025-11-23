@@ -12,6 +12,7 @@ dependencies {
     implementation(libs.haze)
     implementation(libs.rebugger)
     implementation(libs.compose.code.editor)
+    implementation(libs.compose.animation.graphics)
 
     implementation(libs.hypnoticcanvas)
     implementation(libs.hypnoticcanvas.shaders)

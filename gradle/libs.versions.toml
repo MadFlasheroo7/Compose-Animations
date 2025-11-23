@@ -98,6 +98,7 @@ compose-ui-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest"
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
+compose-animation-graphics = { group = "androidx.compose.animation", name = "animation-graphics" }
 
 # Core
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
