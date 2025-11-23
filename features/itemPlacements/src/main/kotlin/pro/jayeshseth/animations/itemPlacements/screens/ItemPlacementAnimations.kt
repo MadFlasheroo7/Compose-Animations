@@ -1,5 +1,6 @@
 package pro.jayeshseth.animations.itemPlacements.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -20,6 +21,7 @@ fun ItemPlacementAnimation(
     modifier: Modifier = Modifier
 ) {
     Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier
             .verticalScroll(
                 rememberScrollState()
@@ -30,6 +32,7 @@ fun ItemPlacementAnimation(
         InteractiveButton(
             hazeState = hazeState,
             text = "Slide",
+            height = 100.dp,
             onClick = {
                 onNavAction(ItemPlacementRoutes.SlideItemPlacementRoute)
             },
@@ -37,6 +40,7 @@ fun ItemPlacementAnimation(
         InteractiveButton(
             text = "Scale",
             hazeState = hazeState,
+            height = 100.dp,
             onClick = {
                 onNavAction(ItemPlacementRoutes.ScaleItemPlacementRoute)
             },
@@ -44,6 +48,7 @@ fun ItemPlacementAnimation(
         InteractiveButton(
             text = "Fade",
             hazeState = hazeState,
+            height = 100.dp,
             onClick = {
                 onNavAction(ItemPlacementRoutes.FadeItemPlacementRoute)
             },
@@ -55,6 +60,7 @@ fun ItemPlacementAnimation(
         InteractiveButton(
             text = "Trippy Blinders",
             hazeState = hazeState,
+            height = 100.dp,
             onClick = {
                 onNavAction(ItemPlacementRoutes.TrippyBlindersRoute)
             },

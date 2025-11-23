@@ -76,7 +76,7 @@ private val easterEggs: List<AnimationScreen> by lazy {
     mutableListOf(
         AnimationScreen(
             title = "Physics Layout About Screen",
-            route = EasterEggsRoutes.PhysicsLayoutAboutRoute
+            route = EasterEggsRoutes.PhysicsLayoutAboutRoute,
         )
     )
 }

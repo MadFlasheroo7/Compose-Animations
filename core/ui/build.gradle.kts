@@ -8,7 +8,7 @@ android {
 
 dependencies {
     implementation(projects.core.model)
-//    implementation(libs.commonmodule)
+    implementation(libs.palette)
     implementation(libs.haze)
     implementation(libs.rebugger)
     implementation(libs.compose.code.editor)
