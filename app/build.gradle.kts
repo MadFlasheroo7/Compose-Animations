@@ -55,6 +55,7 @@ dependencies {
         implementation(libs.hypnoticcanvas.shaders)
 
     implementation(libs.commonmodule)
+    implementation(libs.haze)
     implementation(libs.cascade)
     implementation(libs.cascade.compose)
     implementation(libs.core.ktx)

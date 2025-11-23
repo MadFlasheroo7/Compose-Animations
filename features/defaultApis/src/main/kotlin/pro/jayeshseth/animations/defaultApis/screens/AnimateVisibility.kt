@@ -4,15 +4,18 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.model.AnimationContent
 import pro.jayeshseth.animations.core.model.AnimationItem
 import pro.jayeshseth.animations.core.model.DURATION
@@ -33,20 +36,25 @@ import pro.jayeshseth.animations.defaultApis.utils.BASE_FEATURE_ROUTE
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @Composable
-fun VisibilityAnimations(onClickLink: OnClickLink) {
-    StatusBarAwareThemedLazyColumn(
+fun VisibilityAnimations(
+    hazeState: HazeState,
+    onClickLink: OnClickLink) {
+    LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(horizontal = 20.dp),
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 20.dp)
             .animateContentSize(
                 tween(DURATION, easing = LinearEasing)
             )
     ) {
         item { Spacer(Modifier.statusBarsPadding()) }
-        itemsIndexed(animations) { index, animation ->
+        itemsIndexed(animations(
+            hazeState
+        )) { index, animation ->
             AnimationCard(
                 index = index,
+                hazeState = hazeState,
                 onClickLink = { onClickLink(animation.source) },
                 animationContent = AnimationContent(
                     title = animation.title,
@@ -63,8 +71,8 @@ fun VisibilityAnimations(onClickLink: OnClickLink) {
 /**
  * list of visibility animations
  */
-private val animations: List<AnimationItem> by lazy {
-    mutableListOf(
+private fun animations(hazeState: HazeState): List<AnimationItem> {
+    return mutableListOf(
         AnimationItem(
             title = "Default Animation",
             source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/DefaultAnimation.kt"
@@ -125,6 +133,6 @@ private val animations: List<AnimationItem> by lazy {
         ) { isVisible ->
             RandomSlide(isVisible)
         },
-        AnimationItem(source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/HungryCat.kt") { HungryCat() }
+        AnimationItem(source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/HungryCat.kt") { HungryCat(hazeState) }
     )
 }

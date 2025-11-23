@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.model.AnimationContent
 import pro.jayeshseth.animations.core.model.AnimationItem
 import pro.jayeshseth.animations.core.model.DURATION
@@ -25,7 +26,10 @@ import pro.jayeshseth.animations.defaultApis.utils.BASE_FEATURE_ROUTE
 import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @Composable
-fun AnimateValueAsState(onClickLink: OnClickLink) {
+fun AnimateValueAsState(
+    hazeState: HazeState,
+    onClickLink: OnClickLink
+) {
     StatusBarAwareThemedLazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
@@ -35,9 +39,10 @@ fun AnimateValueAsState(onClickLink: OnClickLink) {
             )
     ) {
         item { Spacer(Modifier.statusBarsPadding()) }
-        itemsIndexed(animations) { index, animation ->
+        itemsIndexed(animations(hazeState)) { index, animation ->
             AnimationCard(
                 index = index,
+                hazeState = hazeState,
                 onClickLink = { onClickLink(animation.source) },
                 animationContent = AnimationContent(
                     title = animation.title,
@@ -54,8 +59,8 @@ fun AnimateValueAsState(onClickLink: OnClickLink) {
 /**
  * list of value based animation
  */
-private val animations: List<AnimationItem> by lazy {
-    mutableListOf(
+private fun animations(hazeState: HazeState): List<AnimationItem> {
+    return mutableListOf(
         AnimationItem(
             title = "Animate Float As State",
             source = "${BASE_FEATURE_ROUTE}/animations/animateValue/AnimateFloat.kt"
@@ -66,7 +71,7 @@ private val animations: List<AnimationItem> by lazy {
         ) { AnimateDpAsState(it) },
         AnimationItem(
             source = "${BASE_FEATURE_ROUTE}/animations/animateValue/AnimateOffset.kt"
-        ) { AnimateOffsetAsState() },
+        ) { AnimateOffsetAsState(hazeState) },
         AnimationItem(
             title = "Animate Color As State",
             source = "${BASE_FEATURE_ROUTE}/animations/animateValue/AnimateColor.kt"
