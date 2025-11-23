@@ -2,6 +2,7 @@ package pro.jayeshseth.animations.itemPlacements.navigation
 
 import androidx.navigation3.runtime.EntryProviderBuilder
 import androidx.navigation3.runtime.entry
+import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.OnNavAction
 import pro.jayeshseth.animations.core.navigation.Route
@@ -13,20 +14,21 @@ import pro.jayeshseth.animations.itemPlacements.screens.listItemPlacements.Tripp
 import pro.jayeshseth.animations.itemPlacements.screens.swipeRefresh.SwipeRefresh
 
 fun EntryProviderBuilder<Route>.itemPlacements(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
     onNavAction: OnNavAction
 ) {
     entry<ItemPlacementRoutes.AnimatedListItemPlacementRoute> {
-        ItemPlacementAnimation(onNavAction)
+        ItemPlacementAnimation(hazeState, onNavAction)
     }
     entry<ItemPlacementRoutes.SlideItemPlacementRoute> {
         SlideItemPlacement(onClickLink)
     }
     entry<ItemPlacementRoutes.ScaleItemPlacementRoute> {
-        ScaleItemPlacement(onClickLink)
+        ScaleItemPlacement(hazeState, onClickLink)
     }
     entry<ItemPlacementRoutes.FadeItemPlacementRoute> {
-        FadeItemPlacement(onClickLink)
+        FadeItemPlacement(hazeState, onClickLink)
     }
     entry<ItemPlacementRoutes.TrippyBlindersRoute> {
         TrippyBlinders()

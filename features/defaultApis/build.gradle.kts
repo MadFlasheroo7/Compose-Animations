@@ -11,7 +11,6 @@ dependencies {
     implementation(projects.core.utils)
     implementation(projects.core.model)
     implementation(projects.core.navigation)
-    implementation(libs.commonmodule)
     implementation(libs.haze)
     implementation(libs.hypnoticcanvas)
     implementation(libs.hypnoticcanvas.shaders)

@@ -12,7 +12,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -53,6 +52,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.chrisbanes.haze.HazeState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.core.model.AnimationTabs
@@ -63,6 +63,7 @@ import pro.jayeshseth.animations.core.model.StiffnessList
 import pro.jayeshseth.animations.core.model.animationTabsList
 import pro.jayeshseth.animations.core.ui.components.AnimatedChart
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
+import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.ui.components.TabsRow
 import pro.jayeshseth.animations.core.ui.components.Toggler
 import pro.jayeshseth.animations.playground.components.CodePreview
@@ -72,12 +73,12 @@ import pro.jayeshseth.animations.playground.components.TweenOptions
 import pro.jayeshseth.animations.playground.model.TweenAndSpringSpecState
 import pro.jayeshseth.animations.playground.model.TweenNSpringSpec
 import pro.jayeshseth.animations.playground.utils.BASE_FEATURE_ROUTE
-import pro.jayeshseth.commoncomponents.InteractiveButton
 
 enum class PlaygroundPreviewTabs { Chart, Preview }
 
 @Composable
 fun TweenAndSpringScreen(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
@@ -160,9 +161,9 @@ fun TweenAndSpringScreen(
             }
         }
         InteractiveButton(
+            hazeState = hazeState,
             text = "Replay Animation",
             height = 45.dp,
-            padding = PaddingValues(horizontal = 50.dp),
             onClick = { replay = !replay }
         )
         Column(
@@ -211,7 +212,7 @@ fun TweenAndSpringScreen(
                     }
 
                     AnimationTabs.Source -> {
-                        LinksButtons(onClickLink)
+                        LinksButtons(hazeState, onClickLink)
                     }
                 }
             }
@@ -311,6 +312,7 @@ private fun Configurations(
 
 @Composable
 private fun LinksButtons(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
 ) {
     val urlLauncher = LocalUriHandler.current
@@ -320,11 +322,13 @@ private fun LinksButtons(
             InteractiveButton(
                 text = "Blog",
                 height = 70.dp,
+                hazeState = hazeState,
                 onClick = { urlLauncher.openUri(blog) }
             )
             InteractiveButton(
                 text = "Github",
                 height = 70.dp,
+                hazeState = hazeState,
                 onClick = { onClickLink("$BASE_FEATURE_ROUTE/screens/tweenAndSpring/TweenAndSpring.kt") },
             )
         }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,14 +24,13 @@ import pro.jayeshseth.animations.defaultApis.animations.animateValue.AnimateDpAs
 import pro.jayeshseth.animations.defaultApis.animations.animateValue.AnimateFloatAsState
 import pro.jayeshseth.animations.defaultApis.animations.animateValue.AnimateOffsetAsState
 import pro.jayeshseth.animations.defaultApis.utils.BASE_FEATURE_ROUTE
-import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @Composable
 fun AnimateValueAsState(
     hazeState: HazeState,
     onClickLink: OnClickLink
 ) {
-    StatusBarAwareThemedLazyColumn(
+    LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
             .padding(horizontal = 20.dp)

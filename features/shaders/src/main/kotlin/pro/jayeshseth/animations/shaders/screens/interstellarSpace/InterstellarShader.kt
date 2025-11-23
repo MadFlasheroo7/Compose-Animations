@@ -90,6 +90,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.rememberHazeState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.core.model.AnimationTabs
@@ -102,12 +104,12 @@ import pro.jayeshseth.animations.core.ui.components.CodeBlockWithLineNumbers
 import pro.jayeshseth.animations.core.ui.components.CopyIconButton
 import pro.jayeshseth.animations.core.ui.components.FeatureUnavailableScreen
 import pro.jayeshseth.animations.core.ui.components.FilledIconButton
+import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
 import pro.jayeshseth.animations.core.ui.components.TabsRow
 import pro.jayeshseth.animations.core.ui.components.Toggler
 import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 import pro.jayeshseth.animations.shaders.utils.BASE_FEATURE_ROUTE
-import pro.jayeshseth.commoncomponents.InteractiveButton
 
 const val DURATION = 450
 
@@ -122,11 +124,12 @@ val boundsTransform = BoundsTransform { initialBounds, targetBounds ->
 
 @Composable
 fun InterstellarShaderScreen(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        InterstellarShader(onClickLink, modifier)
+        InterstellarShader(hazeState, onClickLink, modifier)
     } else {
         FeatureUnavailableScreen("Feature Unavailable for api below ${Build.VERSION_CODES.TIRAMISU}")
     }
@@ -136,6 +139,7 @@ fun InterstellarShaderScreen(
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun InterstellarShader(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
@@ -403,7 +407,7 @@ private fun InterstellarShader(
                                     }
 
                                     AnimationTabs.Source -> {
-                                        LinksButtons(onClickLink)
+                                        LinksButtons(hazeState, onClickLink)
                                     }
                                 }
                             }
@@ -705,6 +709,7 @@ private fun CodePreview(
 
 @Composable
 private fun LinksButtons(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
 ) {
     val urlLauncher = LocalUriHandler.current
@@ -715,16 +720,19 @@ private fun LinksButtons(
         item {
             InteractiveButton(
                 text = "Blog",
+                hazeState = hazeState,
                 height = 70.dp,
                 onClick = { urlLauncher.openUri(blog) }
             )
             InteractiveButton(
                 text = "Shader Source",
+                hazeState = hazeState,
                 height = 70.dp,
                 onClick = { urlLauncher.openUri(shaderSource) }
             )
             InteractiveButton(
                 text = "Github",
+                hazeState = hazeState,
                 height = 70.dp,
                 onClick = { onClickLink("$BASE_FEATURE_ROUTE/screens/interstellarSpace/InterstellarShader.kt") },
             )
@@ -737,6 +745,6 @@ private fun LinksButtons(
 @Composable
 private fun PreviewInterstellarSpace() {
     MaterialTheme {
-        InterstellarShaderScreen({})
+        InterstellarShaderScreen(rememberHazeState(), {})
     }
 }

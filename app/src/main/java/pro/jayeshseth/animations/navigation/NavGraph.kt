@@ -11,7 +11,7 @@ import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.mikepenz.hypnoticcanvas.shaderBackground
-import com.mikepenz.hypnoticcanvas.shaders.InkFlow
+import com.mikepenz.hypnoticcanvas.shaders.OilFlow
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import pro.jayeshseth.animations.core.model.OnClickLink
@@ -48,7 +48,7 @@ fun NavGraph(
         Modifier
             .fillMaxSize()
             .hazeSource(hazeState)
-            .shaderBackground(InkFlow, speed = .2f)
+            .shaderBackground(OilFlow, speed = .2f)
     )
     NavDisplay(
         backStack = backStack.backStack,
@@ -66,21 +66,30 @@ fun NavGraph(
             }
             // Feature Graphs
             defaultApis(onClickLink, hazeState)
-            playground(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
-            itemPlacements(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
-            shaders(onClickLink = onClickLink, onNavAction = { backStack.navigate(it) })
-            easterEggs { backStack.navigate(it) }
-            navigation()
+            playground(
+                hazeState = hazeState,
+                onClickLink = onClickLink,
+                onNavAction = { backStack.navigate(it) })
+            itemPlacements(
+                hazeState = hazeState,
+                onClickLink = onClickLink,
+                onNavAction = { backStack.navigate(it) })
+            shaders(
+                hazeState = hazeState,
+                onClickLink = onClickLink,
+                onNavAction = { backStack.navigate(it) })
+            easterEggs(hazeState = hazeState) { backStack.navigate(it) }
+            navigation(hazeState = hazeState)
 
             entry<NavDestinations.BouncyRope> {
                 BouncyRope()
             }
             entry<NavDestinations.AboutScreen> {
-                AboutScreen()
+                AboutScreen(hazeState)
             }
             // TODO add community
             entry<NavDestinations.Community> {
-                AboutScreen()
+                AboutScreen(hazeState)
             }
         }
     )

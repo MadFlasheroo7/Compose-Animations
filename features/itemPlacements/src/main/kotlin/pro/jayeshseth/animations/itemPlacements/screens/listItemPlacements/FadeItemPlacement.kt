@@ -15,15 +15,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Link
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -40,9 +43,11 @@ import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.model.AnimationControllerState
 import pro.jayeshseth.animations.core.model.AudioPlayer
 import pro.jayeshseth.animations.core.model.DampingRatioList
@@ -54,8 +59,6 @@ import pro.jayeshseth.animations.core.ui.media.AnimMedia
 import pro.jayeshseth.animations.itemPlacements.components.AnimationController
 import pro.jayeshseth.animations.itemPlacements.components.AnimationItem
 import pro.jayeshseth.animations.itemPlacements.utils.BASE_FEATURE_ROUTE
-import pro.jayeshseth.commoncomponents.HomeScaffold
-import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 /**
  * Fade item placement animation by fading the opacity of the item
@@ -63,6 +66,7 @@ import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FadeItemPlacement(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
@@ -121,36 +125,52 @@ fun FadeItemPlacement(
         }
     }
 
-    HomeScaffold(
-        topAppBarScrollBehavior = scrollBehavior,
+    Scaffold(
         modifier = modifier,
-        navigationIcon = {
-            IconButton(onClick = {
-                onClickLink("$BASE_FEATURE_ROUTE/screens/listItemPlacements/FadeItemPlacement.kt")
-            }) {
-                Icon(imageVector = Icons.Rounded.Link, contentDescription = null)
-            }
+        containerColor = Color.Transparent,
+        topBar = {
+            CenterAlignedTopAppBar(
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent,
+                ),
+                title = {
+                    if (!isVisible) {
+                        Text(
+                            "Fade"
+                        )
+                    } else {
+                        Text(
+                            "Animation Controller"
+                        )
+                    }
+//                    Text(
+//                        text = "Animations",
+//                        fontSize = 25.sp,
+//                        fontWeight = FontWeight.Bold,
+//                        fontFamily = syneFontFamily
+//                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        onClickLink("$BASE_FEATURE_ROUTE/screens/listItemPlacements/FadeItemPlacement.kt")
+                    }) {
+                        Icon(imageVector = Icons.Rounded.Link, contentDescription = null)
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { isVisible = !isVisible }) {
+                        Icon(imageVector = Icons.Rounded.Settings, contentDescription = null)
+                    }
+                },
+            )
         },
-        actions = {
-            IconButton(onClick = { isVisible = !isVisible }) {
-                Icon(imageVector = Icons.Rounded.Settings, contentDescription = null)
-            }
-        },
-        title = {
-            if (!isVisible) {
-                Text(
-                    "Fade"
-                )
-            } else {
-                Text(
-                    "Animation Controller"
-                )
-            }
-        }
     ) {
-        StatusBarAwareThemedLazyColumn(
+        LazyColumn(
             state = lazyListState,
-            statusBarColor = Color.Transparent
+            modifier = Modifier
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
             item {
                 Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))

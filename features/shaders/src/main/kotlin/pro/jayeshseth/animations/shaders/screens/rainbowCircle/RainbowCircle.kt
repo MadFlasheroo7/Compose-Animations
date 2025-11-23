@@ -66,6 +66,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.theapache64.rebugger.Rebugger
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.rememberHazeState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -78,19 +80,20 @@ import pro.jayeshseth.animations.core.ui.components.AnimatedTab
 import pro.jayeshseth.animations.core.ui.components.CodeBlockWithLineNumbers
 import pro.jayeshseth.animations.core.ui.components.CopyIconButton
 import pro.jayeshseth.animations.core.ui.components.FeatureUnavailableScreen
+import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
 import pro.jayeshseth.animations.core.ui.components.TabsRow
 import pro.jayeshseth.animations.core.ui.components.Toggler
 import pro.jayeshseth.animations.shaders.utils.BASE_FEATURE_ROUTE
-import pro.jayeshseth.commoncomponents.InteractiveButton
 
 @Composable
 fun RainbowCircle(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        InnerRainbowCircle(onClickLink, modifier)
+        InnerRainbowCircle(hazeState, onClickLink, modifier)
     } else {
         FeatureUnavailableScreen("Feature Unavailable for api below ${Build.VERSION_CODES.TIRAMISU}")
     }
@@ -99,6 +102,7 @@ fun RainbowCircle(
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun InnerRainbowCircle(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
@@ -284,7 +288,7 @@ private fun InnerRainbowCircle(
                     }
 
                     AnimationTabs.Source -> {
-                        LinksButtons(onClickLink)
+                        LinksButtons(hazeState, onClickLink)
                     }
                 }
             }
@@ -294,6 +298,7 @@ private fun InnerRainbowCircle(
 
 @Composable
 private fun LinksButtons(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
 ) {
     val urlLauncher = LocalUriHandler.current
@@ -303,17 +308,20 @@ private fun LinksButtons(
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
             InteractiveButton(
+                hazeState = hazeState,
                 text = "Blog",
                 height = 70.dp,
                 onClick = { urlLauncher.openUri(blog) }
             )
             InteractiveButton(
+                hazeState = hazeState,
                 text = "Shader Source",
                 height = 70.dp,
                 onClick = { urlLauncher.openUri(shaderSource) }
             )
             InteractiveButton(
                 text = "Github",
+                hazeState = hazeState,
                 height = 70.dp,
                 onClick = { onClickLink("$BASE_FEATURE_ROUTE/screens/rainbowCircle/RainbowCircle.kt") },
             )
@@ -606,6 +614,6 @@ private fun slidersList(
 @Composable
 private fun PreviewRainbowCircle() {
     MaterialTheme {
-        RainbowCircle({})
+        RainbowCircle(rememberHazeState(), {})
     }
 }

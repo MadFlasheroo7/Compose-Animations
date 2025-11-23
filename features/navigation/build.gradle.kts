@@ -11,5 +11,5 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.core.navigation)
     implementation(libs.lottie)
-    implementation(libs.commonmodule)
+    implementation(libs.haze)
 }

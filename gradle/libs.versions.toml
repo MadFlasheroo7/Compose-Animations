@@ -82,7 +82,7 @@ coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 
 # Compose
-commonmodule = { module = "pro.jayeshseth.madappmodules:commonModules", version.ref = "commonmodule" }
+#commonmodule = { module = "pro.jayeshseth.madappmodules:commonModules", version.ref = "commonmodule" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-code-editor = { module = "com.github.qawaz:compose-code-editor", version.ref = "composeCodeEditor" }
 compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }

@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.navigation.screens.nav2.animatedNav.ScaleNav
 import pro.jayeshseth.animations.navigation.screens.nav2.animatedNav.SlideNav
 
@@ -26,7 +27,7 @@ import pro.jayeshseth.animations.navigation.screens.nav2.animatedNav.SlideNav
  */
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AnimatedNavGraph() {
+fun AnimatedNavGraph(hazeState: HazeState) {
     val animatedNavController = rememberNavController()
     NavHost(
         navController = animatedNavController,
@@ -42,6 +43,7 @@ fun AnimatedNavGraph() {
             }
         ) {
             AnimatedNav(
+                hazeState = hazeState,
                 scaleNav = { animatedNavController.navigate("SCALE_NAV") },
                 slideNav = { animatedNavController.navigate("SLIDE_NAV") },
             )
@@ -49,10 +51,12 @@ fun AnimatedNavGraph() {
         composable(
             route = "SCALE_NAV",
             enterTransition = {
-                scaleIn(animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioHighBouncy,
-                    stiffness = Spring.StiffnessLow
-                ))
+                scaleIn(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioHighBouncy,
+                        stiffness = Spring.StiffnessLow
+                    )
+                )
             },
             exitTransition = {
                 scaleOut(animationSpec = tween(400, easing = LinearEasing))

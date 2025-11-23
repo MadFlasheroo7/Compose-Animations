@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -33,12 +32,12 @@ import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.Slide
 import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.SlideInHorizontally
 import pro.jayeshseth.animations.defaultApis.animations.animateVisibility.SlideInVertically
 import pro.jayeshseth.animations.defaultApis.utils.BASE_FEATURE_ROUTE
-import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 @Composable
 fun VisibilityAnimations(
     hazeState: HazeState,
-    onClickLink: OnClickLink) {
+    onClickLink: OnClickLink
+) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(horizontal = 20.dp),
@@ -49,9 +48,11 @@ fun VisibilityAnimations(
             )
     ) {
         item { Spacer(Modifier.statusBarsPadding()) }
-        itemsIndexed(animations(
-            hazeState
-        )) { index, animation ->
+        itemsIndexed(
+            animations(
+                hazeState
+            )
+        ) { index, animation ->
             AnimationCard(
                 index = index,
                 hazeState = hazeState,
@@ -133,6 +134,10 @@ private fun animations(hazeState: HazeState): List<AnimationItem> {
         ) { isVisible ->
             RandomSlide(isVisible)
         },
-        AnimationItem(source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/HungryCat.kt") { HungryCat(hazeState) }
+        AnimationItem(source = "${BASE_FEATURE_ROUTE}/animations/animateVisibility/HungryCat.kt") {
+            HungryCat(
+                hazeState
+            )
+        }
     )
 }
