@@ -157,6 +157,7 @@ fun PhysicsLayoutAboutScreen(hazeState: HazeState, modifier: Modifier = Modifier
                     InteractiveButton(
                         text = "Physics Layout 💖",
                         hazeState = hazeState,
+                        height = 100.dp,
                         onClick = { urlLauncher.openUri("https://github.com/KlassenKonstantin/ComposePhysicsLayout/tree/main") },
                     )
                 }
@@ -164,6 +165,7 @@ fun PhysicsLayoutAboutScreen(hazeState: HazeState, modifier: Modifier = Modifier
                     text = "Animate",
                     onClick = { bool = !bool },
                     hazeState = hazeState,
+                    height = 100.dp,
                     modifier = Modifier
                         .weight(1f)
                         .physicsBody(bodyConfig = BodyConfig(isStatic = true))
