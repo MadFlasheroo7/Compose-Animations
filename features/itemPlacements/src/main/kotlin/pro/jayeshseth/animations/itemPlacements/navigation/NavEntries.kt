@@ -18,7 +18,7 @@ fun EntryProviderBuilder<Route>.itemPlacements(
     onClickLink: OnClickLink,
     onNavAction: OnNavAction
 ) {
-    entry<ItemPlacementRoutes.AnimatedListItemPlacementRoute> {
+    entry<ItemPlacementRoutes.ListItemPlacementRoute> {
         ItemPlacementAnimation(hazeState, onNavAction)
     }
     entry<ItemPlacementRoutes.SlideItemPlacementRoute> {

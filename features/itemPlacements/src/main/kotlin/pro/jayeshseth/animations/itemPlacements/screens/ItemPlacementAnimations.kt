@@ -31,6 +31,14 @@ fun ItemPlacementAnimation(
     ) {
         InteractiveButton(
             hazeState = hazeState,
+            text = "Swipe Refresh",
+            height = 100.dp,
+            onClick = {
+                onNavAction(ItemPlacementRoutes.SwipeRefreshRoute)
+            },
+        )
+        InteractiveButton(
+            hazeState = hazeState,
             text = "Slide",
             height = 100.dp,
             onClick = {

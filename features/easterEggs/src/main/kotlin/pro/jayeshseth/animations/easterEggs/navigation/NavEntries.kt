@@ -12,7 +12,7 @@ fun EntryProviderBuilder<Route>.easterEggs(
     hazeState: HazeState,
     onNavAction: OnNavAction
 ) {
-    entry<EasterEggsRoutes.EasterEggsGraphRoute> {
+    entry<EasterEggsRoutes.EasterEggsLandingRoute> {
         EasterEggScreen(hazeState, onNavAction)
     }
     entry<EasterEggsRoutes.PhysicsLayoutAboutRoute> {

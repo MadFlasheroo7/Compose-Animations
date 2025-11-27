@@ -20,6 +20,8 @@ import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -164,6 +166,7 @@ fun TweenAndSpringScreen(
             hazeState = hazeState,
             text = "Replay Animation",
             height = 45.dp,
+            modifier = Modifier.wrapContentSize().padding(horizontal = 12.dp),
             onClick = { replay = !replay }
         )
         Column(

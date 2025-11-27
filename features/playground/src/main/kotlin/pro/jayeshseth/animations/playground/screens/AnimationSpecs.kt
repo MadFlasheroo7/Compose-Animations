@@ -30,6 +30,7 @@ fun AnimationSpecs(
         InteractiveButton(
             hazeState = hazeState,
             text = "Tween And Spring",
+            height = 100.dp,
             onClick = { navAction(PlaygroundRoutes.TweenAndSpringRoute) },
         )
     }

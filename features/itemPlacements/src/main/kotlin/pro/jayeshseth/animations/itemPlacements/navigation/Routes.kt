@@ -6,10 +6,13 @@ import pro.jayeshseth.animations.core.navigation.Route
 object ItemPlacementRoutes {
 
     @Serializable
+    data object ItemPlacementLandingRoute : Route()
+
+    @Serializable
     data object SwipeRefreshRoute : Route()
 
     @Serializable
-    data object AnimatedListItemPlacementRoute : Route()
+    data object ListItemPlacementRoute : Route()
 
     @Serializable
     data object FadeItemPlacementRoute : Route()

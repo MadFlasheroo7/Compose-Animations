@@ -1,5 +1,6 @@
 package pro.jayeshseth.animations.easterEggs.screens
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.navigation.AnimationScreen
@@ -42,8 +44,8 @@ fun EasterEggScreen(
                 title = {
                     Text(
                         text = "Easter Eggs",
-                        fontSize = 25.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontSize = 35.sp,
+                        fontWeight = FontWeight(750),
                         fontFamily = syneFontFamily
                     )
                 }
@@ -51,6 +53,7 @@ fun EasterEggScreen(
         },
     ) {
         LazyColumn(
+            contentPadding = PaddingValues(horizontal = 20.dp),
             modifier = Modifier
         ) {
             item {
@@ -60,6 +63,7 @@ fun EasterEggScreen(
                 InteractiveButton(
                     hazeState = hazeState,
                     text = animationScreen.title,
+                    height = 100.dp,
                     onClick = {
                         navAction(animationScreen.route)
                     })

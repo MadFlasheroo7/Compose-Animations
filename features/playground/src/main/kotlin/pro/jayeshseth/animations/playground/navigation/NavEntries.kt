@@ -7,7 +7,7 @@ import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.OnNavAction
 import pro.jayeshseth.animations.core.navigation.Route
 import pro.jayeshseth.animations.playground.screens.AnimationSpecs
-import pro.jayeshseth.animations.playground.screens.Playground
+import pro.jayeshseth.animations.playground.screens.PlaygroundLanding
 import pro.jayeshseth.animations.playground.screens.tweenAndSpring.TweenAndSpringScreen
 
 fun EntryProviderBuilder<Route>.playground(
@@ -15,8 +15,8 @@ fun EntryProviderBuilder<Route>.playground(
     onNavAction: OnNavAction,
     onClickLink: OnClickLink
 ) {
-    entry<PlaygroundRoutes.PlaygroundRoute> {
-        Playground(hazeState = hazeState, navAction = onNavAction)
+    entry<PlaygroundRoutes.PlaygroundLandingRoute> {
+        PlaygroundLanding(hazeState = hazeState, navAction = onNavAction)
     }
     entry<PlaygroundRoutes.AnimationSpecRoute> {
         AnimationSpecs(hazeState = hazeState, navAction = onNavAction)

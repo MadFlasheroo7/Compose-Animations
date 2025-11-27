@@ -1,5 +1,6 @@
 package pro.jayeshseth.animations.shaders.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -20,6 +21,7 @@ fun Shaders(
     navAction: OnNavAction
 ) {
     Column(
+        verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = modifier
             .verticalScroll(
                 rememberScrollState()
@@ -30,6 +32,7 @@ fun Shaders(
         InteractiveButton(
             hazeState = hazeState,
             text = "Rainbow Circle",
+            height = 100.dp,
             onClick = {
                 navAction(
                     ShaderRoutes.RainbowShaderRoute
@@ -38,6 +41,7 @@ fun Shaders(
         )
         InteractiveButton(
             hazeState = hazeState,
+            height = 100.dp,
             text = "Interstellar Space",
             onClick = { navAction(ShaderRoutes.InterstellarShaderRoute) },
         )

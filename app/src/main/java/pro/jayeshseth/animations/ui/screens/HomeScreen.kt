@@ -23,7 +23,10 @@ import pro.jayeshseth.animations.core.ui.components.LazyIntrinsicGrid
 import pro.jayeshseth.animations.core.ui.components.PrimaryInteractiveButton
 import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
 import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
+import pro.jayeshseth.animations.easterEggs.navigation.EasterEggsRoutes
+import pro.jayeshseth.animations.itemPlacements.navigation.ItemPlacementRoutes
 import pro.jayeshseth.animations.navigation.NavDestinations
+import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
 import pro.jayeshseth.animations.shaders.navigation.ShaderRoutes
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,7 +73,7 @@ fun HomeScreen(
         ) { item ->
             PrimaryInteractiveButton(
                 hazeState = hazeState,
-                color = transitionColor,
+                color = Color.White,
                 text = item.title,
                 onClick = { navAction(item.route) }
             )
@@ -90,12 +93,12 @@ fun HomeScreen(
 //        ),
 //        AnimationScreen(
 //            title = "Animate List Item Placement",
-//            route = ItemPlacementRoutes.AnimatedListItemPlacementRoute,
+//            route = ItemPlacementRoutes.ListItemPlacementRoute,
 //            color = Color(0xFFFF0055)
 //        ),
 //        AnimationScreen(
 //            title = "Playground",
-//            route = PlaygroundRoutes.PlaygroundRoute,
+//            route = PlaygroundRoutes.PlaygroundLandingRoute,
 //            color = Color(0xFFDB00FF)
 //        ),
 //        AnimationScreen(
@@ -159,30 +162,34 @@ private val animationScreens: List<AnimationScreen> by lazy {
     mutableListOf(
         AnimationScreen(
             title = "Default Apis",
-            route = DefaultApisRoutes.AnimateVisibilityRoute
+            route = DefaultApisRoutes.DefaultApisLanding
         ),
         AnimationScreen(
             title = "Playground",
-            route = DefaultApisRoutes.AnimateVisibilityRoute
+            route = PlaygroundRoutes.PlaygroundLandingRoute
         ),
         AnimationScreen(
             title = "Item Placements",
-            route = DefaultApisRoutes.AnimateVisibilityRoute
+            route = ItemPlacementRoutes.ListItemPlacementRoute
         ),
         AnimationScreen(
             title = "Past Easter Eggs",
-            route = DefaultApisRoutes.AnimateVisibilityRoute
+            route = EasterEggsRoutes.EasterEggsLandingRoute
         ),
         AnimationScreen(
-            title = "Shapes & Morphing",
+            title = "Shaders",
+            route = ShaderRoutes.ShaderGraphRoute
+        ),
+        /*        AnimationScreen(
+                    title = "Shapes & Morphing",
+                    route = DefaultApisRoutes.AnimateVisibilityRoute
+                ),*/
+        AnimationScreen(
+            title = "Canvas",
             route = DefaultApisRoutes.AnimateVisibilityRoute
         ),
         AnimationScreen(
             title = "Community",
-            route = DefaultApisRoutes.AnimateVisibilityRoute
-        ),
-        AnimationScreen(
-            title = "Shaders",
             route = DefaultApisRoutes.AnimateVisibilityRoute
         ),
 
@@ -191,17 +198,9 @@ private val animationScreens: List<AnimationScreen> by lazy {
                     route = NavDestinations.Community.route
                 ),*/
         AnimationScreen(
-            title = "Shader",
-            route = ShaderRoutes.ShaderGraphRoute
-        ),
-        AnimationScreen(
             title = "About",
             route = NavDestinations.AboutScreen
         ),
-        /*        AnimationScreen(
-                    title = "Past Easter Eggs",
-                    route = NavDestinations.PastEasterEggs.route
-                )*/
     )
 }
 

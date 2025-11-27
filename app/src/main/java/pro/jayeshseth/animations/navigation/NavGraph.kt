@@ -1,6 +1,7 @@
 package pro.jayeshseth.animations.navigation
 
 import android.graphics.Bitmap
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,7 +37,6 @@ import com.mikepenz.hypnoticcanvas.shaders.IceReflection
 import com.mikepenz.hypnoticcanvas.shaders.InkFlow
 import com.mikepenz.hypnoticcanvas.shaders.OilFlow
 import com.mikepenz.hypnoticcanvas.shaders.PurpleLiquid
-import com.mikepenz.hypnoticcanvas.shaders.RainbowWater
 import com.mikepenz.hypnoticcanvas.shaders.Stage
 import com.mikepenz.hypnoticcanvas.shaders.Stripy
 import dev.chrisbanes.haze.hazeSource
@@ -83,15 +83,14 @@ fun NavGraph(
 
     val shaders = remember {
         listOf(
+            InkFlow,
             BlackCherryCosmos,
             OilFlow,
-            InkFlow,
             Heat(),
             GoldenMagma,
             BubbleRings,
             Stage,
             IceReflection,
-            RainbowWater,
             GradientFlow,
             PurpleLiquid,
             Stripy()
@@ -99,6 +98,17 @@ fun NavGraph(
     }
     var currentShaderIndex by remember { mutableStateOf(0) }
 
+    val paletteColor by animateColorAsState(
+        targetValue =
+            palette?.lightVibrantSwatch?.toColor()
+            ?: palette?.lightMutedSwatch?.toColor()
+            ?: palette?.mutedSwatch?.toColor()
+            ?: palette?.vibrantSwatch?.toColor()
+            ?: palette?.dominantSwatch?.toColor()
+            ?: palette?.darkVibrantSwatch?.toColor()
+            ?: palette?.darkMutedSwatch?.toColor()
+            ?: Color.Cyan,
+    )
     LaunchedEffect(currentShaderIndex) {
         bitmap = gl.toImageBitmap()
     }
@@ -115,6 +125,8 @@ fun NavGraph(
             } else null
         }
     }
+
+
     Box(
         Modifier.drawWithCache {
             onDrawWithContent {
@@ -130,7 +142,7 @@ fun NavGraph(
                 .fillMaxSize()
                 .hazeSource(hazeState)
                 .blur(12.dp)
-                .shaderBackground(shaders[currentShaderIndex], .7f)
+                .shaderBackground(shaders[currentShaderIndex], .2f)
         )
 
 //        bitmap?.let {
@@ -156,21 +168,14 @@ fun NavGraph(
         entryProvider = entryProvider {
             entry<NavDestinations.Home> {
                 HomeScreen(
-                    color = palette?.lightVibrantSwatch?.toColor()
-                        ?: palette?.lightMutedSwatch?.toColor()
-                        ?: palette?.mutedSwatch?.toColor()
-                        ?: palette?.vibrantSwatch?.toColor()
-                        ?: palette?.dominantSwatch?.toColor()
-                        ?: palette?.darkVibrantSwatch?.toColor()
-                        ?: palette?.darkMutedSwatch?.toColor()
-                        ?: Color.Cyan,
+                    color = paletteColor,
                     hazeState = hazeState
                 ) { route ->
                     backStack.navigate(route)
                 }
             }
             // Feature Graphs
-            defaultApis(onClickLink, hazeState)
+            defaultApis(onClickLink, hazeState, paletteColor) { backStack.navigate(it) }
             playground(
                 hazeState = hazeState,
                 onClickLink = onClickLink,

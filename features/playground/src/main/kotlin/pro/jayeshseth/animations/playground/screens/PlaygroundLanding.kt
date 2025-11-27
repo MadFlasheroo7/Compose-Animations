@@ -15,7 +15,7 @@ import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
 
 
 @Composable
-fun Playground(
+fun PlaygroundLanding(
     hazeState: HazeState,
     modifier: Modifier = Modifier,
     navAction: OnNavAction
@@ -31,6 +31,7 @@ fun Playground(
         InteractiveButton(
             hazeState = hazeState,
             text = "Animation Specs",
+            height = 100.dp,
             onClick = { navAction(PlaygroundRoutes.AnimationSpecRoute) },
         )
     }

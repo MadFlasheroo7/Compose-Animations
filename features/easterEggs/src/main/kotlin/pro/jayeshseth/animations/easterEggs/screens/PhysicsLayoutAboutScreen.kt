@@ -1,7 +1,6 @@
 package pro.jayeshseth.animations.easterEggs.screens
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -139,7 +138,6 @@ fun PhysicsLayoutAboutScreen(hazeState: HazeState, modifier: Modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(horizontal = 30.dp)
                 .navigationBarsPadding()
-                .animateContentSize()
         ) {
             Text(
                 text = if (!bool)
@@ -147,8 +145,8 @@ fun PhysicsLayoutAboutScreen(hazeState: HazeState, modifier: Modifier = Modifier
                 textAlign = TextAlign.Center
             )
             Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.animateContentSize()
             ) {
                 AnimatedVisibility(
                     visible = bool,

@@ -6,7 +6,7 @@ import pro.jayeshseth.animations.core.navigation.Route
 object EasterEggsRoutes {
 
     @Serializable
-    data object EasterEggsGraphRoute : Route()
+    data object EasterEggsLandingRoute : Route()
 
     @Serializable
     data object PhysicsLayoutAboutRoute : Route()
