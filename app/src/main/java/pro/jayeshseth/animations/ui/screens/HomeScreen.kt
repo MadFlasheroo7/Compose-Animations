@@ -1,6 +1,13 @@
 package pro.jayeshseth.animations.ui.screens
 
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -9,13 +16,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.navigation.AnimationScreen
 import pro.jayeshseth.animations.core.navigation.OnNavAction
@@ -40,7 +51,6 @@ fun HomeScreen(
 
     val updateTransition = updateTransition(color)
     val transitionColor by updateTransition.animateColor { it }
-
 
     Scaffold(
         containerColor = Color.Transparent,
@@ -70,92 +80,61 @@ fun HomeScreen(
             modifier = Modifier
                 .padding(horizontal = 20.dp)
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
-        ) { item ->
-            PrimaryInteractiveButton(
-                hazeState = hazeState,
-                color = Color.White,
+        ) { index, item ->
+            AnimateButtonScale(
+                index = index,
                 text = item.title,
-                onClick = { navAction(item.route) }
+                hazeState = hazeState,
+                onClick = {
+                    navAction(item.route)
+                }
             )
         }
     }
 }
 
-/**
- * list of animation screens
- */
-//private val animationScreens: List<AnimationScreen> by lazy {
-//    mutableListOf(
-//        AnimationScreen(
-//            title = "Animate Visibility",
-//            route = DefaultApisRoutes.AnimateVisibilityRoute,
-//            color = Color(0xFFFF1100)
-//        ),
-//        AnimationScreen(
-//            title = "Animate List Item Placement",
-//            route = ItemPlacementRoutes.ListItemPlacementRoute,
-//            color = Color(0xFFFF0055)
-//        ),
-//        AnimationScreen(
-//            title = "Playground",
-//            route = PlaygroundRoutes.PlaygroundLandingRoute,
-//            color = Color(0xFFDB00FF)
-//        ),
-//        AnimationScreen(
-//            title = "Animate Content",
-//            route = DefaultApisRoutes.AnimateContentRoute,
-//            color = Color(0xFF673AB7)
-//        ),
-//        AnimationScreen(
-//            title = "Animate Value As State",
-//            route = DefaultApisRoutes.AnimateValueAsStateRoute,
-//            color = Color(0xFF00FFEA)
-//        ),
-//        AnimationScreen(
-//            title = "Animated Gesture",
-//            route = DefaultApisRoutes.AnimateGestureRoute,
-//            color = Color(0xFFFFFFFF)
-//        ),
-//        AnimationScreen(
-//            title = "Infinite Rotation",
-//            route = DefaultApisRoutes.InfiniteRotationRoute,
-//            color = Color(0xFFFFFC00)
-//        ),
-//        AnimationScreen(
-//            title = "Swipe To Refresh",
-//            route = ItemPlacementRoutes.SwipeRefreshRoute,
-//            color = Color(0xFFFF00FA)
-//        ),
-//        AnimationScreen(
-//            title = "Nav Animation",
-//            route = NavigationRoutes.Nav2GraphRoute,
-//            color = Color(0xFF00FFEB)
-//        ),
-//        AnimationScreen(
-//            title = "Bouncy Ropes",
-//            route = NavDestinations.BouncyRope,
-//            color = Color(0xFF00FF08)
-//        ),
-//        /*        AnimationScreen(
-//                    title = "Community",
-//                    route = NavDestinations.Community.route
-//                ),*/
-//        AnimationScreen(
-//            title = "Shader",
-//            route = ShaderRoutes.ShaderGraphRoute,
-//            color = Color(0xFF88FF00)
-//        ),
-//        AnimationScreen(
-//            title = "About",
-//            route = NavDestinations.AboutScreen,
-//            color = Color(0xFFCDDC39)
-//        ),
-//        /*        AnimationScreen(
-//                    title = "Past Easter Eggs",
-//                    route = NavDestinations.PastEasterEggs.route
-//                )*/
-//    )
-//}
+// temp
+@Composable
+private fun AnimateButtonScale(
+    index: Int,
+    text: String,
+    hazeState: HazeState,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+    val animatedProgress = remember { Animatable(4.5f) }
+    val animatedBlur = remember { Animatable(100f) }
+    val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
+
+    LaunchedEffect(index) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            vibrator!!.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+        }
+        animatedProgress.animateTo(
+            targetValue = 1f,
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessLow,
+            )
+        )
+    }
+    LaunchedEffect(index) {
+        animatedBlur.animateTo(
+            targetValue = 0f,
+            animationSpec = tween(300)
+        )
+    }
+    PrimaryInteractiveButton(
+        hazeState = hazeState,
+        color = Color.White,
+        text = text,
+        onClick = onClick,
+        scale = animatedProgress.value,
+        blur = animatedBlur.value,
+        modifier = modifier
+    )
+}
 
 
 private val animationScreens: List<AnimationScreen> by lazy {
@@ -173,15 +152,15 @@ private val animationScreens: List<AnimationScreen> by lazy {
             route = ItemPlacementRoutes.ListItemPlacementRoute
         ),
         AnimationScreen(
-            title = "Past Easter Eggs",
-            route = EasterEggsRoutes.EasterEggsLandingRoute
-        ),
-        AnimationScreen(
             title = "Shaders",
             route = ShaderRoutes.ShaderGraphRoute
         ),
         /*        AnimationScreen(
                     title = "Shapes & Morphing",
+                    route = DefaultApisRoutes.AnimateVisibilityRoute
+                ),*/
+        /*        AnimationScreen(
+                    title = "Text",
                     route = DefaultApisRoutes.AnimateVisibilityRoute
                 ),*/
         AnimationScreen(
@@ -192,7 +171,10 @@ private val animationScreens: List<AnimationScreen> by lazy {
             title = "Community",
             route = DefaultApisRoutes.AnimateVisibilityRoute
         ),
-
+        AnimationScreen(
+            title = "Past Easter Eggs",
+            route = EasterEggsRoutes.EasterEggsLandingRoute
+        ),
         /*        AnimationScreen(
                     title = "Community",
                     route = NavDestinations.Community.route

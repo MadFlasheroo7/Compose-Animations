@@ -100,8 +100,8 @@ fun InfiniteRotation(
                     .size(200.dp)
                     .rotate(angle)
                     .dropShadow(RoundedCornerShape(16.dp)){
-                        this.color = Color.Cyan.copy(.2f)
-                        this.radius = 112f
+                        this.color = Color.White.copy(.2f)
+                        this.radius = 100f
                     },
             )
             Slider(

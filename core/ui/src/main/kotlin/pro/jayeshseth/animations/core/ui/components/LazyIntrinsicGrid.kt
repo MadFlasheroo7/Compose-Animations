@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -31,7 +31,7 @@ fun <T> LazyIntrinsicGrid(
     horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(20.dp),
     verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(20.dp),
     span: (item: T) -> Int = { 1 },
-    content: @Composable (item: T) -> Unit
+    content: @Composable (index: Int, item: T) -> Unit
 ) {
     val gridRows = remember(items, columns) {
         buildGridRows(items, columns, span)
@@ -42,7 +42,7 @@ fun <T> LazyIntrinsicGrid(
         contentPadding = contentPadding,
         verticalArrangement = verticalArrangement
     ) {
-        items(gridRows) { rowItems ->
+        itemsIndexed(gridRows) { index, rowItems ->
             val totalSpanUsed = rowItems.sumOf { it.span }
 
             Row(
@@ -58,7 +58,7 @@ fun <T> LazyIntrinsicGrid(
                             .fillMaxHeight(),
                         propagateMinConstraints = true
                     ) {
-                        content(wrapper.item)
+                        content(index, wrapper.item)
                     }
                 }
 

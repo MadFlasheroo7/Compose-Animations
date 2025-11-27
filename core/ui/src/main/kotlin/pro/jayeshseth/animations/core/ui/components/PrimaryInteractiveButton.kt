@@ -47,7 +47,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.innerShadow
+import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,8 +58,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mikepenz.hypnoticcanvas.shaderBackground
 import com.mikepenz.hypnoticcanvas.shaders.InkFlow
+import dev.chrisbanes.haze.ExperimentalHazeApi
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
+import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
@@ -68,7 +73,7 @@ import pro.jayeshseth.animations.core.ui.modifiers.glowingShadow
 import pro.jayeshseth.animations.core.ui.modifiers.shimmerBorder
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalHazeApi::class)
 @Composable
 fun PrimaryInteractiveButton(
     hazeState: HazeState,
@@ -78,6 +83,8 @@ fun PrimaryInteractiveButton(
     onLongClick: () -> Unit = {},
     clickDelay: Long = 400,
     color: Color = Color.Cyan,
+    scale: Float,
+    blur: Float,
     onClick: () -> Unit,
 ) {
     var clickTracker by remember { mutableIntStateOf(0) }
@@ -192,6 +199,16 @@ fun PrimaryInteractiveButton(
             )
             .clip(shape)
             .hazeEffect(state = hazeState, style = hazeStyle)
+//            .graphicsLayer {
+//                this.shape = shape
+//                scaleX = scale
+//                scaleY = scale
+//                renderEffect = BlurEffect(
+//                    blur,
+//                    blur,
+//                    TileMode.Decal
+//                )
+//            }
             .combinedClickable(
                 interactionSource = interactionSource,
                 indication = ripple(),
@@ -204,6 +221,7 @@ fun PrimaryInteractiveButton(
                     clickTracker++
                 }
             )
+
             .glowingShadow(
                 borderRadius = buttonDp,
                 color = shadowColor,
@@ -212,6 +230,16 @@ fun PrimaryInteractiveButton(
                 this.color = shadowColor
                 this.radius = 10f
                 this.spread = 10f
+            }
+            .graphicsLayer {
+                this.shape = shape
+                scaleX = scale
+                scaleY = scale
+                renderEffect = BlurEffect(
+                    blur,
+                    blur,
+                    TileMode.Decal
+                )
             }
             .shimmerBorder(
                 cornerRadius = buttonDp,
@@ -267,6 +295,8 @@ private fun PreviewInteractiveButton() {
                     PrimaryInteractiveButton(
                         hazeState,
                         color = Color.Magenta,
+                        scale = 1f,
+                        blur = 0f,
                         text = "Shapes & Morphing", onClick = {
                             println("✨ Animation complete onclick triggred!")
                         })

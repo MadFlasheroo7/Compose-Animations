@@ -51,7 +51,7 @@ kotlinxSerializationCore = "1.9.0"
 version-code = "10"
 version-name = "1.0.7" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
 version-nameBetaSuffix = "-beta01"
-haze = "1.6.10"
+haze = "1.7.1"
 hypnoticcanvas = "0.4.1"
 
 [libraries]
