@@ -1,5 +1,6 @@
 package pro.jayeshseth.animations.core.ui.components
 
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationEndReason
@@ -61,7 +62,6 @@ import com.mikepenz.hypnoticcanvas.shaders.InkFlow
 import dev.chrisbanes.haze.ExperimentalHazeApi
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
@@ -83,6 +83,7 @@ fun PrimaryInteractiveButton(
     onLongClick: () -> Unit = {},
     clickDelay: Long = 400,
     color: Color = Color.Cyan,
+    flip: Boolean = false,
     scale: Float,
     blur: Float,
     onClick: () -> Unit,
@@ -96,7 +97,11 @@ fun PrimaryInteractiveButton(
     var canExecute by remember { mutableStateOf(false) }
 
     val buttonDp by animateDpAsState(
-        targetValue = if (buttonInteracted) 100.dp else 20.dp,
+        targetValue = if (buttonInteracted xor flip) {
+            100.dp
+        } else {
+            20.dp
+        },
         animationSpec = tween(500),
         label = "animate button shape",
     )
@@ -117,7 +122,11 @@ fun PrimaryInteractiveButton(
         atEnd = !buttonInteracted
     )
 
-    val shape = RoundedCornerShape(buttonDp)
+    val shape by remember(buttonDp, flip) { mutableStateOf(RoundedCornerShape(buttonDp)) }
+
+    LaunchedEffect(Unit) {
+        Log.d("TAG", "PrimaryInteractiveButton:flip: $flip text: $text dp:$buttonDp")
+    }
 
     LaunchedEffect(buttonInteracted, clickTracker) {
         if (buttonInteracted) {
@@ -217,7 +226,7 @@ fun PrimaryInteractiveButton(
                     clickTracker++
                 },
                 onLongClick = {
-                    canExecute = true
+//                    canExecute = true
                     clickTracker++
                 }
             )

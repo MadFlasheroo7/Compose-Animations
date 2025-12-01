@@ -1,22 +1,38 @@
 package pro.jayeshseth.animations.ui.screens
 
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.graphics.RuntimeShader
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
+import android.util.Log
+import androidx.activity.compose.LocalActivity
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.FiniteAnimationSpec
-import androidx.compose.animation.core.Transition
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,149 +46,230 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.lerp
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.util.fastForEachIndexed
-import androidx.core.content.getSystemService
-import de.apuri.physicslayout.lib.physicsBody
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.mikepenz.hypnoticcanvas.shaderBackground
+import com.mikepenz.hypnoticcanvas.shaders.InkFlow
 import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.HazeStyle
+import dev.chrisbanes.haze.HazeTint
+import dev.chrisbanes.haze.hazeEffect
+import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.R
+import pro.jayeshseth.animations.core.model.ComposeFriendlyFloat
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
-import pro.jayeshseth.animations.core.ui.icons.AnimIcons
+import pro.jayeshseth.animations.core.ui.components.SocialMedia
+import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
+import pro.jayeshseth.animations.core.utils.CAN_PLAY_SHADER
+import pro.jayeshseth.animations.core.utils.PermissionPrefs
+import pro.jayeshseth.animations.core.utils.collectPrefAsState
+import pro.jayeshseth.animations.core.utils.commonPrefs
+import pro.jayeshseth.animations.core.utils.writePref
+import pro.jayeshseth.animations.ui.composables.glowingShadow
 
-/**
- * A wrapper that cycles through a list of styles infinitely.
- *
- * @param styles The list of TextStyles to cycle through.
- * @param animationSpec The animation spec for the transition (e.g., spring, tween).
- * @param delayMillis How long to stay on a specific style before moving to the next.
- */
+@SuppressLint("MissingPermission")
+@OptIn(
+    ExperimentalLayoutApi::class,
+    ExperimentalFoundationApi::class,
+    ExperimentalPermissionsApi::class
+)
 @Composable
-fun rememberInfiniteTextStyle(
-    styles: List<TextStyle>,
-    animationSpec: AnimationSpec<Float> = tween(),
-    delayMillis: Long = 1500
-): State<TextStyle> {
-    // Track which style index we are currently on
-    var currentIndex by remember { mutableIntStateOf(0) }
-
-    // Use your core logic to animate to the current index
-    val animatedStyle = animateTextStyleAsState(
-        targetValue = styles[currentIndex],
-        animationSpec = animationSpec
-    )
-
-    // The infinite loop driver
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(delayMillis)
-            // Move to next index, looping back to 0 at the end
-            currentIndex = (currentIndex + 1) % styles.size
-        }
-    }
-
-    return animatedStyle
-}
-
-@Composable
-fun animateTextStyleAsState(
-    targetValue: TextStyle,
-    animationSpec: AnimationSpec<Float> = spring(),
-    finishedListener: ((TextStyle) -> Unit)? = null
-): State<TextStyle> {
-
-    val animation = remember { Animatable(0f) }
-    var previousTextStyle by remember { mutableStateOf(targetValue) }
-    var nextTextStyle by remember { mutableStateOf(targetValue) }
-
-    val textStyleState = remember(animation.value) {
-        derivedStateOf {
-            lerp(previousTextStyle, nextTextStyle, animation.value)
-        }
-    }
-
-    LaunchedEffect(targetValue, animationSpec) {
-        previousTextStyle = textStyleState.value
-        nextTextStyle = targetValue
-        animation.snapTo(0f)
-        animation.animateTo(1f, animationSpec)
-        finishedListener?.invoke(textStyleState.value)
-    }
-
-    return textStyleState
-}
-
-@OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
-@Preview
-@Composable
-fun AboutScreen(hazeState: HazeState = rememberHazeState(), modifier: Modifier = Modifier) {
-    val About = stringResource(R.string.about)
-    var bool by rememberSaveable { mutableStateOf(false) }
-    val aboutList by remember { mutableStateOf(About.split(" ")) }
+fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
+    val view = LocalView.current
+    val context = LocalContext.current
+    val activity = LocalActivity.current
     val urlLauncher = LocalUriHandler.current
-    val sourceCode = "https://github.com/MadFlasheroo7/Compose-Animations"
-
+    val window = activity?.window
+    val prefs = context.commonPrefs
+    val fallbackWindow = (context as Activity).window
+    val controller = WindowInsetsControllerCompat(
+        window ?: fallbackWindow,
+        view
+    )
+    var clapCount by remember { mutableStateOf(0) }
+    var bool by rememberSaveable { mutableStateOf(false) }
+    var showMsg by rememberSaveable { mutableStateOf(false) }
+    var isDetecting by remember { mutableStateOf(false) }
+    var showPermissionDialog by remember { mutableStateOf(false) }
     val backgroundColor by animateColorAsState(
         targetValue = if (bool) Color.Black else Color.Transparent,
         animationSpec = tween(2000),
         label = ""
     )
+    val scope = rememberCoroutineScope()
+    val val1 = remember { Animatable(0f) }
+    val val2 = remember { Animatable(.000000000000f) }
+    val val3 = remember { Animatable(0.1f) }
+    val About = stringResource(R.string.about)
+    val sourceCode = "https://github.com/MadFlasheroo7/Compose-Animations"
+
+    val isPermissionPermanentlyDenied =
+        prefs.collectPrefAsState(PermissionPrefs.RECORD_AUDIO_DENIED, false)
+    val dontShowEverAgain =
+        prefs.collectPrefAsState(PermissionPrefs.PERMISSION_RATIONAL, false)
+    val canPlayShader =
+        prefs.collectPrefAsState(CAN_PLAY_SHADER, false)
+
+    val permissionState = rememberPermissionState(
+        android.Manifest.permission.RECORD_AUDIO
+    ) {
+        if (it) {
+            showPermissionDialog = false
+            isDetecting = true
+        } else if (isAtleastDeclinedOnce(context, android.Manifest.permission.RECORD_AUDIO)) {
+        } else {
+            scope.launch {
+                prefs.writePref(PermissionPrefs.RECORD_AUDIO_DENIED, true)
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        delay(2000)
+        if (!permissionState.status.isGranted && !dontShowEverAgain.value) {
+            showPermissionDialog = true
+        } else {
+            isDetecting = true
+        }
+    }
+
+    if (!view.isInEditMode && bool) {
+        DisposableEffect(bool) {
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+
+            onDispose {
+                controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
+                controller.show(WindowInsetsCompat.Type.systemBars())
+            }
+        }
+    }
+
+    if (!canPlayShader.value) {
+        DisposableEffect(isDetecting) {
+            var job: Job? = null
+            if (isDetecting) {
+                Log.d(TAG, "Starting detection...")
+
+                job = scope.launch(Dispatchers.IO) {
+                    try {
+                        detectClapsDebug(
+                            onClapDetected = {
+                                Log.d(TAG, "CLAP DETECTED!")
+                                clapCount++
+                                Log.d(TAG, "Clap Count: $clapCount")
+                                bool = true
+                            },
+                            onLog = { message ->
+                                Log.d(TAG, "LOG: $message")
+                            },
+                            onError = { error ->
+                                isDetecting = false
+                            }
+                        )
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error in detection: ${e.message}", e)
+                        isDetecting = false
+                    }
+                }
+            }
+
+            onDispose {
+                Log.d(TAG, "Stopping detection...")
+                job?.cancel()
+            }
+        }
+    }
+
+    LaunchedEffect(bool) {
+        if (bool) {
+            delay(3500)
+            launch {
+                val1.animateTo(
+                    targetValue = 1f,
+                    animationSpec = tween(5000)
+                )
+            }
+            launch {
+                val2.animateTo(
+                    targetValue = 0.0100f,
+                    animationSpec = tween(5000)
+                )
+            }
+            launch {
+                val3.animateTo(
+                    targetValue = 1f,
+                    animationSpec = tween(10_000)
+                )
+                val2.animateTo(
+                    targetValue = .30f,
+                    animationSpec = tween(5000)
+                )
+                showMsg = true
+            }
+        } else {
+            val1.snapTo(0f)
+            val2.snapTo(
+                targetValue = .000000000000f
+            )
+            val3.snapTo(
+                targetValue = 0.1f
+            )
+        }
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier
             .fillMaxSize()
+            .background(Color.Black.copy(.2f))
             .background(backgroundColor)
-            .then(
-                if (bool) Modifier.clickable(
-                    onClick = {
-                        bool = !bool
-                    }
-                ) else Modifier
-            )
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically, modifier = Modifier
@@ -191,9 +288,10 @@ fun AboutScreen(hazeState: HazeState = rememberHazeState(), modifier: Modifier =
                 Text(
                     text = "\uD83D\uDC96",
                     fontSize = 25.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold
                 )
             }
+
             AnimatedVisibility(
                 visible = !bool,
                 enter = fadeIn(
@@ -227,26 +325,35 @@ fun AboutScreen(hazeState: HazeState = rememberHazeState(), modifier: Modifier =
                 )
             }
         }
-        AnimatedVisibility(
-            visible = !bool,
-            enter = fadeIn(
-                animationSpec = tween(2000)
-            ),
-            exit = fadeOut(
-                animationSpec = tween(2000)
-            ),
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 12.dp)
                 .weight(1f)
+                .verticalScroll(rememberScrollState())
         ) {
-            Text(
-                text = About,
-                style = TextStyle(
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    fontFamily = syneFontFamily
+            AnimatedVisibility(
+                visible = !bool,
+                enter = fadeIn(
+                    animationSpec = tween(2000)
+                ),
+                exit = fadeOut(
+                    animationSpec = tween(2000)
+                ),
+            ) {
+                Text(
+                    text = About,
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        fontFamily = syneFontFamily
+                    )
                 )
-            )
+            }
         }
 
         AnimatedVisibility(
@@ -258,9 +365,8 @@ fun AboutScreen(hazeState: HazeState = rememberHazeState(), modifier: Modifier =
                 animationSpec = tween(2000)
             )
         ) {
-            SocialMedia()
+            SocialMedia(hazeState)
         }
-
 
         AnimatedVisibility(
             visible = !bool,
@@ -269,355 +375,409 @@ fun AboutScreen(hazeState: HazeState = rememberHazeState(), modifier: Modifier =
                 animationSpec = tween(2000)
             )
         ) {
-            InteractiveButton(
-                text = "Source Code",
-                hazeState = hazeState,
-                height = 100.dp,
-                onClick = {
-                    bool = !bool
-//                        urlLauncher.openUri(sourceCode)
-                },
-                onLongClick = {
-//                        bool = !bool
-                },
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier
-                    .padding(horizontal = 30.dp)
-                    .navigationBarsPadding()
-            )
-        }
-
-
-    }
-}
-
-@Composable
-fun SocialMedia(modifier: Modifier = Modifier) {
-//    val phyMod = Modifier.physicsBody(bodyConfig = BodyConfig(isStatic = true))
-    val urlLauncher = LocalUriHandler.current
-    val mastadon = "https://androiddev.social/@mad_flasher"
-    val github = "https://github.com/MadFlasheroo7"
-    val twitter = "https://x.com/Madflasheroo7"
-    val linkedin = "https://www.linkedin.com/in/jayesh-seth/"
-    val medium = "https://medium.com/@jayeshseth"
-    val realogs = "https://blog.realogs.in/author/jayesh/"
-    Card(modifier = modifier) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
-                .padding(12.dp)
-        ) {
-            Text(
-                "Let's Connect",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-//                modifier = phyMod
-            )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .clickable { urlLauncher.openUri(github) },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(AnimIcons.github),
-                        contentDescription = "github",
-                        modifier = Modifier
-                            .size(60.dp)
-                            .padding(12.dp)
-                    )
-                }
-                Box(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .clickable { urlLauncher.openUri(twitter) },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(AnimIcons.twitter),
-                        contentDescription = "twitter",
-                        modifier = Modifier
-                            .size(60.dp)
-                            .padding(12.dp)
-                    )
-                }
-                Box(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .clickable { urlLauncher.openUri(linkedin) },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(AnimIcons.linkedIn),
-                        contentDescription = "linkedin",
-                        modifier = Modifier
-                            .size(60.dp)
-                            .padding(12.dp)
-                    )
-                }
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .clickable { urlLauncher.openUri(mastadon) },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(AnimIcons.mastadon),
-                        contentDescription = "mastadon",
-                        modifier = Modifier
-                            .size(60.dp)
-                            .padding(12.dp)
-                    )
-                }
-                Box(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .clickable { urlLauncher.openUri(realogs) },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(AnimIcons.blog),
-                        contentDescription = "realogs",
-                        modifier = Modifier
-                            .size(60.dp)
-                            .padding(12.dp)
-                    )
-                }
-                Box(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .clickable { urlLauncher.openUri(medium) },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(AnimIcons.medium),
-                        contentDescription = "medium",
-                        modifier = Modifier
-                            .size(60.dp)
-                            .padding(12.dp)
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun GravitySensor(
-    onGravityChanged: (List<Float>) -> Unit
-) {
-    val context = LocalContext.current
-    DisposableEffect(Unit) {
-        val sensorManager = context.getSystemService<SensorManager>()!!
-
-        val gravitySensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
-
-        val gravityListener = object : SensorEventListener {
-            override fun onSensorChanged(event: SensorEvent) {
-                val (x, y, z) = event.values
-                onGravityChanged(listOf(x, y, z))
-            }
-
-            override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-
-            }
-        }
-
-        sensorManager.registerListener(
-            gravityListener,
-            gravitySensor,
-            SensorManager.SENSOR_DELAY_NORMAL,
-            SensorManager.SENSOR_DELAY_NORMAL
-        )
-
-        onDispose {
-            sensorManager.unregisterListener(gravityListener)
-        }
-    }
-}
-
-
-@Composable
-fun OptimizedFlowRow(about: String) {
-    val characters = remember { about.toList() }
-    var selectedIndex by remember { mutableStateOf(-1) }
-
-    LazyRow {
-        itemsIndexed(characters) { index, char ->
-            key(char) {
-                CharacterItem(
-                    char = char,
-                    isSelected = index == selectedIndex,
-                    onClick = { selectedIndex = if (selectedIndex == index) -1 else index }
+                Text(
+                    text = if (permissionState.status.isGranted) "Few Claps 👏 are appreciated ☺️"
+                    else
+                        "Needs Permission :(\nTap to grant permission",
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.clickable(
+                        indication = null,
+                        interactionSource = null
+                    ) {
+                        showPermissionDialog = true
+                    }
                 )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 30.dp, vertical = 12.dp)
+                        .navigationBarsPadding()
+                ) {
+                    AnimatedVisibility(
+                        visible = canPlayShader.value,
+                        enter = slideInHorizontally(
+                            animationSpec = spring(
+                                dampingRatio = Spring.DampingRatioLowBouncy,
+                                stiffness = Spring.StiffnessLow,
+                            ),
+                        ) {
+                            -it
+                        },
+                        exit = slideOutHorizontally(
+                            animationSpec = spring(
+                                dampingRatio = Spring.DampingRatioLowBouncy,
+                                stiffness = Spring.StiffnessLow,
+                            ),
+                        ) { -it },
+                        modifier = Modifier
+                            .weight(1f)
+                    ) {
+                        InteractiveButton(
+                            text = "Play Shader",
+                            hazeState = hazeState,
+                            height = 80.dp,
+                            onClick = { bool = true },
+                        )
+                    }
+                    InteractiveButton(
+                        text = "Source Code",
+                        hazeState = hazeState,
+                        height = 80.dp,
+                        onClick = { urlLauncher.openUri(sourceCode) },
+                        modifier = Modifier
+                            .weight(1f)
+                    )
+                }
             }
         }
-
     }
-}
 
-@Composable
-fun CharacterItem(
-    char: Char,
-    isSelected: Boolean,
-    onClick: () -> Unit
-) {
-    val modifier = remember(isSelected) {
-        derivedStateOf {
-            Modifier
-                .clickable(onClick = onClick)
-                .then(if (isSelected) Modifier.physicsBody() else Modifier)
+    //TODO Handle fallback
+    AnimatedVisibility(
+        visible = bool,
+        enter = fadeIn(
+            animationSpec = tween(2000, delayMillis = 3000)
+        ) + scaleIn(
+            animationSpec = tween(800)
+        ),
+        exit = fadeOut(snap())
+    ) {
+        Shader(
+            val1 = { val1.value },
+            val2 = { val2.value },
+            val3 = { val3.value },
+        )
+    }
+
+    AnimatedVisibility(
+        visible = showMsg,
+        enter = fadeIn(snap()),
+        exit = fadeOut(tween(1000))
+    ) {
+        TextAnimation(
+            text = "Thank You for using the app and finding out the easter egg. \n Hope you liked it and as you were able to complete easter egg, i've unlocked master customization. GO WILD!!✌",
+            textStyle = TextStyle(
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = syneFontFamily,
+                color = Color.Black
+            )
+        ) {
+            scope.launch {
+                delay(2000)
+                showMsg = false
+                delay(1000)
+                val2.animateTo(
+                    targetValue = 0f,
+                    animationSpec = keyframes {
+                        // todo make it more smooth
+                        durationMillis = 8000
+                        0.001189427f at 3000 using LinearOutSlowInEasing
+                    }
+                )
+                bool = false
+                scope.launch {
+                    prefs.writePref(CAN_PLAY_SHADER, true)
+                }
+            }
         }
     }
 
-    Text(
-        text = char.toString(),
-        modifier = modifier.value
+    RationalDialog(
+        hazeState = hazeState,
+        showPermissionDialog = showPermissionDialog,
+        isPermissionPermanentlyDenied = isPermissionPermanentlyDenied.value,
+        onOki = {
+            permissionState.launchPermissionRequest()
+            if (isPermissionPermanentlyDenied.value) {
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri = Uri.fromParts("package", context.packageName, null)
+                intent.data = uri
+                context.startActivity(intent)
+            }
+        },
+        onNaa = { showPermissionDialog = false },
+        onNeverAgain = {
+            showPermissionDialog = false
+            scope.launch {
+                prefs.writePref(PermissionPrefs.PERMISSION_RATIONAL, true)
+            }
+        }
     )
 }
 
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TextReveal(
+fun RationalDialog(
+    hazeState: HazeState,
+    showPermissionDialog: Boolean,
+    isPermissionPermanentlyDenied: Boolean,
+    onOki: () -> Unit,
+    onNaa: () -> Unit,
+    onNeverAgain: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val cardStyle = HazeStyle(
+        tint = HazeTint(Color.Black.copy(.4f)),
+        blurRadius = 50.dp,
+        noiseFactor = 0.1f,
+    )
+    val cardStyle2 = HazeStyle(
+        tint = HazeTint(Color.Cyan.copy(.2f)),
+        blurRadius = 50.dp,
+        noiseFactor = 0.1f,
+    )
+    val infiniteTransition = rememberInfiniteTransition(label = "dialog pulse")
+    val pulseAlpha by infiniteTransition.animateFloat(
+        initialValue = 30f,
+        targetValue = 80f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "pulseAlpha"
+    )
+    Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxSize()) {
+        AnimatedVisibility(
+            visible = showPermissionDialog,
+            enter = scaleIn(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioLowBouncy,
+                    stiffness = Spring.StiffnessLow,
+                )
+            ),
+            exit = scaleOut(
+                animationSpec = tween()
+            )
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier
+                    .padding(horizontal = 30.dp)
+                    .glowingShadow(
+                        color = Color.Cyan,
+                        spread = 18.dp,
+                        blurRadius = pulseAlpha.dp
+                    )
+                    .clip(RoundedCornerShape(16.dp))
+                    .hazeEffect(
+                        hazeState,
+                        cardStyle
+                    )
+                    .padding(16.dp)
+
+            ) {
+                Text(
+                    "Permission Required",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+
+                Text(
+                    "Microphone access is required For the easter egg.\n !!You can turn off once easter egg is found",
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.ExtraBold,
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    InteractiveButton(
+                        text = "Naa am good",
+                        hazeState = hazeState,
+                        hazeStyle = cardStyle2,
+                        onClick = onNaa,
+                        modifier = Modifier.weight(1f)
+                    )
+                    InteractiveButton(
+                        text = "Oki",
+                        hazeState = hazeState,
+                        onClick = onOki,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                AnimatedVisibility(
+                    visible = isPermissionPermanentlyDenied,
+                    enter = slideInVertically(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioLowBouncy,
+                            stiffness = Spring.StiffnessLow,
+                        )
+                    ) {
+                        -it / 3
+                    },
+                    exit = scaleOut(
+                        animationSpec = tween()
+                    )
+                ) {
+                    InteractiveButton(
+                        text = "Dont Show Again EVER :(",
+                        hazeState = hazeState,
+                        onClick = onNeverAgain,
+                    )
+                }
+            }
+        }
+    }
+}
+
+private const val TAG = "AboutScreen"
+
+@Preview
+@Composable
+private fun PreviewAnimationCard() {
+    val hazeState = rememberHazeState()
+    AnimationsTheme {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .hazeSource(state = hazeState)
+                    .shaderBackground(InkFlow, speed = 0.2f)
+
+            )
+
+            AboutScreen(hazeState)
+        }
+    }
+}
+
+private fun isAtleastDeclinedOnce(context: Context, permission: String): Boolean {
+    return shouldShowRequestPermissionRationale(context as Activity, permission)
+}
+
+@Composable
+private fun TextAnimation(
     text: String,
     textStyle: TextStyle,
     modifier: Modifier = Modifier,
-    initialDelay: Long = 100L,
-    letterDelay: Long = 50L,
-    animationSpec: FiniteAnimationSpec<Float> = tween(
-        durationMillis = 250,
-        easing = FastOutSlowInEasing,
-    ),
+    charDelay: Long = 50,
+    animDuration: Int = 1000,
+    onFinished: () -> Unit = {}
 ) {
-    val zeroSpacingTextStyle = textStyle.copy(letterSpacing = 0.sp)
-    FlowRow(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(
-            space = calcSpaceWidth(zeroSpacingTextStyle),
-//            alignment = Alignment.CenterHorizontally,
-        ),
-        verticalArrangement = Arrangement.Center,
-    ) {
-        val splitText = text.split(" ")
-        val wordStartIndices = remember(text) {
-            splitText.runningFold(0) { acc, word -> acc + word.length + 1 }.dropLast(1)
-        }
-        splitText.fastForEachIndexed { index, word ->
-            val wordStartIndex = wordStartIndices[index]
-            WordReveal(
-                word = word,
-                initialDelay = initialDelay + wordStartIndex * letterDelay,
-                letterDelay = letterDelay,
-                textStyle = zeroSpacingTextStyle,
-                animationSpec = animationSpec,
-            )
-        }
-    }
-}
-
-@Composable
-private fun calcSpaceWidth(textStyle: TextStyle): Dp {
-    val textMeasurer = rememberTextMeasurer()
-    val textLayoutResult = remember(textMeasurer) { textMeasurer.measure(" ", textStyle) }
-    return with(LocalDensity.current) { textLayoutResult.size.width.toDp() }
-}
-
-private enum class AnimationState {
-    Idle, Animating, Revealed
-}
-
-@Composable
-private fun WordReveal(
-    word: String,
-    initialDelay: Long,
-    letterDelay: Long,
-    textStyle: TextStyle,
-    animationSpec: FiniteAnimationSpec<Float>,
-    modifier: Modifier = Modifier,
-) {
-    var animationState by remember { mutableStateOf(AnimationState.Idle) }
-
-    LaunchedEffect(key1 = word) {
-        delay(timeMillis = initialDelay)
-        animationState = AnimationState.Animating
+    val charAnimations = remember(text) {
+        List(text.length) { Animatable(0f) }
     }
 
-    if (animationState == AnimationState.Animating) {
-        Row(
-            modifier = modifier,
-//            verticalAlignment = Alignment.Bottom,
-        ) {
-            word.forEachIndexed { index, char ->
-                var isVisible by remember { mutableStateOf(false) }
-                val transition =
-                    updateTransition(targetState = isVisible, label = "visibility transition")
-
-                LaunchedEffect(index, transition.currentState, transition.targetState) {
-                    if (index == word.indices.last && transition.currentState == transition.targetState && isVisible) {
-                        animationState = AnimationState.Revealed
-                    }
+    LaunchedEffect(text) {
+        charAnimations.forEach { it.snapTo(0f) }
+        charAnimations.forEachIndexed { index, animatable ->
+            launch {
+                delay(index * charDelay)
+                animatable.animateTo(1f, tween(animDuration, easing = FastOutLinearInEasing))
+                if (index == charAnimations.lastIndex) {
+                    onFinished()
                 }
-
-                LaunchedEffect(key1 = index) {
-                    delay(timeMillis = index * letterDelay)
-                    isVisible = true
-                }
-
-                LetterRevealScaled(
-                    letter = char.toString(),
-                    transition = transition,
-                    animationSpec = animationSpec,
-                    textStyle = textStyle,
-                )
             }
         }
-    } else {
-        val alpha = if (animationState == AnimationState.Revealed) 1f else 0f
-        Text(
-            text = word,
-            style = textStyle,
-            modifier = Modifier.alpha(alpha),
-        )
+    }
+
+    FlowRow(
+        itemVerticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
+    ) {
+        text.split(" ").forEachIndexed { wordIndex, word ->
+            Row {
+                word.forEachIndexed { charIndexInWord, char ->
+                    val originalIndex =
+                        text.split(" ").take(wordIndex).sumOf { it.length + 1 } + charIndexInWord
+                    val progress = charAnimations[originalIndex].value
+                    Text(
+                        text = char.toString(),
+                        style = textStyle,
+                        modifier = Modifier.graphicsLayer {
+                            alpha = progress
+                            scaleX = progress
+                            scaleY = progress
+                        }
+                    )
+                }
+            }
+            Text(text = " ", style = textStyle)
+        }
     }
 }
 
+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-private fun LetterRevealScaled(
-    letter: String,
-    transition: Transition<Boolean>,
-    animationSpec: FiniteAnimationSpec<Float>,
-    textStyle: TextStyle,
+private fun Shader(
+    val1: ComposeFriendlyFloat,
+    val2: ComposeFriendlyFloat,
+    val3: ComposeFriendlyFloat,
+    modifier: Modifier = Modifier
 ) {
-    val alpha by transition.animateFloat(
-        label = "alpha animation",
-        transitionSpec = { animationSpec },
-    ) { visible ->
-        if (visible) 1f else 0f
+    var time by remember { mutableFloatStateOf(0f) }
+
+    LaunchedEffect(Unit) {
+        val startTime = System.nanoTime()
+        while (true) {
+            withFrameNanos { frameTime ->
+                time = ((frameTime - startTime) / 1_000_000_000f)
+            }
+        }
     }
 
-    val scale by transition.animateFloat(
-        label = "scale animation",
-        transitionSpec = { animationSpec },
-    ) { visible ->
-        val initialScale = .4f
-        if (visible) 1f else initialScale
-    }
+    val shader = remember { RuntimeShader(shaderSource) }
 
-    Text(
-        text = letter,
-        modifier = Modifier.graphicsLayer {
-            this.alpha = alpha.coerceIn(0f, 1f)
-            this.scaleX = scale
-            this.scaleY = scale
-        },
-        style = textStyle,
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .drawWithCache {
+                onDrawBehind {
+                    shader.setFloatUniform(
+                        "iResolution",
+                        size.width,
+                        size.height
+                    )
+                    shader.setFloatUniform("iTime", time)
+                    shader.setFloatUniform("val1", val1())
+                    shader.setFloatUniform("val2", val2())
+                    shader.setFloatUniform("val3", val3())
+
+                    val shaderBrush = ShaderBrush(shader)
+                    drawRect(shaderBrush)
+                }
+            }
     )
 }
+
+private val shaderSource = """
+        uniform float2 iResolution;
+        uniform float iTime;
+        uniform float val1,val2,val3;
+
+        vec4 main(float2 fragCoord) {
+            vec3 c = vec3(0.0);
+            float l, z = iTime;
+            
+            for(int i = 0; i < 3; i++) {
+                vec2 uv, p = fragCoord.xy / iResolution;
+                uv = p;
+                p -= 0.5;
+                p.x *= iResolution.x / iResolution.y;
+                z += 0.0;
+                l = length(p);
+                uv += p / l * (sin(z) + val1) * abs(sin(l * 9.0 - z - z));
+                c[i] = val2 / length(mod(uv, val3) - .5);
+            }
+            
+            return vec4(c / l, 1.0);
+        }
+    """.trimIndent()

@@ -60,7 +60,10 @@ dependencies {
     implementation(libs.cascade.compose)
     implementation(libs.core.ktx)
     implementation(libs.rebugger)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.preferences.core)
     implementation(libs.compose.code.editor)
+    implementation(libs.accompanist.permissions)
     implementation(libs.kotlin.stdlib)
     implementation(libs.lifecycle.viewmodel.navigation3)
 
@@ -68,4 +71,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation(fileTree("libs") { include("*.jar") })
 }

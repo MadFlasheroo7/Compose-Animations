@@ -25,7 +25,7 @@ import de.apuri.physicslayout.lib.physicsBody
 import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 
 @Composable
-fun SocialMedia(modifier: Modifier = Modifier) {
+internal fun SocialMedia(modifier: Modifier = Modifier) {
     val phyMod = Modifier.physicsBody(bodyConfig = BodyConfig(isStatic = true))
     val urlLauncher = LocalUriHandler.current
     val mastadon = "https://androiddev.social/@mad_flasher"

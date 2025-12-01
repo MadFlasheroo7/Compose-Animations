@@ -110,7 +110,7 @@ fun NavGraph(
             ?: Color.Cyan,
     )
     LaunchedEffect(currentShaderIndex) {
-        bitmap = gl.toImageBitmap()
+//        bitmap = gl.toImageBitmap()
     }
 
     LaunchedEffect(bitmap, currentShaderIndex) {
@@ -157,7 +157,10 @@ fun NavGraph(
         backStack = backStack.backStack,
         onBack = { backStack.navBack() },
         modifier = Modifier
-            .clickable {
+            .clickable(
+                indication = null,
+                interactionSource = null
+            ) {
                 currentShaderIndex = (currentShaderIndex + 1) % shaders.size
             },
         entryDecorators = listOf(
