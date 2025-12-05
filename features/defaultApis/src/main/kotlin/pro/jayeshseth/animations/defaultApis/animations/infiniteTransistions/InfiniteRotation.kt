@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -43,6 +42,7 @@ import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
+import pro.jayeshseth.animations.core.ui.components.StretchySlider
 import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 
@@ -99,17 +99,20 @@ fun InfiniteRotation(
                 modifier = Modifier
                     .size(200.dp)
                     .rotate(angle)
-                    .dropShadow(RoundedCornerShape(16.dp)){
+                    .dropShadow(RoundedCornerShape(16.dp)) {
                         this.color = Color.White.copy(.2f)
                         this.radius = 100f
                     },
             )
-            Slider(
-                value = fanSpeed,
+            StretchySlider(
+                hazeState = hazeState,
+                value = { fanSpeed },
                 onValueChange = { fanSpeed = it },
                 valueRange = 100f..360f,
-                steps = 3
+                steps = { 5 },
+                modifier = Modifier.padding(horizontal = 50.dp)
             )
+
         }
     }
 }
