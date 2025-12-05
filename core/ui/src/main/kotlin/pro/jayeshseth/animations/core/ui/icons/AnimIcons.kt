@@ -1,6 +1,7 @@
 package pro.jayeshseth.animations.core.ui.icons
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Link
 import pro.jayeshseth.animations.core.ui.R
 
@@ -17,4 +18,6 @@ object AnimIcons {
     val medium = R.drawable.ic_medium
     val twitter = R.drawable.ic_twitter
     val link = Icons.Rounded.Link
+    val add = Icons.Rounded.Add
+    val minus = R.drawable.minus
 }
