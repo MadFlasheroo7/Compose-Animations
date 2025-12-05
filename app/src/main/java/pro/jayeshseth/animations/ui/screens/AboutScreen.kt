@@ -35,7 +35,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -86,14 +86,10 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.mikepenz.hypnoticcanvas.shaderBackground
-import com.mikepenz.hypnoticcanvas.shaders.InkFlow
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
-import dev.chrisbanes.haze.hazeSource
-import dev.chrisbanes.haze.rememberHazeState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -101,6 +97,7 @@ import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.R
 import pro.jayeshseth.animations.core.model.ComposeFriendlyFloat
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
+import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
 import pro.jayeshseth.animations.core.ui.components.SocialMedia
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
@@ -386,12 +383,16 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
                         "Needs Permission :(\nTap to grant permission",
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.clickable(
+                    modifier = Modifier.combinedClickable(
                         indication = null,
-                        interactionSource = null
-                    ) {
-                        showPermissionDialog = true
-                    }
+                        interactionSource = null,
+                        onClick = {
+                            if (!permissionState.status.isGranted) showPermissionDialog = true
+                        },
+                        onLongClick = {
+                            if (permissionState.status.isGranted) showPermissionDialog = true
+                        }
+                    )
                 )
 
                 Row(
@@ -633,22 +634,9 @@ private const val TAG = "AboutScreen"
 
 @Preview
 @Composable
-private fun PreviewAnimationCard() {
-    val hazeState = rememberHazeState()
+private fun PreviewAboutScreen() {
     AnimationsTheme {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Box(
-                Modifier
-                    .fillMaxSize()
-                    .hazeSource(state = hazeState)
-                    .shaderBackground(InkFlow, speed = 0.2f)
-
-            )
-
+        ShaderPreviewContent { hazeState ->
             AboutScreen(hazeState)
         }
     }

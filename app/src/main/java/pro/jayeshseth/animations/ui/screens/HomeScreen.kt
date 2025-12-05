@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -36,6 +37,8 @@ import pro.jayeshseth.animations.core.navigation.AnimationScreen
 import pro.jayeshseth.animations.core.navigation.OnNavAction
 import pro.jayeshseth.animations.core.ui.components.LazyIntrinsicGrid
 import pro.jayeshseth.animations.core.ui.components.PrimaryInteractiveButton
+import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
+import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
 import pro.jayeshseth.animations.core.utils.CAN_PLAY_SHADER
 import pro.jayeshseth.animations.core.utils.collectPrefAsState
@@ -218,4 +221,15 @@ private fun animationScreens(isItUnlocked: Boolean): List<AnimationScreen> {
             route = NavDestinations.AboutScreen
         )
     )
+}
+
+@PreviewScreenSizes
+@Composable
+private fun PreviewHomeScreen() {
+    AnimationsTheme {
+        ShaderPreviewContent { hazeState ->
+            HomeScreen(hazeState = hazeState, color = Color.White)
+        }
+    }
+
 }
