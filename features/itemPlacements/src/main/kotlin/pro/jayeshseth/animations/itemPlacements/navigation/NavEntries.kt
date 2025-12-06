@@ -22,7 +22,7 @@ fun EntryProviderBuilder<Route>.itemPlacements(
         ItemPlacementAnimation(hazeState, onNavAction)
     }
     entry<ItemPlacementRoutes.SlideItemPlacementRoute> {
-        SlideItemPlacement(onClickLink)
+        SlideItemPlacement(hazeState,onClickLink)
     }
     entry<ItemPlacementRoutes.ScaleItemPlacementRoute> {
         ScaleItemPlacement(hazeState, onClickLink)

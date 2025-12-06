@@ -254,6 +254,7 @@ private fun InnerRainbowCircle(
             TabsRow(
                 tabsList = animationTabsList(),
                 selectedIndex = pagerState.currentPage,
+                hazeState = hazeState,
                 tabComponent = { index, tab ->
                     AnimatedTab(
                         isSelected = pagerState.currentPage == index,
@@ -278,13 +279,14 @@ private fun InnerRainbowCircle(
                 when (animationTabsList()[page]) {
                     AnimationTabs.Settings -> {
                         Configurations(
+                            hazeState = hazeState,
                             rainbowCircleState = { rainbowCircleState.value },
                             onRainbowCircleStateChange = { rainbowCircleState.value = it }
                         )
                     }
 
                     AnimationTabs.Code -> {
-                        CodePreview(iterationLevel, rainbowCircleState.value)
+                        CodePreview(hazeState, iterationLevel, rainbowCircleState.value)
                     }
 
                     AnimationTabs.Source -> {
@@ -332,6 +334,7 @@ private fun LinksButtons(
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun CodePreview(
+    hazeState: HazeState,
     iterationLevel: ShaderIterationLevel,
     rainbowCircleState: RainbowCircleState,
     modifier: Modifier = Modifier
@@ -360,6 +363,7 @@ private fun CodePreview(
                 modifier = Modifier.padding(16.dp)
             ) {
                 CopyIconButton(
+                    hazeState = hazeState,
                     onClick = {
                         scope.launch {
                             clipboardManagerr.setClipEntry(
@@ -380,6 +384,7 @@ private fun CodePreview(
                 TabsRow(
                     tabsList = tabsList,
                     selectedIndex = selectedTab.intValue,
+                    hazeState = hazeState,
                     modifier = Modifier.padding(start = 16.dp),
                     tabComponent = { index, tabTitle ->
                         AnimatedTab(
@@ -429,6 +434,7 @@ private fun CodePreview(
 
 @Composable
 private fun Configurations(
+    hazeState: HazeState,
     rainbowCircleState: () -> RainbowCircleState,
     onRainbowCircleStateChange: (RainbowCircleState) -> Unit
 ) {
@@ -458,12 +464,19 @@ private fun Configurations(
                 is Fields.SliderData -> {
                     SliderTemplate(
                         title = data.title,
+                        hazeState = hazeState,
                         value = { data.value },
                         step = { data.step },
                         onValueChange = { value -> data.onValueChange(value) },
                         valueRange = data.valueRange,
                         roundToInt = data.roundToInt,
                         titlePadding = PaddingValues(vertical = 10.dp),
+                        onIncrement = {
+                            data.onValueChange(data.value + .1f)
+                        },
+                        onDecrement = {
+                            data.onValueChange(data.value - .1f)
+                        },
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 22.sp,
@@ -508,7 +521,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Pattern",
             value = sliderData.pattern,
-            step = 0.1f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(pattern = it))
             },
@@ -518,7 +531,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Expand",
             value = sliderData.expand,
-            step = 0f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(expand = it))
             },
@@ -528,7 +541,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Speed",
             value = sliderData.speed,
-            step = 0.01f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(speed = it))
             },
@@ -538,7 +551,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Size",
             value = sliderData.size,
-            step = 0.01f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(size = it))
             },
@@ -548,7 +561,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Red",
             value = sliderData.red,
-            step = 0.01f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(red = it))
             },
@@ -558,7 +571,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Green",
             value = sliderData.green,
-            step = 0.01f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(green = it))
             },
@@ -568,7 +581,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Blue",
             value = sliderData.blue,
-            step = 0.01f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(blue = it))
             },
@@ -578,7 +591,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Alpha",
             value = sliderData.alpha,
-            step = 0.01f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(alpha = it))
             },
@@ -588,7 +601,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Layers",
             value = sliderData.layers,
-            step = 1f,
+            step = 1,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(layers = it))
             },
@@ -598,7 +611,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Brightness",
             value = sliderData.brightness,
-            step = 0f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(brightness = it))
             },

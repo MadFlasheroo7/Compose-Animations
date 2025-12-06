@@ -101,7 +101,7 @@ fun ScaleItemPlacement(
                 shepardTone = false,
                 initialValue = 0.5f,
                 initialValueRange = -5f..5f,
-                initialValueSteps = 0.1f,
+                initialValueSteps = 0,
                 tweenDuration = 300,
                 selectedIndex = 0,
                 easingList = easingList,
@@ -110,11 +110,11 @@ fun ScaleItemPlacement(
                 dampingRatio = selectedDampingRatio,
                 stiffnessList = stiffnessList,
                 stiffness = selectedStiffness,
-                blurValueSteps = 0.1f,
+                blurValueSteps = 0,
                 blurValue = 200f,
                 blurValueRange = 0f..500f,
                 blurEffect = true,
-                delay = 1000
+                delay = 0
             )
         )
     }
@@ -206,6 +206,7 @@ fun ScaleItemPlacement(
                     exit = slideOutVertically(tween(500)),
                 ) {
                     ScaleAnimationController(
+                        hazeState = hazeState,
                         state = state.value,
                         onStateUpdate = { state.value = it },
                         scaleX = scaleX.value,
@@ -239,6 +240,7 @@ fun ScaleItemPlacement(
 
 @Composable
 private fun ScaleAnimationController(
+    hazeState: HazeState,
     state: AnimationControllerState,
     onStateUpdate: (AnimationControllerState) -> Unit,
     scaleX: Boolean,
@@ -249,6 +251,7 @@ private fun ScaleAnimationController(
 ) {
     AnimationController(
         state = state,
+        hazeState = hazeState,
         onStateUpdate = onStateUpdate,
         modifier = modifier,
         roundToInt = false,

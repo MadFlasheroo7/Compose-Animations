@@ -28,6 +28,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.ui.components.DropDownTemplate
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
 import pro.jayeshseth.animations.core.ui.components.Toggler
@@ -37,6 +38,7 @@ import pro.jayeshseth.animations.playground.model.TweenAndSpringSpecState
 @Composable
 fun TweenOptions(
     state: TweenAndSpringSpecState,
+    hazeState: HazeState,
     onStateUpdate: (TweenAndSpringSpecState) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -70,6 +72,7 @@ fun TweenOptions(
                 Column {
                     SliderTemplate(
                         title = "Cubic A",
+                        hazeState = hazeState,
                         roundToInt = false,
                         value = { state.cubicA },
                         onValueChange = {
@@ -77,9 +80,19 @@ fun TweenOptions(
                                 state.copy(cubicA = it)
                             )
                         },
-                        step = { 0.1f },
+                        step = { 0 },
                         valueRange = 0f..2f,
                         titlePadding = PaddingValues(vertical = 10.dp),
+                        onIncrement = {
+                            onStateUpdate(
+                                state.copy(cubicA = state.cubicA + 0.01f)
+                            )
+                        },
+                        onDecrement = {
+                            onStateUpdate(
+                                state.copy(cubicA = state.cubicA - 0.01f)
+                            )
+                        },
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 22.sp,
@@ -88,6 +101,7 @@ fun TweenOptions(
                     )
                     SliderTemplate(
                         title = "Cubic B",
+                        hazeState = hazeState,
                         roundToInt = false,
                         value = { state.cubicB },
                         onValueChange = {
@@ -95,9 +109,19 @@ fun TweenOptions(
                                 state.copy(cubicB = it)
                             )
                         },
-                        step = { 0.1f },
+                        step = { 0 },
                         valueRange = 0f..2f,
                         titlePadding = PaddingValues(vertical = 10.dp),
+                        onIncrement = {
+                            onStateUpdate(
+                                state.copy(cubicB = state.cubicB + 0.01f)
+                            )
+                        },
+                        onDecrement = {
+                            onStateUpdate(
+                                state.copy(cubicB = state.cubicB - 0.01f)
+                            )
+                        },
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 22.sp,
@@ -106,6 +130,7 @@ fun TweenOptions(
                     )
                     SliderTemplate(
                         title = "Cubic C",
+                        hazeState = hazeState,
                         roundToInt = false,
                         value = { state.cubicC },
                         onValueChange = {
@@ -113,9 +138,19 @@ fun TweenOptions(
                                 state.copy(cubicC = it)
                             )
                         },
-                        step = { 0.1f },
+                        step = { 0 },
                         valueRange = 0f..2f,
                         titlePadding = PaddingValues(vertical = 10.dp),
+                        onIncrement = {
+                            onStateUpdate(
+                                state.copy(cubicC = state.cubicC + 0.01f)
+                            )
+                        },
+                        onDecrement = {
+                            onStateUpdate(
+                                state.copy(cubicC = state.cubicC - 0.01f)
+                            )
+                        },
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 22.sp,
@@ -124,6 +159,7 @@ fun TweenOptions(
                     )
                     SliderTemplate(
                         title = "Cubic D",
+                        hazeState = hazeState,
                         roundToInt = false,
                         value = { state.cubicD },
                         onValueChange = {
@@ -131,9 +167,19 @@ fun TweenOptions(
                                 state.copy(cubicD = it)
                             )
                         },
-                        step = { 0.1f },
+                        step = { 0 },
                         valueRange = 0f..2f,
                         titlePadding = PaddingValues(vertical = 10.dp),
+                        onIncrement = {
+                            onStateUpdate(
+                                state.copy(cubicD = state.cubicD + 0.01f)
+                            )
+                        },
+                        onDecrement = {
+                            onStateUpdate(
+                                state.copy(cubicD = state.cubicD - 0.01f)
+                            )
+                        },
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 22.sp,
@@ -183,15 +229,26 @@ fun TweenOptions(
         }
         SliderTemplate(
             title = "Duration Millis",
+            hazeState = hazeState,
             value = { state.durationMillis.toFloat() },
             onValueChange = {
                 onStateUpdate(
                     state.copy(durationMillis = it.toInt())
                 )
             },
-            step = { 1f },
+            step = { 0 },
             valueRange = 0f..5000f,
             titlePadding = PaddingValues(vertical = 10.dp),
+            onIncrement = {
+                onStateUpdate(
+                    state.copy(durationMillis = state.durationMillis + 100)
+                )
+            },
+            onDecrement = {
+                onStateUpdate(
+                    state.copy(durationMillis = state.durationMillis - 100)
+                )
+            },
             style = TextStyle(
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 22.sp,
@@ -200,15 +257,26 @@ fun TweenOptions(
         )
         SliderTemplate(
             title = "Delay Millis",
+            hazeState = hazeState,
             value = { state.delayMillis.toFloat() },
             onValueChange = {
                 onStateUpdate(
                     state.copy(delayMillis = it.toInt())
                 )
             },
-            step = { 1f },
+            step = { 0 },
             valueRange = 0f..2000f,
             titlePadding = PaddingValues(vertical = 10.dp),
+            onIncrement = {
+                onStateUpdate(
+                    state.copy(delayMillis = state.delayMillis + 100)
+                )
+            },
+            onDecrement = {
+                onStateUpdate(
+                    state.copy(delayMillis = state.delayMillis - 100)
+                )
+            },
             style = TextStyle(
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 22.sp,

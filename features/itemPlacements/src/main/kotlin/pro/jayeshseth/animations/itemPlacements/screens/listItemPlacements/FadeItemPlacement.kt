@@ -99,12 +99,12 @@ fun FadeItemPlacement(
                 dampingRatio = selectedDampingRatio,
                 stiffnessList = stiffnessList,
                 stiffness = selectedStiffness,
-                initialValueSteps = 0.1f,
-                blurValueSteps = 0.1f,
+                initialValueSteps = 0,
+                blurValueSteps = 0,
                 blurValue = 200f,
                 blurValueRange = 0f..500f,
                 blurEffect = true,
-                delay = 1000
+                delay = 0
             )
         )
     }
@@ -182,10 +182,11 @@ fun FadeItemPlacement(
                     exit = slideOutVertically(tween(500)),
                 ) {
                     FadeAnimationController(
+                        hazeState = hazeState,
                         state = state.value,
                         onStateUpdate = { state.value = it },
                         fade = fade.value,
-                        onFadeChanged = { fade.value = it }
+                        onFadeChanged = { fade.value = it },
                     )
                 }
             }
@@ -212,6 +213,7 @@ fun FadeItemPlacement(
 @Composable
 private fun FadeAnimationController(
     state: AnimationControllerState,
+    hazeState: HazeState,
     onStateUpdate: (AnimationControllerState) -> Unit,
     fade: Boolean,
     onFadeChanged: (Boolean) -> Unit,
@@ -222,6 +224,7 @@ private fun FadeAnimationController(
         onStateUpdate = onStateUpdate,
         modifier = modifier,
         roundToInt = false,
+        hazeState = hazeState,
         content = {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,

@@ -342,6 +342,7 @@ private fun InterstellarShader(
                             TabsRow(
                                 tabsList = animationTabsList(),
                                 selectedIndex = pagerState.currentPage,
+                                hazeState = hazeState,
                                 modifier = Modifier
                                     .sharedBounds(
                                         sharedContentState = rememberSharedContentState("shared_background"),
@@ -394,6 +395,7 @@ private fun InterstellarShader(
                                 when (animationTabsList()[page]) {
                                     AnimationTabs.Settings -> {
                                         Configurations(
+                                            hazeState = hazeState,
                                             interactionSource = sliderInteractionSource,
                                             interstellarSpaceState = { interstellarSpaceState },
                                             onInterstellarSpaceStateChange = {
@@ -403,7 +405,7 @@ private fun InterstellarShader(
                                     }
 
                                     AnimationTabs.Code -> {
-                                        CodePreview(interstellarSpaceState)
+                                        CodePreview(hazeState, interstellarSpaceState)
                                     }
 
                                     AnimationTabs.Source -> {
@@ -457,6 +459,7 @@ private fun InterstellarShader(
 
 @Composable
 private fun Configurations(
+    hazeState: HazeState,
     interstellarSpaceState: () -> InterstellarSpaceState,
     onInterstellarSpaceStateChange: (InterstellarSpaceState) -> Unit,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
@@ -487,6 +490,7 @@ private fun Configurations(
                 is Fields.SliderData -> {
                     SliderTemplate(
                         title = data.title,
+                        hazeState = hazeState,
                         value = { data.value },
                         step = { data.step },
                         onValueChange = { value -> data.onValueChange(value) },
@@ -494,6 +498,12 @@ private fun Configurations(
                         roundToInt = data.roundToInt,
                         titlePadding = PaddingValues(vertical = 10.dp),
                         interactionSource = interactionSource,
+                        onIncrement = {
+                            data.onValueChange(data.value + 1) //TODO fix this and all the incs and decs
+                        },
+                        onDecrement = {
+                            data.onValueChange(data.value - 1)
+                        },
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 22.sp,
@@ -531,7 +541,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Speed",
             value = sliderData.speed,
-            step = 0.01f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(speed = it))
             },
@@ -541,7 +551,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Brightness",
             value = sliderData.brightness,
-            step = 0.00001f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(brightness = it))
             },
@@ -551,7 +561,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Form",
             value = sliderData.formuparam,
-            step = 0.0001f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(formuparam = it))
             },
@@ -561,7 +571,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Step Size",
             value = sliderData.stepsize,
-            step = 0f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(stepsize = it))
             },
@@ -571,7 +581,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Zoom",
             value = sliderData.zoom,
-            step = 0f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(zoom = it))
             },
@@ -581,7 +591,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Tile",
             value = sliderData.tile,
-            step = 0f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(tile = it))
             },
@@ -591,7 +601,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Dark Matter",
             value = sliderData.darkmatter,
-            step = 0f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(darkmatter = it))
             },
@@ -601,7 +611,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Dist Fading",
             value = sliderData.distFading,
-            step = 0f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(distFading = it))
             },
@@ -611,7 +621,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Saturation",
             value = sliderData.saturation,
-            step = 0f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(saturation = it))
             },
@@ -623,6 +633,7 @@ private fun slidersList(
 
 @Composable
 private fun CodePreview(
+    hazeState: HazeState,
     interstellarSpaceState: InterstellarSpaceState,
     modifier: Modifier = Modifier
 ) {
@@ -649,6 +660,7 @@ private fun CodePreview(
                 modifier = Modifier.padding(16.dp)
             ) {
                 CopyIconButton(
+                    hazeState = hazeState,
                     onClick = {
                         scope.launch {
                             clipboardManager.setClipEntry(
@@ -670,6 +682,7 @@ private fun CodePreview(
                     tabsList = tabsList,
                     selectedIndex = selectedTab.intValue,
                     modifier = Modifier.padding(start = 16.dp),
+                    hazeState = hazeState,
                     tabComponent = { index, tabTitle ->
                         AnimatedTab(
                             isSelected = selectedTab.intValue == index,

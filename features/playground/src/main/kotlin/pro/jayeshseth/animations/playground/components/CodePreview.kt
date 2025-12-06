@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.haze.HazeState
 import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.core.model.lazyNavBarPadding
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
@@ -38,6 +39,7 @@ import pro.jayeshseth.animations.playground.model.TweenNSpringSpec
 
 @Composable
 fun CodePreview(
+    hazeState: HazeState,
     state: TweenAndSpringSpecState,
     modifier: Modifier = Modifier
 ) {
@@ -48,15 +50,6 @@ fun CodePreview(
     val scope = rememberCoroutineScope()
     val clipboardManager = LocalClipboard.current
 
-//    var code by remember(selectedTab.intValue) {
-//        mutableStateOf(
-//            if (selectedTab.intValue == 0) {
-//                InterstellarShaderCode(interstellarSpaceState).shaderCode()
-//            } else {
-//                InterstellarShaderCode(interstellarSpaceState).composeCode()
-//            }
-//        )
-//    }
     var code by remember {
         mutableStateOf(
             if (state.selectedSpec == TweenNSpringSpec.Tween) {
@@ -75,6 +68,7 @@ fun CodePreview(
                 modifier = Modifier.padding(16.dp)
             ) {
                 CopyIconButton(
+                    hazeState = hazeState,
                     onClick = {
                         scope.launch {
                             clipboardManager.setClipEntry(
@@ -96,6 +90,7 @@ fun CodePreview(
                     tabsList = listOf(""),
                     selectedIndex = 0,
                     modifier = Modifier.padding(start = 16.dp),
+                    hazeState = hazeState,
                     tabComponent = { index, tabTitle ->
                         AnimatedTab(
                             isSelected = selectedTab.intValue == index,

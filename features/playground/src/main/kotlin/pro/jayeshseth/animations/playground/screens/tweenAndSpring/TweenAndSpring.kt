@@ -8,10 +8,10 @@ import androidx.compose.animation.core.TargetBasedAnimation
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -46,15 +45,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.HazeStyle
+import dev.chrisbanes.haze.HazeTint
+import dev.chrisbanes.haze.hazeEffect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.core.model.AnimationTabs
@@ -66,6 +70,7 @@ import pro.jayeshseth.animations.core.model.animationTabsList
 import pro.jayeshseth.animations.core.ui.components.AnimatedChart
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
+import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
 import pro.jayeshseth.animations.core.ui.components.TabsRow
 import pro.jayeshseth.animations.core.ui.components.Toggler
 import pro.jayeshseth.animations.playground.components.CodePreview
@@ -82,7 +87,8 @@ enum class PlaygroundPreviewTabs { Chart, Preview }
 fun TweenAndSpringScreen(
     hazeState: HazeState,
     onClickLink: OnClickLink,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    color: Color = Color.Cyan
 ) {
     val previewTabs = remember { PlaygroundPreviewTabs.entries }
     val specTabs = remember { TweenNSpringSpec.entries }
@@ -166,36 +172,35 @@ fun TweenAndSpringScreen(
             hazeState = hazeState,
             text = "Replay Animation",
             height = 45.dp,
-            modifier = Modifier.wrapContentSize().padding(horizontal = 12.dp),
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(horizontal = 12.dp),
             onClick = { replay = !replay }
         )
-        Column(
-            Modifier
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                .weight(1f)
-                .padding(start = 16.dp, top = 16.dp, end = 16.dp)
-        ) {
-            TabsRow(
-                tabsList = animationTabsList(),
-                selectedIndex = configsPagerState.currentPage,
-                tabComponent = { index, tab ->
-                    AnimatedTab(
-                        isSelected = configsPagerState.currentPage == index,
-                        onClick = {
-                            scope.launch(Dispatchers.Main) {
-                                configsPagerState.animateScrollToPage(index)
-                            }
-                        },
-                    ) {
-                        Icon(
-                            painter = painterResource(id = tab.icon),
-                            contentDescription = tab.title,
-                            tint = LocalContentColor.current
-                        )
-                    }
+
+        TabContent(
+            color = color,
+            modifier = Modifier.weight(1f),
+            hazeState = hazeState,
+            tabsList = animationTabsList(),
+            selectedIndex = configsPagerState.currentPage,
+            tabComponent = { index, tab ->
+                AnimatedTab(
+                    isSelected = configsPagerState.currentPage == index,
+                    onClick = {
+                        scope.launch(Dispatchers.Main) {
+                            configsPagerState.animateScrollToPage(index)
+                        }
+                    },
+                ) {
+                    Icon(
+                        painter = painterResource(id = tab.icon),
+                        contentDescription = tab.title,
+                        tint = LocalContentColor.current
+                    )
                 }
-            )
+            }
+        ) {
             HorizontalPager(
                 state = configsPagerState,
                 modifier = Modifier.fillMaxSize()
@@ -204,6 +209,7 @@ fun TweenAndSpringScreen(
                     AnimationTabs.Settings -> {
                         Configurations(
                             state = state.value,
+                            hazeState = hazeState,
                             selectedIndex = selectedPreviewIndex,
                             onSpecChange = { selectedPreviewIndex = it },
                             onStateUpdate = { state.value = it }
@@ -211,7 +217,7 @@ fun TweenAndSpringScreen(
                     }
 
                     AnimationTabs.Code -> {
-                        CodePreview(state.value)
+                        CodePreview(hazeState, state.value)
                     }
 
                     AnimationTabs.Source -> {
@@ -223,8 +229,71 @@ fun TweenAndSpringScreen(
     }
 }
 
+@Preview
+@Composable
+private fun PreviewTabs() {
+    ShaderPreviewContent {
+        TabContent(
+            hazeState = it,
+            tabsList = animationTabsList(),
+            selectedIndex = 1,
+            tabComponent = { index, tab ->
+                AnimatedTab(
+                    isSelected = index == 1,
+                    onClick = {},
+                ) {
+                    Icon(
+                        painter = painterResource(id = tab.icon),
+                        contentDescription = tab.title,
+                        tint = LocalContentColor.current
+                    )
+                }
+            },
+            content = {}
+        )
+    }
+}
+
+@Composable
+fun <T> TabContent(
+    hazeState: HazeState,
+    tabsList: List<T>,
+    selectedIndex: Int,
+    tabComponent: @Composable (index: Int, tab: T) -> Unit,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Cyan,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    val cardStyle = HazeStyle(
+        tint = HazeTint(Color.Black.copy(.4f)),
+        blurRadius = 50.dp,
+        noiseFactor = 0.1f,
+    )
+    Column(
+        modifier
+            .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
+            .hazeEffect(
+                state = hazeState,
+                style = cardStyle,
+            )
+//            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+//            .weight(1f)
+            .padding(start = 16.dp, top = 16.dp, end = 16.dp)
+    ) {
+        TabsRow(
+            tabsList = tabsList,
+            selectedIndex = selectedIndex,
+            hazeState = hazeState,
+            tabComponent = tabComponent,
+            color = color
+        )
+        content()
+    }
+}
+
 @Composable
 private fun Configurations(
+    hazeState: HazeState,
     state: TweenAndSpringSpecState,
     onStateUpdate: (TweenAndSpringSpecState) -> Unit,
     selectedIndex: Int,
@@ -297,6 +366,7 @@ private fun Configurations(
                     TweenNSpringSpec.Tween -> {
                         TweenOptions(
                             state = state,
+                            hazeState = hazeState,
                             onStateUpdate = onStateUpdate,
                         )
                     }
@@ -304,6 +374,7 @@ private fun Configurations(
                     TweenNSpringSpec.Spring -> {
                         SpringOptions(
                             state = state,
+                            hazeState = hazeState,
                             onStateUpdate = onStateUpdate,
                         )
                     }

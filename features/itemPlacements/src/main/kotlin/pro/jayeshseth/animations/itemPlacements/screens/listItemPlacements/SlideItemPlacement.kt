@@ -47,6 +47,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.model.AnimationControllerState
 import pro.jayeshseth.animations.core.model.AudioPlayer
 import pro.jayeshseth.animations.core.model.DampingRatioList
@@ -65,6 +66,7 @@ import pro.jayeshseth.animations.itemPlacements.utils.BASE_FEATURE_ROUTE
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SlideItemPlacement(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
@@ -101,9 +103,9 @@ fun SlideItemPlacement(
                 dampingRatio = selectedDampingRatio,
                 stiffnessList = stiffnessList,
                 stiffness = selectedStiffness,
-                initialValueSteps = 0.1f,
-                blurValueSteps = 0.1f,
-                delay = 1000
+                initialValueSteps = 0,
+                blurValueSteps = 0,
+                delay = 0
             )
         )
     }
@@ -175,6 +177,7 @@ fun SlideItemPlacement(
                     exit = slideOutVertically(tween(500)),
                 ) {
                     SlideAnimationController(
+                        hazeState = hazeState,
                         state = state.value,
                         onStateUpdate = { state.value = it },
                         translateX = translateX.value,
@@ -207,6 +210,7 @@ fun SlideItemPlacement(
 
 @Composable
 private fun SlideAnimationController(
+    hazeState: HazeState,
     state: AnimationControllerState,
     onStateUpdate: (AnimationControllerState) -> Unit,
     translateX: Boolean,
@@ -217,6 +221,7 @@ private fun SlideAnimationController(
 ) {
     AnimationController(
         state = state,
+        hazeState = hazeState,
         onStateUpdate = onStateUpdate,
         modifier = modifier,
         content = {
