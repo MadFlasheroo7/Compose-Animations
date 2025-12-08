@@ -232,6 +232,7 @@ private fun FadeAnimationController(
             ) {
                 Toggler(
                     title = "Fade",
+                    hazeState = hazeState,
                     checked = fade,
                     onCheckedChanged = onFadeChanged
                 )

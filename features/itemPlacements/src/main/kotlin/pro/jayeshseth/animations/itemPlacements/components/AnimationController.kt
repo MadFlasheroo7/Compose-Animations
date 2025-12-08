@@ -77,6 +77,7 @@ fun AnimationController(
         ) {
             Toggler(
                 title = "Shadow",
+                hazeState = hazeState,
                 checked = state.showShadow,
                 onCheckedChanged = {
                     onStateUpdate(
@@ -89,6 +90,7 @@ fun AnimationController(
             )
             Toggler(
                 title = "Blur Effect",
+                hazeState = hazeState,
                 checked = state.blurEffect,
                 onCheckedChanged = { blurEffect ->
                     onStateUpdate(state.copy(blurEffect = blurEffect, showShadow = false))
@@ -102,11 +104,13 @@ fun AnimationController(
         ) {
             Toggler(
                 title = "Shepard Tone",
+                hazeState = hazeState,
                 checked = state.shepardTone,
                 onCheckedChanged = { onStateUpdate(state.copy(shepardTone = it)) },
             )
             Toggler(
                 title = "Vibration Effect",
+                hazeState = hazeState,
                 checked = state.vibrationEffect,
                 onCheckedChanged = { onStateUpdate(state.copy(vibrationEffect = it)) },
             )

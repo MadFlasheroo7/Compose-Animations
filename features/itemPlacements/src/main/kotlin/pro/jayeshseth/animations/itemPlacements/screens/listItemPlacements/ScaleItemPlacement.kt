@@ -264,11 +264,13 @@ private fun ScaleAnimationController(
                 ) {
                     Toggler(
                         title = "Scale X",
+                        hazeState = hazeState,
                         checked = scaleX,
                         onCheckedChanged = onScaleXChanged
                     )
                     Toggler(
                         title = "Scale Y",
+                        hazeState = hazeState,
                         checked = scaleY,
                         onCheckedChanged = onScaleYChanged
                     )

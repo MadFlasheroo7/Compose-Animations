@@ -514,6 +514,7 @@ private fun Configurations(
 
                 is Fields.ToggleData -> {
                     Toggler(
+                        hazeState = hazeState,
                         title = data.title,
                         checked = data.value,
                         onCheckedChanged = data.onValueChange,

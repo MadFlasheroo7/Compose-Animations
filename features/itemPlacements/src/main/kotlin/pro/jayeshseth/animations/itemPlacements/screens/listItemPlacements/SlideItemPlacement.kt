@@ -232,11 +232,13 @@ private fun SlideAnimationController(
             ) {
                 Toggler(
                     title = "Translate X",
+                    hazeState = hazeState,
                     checked = translateX,
                     onCheckedChanged = onTranslateXChanged
                 )
                 Toggler(
                     title = "Translate Y",
+                    hazeState = hazeState,
                     checked = translateY,
                     onCheckedChanged = onTranslateYChanged
                 )

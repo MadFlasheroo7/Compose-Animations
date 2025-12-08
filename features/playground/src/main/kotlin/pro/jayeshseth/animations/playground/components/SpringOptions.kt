@@ -78,6 +78,7 @@ fun SpringOptions(
     ) {
         Toggler(
             title = "Custom Values",
+            hazeState = hazeState,
             checked = state.useCustomDampingRatioAndStiffness,
             onCheckedChanged = { onStateUpdate(state.copy(useCustomDampingRatioAndStiffness = it)) },
             style = TextStyle(

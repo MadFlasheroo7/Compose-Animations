@@ -52,6 +52,7 @@ fun TweenOptions(
     ) {
         Toggler(
             title = "Custom Easing",
+            hazeState = hazeState,
             checked = state.useCustomEasing,
             onCheckedChanged = { onStateUpdate(state.copy(useCustomEasing = it)) },
             style = TextStyle(

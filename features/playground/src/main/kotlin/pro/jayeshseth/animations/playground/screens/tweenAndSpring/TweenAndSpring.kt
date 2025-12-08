@@ -391,6 +391,7 @@ private fun Configurations(
 
         Toggler(
             title = "Apply Spec To Path",
+            hazeState = hazeState,
             checked = state.applySpecToPath,
             onCheckedChanged = { onStateUpdate(state.copy(applySpecToPath = it)) },
             style = TextStyle(

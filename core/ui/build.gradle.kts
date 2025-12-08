@@ -13,7 +13,7 @@ dependencies {
     implementation(libs.rebugger)
     implementation(libs.compose.code.editor)
     implementation(libs.compose.animation.graphics)
-
+    implementation(libs.compose.unstyled)
     implementation(libs.hypnoticcanvas)
     implementation(libs.hypnoticcanvas.shaders)
 }
