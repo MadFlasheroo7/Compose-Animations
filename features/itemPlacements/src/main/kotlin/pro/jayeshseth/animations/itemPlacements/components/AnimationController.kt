@@ -196,6 +196,7 @@ fun AnimationController(
 
                         DropDownTemplate(
                             value = state.easing.name,
+                            hazeState = hazeState,
                             expanded = expanded,
                             onExpandedChange = { expanded = it },
                             onDismissRequest = { expanded = false },
@@ -231,6 +232,7 @@ fun AnimationController(
                     Column {
                         DropDownTemplate(
                             value = state.dampingRatio.name,
+                            hazeState = hazeState,
                             expanded = dampingRatioExpanded,
                             onExpandedChange = { dampingRatioExpanded = it },
                             onDismissRequest = { dampingRatioExpanded = false },
@@ -262,6 +264,7 @@ fun AnimationController(
                         )
                         DropDownTemplate(
                             value = state.stiffness.name,
+                            hazeState = hazeState,
                             expanded = stiffnessExpanded,
                             onExpandedChange = { stiffnessExpanded = it },
                             onDismissRequest = { stiffnessExpanded = false },

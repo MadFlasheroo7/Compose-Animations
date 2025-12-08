@@ -1,15 +1,11 @@
 package pro.jayeshseth.animations.core.ui.components
 
-import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsHoveredAsState
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,12 +16,12 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TabPosition
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,6 +39,8 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
+import kotlin.math.ln
+import kotlin.math.sqrt
 
 @Composable
 fun <T> TabsRow(
@@ -54,7 +52,7 @@ fun <T> TabsRow(
     color: Color = Color.Cyan
 ) {
     val indicator = @Composable { tabPositions: List<TabPosition> ->
-        TabButton(
+        TabIndicator(
             hazeState,
             tabPositions,
             selectedIndex,
@@ -62,7 +60,7 @@ fun <T> TabsRow(
         )
     }
     val cardStyle = HazeStyle(
-        tint = HazeTint(Color.Black.copy(.7f)),
+        tint = HazeTint(Color.Black.copy(.6f)),
         blurRadius = 50.dp,
         noiseFactor = 0.1f,
     )
@@ -75,58 +73,68 @@ fun <T> TabsRow(
             .clip(CircleShape)
             .hazeEffect(hazeState, cardStyle)
     ) {
-        tabsList.forEachIndexed { index, dateFilter ->
-            tabComponent(index, dateFilter)
+        tabsList.forEachIndexed { index, tab ->
+            tabComponent(index, tab)
         }
     }
 }
 
 @Composable
-fun TabButton(
+private fun TabIndicator(
     hazeState: HazeState,
     tabPositions: List<TabPosition>,
     currentIndex: Int,
     color: Color = Color.Cyan,
 ) {
-    val transition = updateTransition(currentIndex)
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val isHovered by interactionSource.collectIsHoveredAsState()
-    val buttonInteracted = isPressed.or(isHovered)
+    val stiffness = 1000f
+    val dampingRatio = 1f
+    val threshold = 0.001f
+    val s2 = 50f
 
-    val indicatorStart by transition.animateDp(
-        transitionSpec = {
-            if (initialState < targetState) {
-                spring(dampingRatio = 1f, stiffness = 50f)
-            } else {
-                spring(dampingRatio = 1f, stiffness = 1000f)
-            }
-        }, label = "animated start point"
-    ) {
-        tabPositions[it].left
+    val settlingTime = -ln(threshold) / (dampingRatio * sqrt(stiffness))
+    val durationMs = (settlingTime * 1000).toInt()
+
+    val settlingTime2 = -ln(threshold) / (dampingRatio * sqrt(s2))
+    val durationMs2 = (settlingTime2 * 1000).toInt()
+
+    var previousIndex by remember { mutableStateOf(currentIndex) }
+    val animatingForward = currentIndex > previousIndex
+
+    LaunchedEffect(currentIndex) {
+        previousIndex = currentIndex
     }
 
-    val indicatorEnd by transition.animateDp(
-        transitionSpec = {
-            if (initialState < targetState) {
-                spring(dampingRatio = 1f, stiffness = 1000f)
-            } else {
-                spring(dampingRatio = 1f, stiffness = 50f)
-            }
-        }, label = "animating end point"
-    ) {
-        tabPositions[it].right
-    }
+    val indicatorStart by animateDpAsState(
+        targetValue = tabPositions[currentIndex].left,
+        animationSpec = if (animatingForward) {
+            tween(durationMillis = durationMs2, easing = FastOutSlowInEasing)
+        } else {
+            tween(durationMillis = durationMs, easing = FastOutSlowInEasing)
+        },
+        label = "animated start point"
+    )
+
+    val indicatorEnd by animateDpAsState(
+        targetValue = tabPositions[currentIndex].right,
+        animationSpec = if (animatingForward) {
+            tween(durationMillis = durationMs, easing = FastOutSlowInEasing)
+        } else {
+            tween(durationMillis = durationMs2, easing = FastOutSlowInEasing)
+        },
+        label = "animating end point"
+    )
+
+    val isAnimating = indicatorStart != tabPositions[currentIndex].left ||
+            indicatorEnd != tabPositions[currentIndex].right
 
     val shadowColor by animateColorAsState(
-        targetValue = if (buttonInteracted) color else color.copy(.40f),
+        targetValue = if (isAnimating) color else color.copy(.40f),
         animationSpec = tween(500),
         label = "animated shadow color",
     )
 
     Box(
         Modifier
-
             .offset(x = indicatorStart)
             .wrapContentSize(align = Alignment.BottomStart)
             .width(indicatorEnd - indicatorStart)
@@ -141,17 +149,11 @@ fun TabButton(
                     noiseFactor = .1f,
                 )
             )
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = {}
-            )
             .innerShadow(RoundedCornerShape(50)) {
                 this.color = shadowColor
                 this.radius = 10f
                 this.spread = 10f
             }
-//            .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(50))
             .zIndex(1f)
     )
 
@@ -173,6 +175,7 @@ fun AnimatedTab(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     color: Color = Color.Cyan,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     contentPadding: PaddingValues = PaddingValues(horizontal = 20.dp, vertical = 14.dp),
     content: @Composable () -> Unit
 ) {
@@ -185,7 +188,8 @@ fun AnimatedTab(
             .clickable(
                 onClick = onClick,
                 indication = null,
-                interactionSource = remember { MutableInteractionSource() })
+                interactionSource = interactionSource
+            )
             .padding(contentPadding)
     ) {
         CompositionLocalProvider(LocalContentColor provides color) {
@@ -209,7 +213,6 @@ fun PreviewTab() {
                 hazeState = it,
                 selectedIndex = state,
                 tabComponent = { index, tab ->
-
                     AnimatedTab(
                         isSelected = state == index,
                         onClick = { state = index },

@@ -195,6 +195,7 @@ fun TweenOptions(
                     expanded = expanded,
                     onExpandedChange = { expanded = it },
                     onDismissRequest = { expanded = false },
+                    hazeState = hazeState,
                     title = {
                         Text(
                             text = "Easing",

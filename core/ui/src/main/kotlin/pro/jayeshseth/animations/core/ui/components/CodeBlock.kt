@@ -72,7 +72,6 @@ fun CodeBlockWithLineNumbers(text: List<String>, modifier: Modifier = Modifier) 
                             line,
                             if (isSystemInDarkTheme()) CodeThemeType.Monokai else CodeThemeType.Default
                         ),
-                        fontFamily = FontFamily.Monospace,
                         fontSize = 14.sp,
                         maxLines = 1
                     )

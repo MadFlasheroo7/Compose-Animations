@@ -101,6 +101,7 @@ fun SpringOptions(
                     DropDownTemplate(
                         value = state.dampingRatio.name,
                         expanded = dampingRatioExpanded,
+                        hazeState = hazeState,
                         onExpandedChange = { dampingRatioExpanded = it },
                         onDismissRequest = { dampingRatioExpanded = false },
                         title = {
@@ -135,6 +136,7 @@ fun SpringOptions(
                     )
                     DropDownTemplate(
                         value = state.stiffness.name,
+                        hazeState = hazeState,
                         expanded = stiffnessExpanded,
                         onExpandedChange = { stiffnessExpanded = it },
                         onDismissRequest = { stiffnessExpanded = false },

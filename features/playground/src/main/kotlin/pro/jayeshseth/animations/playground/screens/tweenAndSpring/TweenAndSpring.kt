@@ -1,6 +1,7 @@
 package pro.jayeshseth.animations.playground.screens.tweenAndSpring
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -8,16 +9,23 @@ import androidx.compose.animation.core.TargetBasedAnimation
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.safeGestures
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -25,12 +33,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonColors
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.SingleChoiceSegmentedButtonRowScope
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,17 +55,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.innerShadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.HazeTint
@@ -231,26 +248,54 @@ fun TweenAndSpringScreen(
 
 @Preview
 @Composable
-private fun PreviewTabs() {
+private fun Preview() {
     ShaderPreviewContent {
-        TabContent(
+        TweenAndSpringScreen(
             hazeState = it,
-            tabsList = animationTabsList(),
-            selectedIndex = 1,
-            tabComponent = { index, tab ->
-                AnimatedTab(
-                    isSelected = index == 1,
-                    onClick = {},
-                ) {
-                    Icon(
-                        painter = painterResource(id = tab.icon),
-                        contentDescription = tab.title,
-                        tint = LocalContentColor.current
-                    )
-                }
-            },
-            content = {}
+            onClickLink = {}
         )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewTabs() {
+
+    var state by remember { mutableStateOf(0) }
+    val titles = listOf("Tab 1", "Tab 2", "Tab 3")
+    ShaderPreviewContent {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(500.dp)
+                .hazeEffect(
+                    state = it,
+                    HazeStyle(
+                        tint = HazeTint(Color.Black.copy(.4f)),
+                        blurRadius = 50.dp,
+                        noiseFactor = .5f,
+                    )
+                )
+        ) {
+            TabContent(
+                hazeState = it,
+                tabsList = animationTabsList(),
+                selectedIndex = state,
+                tabComponent = { index, tab ->
+                    AnimatedTab(
+                        isSelected = state == index,
+                        onClick = { state = index },
+                    ) {
+                        Icon(
+                            painter = painterResource(id = tab.icon),
+                            contentDescription = tab.title,
+                            tint = LocalContentColor.current
+                        )
+                    }
+                },
+                content = {}
+            )
+        }
     }
 }
 
@@ -317,12 +362,14 @@ private fun Configurations(
                 )
             )
     ) {
+        // TODO Build an alternative to SingleChoiceSegmentedButtonRow
         SingleChoiceSegmentedButtonRow(
-            modifier = Modifier
-                .padding(vertical = 12.dp)
+            space = 2.dp,
+            modifier = Modifier.padding(vertical = 12.dp)
         ) {
             state.specs.forEachIndexed { index, label ->
-                SegmentedButton(
+                HazedSegmentedButton(
+                    hazeState = hazeState,
                     shape = SegmentedButtonDefaults.itemShape(
                         index = index,
                         count = state.specs.size
@@ -335,9 +382,9 @@ private fun Configurations(
                             )
                         )
                     },
-                    selected = index == selectedIndex
+                    selected = index == selectedIndex,
                 ) {
-                    Text(label.name)
+                    Text(label.name, color = Color.White)
                 }
             }
         }
@@ -381,6 +428,79 @@ private fun Configurations(
                 }
             }
         }
+    }
+}
+
+
+@Composable
+fun SingleChoiceSegmentedButtonRowScope.HazedSegmentedButton(
+    hazeState: HazeState,
+    selected: Boolean,
+    onClick: () -> Unit,
+    shape: Shape,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    colors: SegmentedButtonColors = SegmentedButtonDefaults.colors(),
+    border: BorderStroke =
+        SegmentedButtonDefaults.borderStroke(Color.Black),
+    interactionSource: MutableInteractionSource? = null,
+    icon: @Composable () -> Unit = { SegmentedButtonDefaults.Icon(selected) },
+    label: @Composable () -> Unit,
+) {
+    @Suppress("NAME_SHADOWING")
+    val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
+//    val interactionCount = interactionSource.interactionCountAsState()
+
+    Surface(
+        modifier =
+            modifier
+                .weight(1f)
+//                .interactionZIndex(selected, interactionCount)
+                .zIndex(
+                    if (selected) 1f else 0f
+                )
+                .defaultMinSize(
+                    minWidth = ButtonDefaults.MinWidth,
+                    minHeight = ButtonDefaults.MinHeight
+                )
+                .semantics { role = Role.RadioButton },
+        selected = selected,
+        onClick = onClick,
+        enabled = enabled,
+        shape = shape,
+        color = Color.Transparent,
+        contentColor = Color.Cyan,
+//        border = border,
+        interactionSource = interactionSource
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+
+                .height(IntrinsicSize.Min)
+                .hazeEffect(
+                    state = hazeState,
+                )
+                .innerShadow(
+                    shape
+                ) {
+                    this.spread = 10f
+                    this.radius = 10f
+                    this.color = if (selected) Color.Cyan else Color.Cyan.copy(.4f)
+                }
+                .padding(12.dp)
+
+                .wrapContentSize(
+                    unbounded = true
+                )
+                .animateContentSize()
+
+        ) {
+            icon()
+            label()
+        }
+//        HazedSegmentedButtonContent(icon, label)
     }
 }
 

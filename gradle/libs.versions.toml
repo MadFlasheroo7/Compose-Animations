@@ -54,6 +54,8 @@ version-name = "1.0.7" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, c
 version-nameBetaSuffix = "-beta01"
 haze = "1.7.1"
 hypnoticcanvas = "0.4.1"
+composeUnstyled = "1.49.3"
+
 
 [libraries]
 # Accompanist
@@ -102,6 +104,7 @@ compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
 compose-animation-graphics = { group = "androidx.compose.animation", name = "animation-graphics" }
+compose-unstyled = { group = "com.composables", name = "composeunstyled", version.ref = "composeUnstyled" }
 
 # Core
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }

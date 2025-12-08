@@ -97,7 +97,7 @@ fun HazedIconButton(
 
     val shape = RoundedCornerShape(buttonDp)
 
-    LaunchedEffect(buttonInteracted, clickTracker) {
+    LaunchedEffect(buttonInteracted) {
         if (buttonInteracted) {
             val spreadJob = async {
                 spread.animateTo(
@@ -146,8 +146,8 @@ fun HazedIconButton(
                 spread.snapTo(0f)
                 offsetX.snapTo(0f)
                 offsetY.snapTo(0f)
-                if (canExecute) onClick()
-                if (canExecute) canExecute = false
+//                if (canExecute) onClick()
+//                if (canExecute) canExecute = false
                 clickTracker = 0
             }
         }
@@ -182,6 +182,7 @@ fun HazedIconButton(
                 interactionSource = interactionSource,
                 indication = ripple(),
                 onClick = {
+                    onClick()
                     canExecute = true
                     clickTracker++
                 },
@@ -220,14 +221,6 @@ private fun PreviewInteractiveButton() {
                     .hazeSource(state = hazeState)
                     .shaderBackground(InkFlow, speed = 0.2f)
             )
-//            LazyColumn(
-//                contentPadding = PaddingValues(20.dp),
-//                verticalArrangement = Arrangement.spacedBy(20.dp),
-//                modifier = Modifier.fillMaxSize()
-//            ) {
-//                items(120) {
-//                }
-//            }
             HazedIconButton(
                 onClick = {},
                 hazeState = hazeState,
