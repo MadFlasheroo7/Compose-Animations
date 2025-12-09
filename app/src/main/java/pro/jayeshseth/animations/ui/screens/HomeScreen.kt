@@ -120,7 +120,7 @@ fun HomeScreen(
 // temp
 @Composable
 private fun AnimateButtonScale(
-    index: Int,
+    index: Any,
     text: String,
     hazeState: HazeState,
     onClick: () -> Unit,
@@ -197,12 +197,12 @@ private fun animationScreens(isItUnlocked: Boolean): List<AnimationScreen> {
                 ),*/
         AnimationScreen(
             title = "Canvas",
-            route = DefaultApisRoutes.AnimateVisibilityRoute
+            route = NavDestinations.BouncyRope
         ),
-        AnimationScreen(
+/*        AnimationScreen(
             title = "Community",
             route = DefaultApisRoutes.AnimateVisibilityRoute
-        ),
+        ),*/
         AnimationScreen(
             title = "Past Easter Eggs",
             route = EasterEggsRoutes.EasterEggsLandingRoute

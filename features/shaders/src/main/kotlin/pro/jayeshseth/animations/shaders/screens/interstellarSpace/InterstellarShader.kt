@@ -33,7 +33,6 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -49,7 +48,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -67,7 +65,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -103,9 +100,10 @@ import pro.jayeshseth.animations.core.ui.components.AnimatedTab
 import pro.jayeshseth.animations.core.ui.components.CodeBlockWithLineNumbers
 import pro.jayeshseth.animations.core.ui.components.CopyIconButton
 import pro.jayeshseth.animations.core.ui.components.FeatureUnavailableScreen
-import pro.jayeshseth.animations.core.ui.components.FilledIconButton
+import pro.jayeshseth.animations.core.ui.components.HazedIconButton
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
+import pro.jayeshseth.animations.core.ui.components.TabContent
 import pro.jayeshseth.animations.core.ui.components.TabsRow
 import pro.jayeshseth.animations.core.ui.components.Toggler
 import pro.jayeshseth.animations.core.ui.icons.AnimIcons
@@ -141,7 +139,8 @@ fun InterstellarShaderScreen(
 private fun InterstellarShader(
     hazeState: HazeState,
     onClickLink: OnClickLink,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    color: Color = Color.Cyan
 ) {
     val view = LocalView.current
     val activity = LocalActivity.current
@@ -328,67 +327,55 @@ private fun InterstellarShader(
                         .align(Alignment.BottomCenter)
                 ) {
                     if (it) {
-                        Column(
-                            Modifier
-                                .graphicsLayer {
-                                    alpha = opacity
-                                }
-                                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-                                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                                .padding(start = 16.dp, top = 16.dp, end = 16.dp)
-                                .fillMaxHeight(.5f)
-
-                        ) {
-                            TabsRow(
-                                tabsList = animationTabsList(),
-                                selectedIndex = pagerState.currentPage,
-                                hazeState = hazeState,
-                                modifier = Modifier
-                                    .sharedBounds(
-                                        sharedContentState = rememberSharedContentState("shared_background"),
-                                        animatedVisibilityScope = this@AnimatedContent,
-                                        resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
-                                        boundsTransform = boundsTransform
-                                    ),
-                                tabComponent = { index, tab ->
-                                    AnimatedTab(
-                                        isSelected = pagerState.currentPage == index,
+                        TabContent(
+                            hazeState = hazeState,
+                            color = color,
+                            tabsList = animationTabsList(),
+                            selectedIndex = pagerState.currentPage,
+                            tabComponent = { index, tab ->
+                                AnimatedTab(
+                                    isSelected = pagerState.currentPage == index,
+                                    modifier = Modifier
+                                        .sharedBounds(
+                                            sharedContentState = rememberSharedContentState("shared_inner_background"),
+                                            animatedVisibilityScope = this@AnimatedContent,
+                                            resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
+                                            boundsTransform = boundsTransform
+                                        ),
+                                    onClick = {
+                                        scope.launch(Dispatchers.Main) {
+                                            pagerState.animateScrollToPage(index)
+                                        }
+                                    },
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = tab.icon),
+                                        contentDescription = tab.title,
+                                        tint = LocalContentColor.current,
                                         modifier = Modifier
-                                            .sharedBounds(
-                                                sharedContentState = rememberSharedContentState("shared_inner_background"),
-                                                animatedVisibilityScope = this@AnimatedContent,
-                                                resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
-                                                boundsTransform = boundsTransform
-                                            ),
-                                        onClick = {
-                                            scope.launch(Dispatchers.Main) {
-                                                pagerState.animateScrollToPage(index)
-                                            }
-                                        },
-                                    ) {
-                                        Icon(
-                                            painter = painterResource(id = tab.icon),
-                                            contentDescription = tab.title,
-                                            tint = LocalContentColor.current,
-                                            modifier = Modifier
-                                                .then(
-                                                    if (tab == AnimationTabs.Settings) Modifier.sharedBounds(
-                                                        sharedContentState = rememberSharedContentState(
-                                                            "shared_config_icon"
-                                                        ),
-                                                        animatedVisibilityScope = this@AnimatedContent,
-                                                        resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
-                                                        boundsTransform = boundsTransform
+                                            .then(
+                                                if (tab == AnimationTabs.Settings) Modifier.sharedBounds(
+                                                    sharedContentState = rememberSharedContentState(
+                                                        "shared_config_icon"
+                                                    ),
+                                                    animatedVisibilityScope = this@AnimatedContent,
+                                                    resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
+                                                    boundsTransform = boundsTransform
 
-                                                    ) else Modifier
-                                                )
+                                                ) else Modifier
+                                            )
 //                                                .animateContentSize()
 //                                                .animateEnterExit()
 //                                                .animateBounds(this@SharedTransitionLayout)
-                                        )
-                                    }
+                                    )
                                 }
-                            )
+                            },
+                            modifier = Modifier
+                                .fillMaxHeight(.5f)
+                                .graphicsLayer {
+                                    alpha = opacity
+                                }
+                        ) {
                             HorizontalPager(
                                 state = pagerState,
                             ) { page ->
@@ -415,7 +402,8 @@ private fun InterstellarShader(
                             }
                         }
                     } else {
-                        FilledIconButton(
+                        HazedIconButton(
+                            hazeState = hazeState,
                             modifier = Modifier
                                 .sharedBounds(
                                     sharedContentState = rememberSharedContentState("shared_background"),
@@ -426,14 +414,6 @@ private fun InterstellarShader(
                                 )
                                 .padding(16.dp)
                                 .navigationBarsPadding(),
-                            innerIconModifier = Modifier
-                                .sharedBounds(
-                                    sharedContentState = rememberSharedContentState("shared_inner_background"),
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
-                                    boundsTransform = boundsTransform
-
-                                ),
                             onClick = {
                                 showControls = !showControls
                             }

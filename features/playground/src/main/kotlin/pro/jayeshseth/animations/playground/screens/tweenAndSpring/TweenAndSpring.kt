@@ -1,7 +1,6 @@
 package pro.jayeshseth.animations.playground.screens.tweenAndSpring
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -9,19 +8,13 @@ import androidx.compose.animation.core.TargetBasedAnimation
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.safeGestures
@@ -32,16 +25,11 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SegmentedButtonColors
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.SingleChoiceSegmentedButtonRowScope
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -54,24 +42,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.innerShadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.HazeTint
@@ -86,9 +67,10 @@ import pro.jayeshseth.animations.core.model.StiffnessList
 import pro.jayeshseth.animations.core.model.animationTabsList
 import pro.jayeshseth.animations.core.ui.components.AnimatedChart
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
+import pro.jayeshseth.animations.core.ui.components.HazedSegmentedButton
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
-import pro.jayeshseth.animations.core.ui.components.TabsRow
+import pro.jayeshseth.animations.core.ui.components.TabContent
 import pro.jayeshseth.animations.core.ui.components.Toggler
 import pro.jayeshseth.animations.playground.components.CodePreview
 import pro.jayeshseth.animations.playground.components.PreviewGrid
@@ -300,43 +282,6 @@ private fun PreviewTabs() {
 }
 
 @Composable
-fun <T> TabContent(
-    hazeState: HazeState,
-    tabsList: List<T>,
-    selectedIndex: Int,
-    tabComponent: @Composable (index: Int, tab: T) -> Unit,
-    modifier: Modifier = Modifier,
-    color: Color = Color.Cyan,
-    content: @Composable ColumnScope.() -> Unit,
-) {
-    val cardStyle = HazeStyle(
-        tint = HazeTint(Color.Black.copy(.4f)),
-        blurRadius = 50.dp,
-        noiseFactor = 0.1f,
-    )
-    Column(
-        modifier
-            .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-            .hazeEffect(
-                state = hazeState,
-                style = cardStyle,
-            )
-//            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-//            .weight(1f)
-            .padding(start = 16.dp, top = 16.dp, end = 16.dp)
-    ) {
-        TabsRow(
-            tabsList = tabsList,
-            selectedIndex = selectedIndex,
-            hazeState = hazeState,
-            tabComponent = tabComponent,
-            color = color
-        )
-        content()
-    }
-}
-
-@Composable
 private fun Configurations(
     hazeState: HazeState,
     state: TweenAndSpringSpecState,
@@ -432,79 +377,6 @@ private fun Configurations(
     }
 }
 
-
-@Composable
-fun SingleChoiceSegmentedButtonRowScope.HazedSegmentedButton(
-    hazeState: HazeState,
-    selected: Boolean,
-    onClick: () -> Unit,
-    shape: Shape,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    colors: SegmentedButtonColors = SegmentedButtonDefaults.colors(),
-    border: BorderStroke =
-        SegmentedButtonDefaults.borderStroke(Color.Black),
-    interactionSource: MutableInteractionSource? = null,
-    icon: @Composable () -> Unit = { SegmentedButtonDefaults.Icon(selected) },
-    label: @Composable () -> Unit,
-) {
-    @Suppress("NAME_SHADOWING")
-    val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
-//    val interactionCount = interactionSource.interactionCountAsState()
-
-    Surface(
-        modifier =
-            modifier
-                .weight(1f)
-//                .interactionZIndex(selected, interactionCount)
-                .zIndex(
-                    if (selected) 1f else 0f
-                )
-                .defaultMinSize(
-                    minWidth = ButtonDefaults.MinWidth,
-                    minHeight = ButtonDefaults.MinHeight
-                )
-                .semantics { role = Role.RadioButton },
-        selected = selected,
-        onClick = onClick,
-        enabled = enabled,
-        shape = shape,
-        color = Color.Transparent,
-        contentColor = Color.Cyan,
-//        border = border,
-        interactionSource = interactionSource
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-
-                .height(IntrinsicSize.Min)
-                .hazeEffect(
-                    state = hazeState,
-                )
-                .innerShadow(
-                    shape
-                ) {
-                    this.spread = 10f
-                    this.radius = 10f
-                    this.color = if (selected) Color.Cyan else Color.Cyan.copy(.4f)
-                }
-                .padding(12.dp)
-
-                .wrapContentSize(
-                    unbounded = true
-                )
-                .animateContentSize()
-
-        ) {
-            icon()
-            label()
-        }
-//        HazedSegmentedButtonContent(icon, label)
-    }
-}
-
 @Composable
 private fun LinksButtons(
     hazeState: HazeState,
@@ -512,7 +384,11 @@ private fun LinksButtons(
 ) {
     val urlLauncher = LocalUriHandler.current
     val blog = "https://blog.realogs.in/animating-jetpack-compose-ui/"
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(12.dp),
+        modifier = Modifier.fillMaxSize()
+    ) {
         item {
             InteractiveButton(
                 text = "Blog",
@@ -520,6 +396,8 @@ private fun LinksButtons(
                 hazeState = hazeState,
                 onClick = { urlLauncher.openUri(blog) }
             )
+        }
+        item {
             InteractiveButton(
                 text = "Github",
                 height = 70.dp,

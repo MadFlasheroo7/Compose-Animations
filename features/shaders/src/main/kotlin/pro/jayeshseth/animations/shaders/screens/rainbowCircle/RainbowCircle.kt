@@ -26,7 +26,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -45,7 +44,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -82,6 +80,7 @@ import pro.jayeshseth.animations.core.ui.components.CopyIconButton
 import pro.jayeshseth.animations.core.ui.components.FeatureUnavailableScreen
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
+import pro.jayeshseth.animations.core.ui.components.TabContent
 import pro.jayeshseth.animations.core.ui.components.TabsRow
 import pro.jayeshseth.animations.core.ui.components.Toggler
 import pro.jayeshseth.animations.shaders.utils.BASE_FEATURE_ROUTE
@@ -104,7 +103,8 @@ fun RainbowCircle(
 private fun InnerRainbowCircle(
     hazeState: HazeState,
     onClickLink: OnClickLink,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    color: Color = Color.Cyan
 ) {
     val pagerState = rememberPagerState { animationTabsList().size }
     val scope = rememberCoroutineScope { Dispatchers.Default }
@@ -244,34 +244,29 @@ private fun InnerRainbowCircle(
                 }
         )
 
-        Column(
-            Modifier
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                .weight(1f)
-                .padding(start = 16.dp, top = 16.dp, end = 16.dp)
-        ) {
-            TabsRow(
-                tabsList = animationTabsList(),
-                selectedIndex = pagerState.currentPage,
-                hazeState = hazeState,
-                tabComponent = { index, tab ->
-                    AnimatedTab(
-                        isSelected = pagerState.currentPage == index,
-                        onClick = {
-                            scope.launch(Dispatchers.Main) {
-                                pagerState.animateScrollToPage(index)
-                            }
-                        },
-                    ) {
-                        Icon(
-                            painter = painterResource(id = tab.icon),
-                            contentDescription = tab.title,
-                            tint = LocalContentColor.current
-                        )
-                    }
+        TabContent(
+            hazeState = hazeState,
+            modifier = Modifier.weight(1f),
+            color = color,
+            tabsList = animationTabsList(),
+            selectedIndex = pagerState.currentPage,
+            tabComponent = { index, tab ->
+                AnimatedTab(
+                    isSelected = pagerState.currentPage == index,
+                    onClick = {
+                        scope.launch(Dispatchers.Main) {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
+                ) {
+                    Icon(
+                        painter = painterResource(id = tab.icon),
+                        contentDescription = tab.title,
+                        tint = LocalContentColor.current
+                    )
                 }
-            )
+            }
+        ) {
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier.fillMaxSize()

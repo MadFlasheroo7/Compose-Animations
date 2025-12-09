@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.model.AnimationControllerState
 import pro.jayeshseth.animations.core.ui.components.DropDownTemplate
+import pro.jayeshseth.animations.core.ui.components.HazedSegmentedButton
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
 import pro.jayeshseth.animations.core.ui.components.Toggler
 
@@ -164,7 +165,8 @@ fun AnimationController(
         )
         SingleChoiceSegmentedButtonRow {
             animationSpecs.forEachIndexed { index, label ->
-                SegmentedButton(
+                HazedSegmentedButton(
+                    hazeState = hazeState,
                     shape = SegmentedButtonDefaults.itemShape(index, animationSpecs.size),
                     selected = index == state.selectedIndex,
                     onClick = {

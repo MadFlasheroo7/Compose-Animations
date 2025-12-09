@@ -1,8 +1,12 @@
 package pro.jayeshseth.animations.core.ui.components
 
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.EaseInOutQuad
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
@@ -26,12 +30,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import dev.chrisbanes.haze.ExperimentalHazeApi
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
@@ -48,14 +56,35 @@ fun AnimationCard(
     hazeState: HazeState,
     animationContent: AnimationContent,
     onClickLink: () -> Unit,
+    isInitialLoad: Boolean = false,
     modifier: Modifier = Modifier
 ) {
-    val animatedProgress = remember { Animatable(.3f) }
-
+    val context = LocalContext.current
+    val animatedProgress = remember { Animatable(300f) }
+    val animatedBlur = remember { Animatable(100f) }
+    val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
+    var hasAnimated by remember { mutableStateOf(false) }
     LaunchedEffect(index) {
-        animatedProgress.animateTo(
-            targetValue = 1f,
-            animationSpec = tween(500, easing = EaseInOutQuad)
+        if (!isInitialLoad || hasAnimated) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                vibrator!!.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+            }
+            animatedProgress.animateTo(
+                targetValue = 1f,
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioLowBouncy,
+                    stiffness = Spring.StiffnessLow,
+                )
+            )
+            hasAnimated = true
+        } else {
+            animatedProgress.snapTo(1f)
+        }
+    }
+    LaunchedEffect(index) {
+        animatedBlur.animateTo(
+            targetValue = 0f,
+            animationSpec = tween(300)
         )
     }
 
@@ -72,11 +101,13 @@ fun AnimationCard(
         modifier = modifier
             .fillMaxWidth()
             .graphicsLayer {
-//            shifting to scale animation
-//                translationX = animatedProgress.value
-//                clip = true
                 shape = RoundedCornerShape(16.dp)
-                scaleX = animatedProgress.value
+                translationX = animatedProgress.value
+                renderEffect = BlurEffect(
+                    animatedBlur.value,
+                    animatedBlur.value,
+                    TileMode.Decal
+                )
             }
             .clip(RoundedCornerShape(16.dp))
             .hazeEffect(
