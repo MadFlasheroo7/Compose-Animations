@@ -50,7 +50,7 @@ nav3Lifecycle = "1.0.0-SNAPSHOT"
 kotlinxSerializationCore = "1.9.0"
 # versioning
 version-code = "10"
-version-name = "1.0.7" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
+version-name = "1.0.8" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
 version-nameBetaSuffix = "-beta01"
 haze = "1.7.1"
 hypnoticcanvas = "0.4.1"
