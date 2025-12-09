@@ -22,15 +22,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Link
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -47,10 +50,13 @@ import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import dev.chrisbanes.haze.HazeState
+import kotlinx.coroutines.delay
 import pro.jayeshseth.animations.core.model.AnimationControllerState
 import pro.jayeshseth.animations.core.model.AudioPlayer
 import pro.jayeshseth.animations.core.model.DampingRatioList
@@ -62,8 +68,6 @@ import pro.jayeshseth.animations.core.ui.media.AnimMedia
 import pro.jayeshseth.animations.itemPlacements.components.AnimationController
 import pro.jayeshseth.animations.itemPlacements.components.AnimationItem
 import pro.jayeshseth.animations.itemPlacements.utils.BASE_FEATURE_ROUTE
-import pro.jayeshseth.commoncomponents.HomeScaffold
-import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 
 /**
  * Scale item placement animation by scaling X and Y position of the item
@@ -71,6 +75,7 @@ import pro.jayeshseth.commoncomponents.StatusBarAwareThemedLazyColumn
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScaleItemPlacement(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
@@ -96,7 +101,7 @@ fun ScaleItemPlacement(
                 shepardTone = false,
                 initialValue = 0.5f,
                 initialValueRange = -5f..5f,
-                initialValueSteps = 0.1f,
+                initialValueSteps = 0,
                 tweenDuration = 300,
                 selectedIndex = 0,
                 easingList = easingList,
@@ -105,10 +110,11 @@ fun ScaleItemPlacement(
                 dampingRatio = selectedDampingRatio,
                 stiffnessList = stiffnessList,
                 stiffness = selectedStiffness,
-                blurValueSteps = 0.1f,
+                blurValueSteps = 0,
                 blurValue = 200f,
                 blurValueRange = 0f..500f,
-                blurEffect = true
+                blurEffect = true,
+                delay = 0
             )
         )
     }
@@ -129,56 +135,66 @@ fun ScaleItemPlacement(
         }
     }
 
-    HomeScaffold(
-        topAppBarScrollBehavior = scrollBehavior,
+    Scaffold(
         modifier = modifier,
-        navigationIcon = {
-            IconButton(onClick = {
-                onClickLink("$BASE_FEATURE_ROUTE/screens/listItemPlacements/ScaleItemPlacement.kt")
-            }) {
-                Icon(imageVector = Icons.Rounded.Link, contentDescription = null)
-            }
-        },
-        actions = {
-            IconButton(onClick = { isVisible = !isVisible }) {
-                Icon(imageVector = Icons.Rounded.Settings, contentDescription = null)
-            }
-        },
-        title = {
-            AnimatedContent(
-                targetState = isVisible,
-                transitionSpec = {
-                    if (targetState > initialState) {
-                        slideInVertically(animationSpec = tween(easing = LinearEasing)) { -it } + fadeIn(
-                            animationSpec = tween(easing = LinearEasing)
-                        ) togetherWith slideOutVertically { it } + fadeOut(
-                            animationSpec = tween(easing = LinearEasing)
-                        )
-                    } else {
-                        slideInVertically(animationSpec = tween(easing = LinearEasing)) { it } + fadeIn(
-                            animationSpec = tween(easing = LinearEasing)
-                        ) togetherWith slideOutVertically(animationSpec = tween(easing = LinearEasing)) { -it } + fadeOut(
-                            animationSpec = tween(easing = LinearEasing)
+        containerColor = Color.Transparent,
+        topBar = {
+            CenterAlignedTopAppBar(
+                scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent,
+                ),
+                title = {
+                    AnimatedContent(
+                        targetState = isVisible,
+                        transitionSpec = {
+                            if (targetState > initialState) {
+                                slideInVertically(animationSpec = tween(easing = LinearEasing)) { -it } + fadeIn(
+                                    animationSpec = tween(easing = LinearEasing)
+                                ) togetherWith slideOutVertically { it } + fadeOut(
+                                    animationSpec = tween(easing = LinearEasing)
+                                )
+                            } else {
+                                slideInVertically(animationSpec = tween(easing = LinearEasing)) { it } + fadeIn(
+                                    animationSpec = tween(easing = LinearEasing)
+                                ) togetherWith slideOutVertically(animationSpec = tween(easing = LinearEasing)) { -it } + fadeOut(
+                                    animationSpec = tween(easing = LinearEasing)
+                                )
+                            }
+                        },
+                        label = "title transitions animation"
+                    ) {
+                        Text(
+                            if (it) {
+                                "Animation Controller"
+                            } else {
+                                "Scale"
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center
                         )
                     }
                 },
-                label = "title transitions animation"
-            ) {
-                Text(
-                    if (it) {
-                        "Animation Controller"
-                    } else {
-                        "Scale"
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            }
+                navigationIcon = {
+                    IconButton(onClick = {
+                        onClickLink("$BASE_FEATURE_ROUTE/screens/listItemPlacements/ScaleItemPlacement.kt")
+                    }) {
+                        Icon(imageVector = Icons.Rounded.Link, contentDescription = null)
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { isVisible = !isVisible }) {
+                        Icon(imageVector = Icons.Rounded.Settings, contentDescription = null)
+                    }
+                },
+            )
         }
     ) {
-        StatusBarAwareThemedLazyColumn(
+        LazyColumn(
             state = lazyListState,
-            statusBarColor = Color.Transparent
+            modifier = Modifier
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
             item {
                 Spacer(modifier = Modifier.padding(top = it.calculateTopPadding()))
@@ -190,6 +206,7 @@ fun ScaleItemPlacement(
                     exit = slideOutVertically(tween(500)),
                 ) {
                     ScaleAnimationController(
+                        hazeState = hazeState,
                         state = state.value,
                         onStateUpdate = { state.value = it },
                         scaleX = scaleX.value,
@@ -214,6 +231,7 @@ fun ScaleItemPlacement(
                     dampingRatio = state.value.dampingRatio.dampingRatio,
                     blurValue = state.value.blurValue,
                     doBlur = state.value.blurEffect,
+                    delay = state.value.delay
                 )
             }
         }
@@ -222,6 +240,7 @@ fun ScaleItemPlacement(
 
 @Composable
 private fun ScaleAnimationController(
+    hazeState: HazeState,
     state: AnimationControllerState,
     onStateUpdate: (AnimationControllerState) -> Unit,
     scaleX: Boolean,
@@ -232,6 +251,7 @@ private fun ScaleAnimationController(
 ) {
     AnimationController(
         state = state,
+        hazeState = hazeState,
         onStateUpdate = onStateUpdate,
         modifier = modifier,
         roundToInt = false,
@@ -244,11 +264,13 @@ private fun ScaleAnimationController(
                 ) {
                     Toggler(
                         title = "Scale X",
+                        hazeState = hazeState,
                         checked = scaleX,
                         onCheckedChanged = onScaleXChanged
                     )
                     Toggler(
                         title = "Scale Y",
+                        hazeState = hazeState,
                         checked = scaleY,
                         onCheckedChanged = onScaleYChanged
                     )
@@ -273,6 +295,7 @@ private fun ScaleListItem(
     easing: Easing,
     dampingRatio: Float,
     stiffness: Float,
+    delay: Long,
     modifier: Modifier = Modifier,
     isDarkMode: Boolean = isSystemInDarkTheme()
 ) {
@@ -289,11 +312,13 @@ private fun ScaleListItem(
             }
         }
         if (isTween) {
+            delay(delay)
             animatedProgress.animateTo(
                 targetValue = 1f,
                 animationSpec = tween(tweenDuration, easing = easing)
             )
         } else {
+            delay(delay)
             animatedProgress.animateTo(
                 targetValue = 1f,
                 animationSpec = spring(
@@ -305,11 +330,13 @@ private fun ScaleListItem(
     }
     LaunchedEffect(index) {
         if (doBlur && isTween) {
+            delay(delay)
             animatedBlur.animateTo(
                 targetValue = 0f,
                 animationSpec = tween(tweenDuration, easing = easing)
             )
         } else {
+            delay(delay)
             animatedBlur.animateTo(
                 targetValue = 0f,
                 animationSpec = spring(

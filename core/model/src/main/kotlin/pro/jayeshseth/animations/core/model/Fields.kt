@@ -4,7 +4,7 @@ sealed class Fields {
     data class SliderData(
         val title: String,
         val value: Float,
-        val step: Float,
+        val step: Int,
         val onValueChange: (Float) -> Unit,
         val valueRange: ClosedFloatingPointRange<Float>,
         val roundToInt: Boolean,

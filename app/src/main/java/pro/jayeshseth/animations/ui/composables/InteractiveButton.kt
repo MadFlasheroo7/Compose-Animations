@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
+import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
 
 @Preview
 @Composable
@@ -57,7 +58,7 @@ private fun PreviewInteractiveButton() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        InteractiveButton(text = "String", onClick = {
+        DInteractiveButton(text = "String", onClick = {
             println("✨ Animation complete onclick triggred!")
         })
     }
@@ -65,7 +66,7 @@ private fun PreviewInteractiveButton() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun InteractiveButton(
+fun DInteractiveButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -192,6 +193,7 @@ fun InteractiveButton(
             Text(
                 text = text,
                 color = animateTextColor,
+                fontFamily = syneFontFamily,
                 style = MaterialTheme.typography.titleMedium,
             )
         }

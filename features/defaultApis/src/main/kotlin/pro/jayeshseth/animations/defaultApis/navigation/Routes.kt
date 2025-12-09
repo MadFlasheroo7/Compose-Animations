@@ -5,6 +5,9 @@ import pro.jayeshseth.animations.core.navigation.Route
 
 object DefaultApisRoutes {
     @Serializable
+    data object DefaultApisLanding : Route()
+
+    @Serializable
     data object AnimateVisibilityRoute : Route()
 
     @Serializable

@@ -2,6 +2,7 @@ package pro.jayeshseth.animations.shaders.navigation
 
 import androidx.navigation3.runtime.EntryProviderBuilder
 import androidx.navigation3.runtime.entry
+import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.OnNavAction
 import pro.jayeshseth.animations.core.navigation.Route
@@ -10,16 +11,17 @@ import pro.jayeshseth.animations.shaders.screens.interstellarSpace.InterstellarS
 import pro.jayeshseth.animations.shaders.screens.rainbowCircle.RainbowCircle
 
 fun EntryProviderBuilder<Route>.shaders(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
     onNavAction: OnNavAction
 ) {
     entry<ShaderRoutes.ShaderGraphRoute> {
-        Shaders(navAction = onNavAction)
+        Shaders(hazeState = hazeState, navAction = onNavAction)
     }
     entry<ShaderRoutes.RainbowShaderRoute> {
-        RainbowCircle(onClickLink)
+        RainbowCircle(hazeState, onClickLink)
     }
     entry<ShaderRoutes.InterstellarShaderRoute> {
-        InterstellarShaderScreen(onClickLink)
+        InterstellarShaderScreen(hazeState, onClickLink)
     }
 }

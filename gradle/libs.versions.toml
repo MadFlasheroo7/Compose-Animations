@@ -1,5 +1,5 @@
 [versions]
-accompanist = "0.32.0"
+accompanist = "0.37.3"
 activity-compose = "1.10.1"
 activity-ktx = "1.10.1"
 androidGradlePlugin = "8.10.1"
@@ -17,6 +17,7 @@ core-ktx = "1.17.0"
 core-splashscreen = "1.0.1"
 coroutines = "1.10.2"
 datastore = "1.0.0"
+datastorePreferences = "1.2.0"
 espresso-core = "3.6.1"
 junit = "4.13.2"
 jvm-target = "17"
@@ -49,8 +50,12 @@ nav3Lifecycle = "1.0.0-SNAPSHOT"
 kotlinxSerializationCore = "1.9.0"
 # versioning
 version-code = "10"
-version-name = "1.0.7" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
+version-name = "1.0.8" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
 version-nameBetaSuffix = "-beta01"
+haze = "1.7.1"
+hypnoticcanvas = "0.4.1"
+composeUnstyled = "1.49.3"
+
 
 [libraries]
 # Accompanist
@@ -58,7 +63,7 @@ version-nameBetaSuffix = "-beta01"
 #accompanist-drawablePainter = { group = "com.google.accompanist", name = "accompanist-drawablepainter", version.ref = "accompanist" }
 #accompanist-navigationAnimation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist" }
 #accompanist-navigationMaterial = { group = "com.google.accompanist", name = "accompanist-navigation-material", version.ref = "accompanist" }
-#accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
+accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
 #accompanist-placeHolder = { group = "com.google.accompanist", name = "accompanist-placeholder", version.ref = "accompanist" }
 #accompanist-systemUIController = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 #accompanist-testharness = { group = "com.google.accompanist", name = "accompanist-testharness", version.ref = "accompanist" }
@@ -66,6 +71,8 @@ version-nameBetaSuffix = "-beta01"
 # [AndroidX Deps]
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastorePreferences" }
 androidx-window = { module = "androidx.window:window", version.ref = "androidx-window" }
 
 # Benchmark
@@ -80,7 +87,7 @@ coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 
 # Compose
-commonmodule = { module = "pro.jayeshseth.madappmodules:commonModules", version.ref = "commonmodule" }
+#commonmodule = { module = "pro.jayeshseth.madappmodules:commonModules", version.ref = "commonmodule" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-code-editor = { module = "com.github.qawaz:compose-code-editor", version.ref = "composeCodeEditor" }
 compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
@@ -96,6 +103,8 @@ compose-ui-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest"
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
+compose-animation-graphics = { group = "androidx.compose.animation", name = "animation-graphics" }
+compose-unstyled = { group = "com.composables", name = "composeunstyled", version.ref = "composeUnstyled" }
 
 # Core
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -113,6 +122,8 @@ navigation-compose = { group = "androidx.navigation", name = "navigation-compose
 navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "nav3Core" }
 navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "nav3Core" }
 
+hypnoticcanvas = { module = "com.mikepenz.hypnoticcanvas:hypnoticcanvas", version.ref = "hypnoticcanvas" }
+hypnoticcanvas-shaders = { module = "com.mikepenz.hypnoticcanvas:hypnoticcanvas-shaders", version.ref = "hypnoticcanvas" }
 
 # Palette
 palette = { group = "androidx.palette", name = "palette", version.ref = "palette" }
@@ -124,6 +135,8 @@ kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 
 # Lifecycle
 lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "nav3Lifecycle" }
+
+haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 
 # [Test Dependencies]
 # Android Tests

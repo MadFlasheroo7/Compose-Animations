@@ -51,14 +51,19 @@ dependencies {
     implementation(projects.features.shaders)
     implementation(projects.features.easterEggs)
     implementation(projects.features.navigation)
+    implementation(libs.hypnoticcanvas)
+    implementation(libs.hypnoticcanvas.shaders)
 
-
-    implementation(libs.commonmodule)
+    implementation(libs.haze)
+    implementation(libs.palette)
     implementation(libs.cascade)
     implementation(libs.cascade.compose)
     implementation(libs.core.ktx)
     implementation(libs.rebugger)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.preferences.core)
     implementation(libs.compose.code.editor)
+    implementation(libs.accompanist.permissions)
     implementation(libs.kotlin.stdlib)
     implementation(libs.lifecycle.viewmodel.navigation3)
 
@@ -66,4 +71,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation(fileTree("libs") { include("*.jar") })
 }

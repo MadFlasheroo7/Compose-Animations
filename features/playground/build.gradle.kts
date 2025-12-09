@@ -10,5 +10,5 @@ dependencies {
     implementation(projects.core.model)
     implementation(projects.core.ui)
     implementation(projects.core.navigation)
-    implementation(libs.commonmodule)
+    implementation(libs.haze)
 }

@@ -29,8 +29,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.model.AnimationControllerState
 import pro.jayeshseth.animations.core.ui.components.DropDownTemplate
+import pro.jayeshseth.animations.core.ui.components.HazedSegmentedButton
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
 import pro.jayeshseth.animations.core.ui.components.Toggler
 
@@ -41,6 +43,7 @@ import pro.jayeshseth.animations.core.ui.components.Toggler
 @Composable
 fun AnimationController(
     state: AnimationControllerState,
+    hazeState: HazeState,
     onStateUpdate: (AnimationControllerState) -> Unit,
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
@@ -75,6 +78,7 @@ fun AnimationController(
         ) {
             Toggler(
                 title = "Shadow",
+                hazeState = hazeState,
                 checked = state.showShadow,
                 onCheckedChanged = {
                     onStateUpdate(
@@ -87,6 +91,7 @@ fun AnimationController(
             )
             Toggler(
                 title = "Blur Effect",
+                hazeState = hazeState,
                 checked = state.blurEffect,
                 onCheckedChanged = { blurEffect ->
                     onStateUpdate(state.copy(blurEffect = blurEffect, showShadow = false))
@@ -100,11 +105,13 @@ fun AnimationController(
         ) {
             Toggler(
                 title = "Shepard Tone",
+                hazeState = hazeState,
                 checked = state.shepardTone,
                 onCheckedChanged = { onStateUpdate(state.copy(shepardTone = it)) },
             )
             Toggler(
                 title = "Vibration Effect",
+                hazeState = hazeState,
                 checked = state.vibrationEffect,
                 onCheckedChanged = { onStateUpdate(state.copy(vibrationEffect = it)) },
             )
@@ -116,7 +123,30 @@ fun AnimationController(
             step = { state.initialValueSteps },
             onValueChange = { onStateUpdate(state.copy(initialValue = it)) },
             valueRange = updatedInitialValueRange.value,
-            roundToInt = roundToInt
+            roundToInt = roundToInt,
+            hazeState = hazeState,
+            onIncrement = {
+                onStateUpdate(state.copy(initialValue = state.initialValue + 1))
+            },
+            onDecrement = {
+                onStateUpdate(state.copy(initialValue = state.initialValue - 1))
+            },
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
+        SliderTemplate(
+            title = "delay Value",
+            value = { state.delay.toFloat() },
+            step = { state.initialValueSteps },
+            onValueChange = { onStateUpdate(state.copy(delay = it.toLong())) },
+            valueRange = updatedBlurValueRange.value,
+            roundToInt = roundToInt,
+            onIncrement = {
+                onStateUpdate(state.copy(delay = state.delay + 1))
+            },
+            onDecrement = {
+                onStateUpdate(state.copy(delay = state.delay - 1))
+            },
+            hazeState = hazeState
         )
         SliderTemplate(
             title = "Blur Value",
@@ -124,11 +154,19 @@ fun AnimationController(
             step = { state.blurValueSteps },
             onValueChange = { onStateUpdate(state.copy(blurValue = it)) },
             valueRange = updatedBlurValueRange.value,
-            roundToInt = roundToInt
+            roundToInt = roundToInt,
+            hazeState = hazeState,
+            onIncrement = {
+                onStateUpdate(state.copy(blurValue = state.blurValue + 1))
+            },
+            onDecrement = {
+                onStateUpdate(state.copy(blurValue = state.blurValue - 1))
+            }
         )
         SingleChoiceSegmentedButtonRow {
             animationSpecs.forEachIndexed { index, label ->
-                SegmentedButton(
+                HazedSegmentedButton(
+                    hazeState = hazeState,
                     shape = SegmentedButtonDefaults.itemShape(index, animationSpecs.size),
                     selected = index == state.selectedIndex,
                     onClick = {
@@ -150,13 +188,21 @@ fun AnimationController(
                         SliderTemplate(
                             title = "Tween Duration",
                             value = { updatedTweenDuration.value.toFloat() },
-                            step = { 5f },
+                            step = { 5 },
                             onValueChange = { duration -> onStateUpdate(state.copy(tweenDuration = duration.toInt())) },
-                            valueRange = 0f..1000f
+                            valueRange = 0f..1000f,
+                            hazeState = hazeState,
+                            onIncrement = {
+                                onStateUpdate(state.copy(tweenDuration = state.tweenDuration + 1))
+                            },
+                            onDecrement = {
+                                onStateUpdate(state.copy(tweenDuration = state.tweenDuration - 1))
+                            }
                         )
 
                         DropDownTemplate(
                             value = state.easing.name,
+                            hazeState = hazeState,
                             expanded = expanded,
                             onExpandedChange = { expanded = it },
                             onDismissRequest = { expanded = false },
@@ -192,6 +238,7 @@ fun AnimationController(
                     Column {
                         DropDownTemplate(
                             value = state.dampingRatio.name,
+                            hazeState = hazeState,
                             expanded = dampingRatioExpanded,
                             onExpandedChange = { dampingRatioExpanded = it },
                             onDismissRequest = { dampingRatioExpanded = false },
@@ -223,6 +270,7 @@ fun AnimationController(
                         )
                         DropDownTemplate(
                             value = state.stiffness.name,
+                            hazeState = hazeState,
                             expanded = stiffnessExpanded,
                             onExpandedChange = { stiffnessExpanded = it },
                             onDismissRequest = { stiffnessExpanded = false },

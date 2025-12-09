@@ -4,15 +4,16 @@ import androidx.compose.runtime.Stable
 
 @Stable
 data class AnimationControllerState(
+    val delay: Long,
     val shepardTone: Boolean,
     val vibrationEffect: Boolean,
     val blurEffect: Boolean,
     val showShadow: Boolean,
     val initialValue: Float,
-    val initialValueSteps: Float,
+    val initialValueSteps: Int,
     val initialValueRange: ClosedFloatingPointRange<Float>,
     val blurValue: Float,
-    val blurValueSteps: Float,
+    val blurValueSteps: Int,
     val blurValueRange: ClosedFloatingPointRange<Float>,
     val tweenDuration: Int,
     val selectedIndex: Int,

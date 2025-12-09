@@ -9,11 +9,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.defaultApis.animations.animatedContent.AdvancedIncrementCounter
 import pro.jayeshseth.animations.defaultApis.animations.animatedContent.BasicIncrementCounter
 
 @Composable
-fun AnimatedTransition() {
+fun AnimatedTransition(
+    hazeState: HazeState
+) {
     LazyColumn {
         item {
             Column(
@@ -23,8 +26,8 @@ fun AnimatedTransition() {
                     .padding(horizontal = 20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                BasicIncrementCounter()
-                AdvancedIncrementCounter()
+                BasicIncrementCounter(hazeState)
+                AdvancedIncrementCounter(hazeState)
             }
         }
     }

@@ -26,7 +26,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -45,7 +44,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -66,6 +64,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.theapache64.rebugger.Rebugger
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.rememberHazeState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -78,19 +78,21 @@ import pro.jayeshseth.animations.core.ui.components.AnimatedTab
 import pro.jayeshseth.animations.core.ui.components.CodeBlockWithLineNumbers
 import pro.jayeshseth.animations.core.ui.components.CopyIconButton
 import pro.jayeshseth.animations.core.ui.components.FeatureUnavailableScreen
+import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
+import pro.jayeshseth.animations.core.ui.components.TabContent
 import pro.jayeshseth.animations.core.ui.components.TabsRow
 import pro.jayeshseth.animations.core.ui.components.Toggler
 import pro.jayeshseth.animations.shaders.utils.BASE_FEATURE_ROUTE
-import pro.jayeshseth.commoncomponents.InteractiveButton
 
 @Composable
 fun RainbowCircle(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        InnerRainbowCircle(onClickLink, modifier)
+        InnerRainbowCircle(hazeState, onClickLink, modifier)
     } else {
         FeatureUnavailableScreen("Feature Unavailable for api below ${Build.VERSION_CODES.TIRAMISU}")
     }
@@ -99,8 +101,10 @@ fun RainbowCircle(
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun InnerRainbowCircle(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    color: Color = Color.Cyan
 ) {
     val pagerState = rememberPagerState { animationTabsList().size }
     val scope = rememberCoroutineScope { Dispatchers.Default }
@@ -240,33 +244,29 @@ private fun InnerRainbowCircle(
                 }
         )
 
-        Column(
-            Modifier
-                .clip(RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                .weight(1f)
-                .padding(start = 16.dp, top = 16.dp, end = 16.dp)
-        ) {
-            TabsRow(
-                tabsList = animationTabsList(),
-                selectedIndex = pagerState.currentPage,
-                tabComponent = { index, tab ->
-                    AnimatedTab(
-                        isSelected = pagerState.currentPage == index,
-                        onClick = {
-                            scope.launch(Dispatchers.Main) {
-                                pagerState.animateScrollToPage(index)
-                            }
-                        },
-                    ) {
-                        Icon(
-                            painter = painterResource(id = tab.icon),
-                            contentDescription = tab.title,
-                            tint = LocalContentColor.current
-                        )
-                    }
+        TabContent(
+            hazeState = hazeState,
+            modifier = Modifier.weight(1f),
+            color = color,
+            tabsList = animationTabsList(),
+            selectedIndex = pagerState.currentPage,
+            tabComponent = { index, tab ->
+                AnimatedTab(
+                    isSelected = pagerState.currentPage == index,
+                    onClick = {
+                        scope.launch(Dispatchers.Main) {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
+                ) {
+                    Icon(
+                        painter = painterResource(id = tab.icon),
+                        contentDescription = tab.title,
+                        tint = LocalContentColor.current
+                    )
                 }
-            )
+            }
+        ) {
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier.fillMaxSize()
@@ -274,17 +274,18 @@ private fun InnerRainbowCircle(
                 when (animationTabsList()[page]) {
                     AnimationTabs.Settings -> {
                         Configurations(
+                            hazeState = hazeState,
                             rainbowCircleState = { rainbowCircleState.value },
                             onRainbowCircleStateChange = { rainbowCircleState.value = it }
                         )
                     }
 
                     AnimationTabs.Code -> {
-                        CodePreview(iterationLevel, rainbowCircleState.value)
+                        CodePreview(hazeState, iterationLevel, rainbowCircleState.value)
                     }
 
                     AnimationTabs.Source -> {
-                        LinksButtons(onClickLink)
+                        LinksButtons(hazeState, onClickLink)
                     }
                 }
             }
@@ -294,6 +295,7 @@ private fun InnerRainbowCircle(
 
 @Composable
 private fun LinksButtons(
+    hazeState: HazeState,
     onClickLink: OnClickLink,
 ) {
     val urlLauncher = LocalUriHandler.current
@@ -303,17 +305,20 @@ private fun LinksButtons(
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
             InteractiveButton(
+                hazeState = hazeState,
                 text = "Blog",
                 height = 70.dp,
                 onClick = { urlLauncher.openUri(blog) }
             )
             InteractiveButton(
+                hazeState = hazeState,
                 text = "Shader Source",
                 height = 70.dp,
                 onClick = { urlLauncher.openUri(shaderSource) }
             )
             InteractiveButton(
                 text = "Github",
+                hazeState = hazeState,
                 height = 70.dp,
                 onClick = { onClickLink("$BASE_FEATURE_ROUTE/screens/rainbowCircle/RainbowCircle.kt") },
             )
@@ -324,6 +329,7 @@ private fun LinksButtons(
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun CodePreview(
+    hazeState: HazeState,
     iterationLevel: ShaderIterationLevel,
     rainbowCircleState: RainbowCircleState,
     modifier: Modifier = Modifier
@@ -352,6 +358,7 @@ private fun CodePreview(
                 modifier = Modifier.padding(16.dp)
             ) {
                 CopyIconButton(
+                    hazeState = hazeState,
                     onClick = {
                         scope.launch {
                             clipboardManagerr.setClipEntry(
@@ -372,6 +379,7 @@ private fun CodePreview(
                 TabsRow(
                     tabsList = tabsList,
                     selectedIndex = selectedTab.intValue,
+                    hazeState = hazeState,
                     modifier = Modifier.padding(start = 16.dp),
                     tabComponent = { index, tabTitle ->
                         AnimatedTab(
@@ -421,6 +429,7 @@ private fun CodePreview(
 
 @Composable
 private fun Configurations(
+    hazeState: HazeState,
     rainbowCircleState: () -> RainbowCircleState,
     onRainbowCircleStateChange: (RainbowCircleState) -> Unit
 ) {
@@ -450,12 +459,19 @@ private fun Configurations(
                 is Fields.SliderData -> {
                     SliderTemplate(
                         title = data.title,
+                        hazeState = hazeState,
                         value = { data.value },
                         step = { data.step },
                         onValueChange = { value -> data.onValueChange(value) },
                         valueRange = data.valueRange,
                         roundToInt = data.roundToInt,
                         titlePadding = PaddingValues(vertical = 10.dp),
+                        onIncrement = {
+                            data.onValueChange(data.value + .1f)
+                        },
+                        onDecrement = {
+                            data.onValueChange(data.value - .1f)
+                        },
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 22.sp,
@@ -466,6 +482,7 @@ private fun Configurations(
 
                 is Fields.ToggleData -> {
                     Toggler(
+                        hazeState = hazeState,
                         title = data.title,
                         checked = data.value,
                         onCheckedChanged = data.onValueChange,
@@ -500,7 +517,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Pattern",
             value = sliderData.pattern,
-            step = 0.1f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(pattern = it))
             },
@@ -510,7 +527,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Expand",
             value = sliderData.expand,
-            step = 0f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(expand = it))
             },
@@ -520,7 +537,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Speed",
             value = sliderData.speed,
-            step = 0.01f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(speed = it))
             },
@@ -530,7 +547,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Size",
             value = sliderData.size,
-            step = 0.01f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(size = it))
             },
@@ -540,7 +557,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Red",
             value = sliderData.red,
-            step = 0.01f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(red = it))
             },
@@ -550,7 +567,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Green",
             value = sliderData.green,
-            step = 0.01f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(green = it))
             },
@@ -560,7 +577,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Blue",
             value = sliderData.blue,
-            step = 0.01f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(blue = it))
             },
@@ -570,7 +587,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Alpha",
             value = sliderData.alpha,
-            step = 0.01f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(alpha = it))
             },
@@ -580,7 +597,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Layers",
             value = sliderData.layers,
-            step = 1f,
+            step = 1,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(layers = it))
             },
@@ -590,7 +607,7 @@ private fun slidersList(
         Fields.SliderData(
             title = "Brightness",
             value = sliderData.brightness,
-            step = 0f,
+            step = 0,
             onValueChange = {
                 onSliderDataChange(sliderData.copy(brightness = it))
             },
@@ -606,6 +623,6 @@ private fun slidersList(
 @Composable
 private fun PreviewRainbowCircle() {
     MaterialTheme {
-        RainbowCircle({})
+        RainbowCircle(rememberHazeState(), {})
     }
 }

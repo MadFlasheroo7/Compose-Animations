@@ -36,10 +36,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.model.DampingRatioOption
 import pro.jayeshseth.animations.core.model.EasingOption
 import pro.jayeshseth.animations.core.model.StiffnessOption
 import pro.jayeshseth.animations.core.ui.components.DropDownTemplate
+import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
 import pro.jayeshseth.animations.core.ui.components.Toggler
 import pro.jayeshseth.animations.playground.model.TweenAndSpringSpecState
@@ -49,6 +51,7 @@ import pro.jayeshseth.animations.playground.model.TweenNSpringSpec
 @Composable
 fun SpringOptions(
     state: TweenAndSpringSpecState,
+    hazeState: HazeState,
     onStateUpdate: (TweenAndSpringSpecState) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -75,6 +78,7 @@ fun SpringOptions(
     ) {
         Toggler(
             title = "Custom Values",
+            hazeState = hazeState,
             checked = state.useCustomDampingRatioAndStiffness,
             onCheckedChanged = { onStateUpdate(state.copy(useCustomDampingRatioAndStiffness = it)) },
             style = TextStyle(
@@ -98,6 +102,7 @@ fun SpringOptions(
                     DropDownTemplate(
                         value = state.dampingRatio.name,
                         expanded = dampingRatioExpanded,
+                        hazeState = hazeState,
                         onExpandedChange = { dampingRatioExpanded = it },
                         onDismissRequest = { dampingRatioExpanded = false },
                         title = {
@@ -132,6 +137,7 @@ fun SpringOptions(
                     )
                     DropDownTemplate(
                         value = state.stiffness.name,
+                        hazeState = hazeState,
                         expanded = stiffnessExpanded,
                         onExpandedChange = { stiffnessExpanded = it },
                         onDismissRequest = { stiffnessExpanded = false },
@@ -169,6 +175,7 @@ fun SpringOptions(
                 Column {
                     SliderTemplate(
                         title = "Damping Ratio",
+                        hazeState = hazeState,
                         roundToInt = false,
                         value = { state.customDampingRatio },
                         onValueChange = {
@@ -176,9 +183,19 @@ fun SpringOptions(
                                 state.copy(customDampingRatio = it)
                             )
                         },
-                        step = { 0.1f },
+                        step = { 0 },
                         valueRange = 0.1f..2f,
                         titlePadding = PaddingValues(vertical = 10.dp),
+                        onIncrement = {
+                            onStateUpdate(
+                                state.copy(customDampingRatio = state.customDampingRatio + 0.1f)
+                            )
+                        },
+                        onDecrement = {
+                            onStateUpdate(
+                                state.copy(customDampingRatio = state.customDampingRatio - 0.1f)
+                            )
+                        },
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 22.sp,
@@ -187,6 +204,7 @@ fun SpringOptions(
                     )
                     SliderTemplate(
                         title = "Stiffness",
+                        hazeState = hazeState,
                         roundToInt = false,
                         value = { state.customStiffness },
                         onValueChange = {
@@ -194,9 +212,19 @@ fun SpringOptions(
                                 state.copy(customStiffness = it)
                             )
                         },
-                        step = { 0f },
+                        step = { 0 },
                         valueRange = 0.1f..10_000f,
                         titlePadding = PaddingValues(vertical = 10.dp),
+                        onIncrement = {
+                            onStateUpdate(
+                                state.copy(customStiffness = state.customStiffness + 100f)
+                            )
+                        },
+                        onDecrement = {
+                            onStateUpdate(
+                                state.copy(customStiffness = state.customStiffness - 100f)
+                            )
+                        },
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 22.sp,
@@ -213,32 +241,35 @@ fun SpringOptions(
 @Preview(showSystemUi = false, showBackground = true)
 @Composable
 private fun PreviewSpringOptions() {
-    SpringOptions(
-        state = TweenAndSpringSpecState(
-            specs = TweenNSpringSpec.entries,
-            selectedSpec = TweenNSpringSpec.Tween,
-            durationMillis = 1000,
-            delayMillis = 0,
-            easingList = emptyList(),
-            easing = EasingOption(
-                name = "Linear",
-                easing = { it }
+    ShaderPreviewContent() {
+        SpringOptions(
+            hazeState = it,
+            state = TweenAndSpringSpecState(
+                specs = TweenNSpringSpec.entries,
+                selectedSpec = TweenNSpringSpec.Tween,
+                durationMillis = 1000,
+                delayMillis = 0,
+                easingList = emptyList(),
+                easing = EasingOption(
+                    name = "Linear",
+                    easing = { it }
+                ),
+                dampingRatioList = emptyList(),
+                dampingRatio = DampingRatioOption(
+                    name = "No Damping",
+                    dampingRatio = 0f
+                ),
+                stiffnessList = emptyList(),
+                stiffness = StiffnessOption(
+                    name = "Medium",
+                    stiffness = 500f
+                ),
+                cubicA = 0.1f,
+                cubicB = 0.2f,
+                cubicC = 0.3f,
+                cubicD = 0.4f,
             ),
-            dampingRatioList = emptyList(),
-            dampingRatio = DampingRatioOption(
-                name = "No Damping",
-                dampingRatio = 0f
-            ),
-            stiffnessList = emptyList(),
-            stiffness = StiffnessOption(
-                name = "Medium",
-                stiffness = 500f
-            ),
-            cubicA = 0.1f,
-            cubicB = 0.2f,
-            cubicC = 0.3f,
-            cubicD = 0.4f,
-        ),
-        onStateUpdate = {}
-    )
+            onStateUpdate = {}
+        )
+    }
 }

@@ -1,5 +1,8 @@
 ![banner art](https://github.com/MadFlasheroo7/Compose-Animations/assets/57130085/109b9237-3fa5-48c5-80a3-8bddf256ead5)
 
+> # Note 
+> Wip migration to CMP (currently all screens migrated to support newer design system). 
+
 # Compose Animations
 
 Compose Animations is built with the primary goal to explore the capabilities of animation in

@@ -5,3 +5,4 @@ plugins {
 android {
     namespace = "pro.jayeshseth.animations.core.navigation"
 }
+

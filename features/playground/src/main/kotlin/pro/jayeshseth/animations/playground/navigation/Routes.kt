@@ -5,7 +5,7 @@ import pro.jayeshseth.animations.core.navigation.Route
 
 object PlaygroundRoutes {
     @Serializable
-    data object PlaygroundRoute : Route()
+    data object PlaygroundLandingRoute : Route()
 
     @Serializable
     data object AnimationSpecRoute : Route()

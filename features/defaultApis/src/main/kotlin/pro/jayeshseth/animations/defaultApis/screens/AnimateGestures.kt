@@ -16,17 +16,19 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import pro.jayeshseth.animations.core.ui.components.CatImage
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import pro.jayeshseth.animations.core.ui.components.CatImage
 import kotlin.math.roundToInt
 
 @Composable
@@ -67,6 +69,9 @@ fun TapGesture() {
             },
     ) {
         CenterAlignedTopAppBar(
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                containerColor = Color.Transparent
+            ),
             title = {
                 Text(text = "Tap Any Where On Screen")
             }
