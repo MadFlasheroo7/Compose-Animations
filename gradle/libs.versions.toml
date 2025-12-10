@@ -1,72 +1,73 @@
 [versions]
-accompanist = "0.37.3"
-activity-compose = "1.10.1"
-activity-ktx = "1.10.1"
+# Build Tools
 androidGradlePlugin = "8.10.1"
-androidx-test-ext-junit = "1.2.1"
-androidx-window = "1.4.0"
-applicationId = "pro.jayeshseth.animations"
-cascade = "2.3.0"
-coil = "2.7.0"
-commonmodule = "0.0.8"
-compile-sdk = "36"
-compose-bom = "2025.08.01"
-compose-compiler = "1.5.0"
-composeCodeEditor = "2.0.3"
-core-ktx = "1.17.0"
-core-splashscreen = "1.0.1"
-coroutines = "1.10.2"
-datastore = "1.0.0"
-datastorePreferences = "1.2.0"
-espresso-core = "3.6.1"
-junit = "4.13.2"
-jvm-target = "17"
+androidDesugarJdkLibs = "2.1.5"
+androidTools = "31.12.0"
+ksp = "2.1.20-1.0.31"
+
+# Kotlin
 kotlin = "2.2.0"
 kotlinxSerializationJson = "1.9.0"
-ksp = "2.1.20-1.0.31"
+kotlin-coroutines = "1.10.2"
+kotlinxSerializationCore = "1.9.0"
+
+# Compose
+compose-hot-reload = "1.0.0"
+compose-multiplatform = "1.9.0"
+compose-jetbrains = "1.8.2"
+material-icons = "1.7.3"
+
+# Androidx
+activity-compose = "1.10.1"
+activity-ktx = "1.10.1"
+androidx-test-ext-junit = "1.2.1"
+androidx-window = "1.4.0"
+androidx-core-ktx = "1.17.0"
+datastore = "1.0.0"
+core-splashscreen = "1.0.1"
+datastorePreferences = "1.2.0"
+appcompat = "1.7.0"
+
+# Others
+cascade = "2.3.0"
+accompanist = "0.37.3"
+coil = "3.3.0"
+compose-bom = "2025.08.01"
+composeCodeEditor = "2.0.3"
+espresso-core = "3.6.1"
+junit = "4.13.2"
 lottie = "6.6.6"
 lifecycle = "2.6.2"
 lifecycle-runtime-ktx = "2.6.1"
-material = "1.9.0"
-min-sdk = "24"
-namespace = "pro.jayeshseth.animations"
 navigation = "2.9.0"
-navigation-hilt = "1.0.0"
-nexusPlugin = "2.0.0"
-okhttp = "4.10.0"
 palette = "1.0.0"
 physicsLayout = "0.4.1"
 rebugger = "1.0.0-rc03"
-retrofit = "2.9.0"
-room = "2.5.2"
 spotless = "7.0.3"
-target-sdk = "36"
-appcompat = "1.7.0"
-com-google-android-material-material = "1.12.0"
-vanniktechMavenPublish = "0.25.3"
 nav3Core = "1.0.0-beta01"
 nav3Material = "1.0.0-SNAPSHOT"
 nav3Lifecycle = "1.0.0-SNAPSHOT"
-kotlinxSerializationCore = "1.9.0"
-# versioning
-version-code = "10"
-version-name = "1.0.8" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
-version-nameBetaSuffix = "-beta01"
 haze = "1.7.1"
 hypnoticcanvas = "0.4.1"
 composeUnstyled = "1.49.3"
 
+# Versioning
+applicationId = "pro.jayeshseth.animations"
+namespace = "pro.jayeshseth.animations"
+version-code = "10"
+version-name = "1.0.8" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
+version-nameBetaSuffix = "-beta01"
+jvm-target = "17"
+target-sdk = "36"
+compile-sdk = "36"
+min-sdk = "24"
+
+
+
 
 [libraries]
 # Accompanist
-#accompanist-adaptive = { group = "com.google.accompanist", name = "accompanist-adaptive", version.ref = "accompanist" }
-#accompanist-drawablePainter = { group = "com.google.accompanist", name = "accompanist-drawablepainter", version.ref = "accompanist" }
-#accompanist-navigationAnimation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanist" }
-#accompanist-navigationMaterial = { group = "com.google.accompanist", name = "accompanist-navigation-material", version.ref = "accompanist" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
-#accompanist-placeHolder = { group = "com.google.accompanist", name = "accompanist-placeholder", version.ref = "accompanist" }
-#accompanist-systemUIController = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
-#accompanist-testharness = { group = "com.google.accompanist", name = "accompanist-testharness", version.ref = "accompanist" }
 
 # [AndroidX Deps]
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
@@ -82,12 +83,11 @@ cascade = { group = "me.saket.cascade", name = "cascade", version.ref = "cascade
 cascade-compose = { group = "me.saket.cascade", name = "cascade-compose", version.ref = "cascade" }
 
 # Coil
-coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
-coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
-coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+coil-kt = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
+coil-kt-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coil-kt-svg = { group = "io.coil-kt.coil3", name = "coil-svg", version.ref = "coil" }
 
-# Compose
-#commonmodule = { module = "pro.jayeshseth.madappmodules:commonModules", version.ref = "commonmodule" }
+# Androidx Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-code-editor = { module = "com.github.qawaz:compose-code-editor", version.ref = "composeCodeEditor" }
 compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
@@ -106,13 +106,22 @@ compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
 compose-animation-graphics = { group = "androidx.compose.animation", name = "animation-graphics" }
 compose-unstyled = { group = "com.composables", name = "composeunstyled", version.ref = "composeUnstyled" }
 
+# Jetbrains Compose
+jetbrains-compose-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "compose-multiplatform" }
+jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-jetbrains" }
+jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "compose-jetbrains" }
+jetbrains-compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "material-icons" }
+jetbrains-compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "material-icons" }
+jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-jetbrains" }
+jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-jetbrains" }
+
 # Core
-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
 core-splashScreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "core-splashscreen" }
 
 # Coroutines
-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
 
 # Lottie
 lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
@@ -151,7 +160,6 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "com-google-android-material-material" }
 physics-layout = { module = "io.github.klassenkonstantin:physics-layout", version.ref = "physicsLayout" }
 rebugger = { module = "io.github.theapache64:rebugger", version.ref = "rebugger" }
 
@@ -162,16 +170,20 @@ spotless-gradlePlugin = { group = "com.diffplug.spotless", name = "spotless-plug
 
 
 [plugins]
+composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "compose-hot-reload" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
-android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
+androidTest = { id = "com.android.test", version.ref = "androidGradlePlugin" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-nexus-plugin = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPlugin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }
+
 
 animations-application = { id = "animations.android.application" }
 animations-library = { id = "animations.android.library" }
