@@ -11,8 +11,6 @@ internal fun Project.configureAndroidCompose(
     commonExtension: CommonExtension<*, *, *, *, *, *>
 ) {
     commonExtension.apply {
-        pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
-
         buildFeatures {
             buildConfig = true
             compose = true
@@ -26,10 +24,12 @@ internal fun Project.configureAndroidCompose(
 
         dependencies {
             val bom = libs.findLibrary("compose-bom").get()
-            add("implementation", platform(bom))
-            add("debugImplementation", libs.findLibrary("compose-ui-manifest").get())
-            add("debugImplementation", libs.findLibrary("compose-ui-tooling").get())
-            add("androidTestImplementation", platform(bom))
+            "implementation"(platform(bom))
+            "testImplementation"(platform(bom))
+
+            "debugImplementation"(libs.findLibrary("compose-ui-tooling").get())
+            "debugImplementation"(libs.findLibrary("compose-ui-tooling-preview").get())
+            "debugImplementation"( libs.findLibrary("compose-ui-manifest").get())
         }
     }
 }
