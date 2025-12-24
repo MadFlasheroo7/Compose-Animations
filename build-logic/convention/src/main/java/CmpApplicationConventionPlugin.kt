@@ -7,9 +7,10 @@ import pro.jayeshseth.animations.convention.applyHierarchyTemplate
 import pro.jayeshseth.animations.convention.configureAndroidTarget
 import pro.jayeshseth.animations.convention.configureDesktopTarget
 import pro.jayeshseth.animations.convention.configureIosTargets
+import pro.jayeshseth.animations.convention.configureWebTarget
 import pro.jayeshseth.animations.convention.libs
 
-class CmpApplicationConventionPlugin: Plugin<Project> {
+class CmpApplicationConventionPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
@@ -24,12 +25,12 @@ class CmpApplicationConventionPlugin: Plugin<Project> {
             configureAndroidTarget()
             configureIosTargets()
             configureDesktopTarget()
+            configureWebTarget()
 
             extensions.configure<KotlinMultiplatformExtension> {
                 applyHierarchyTemplate()
             }
 
-            // TODO is it required?
             dependencies {
                 "debugImplementation"(libs.findLibrary("compose-ui-tooling").get())
             }

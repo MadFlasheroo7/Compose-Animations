@@ -12,11 +12,18 @@ class CmpFeatureConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
+                "commonMainImplementation"(project(":core:ui"))
+                "commonMainImplementation"(project(":core:utils"))
+                "commonMainImplementation"(project(":core:model"))
+                "commonMainImplementation"(project(":core:navigation"))
                 "commonMainImplementation"(libs.findLibrary("jetbrains-compose-runtime").get())
+                "commonMainImplementation"(libs.findLibrary("jetbrains-compose-runtime").get())
+                "commonMainImplementation"(libs.findLibrary("compose-nav3").get())
+                "commonMainImplementation"(libs.findLibrary("haze").get())
 
                 "commonMainImplementation"(libs.findLibrary("jetbrains-savedstate").get())
                 "commonMainImplementation"(libs.findLibrary("jetbrains-bundle").get())
-
+                "debugImplementation"(libs.findLibrary("compose-ui-tooling").get())
             }
         }
     }

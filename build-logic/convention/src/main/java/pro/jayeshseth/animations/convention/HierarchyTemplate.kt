@@ -16,6 +16,19 @@ private val hierarchyTemplate = KotlinHierarchyTemplate {
     common {
         withCompilations { true }
 
+        group("mobileAndDesktop") {
+            withAndroidTarget()
+            withJvm()
+            group("ios") {
+                withIos()
+            }
+        }
+
+        group("web") {
+            withJs()
+            withWasmJs()
+        }
+
         group("mobile") {
             withAndroidTarget()
             group("ios") {

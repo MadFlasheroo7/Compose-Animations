@@ -13,6 +13,7 @@ class CmpLibraryConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
+                "androidMainImplementation"(libs.findLibrary("core-ktx").get())
                 "commonMainImplementation"(libs.findLibrary("jetbrains-compose-ui").get())
                 "commonMainImplementation"(libs.findLibrary("jetbrains-compose-foundation").get())
                 "commonMainImplementation"(libs.findLibrary("jetbrains-compose-material3").get())
