@@ -44,40 +44,124 @@ data class EasingOption(
 )
 
 val EasingList = mutableListOf(
-    EasingOption(LinearEasing, "LinearEasing"),
-    EasingOption(FastOutSlowInEasing, "FastOutSlowInEasing"),
-    EasingOption(FastOutLinearInEasing, "FastOutLinearInEasing"),
-    EasingOption(LinearOutSlowInEasing, "LinearOutSlowInEasing"),
+    EasingOption(
+        LinearEasing,
+        "LinearEasing"
+    ),
+    EasingOption(
+        FastOutSlowInEasing,
+        "FastOutSlowInEasing"
+    ),
+    EasingOption(
+        FastOutLinearInEasing,
+        "FastOutLinearInEasing"
+    ),
+    EasingOption(
+        LinearOutSlowInEasing,
+        "LinearOutSlowInEasing"
+    ),
     EasingOption(Ease, "Ease"),
     EasingOption(EaseIn, "EaseIn"),
     EasingOption(EaseOut, "EaseOut"),
     EasingOption(EaseInSine, "EaseInSine"),
-    EasingOption(EaseOutSine, "EaseOutSine"),
-    EasingOption(EaseInOutSine, "EaseInOutSine"),
-    EasingOption(EaseInCubic, "EaseInCubic"),
-    EasingOption(EaseInOutCubic, "EaseInOutCubic"),
-    EasingOption(EaseInQuint, "EaseInQuint"),
-    EasingOption(EaseOutQuint, "EaseOutQuint"),
-    EasingOption(EaseInOutQuint, "EaseInOutQuint"),
+    EasingOption(
+        EaseOutSine,
+        "EaseOutSine"
+    ),
+    EasingOption(
+        EaseInOutSine,
+        "EaseInOutSine"
+    ),
+    EasingOption(
+        EaseInCubic,
+        "EaseInCubic"
+    ),
+    EasingOption(
+        EaseInOutCubic,
+        "EaseInOutCubic"
+    ),
+    EasingOption(
+        EaseInQuint,
+        "EaseInQuint"
+    ),
+    EasingOption(
+        EaseOutQuint,
+        "EaseOutQuint"
+    ),
+    EasingOption(
+        EaseInOutQuint,
+        "EaseInOutQuint"
+    ),
     EasingOption(EaseInCirc, "EaseInCirc"),
-    EasingOption(EaseOutCirc, "EaseOutCirc"),
-    EasingOption(EaseInOutCirc, "EaseInOutCirc"),
+    EasingOption(
+        EaseOutCirc,
+        "EaseOutCirc"
+    ),
+    EasingOption(
+        EaseInOutCirc,
+        "EaseInOutCirc"
+    ),
     EasingOption(EaseInQuad, "EaseInQuad"),
-    EasingOption(EaseOutQuad, "EaseOutQuad"),
-    EasingOption(EaseInOutQuad, "EaseInOutQuad"),
-    EasingOption(EaseInQuart, "EaseInQuart"),
-    EasingOption(EaseOutQuart, "EaseOutQuart"),
-    EasingOption(EaseInOutQuart, "EaseInOutQuart"),
+    EasingOption(
+        EaseOutQuad,
+        "EaseOutQuad"
+    ),
+    EasingOption(
+        EaseInOutQuad,
+        "EaseInOutQuad"
+    ),
+    EasingOption(
+        EaseInQuart,
+        "EaseInQuart"
+    ),
+    EasingOption(
+        EaseOutQuart,
+        "EaseOutQuart"
+    ),
+    EasingOption(
+        EaseInOutQuart,
+        "EaseInOutQuart"
+    ),
     EasingOption(EaseInExpo, "EaseInExpo"),
-    EasingOption(EaseOutExpo, "EaseOutExpo"),
-    EasingOption(EaseInOutExpo, "EaseInOutExpo"),
+    EasingOption(
+        EaseOutExpo,
+        "EaseOutExpo"
+    ),
+    EasingOption(
+        EaseInOutExpo,
+        "EaseInOutExpo"
+    ),
     EasingOption(EaseInBack, "EaseInBack"),
-    EasingOption(EaseOutBack, "EaseOutBack"),
-    EasingOption(EaseInOutBack, "EaseInOutBack"),
-    EasingOption(EaseInElastic, "EaseInElastic"),
-    EasingOption(EaseOutElastic, "EaseOutElastic"),
-    EasingOption(EaseInOutElastic, "EaseInOutElastic"),
-    EasingOption(EaseInBounce, "EaseInBounce"),
-    EasingOption(EaseOutBounce, "EaseOutBounce"),
-    EasingOption(EaseInOutBounce, "EaseInOutBounce")
+    EasingOption(
+        EaseOutBack,
+        "EaseOutBack"
+    ),
+    EasingOption(
+        EaseInOutBack,
+        "EaseInOutBack"
+    ),
+    EasingOption(
+        EaseInElastic,
+        "EaseInElastic"
+    ),
+    EasingOption(
+        EaseOutElastic,
+        "EaseOutElastic"
+    ),
+    EasingOption(
+        EaseInOutElastic,
+        "EaseInOutElastic"
+    ),
+    EasingOption(
+        EaseInBounce,
+        "EaseInBounce"
+    ),
+    EasingOption(
+        EaseOutBounce,
+        "EaseOutBounce"
+    ),
+    EasingOption(
+        EaseInOutBounce,
+        "EaseInOutBounce"
+    )
 )
