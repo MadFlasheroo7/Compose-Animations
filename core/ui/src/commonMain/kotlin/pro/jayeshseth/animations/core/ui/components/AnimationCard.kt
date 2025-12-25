@@ -1,0 +1,177 @@
+package pro.jayeshseth.animations.core.ui.components
+
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.BlurEffect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import dev.chrisbanes.haze.ExperimentalHazeApi
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.HazeStyle
+import dev.chrisbanes.haze.HazeTint
+import dev.chrisbanes.haze.hazeEffect
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import pro.jayeshseth.animations.core.model.AnimationContent
+import pro.jayeshseth.animations.core.ui.icons.AnimIcons
+import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
+
+@OptIn(ExperimentalHazeApi::class)
+@Composable
+fun AnimationCard(
+    index: Int,
+    hazeState: HazeState,
+    animationContent: AnimationContent,
+    onClickLink: () -> Unit,
+    isInitialLoad: Boolean = false,
+    modifier: Modifier = Modifier
+) {
+//    val context = LocalContext.current
+    val animatedProgress = remember { Animatable(300f) }
+    val animatedBlur = remember { Animatable(100f) }
+//    val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
+    var hasAnimated by remember { mutableStateOf(false) }
+    val hapticFeedback = LocalHapticFeedback.current
+    LaunchedEffect(index) {
+        if (!isInitialLoad || hasAnimated) {
+            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                vibrator!!.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+//            }
+            animatedProgress.animateTo(
+                targetValue = 1f,
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioLowBouncy,
+                    stiffness = Spring.StiffnessLow,
+                )
+            )
+            hasAnimated = true
+        } else {
+            animatedProgress.snapTo(1f)
+        }
+    }
+    LaunchedEffect(index) {
+        animatedBlur.animateTo(
+            targetValue = 0f,
+            animationSpec = tween(300)
+        )
+    }
+
+    val cardStyle = HazeStyle(
+        tint = HazeTint(Color.Black.copy(.4f)),
+        blurRadius = 50.dp,
+        noiseFactor = 0.1f,
+    )
+    var isVisible by remember { mutableStateOf(true) }
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .graphicsLayer {
+                shape = RoundedCornerShape(16.dp)
+                translationX = animatedProgress.value
+                renderEffect = BlurEffect(
+                    animatedBlur.value,
+                    animatedBlur.value,
+                    TileMode.Decal
+                )
+            }
+            .clip(RoundedCornerShape(16.dp))
+            .hazeEffect(
+                hazeState,
+                cardStyle
+            )
+            .padding(18.dp, 4.dp, 18.dp, 18.dp)
+
+    ) {
+        if (animationContent.title != null) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = animationContent.title!!,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .basicMarquee()
+                        .weight(1f),
+                )
+                IconButton(onClickLink, modifier = Modifier) {
+                    Icon(AnimIcons.link, contentDescription = "link icon")
+                }
+            }
+        }
+        Box(
+            Modifier.animateContentSize(tween(500))
+        ) {
+            animationContent.content(isVisible)
+        }
+        if (animationContent.title != null) {
+            InteractiveButton(
+                hazeState = hazeState,
+                text = "Animate",
+                onClick = {
+                    isVisible = !isVisible
+                },
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewAnimationCard() {
+    AnimationsTheme {
+        ShaderPreviewContent { hazeState ->
+            AnimationCard(
+                index = 0,
+                onClickLink = {},
+                hazeState = hazeState,
+                modifier = Modifier.padding(12.dp),
+                animationContent = AnimationContent(
+                    title = "Animate Visibility",
+                ) {
+                    Box(
+                        Modifier
+                            .size(100.dp)
+                            .background(Color.White)
+                    )
+                }
+            )
+        }
+    }
+}
