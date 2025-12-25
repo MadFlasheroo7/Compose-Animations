@@ -1,8 +1,15 @@
 plugins {
-    alias(libs.plugins.animations.library)
+    alias(libs.plugins.animations.cmp.library)
+    alias(libs.plugins.kotlinAtomicfu)
 }
 
-android {
-    namespace = "pro.jayeshseth.animations.core.navigation"
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(libs.compose.nav3)
+            }
+        }
+    }
 }
 

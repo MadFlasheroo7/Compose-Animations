@@ -1,15 +1,16 @@
 package pro.jayeshseth.animations.core.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.savedstate.SavedState
 import androidx.savedstate.read
+import androidx.savedstate.savedState
 import androidx.savedstate.serialization.decodeFromSavedState
 import androidx.savedstate.serialization.encodeToSavedState
 import androidx.savedstate.write
+import pro.jayeshseth.animations.core.navigation.Navigator.Companion.Saver
 
 class Navigator(private var startRoute: Route) {
     val backStack = mutableStateListOf(startRoute)
@@ -48,7 +49,7 @@ class Navigator(private var startRoute: Route) {
          */
         val Saver = Saver<Navigator, SavedState>(
             save = { navigator ->
-                val savedState = SavedState()
+                var savedState: SavedState = savedState()
                 savedState.write {
                     putSavedState(KEY_START_ROUTE, encodeToSavedState(navigator.startRoute))
                     putSavedStateList(
@@ -66,7 +67,8 @@ class Navigator(private var startRoute: Route) {
                     getSavedStateListOrNull(KEY_BACK_STACK)
                         ?.map { decodeFromSavedState<Route>(it) }
                         ?.let { navigator.backStack.addAll(it) }
-                    Log.d("route", "backstack ${navigator.backStack}")
+
+                    println("route backstack ${navigator.backStack}") // TODO replace with a kmp logger
                     navigator
                 }
             }
