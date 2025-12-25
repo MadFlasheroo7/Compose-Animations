@@ -9,11 +9,19 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 internal fun Project.configureWebTarget() {
     extensions.configure<KotlinMultiplatformExtension> {
         js {
-            browser()
+            browser {
+                commonWebpackConfig {
+                    outputFileName = "composeApp.js"
+                }
+            }
             binaries.executable()
         }
         wasmJs {
-            browser()
+            browser {
+                commonWebpackConfig {
+                    outputFileName = "composeApp.js"
+                }
+            }
             binaries.executable()
         }
     }

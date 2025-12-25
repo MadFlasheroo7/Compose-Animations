@@ -30,6 +30,7 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
+                "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-compose").get())
                 "commonMainImplementation"(libs.findLibrary("kotlinx-serialization-json").get())
                 "commonTestImplementation"(libs.findLibrary("kotlin-test").get())
             }

@@ -16,7 +16,7 @@ class CmpFeatureConventionPlugin : Plugin<Project> {
                 "commonMainImplementation"(project(":core:utils"))
                 "commonMainImplementation"(project(":core:model"))
                 "commonMainImplementation"(project(":core:navigation"))
-                "commonMainImplementation"(libs.findLibrary("jetbrains-compose-runtime").get())
+                "commonMainImplementation"(libs.findLibrary("jetbrains-lifecycle-compose").get())
                 "commonMainImplementation"(libs.findLibrary("jetbrains-compose-runtime").get())
                 "commonMainImplementation"(libs.findLibrary("compose-nav3").get())
                 "commonMainImplementation"(libs.findLibrary("haze").get())
