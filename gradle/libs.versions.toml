@@ -6,7 +6,8 @@ androidTools = "31.12.0"
 ksp = "2.1.20-1.0.31"
 
 # Kotlin
-kotlin = "2.2.0"
+kotlin = "2.3.0"
+kotlin-atomic = "0.30.0-beta"
 kotlinxSerializationJson = "1.9.0"
 kotlin-coroutines = "1.10.2"
 kotlinxSerializationCore = "1.9.0"
@@ -14,9 +15,10 @@ kotlinxSerializationCore = "1.9.0"
 # Compose
 compose-bom = "2025.08.01"
 compose-hot-reload = "1.0.0"
-compose-multiplatform = "1.9.0"
-compose-jetbrains = "1.8.2"
+compose-multiplatform = "1.9.3"
+compose-jetbrains-m3 = "1.8.2"
 material-icons = "1.7.3"
+compose-lifecycle = "2.9.1"
 
 # Androidx
 activity-compose = "1.10.1"
@@ -24,9 +26,8 @@ activity-ktx = "1.10.1"
 androidx-test-ext-junit = "1.2.1"
 androidx-window = "1.4.0"
 androidx-core-ktx = "1.17.0"
-datastore = "1.0.0"
 core-splashscreen = "1.0.1"
-datastorePreferences = "1.2.0"
+datastore = "1.2.0"
 appcompat = "1.7.0"
 
 # Others
@@ -42,9 +43,9 @@ lifecycle-runtime-ktx = "2.6.1"
 navigation = "2.9.0"
 palette = "1.0.0"
 physicsLayout = "0.4.1"
-rebugger = "1.0.0-rc03"
+rebugger = "1.0.1"
 spotless = "7.0.3"
-nav3Core = "1.0.0-beta01"
+nav3Core = "1.0.0-alpha06"
 nav3Material = "1.0.0-SNAPSHOT"
 nav3Lifecycle = "1.0.0-SNAPSHOT"
 haze = "1.7.1"
@@ -63,6 +64,8 @@ jvm-target = "17"
 target-sdk = "36"
 compile-sdk = "36"
 min-sdk = "24"
+runtime = "1.10.0"
+core = "1.17.0"
 
 
 
@@ -74,8 +77,9 @@ accompanist-permissions = { group = "com.google.accompanist", name = "accompanis
 # [AndroidX Deps]
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
-androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
-androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastorePreferences" }
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+#androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastorePreferences" }
 androidx-window = { module = "androidx.window:window", version.ref = "androidx-window" }
 
 # Benchmark
@@ -110,15 +114,17 @@ compose-unstyled = { group = "com.composables", name = "composeunstyled", versio
 
 # Jetbrains Compose
 jetbrains-compose-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "compose-multiplatform" }
-jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-jetbrains" }
-jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "compose-jetbrains" }
+jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-multiplatform" }
+jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "compose-jetbrains-m3" }
 jetbrains-compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "material-icons" }
 jetbrains-compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "material-icons" }
-jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-jetbrains" }
-jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-jetbrains" }
-jetbrains-savedstate = { module = "org.jetbrains.androidx.savedstate:savedstate", version.ref = "jetbrains-savedstate" }
+jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
+jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-multiplatform" }
 jetbrains-bundle = { module = "org.jetbrains.androidx.core:core-bundle", version.ref = "jetbrains-core-bundle" }
-
+jetbrains-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "compose-lifecycle" }
+jetbrains-lifecycle-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "compose-lifecycle" }
+jetbrains-lifecycle-viewmodel-savedstate = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "compose-lifecycle" }
+jetbrains-savedstate = { module = "org.jetbrains.androidx.savedstate:savedstate", version.ref = "jetbrains-savedstate" }
 # Core
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
 core-splashScreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "core-splashscreen" }
@@ -131,9 +137,10 @@ coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutin
 lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 
 # Navigation
-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "nav3Core" }
-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "nav3Core" }
+navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+#navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "nav3Core" }
+#navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "nav3Core" }
+compose-nav3 = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "nav3Core" }
 
 hypnoticcanvas = { module = "com.mikepenz.hypnoticcanvas:hypnoticcanvas", version.ref = "hypnoticcanvas" }
 hypnoticcanvas-shaders = { module = "com.mikepenz.hypnoticcanvas:hypnoticcanvas-shaders", version.ref = "hypnoticcanvas" }
@@ -176,6 +183,8 @@ compose-gradlePlugin = { group = "org.jetbrains.kotlin", name = "compose-compile
 android-desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
+androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
 
 
 [plugins]
@@ -188,6 +197,7 @@ androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugi
 androidTest = { id = "com.android.test", version.ref = "androidGradlePlugin" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlinAtomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "kotlin-atomic" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
@@ -215,5 +225,5 @@ compose = [
     "compose-material3-navigation3", "compose-material-iconsExtended"
 ]
 navigation = [
-    "navigation-compose", "navigation3-runtime", "navigation3-ui"
+    "navigation-compose", "compose-nav3"
 ]
