@@ -1,15 +1,14 @@
 plugins {
-    alias(libs.plugins.animations.library)
+    alias(libs.plugins.animations.cmp.library)
 }
 
-android {
-    buildFeatures {
-        buildConfig = true
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                api(libs.androidx.datastore)
+                api(libs.androidx.datastore.preferences)
+            }
+        }
     }
-    namespace = "pro.jayeshseth.animations.core.utils"
-}
-
-dependencies {
-    implementation(libs.androidx.datastore.preferences)
-    implementation(libs.androidx.datastore.preferences.core)
 }

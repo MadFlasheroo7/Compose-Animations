@@ -1,6 +1,8 @@
 package pro.jayeshseth.animations.core.utils
 
-val isDebug = BuildConfig.DEBUG
+// TODO
+val isDebug = true
+//val isDebug = BuildConfig.DEBUG
 
 val branch = if (isDebug) "beta" else "main"
 

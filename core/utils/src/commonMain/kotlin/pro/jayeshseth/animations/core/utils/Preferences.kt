@@ -1,6 +1,5 @@
 package pro.jayeshseth.animations.core.utils
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
@@ -14,12 +13,12 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-val Context.commonPrefs: DataStore<Preferences> by preferencesDataStore("commonPrefs")
+// TODO migrate datastore
+//val Context.commonPrefs: DataStore<Preferences> by preferencesDataStore("commonPrefs")
 
 @Suppress("UNCHECKED_CAST")
 inline fun <reified T> prefKey(name: String): Preferences.Key<T> =
