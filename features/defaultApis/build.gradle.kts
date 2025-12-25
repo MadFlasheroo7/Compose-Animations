@@ -1,17 +1,15 @@
 plugins {
-    alias(libs.plugins.animations.library)
+    alias(libs.plugins.animations.cmp.feature)
 }
 
-android {
-    namespace = "pro.jayeshseth.animations.defaultApis"
-}
-
-dependencies {
-    implementation(projects.core.ui)
-    implementation(projects.core.utils)
-    implementation(projects.core.model)
-    implementation(projects.core.navigation)
-    implementation(libs.haze)
-    implementation(libs.hypnoticcanvas)
-    implementation(libs.hypnoticcanvas.shaders)
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(libs.haze)
+                implementation(libs.hypnoticcanvas)
+                implementation(libs.hypnoticcanvas.shaders)
+            }
+        }
+    }
 }

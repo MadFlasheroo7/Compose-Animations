@@ -19,7 +19,7 @@ fun AnimateDpAsState(trigger: Boolean) {
     val triggered = rememberUpdatedState(trigger)
     val size by animateDpAsState(
         if (triggered.value) 200.dp else 100.dp,
-        animationSpec = tween(DURATION, easing = LinearEasing),
+        animationSpec = tween(_root_ide_package_.pro.jayeshseth.animations.core.model.DURATION, easing = LinearEasing),
         label = "animate dp"
     )
     Box(

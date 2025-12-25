@@ -9,14 +9,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mikepenz.hypnoticcanvas.shaderBackground
 import com.mikepenz.hypnoticcanvas.shaders.InkFlow
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.model.lazyNavBarPadding
 import pro.jayeshseth.animations.core.model.lazyStatusBarPadding
 import pro.jayeshseth.animations.core.navigation.AnimationScreen

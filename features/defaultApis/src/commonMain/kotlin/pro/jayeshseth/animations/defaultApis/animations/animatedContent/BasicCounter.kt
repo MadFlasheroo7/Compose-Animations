@@ -1,51 +1,31 @@
 package pro.jayeshseth.animations.defaultApis.animations.animatedContent
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
+import androidx.compose.animation.*
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Link
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mikepenz.hypnoticcanvas.shaderBackground
 import com.mikepenz.hypnoticcanvas.shaders.InkFlow
-import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.HazeTint
-import dev.chrisbanes.haze.hazeEffect
-import dev.chrisbanes.haze.hazeSource
-import dev.chrisbanes.haze.rememberHazeState
+import dev.chrisbanes.haze.*
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.core.utils.BASE_URL
 import pro.jayeshseth.animations.defaultApis.utils.BASE_FEATURE_ROUTE
 
-val BasicCounterPath = "$BASE_URL/$BASE_FEATURE_ROUTE/animations/animatedContent/BasicCounter.kt"
+val BasicCounterPath = "$BASE_URL/${BASE_FEATURE_ROUTE}/animations/animatedContent/BasicCounter.kt"
 
 @Composable
 fun BasicIncrementCounter(hazeState: HazeState) {
@@ -79,7 +59,10 @@ fun BasicIncrementCounter(hazeState: HazeState) {
                     .basicMarquee()
                     .weight(1f),
             )
-            IconButton({ urlLauncher.openUri(BasicCounterPath) }, modifier = Modifier) {
+            IconButton(
+                { urlLauncher.openUri(_root_ide_package_.pro.jayeshseth.animations.defaultApis.animations.animatedContent.BasicCounterPath) },
+                modifier = Modifier
+            ) {
                 Icon(Icons.Rounded.Link, contentDescription = "link icon")
             }
         }
@@ -125,7 +108,7 @@ fun BasicIncrementCounter(hazeState: HazeState) {
     }
 }
 
-@Preview
+//@Preview
 @Composable
 private fun PreviewIncrementCard() {
     val hazeState = rememberHazeState()

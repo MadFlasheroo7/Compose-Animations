@@ -1,6 +1,5 @@
 package pro.jayeshseth.animations.defaultApis.screens
 
-import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.VectorConverter
@@ -53,7 +52,7 @@ fun TapGesture() {
                         val position = awaitPointerEventScope {
                             awaitFirstDown().position
                         }
-                        Log.d("Tap Position: ", "$position")
+//                        Log.d("Tap Position: ", "$position")
                         launch {
                             // Animate to the tap position.
                             offset.animateTo(

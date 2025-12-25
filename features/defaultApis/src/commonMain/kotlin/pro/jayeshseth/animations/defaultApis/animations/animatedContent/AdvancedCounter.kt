@@ -7,10 +7,8 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,24 +28,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mikepenz.hypnoticcanvas.shaderBackground
-import com.mikepenz.hypnoticcanvas.shaders.InkFlow
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
-import dev.chrisbanes.haze.hazeSource
-import dev.chrisbanes.haze.rememberHazeState
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
-import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.core.utils.BASE_URL
 import pro.jayeshseth.animations.defaultApis.utils.BASE_FEATURE_ROUTE
 
 val AdvanceCounterPath =
-    "$BASE_URL/$BASE_FEATURE_ROUTE/animations/animatedContent/AdvancedCounter.kt"
+    "$BASE_URL/${BASE_FEATURE_ROUTE}/animations/animatedContent/AdvancedCounter.kt"
 
 data class Digit(val singleDigit: Char, val fullNumber: Int, val place: Int) {
     override fun equals(other: Any?): Boolean {
@@ -111,13 +103,20 @@ fun AdvancedIncrementCounter(
             verticalAlignment = Alignment.CenterVertically
         ) {
             count.toString().reversed()
-                .mapIndexed { index, char -> Digit(char, count, index) }
+                .mapIndexed { index, char ->
+                    _root_ide_package_.pro.jayeshseth.animations.defaultApis.animations.animatedContent.Digit(
+                        char,
+                        count,
+                        index
+                    )
+                }
                 .reversed()
                 .forEach { digit ->
                     AnimatedContent(
                         targetState = digit,
                         transitionSpec = {
-                            if (targetState > initialState) {
+//                            if (targetState compareTo initialState) {
+                            if (true) {
                                 // Enter Transition            Exit Transition
                                 slideInVertically { -it } togetherWith (slideOutVertically { it } + fadeOut())
                             } else {
@@ -159,26 +158,26 @@ fun AdvancedIncrementCounter(
     }
 }
 
-@Preview
-@Composable
-private fun PreviewIncrementCard() {
-    val hazeState = rememberHazeState()
-    AnimationsTheme {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Box(
-                Modifier
-                    .fillMaxSize()
-                    .hazeSource(state = hazeState)
-                    .shaderBackground(InkFlow, speed = 0.2f)
-            )
-
-            AdvancedIncrementCounter(
-                hazeState = hazeState,
-            )
-        }
-    }
-}
+//@Preview
+//@Composable
+//private fun PreviewIncrementCard() {
+//    val hazeState = rememberHazeState()
+//    AnimationsTheme {
+//        Box(
+//            contentAlignment = Alignment.Center,
+//            modifier = Modifier
+//                .fillMaxSize()
+//        ) {
+//            Box(
+//                Modifier
+//                    .fillMaxSize()
+//                    .hazeSource(state = hazeState)
+//                    .shaderBackground(InkFlow, speed = 0.2f)
+//            )
+//
+//            _root_ide_package_.pro.jayeshseth.animations.defaultApis.animations.animatedContent.AdvancedIncrementCounter(
+//                hazeState = hazeState,
+//            )
+//        }
+//    }
+//}

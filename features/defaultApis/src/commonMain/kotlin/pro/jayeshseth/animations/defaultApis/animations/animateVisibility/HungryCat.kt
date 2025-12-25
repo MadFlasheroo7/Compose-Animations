@@ -1,6 +1,5 @@
 package pro.jayeshseth.animations.defaultApis.animations.animateVisibility
 
-import android.media.MediaPlayer
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -23,7 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+//import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
@@ -45,7 +44,7 @@ fun HungryCat(
     hazeState: HazeState,
 ) {
     val urlLauncher = LocalUriHandler.current
-    val mediaPlayer = MediaPlayer.create(LocalContext.current, AnimMedia.HungryCat)
+//    val mediaPlayer = MediaPlayer.create(LocalContext.current, AnimMedia.HungryCat)
     var isVisible by remember { mutableStateOf(true) }
     val randNum = mutableListOf(-200..200).random()
     Column(
@@ -88,12 +87,12 @@ fun HungryCat(
             onClick = {
                 isVisible = !isVisible
                 randNum.shuffled()
-                mediaPlayer.seekTo(2000)
-                if (mediaPlayer.isPlaying) {
-                    mediaPlayer.pause()
-                } else {
-                    mediaPlayer.start()
-                }
+//                mediaPlayer.seekTo(2000)
+//                if (mediaPlayer.isPlaying) {
+//                    mediaPlayer.pause()
+//                } else {
+//                    mediaPlayer.start()
+//                }
             },
         )
     }

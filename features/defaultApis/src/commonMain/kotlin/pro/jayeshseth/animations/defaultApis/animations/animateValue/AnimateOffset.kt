@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.model.DURATION
-import pro.jayeshseth.animations.core.ui.components.InteractiveButton
+//import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.utils.BASE_URL
 
 val OffsetPath = "${BASE_URL}/animations/animateValue/AnimateOffset.kt"
@@ -78,10 +78,10 @@ fun AnimateOffsetAsState(hazeState: HazeState) {
                 .size(200.dp)
                 .background(MaterialTheme.colorScheme.primary)
         )
-        InteractiveButton(
-            hazeState = hazeState,
-            text = "Animate",
-            onClick = { enabled = !enabled },
-        )
+//        InteractiveButton(
+//            hazeState = hazeState,
+//            text = "Animate",
+//            onClick = { enabled = !enabled },
+//        )
     }
 }

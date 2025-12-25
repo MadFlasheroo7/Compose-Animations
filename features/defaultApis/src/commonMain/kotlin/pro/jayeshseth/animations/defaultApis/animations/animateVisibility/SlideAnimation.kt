@@ -20,10 +20,10 @@ import pro.jayeshseth.animations.core.ui.components.CatImage
 fun Slide(isVisible: Boolean) {
     AnimatedVisibility(
         visible = isVisible,
-        enter = slideIn(animationSpec = tween(DURATION, easing = LinearEasing)) {
+        enter = slideIn(animationSpec = tween(_root_ide_package_.pro.jayeshseth.animations.core.model.DURATION, easing = LinearEasing)) {
             IntOffset(it.width / 4, 100)
         },
-        exit = slideOut(animationSpec = tween(DURATION, easing = LinearEasing)) {
+        exit = slideOut(animationSpec = tween(_root_ide_package_.pro.jayeshseth.animations.core.model.DURATION, easing = LinearEasing)) {
             IntOffset(-180, 50)
         }
     ) {
@@ -35,10 +35,10 @@ fun Slide(isVisible: Boolean) {
 fun SlideInHorizontally(isVisible: Boolean) {
     AnimatedVisibility(
         visible = isVisible,
-        enter = slideInHorizontally(animationSpec = tween(DURATION, easing = LinearEasing)) {
+        enter = slideInHorizontally(animationSpec = tween(_root_ide_package_.pro.jayeshseth.animations.core.model.DURATION, easing = LinearEasing)) {
             -it
         },
-        exit = slideOutHorizontally(animationSpec = tween(DURATION, easing = LinearEasing)) {
+        exit = slideOutHorizontally(animationSpec = tween(_root_ide_package_.pro.jayeshseth.animations.core.model.DURATION, easing = LinearEasing)) {
             it
         }
     ) {
@@ -50,10 +50,10 @@ fun SlideInHorizontally(isVisible: Boolean) {
 fun SlideInVertically(isVisible: Boolean) {
     AnimatedVisibility(
         visible = isVisible,
-        enter = slideInVertically(animationSpec = tween(DURATION, easing = LinearEasing)) {
+        enter = slideInVertically(animationSpec = tween(_root_ide_package_.pro.jayeshseth.animations.core.model.DURATION, easing = LinearEasing)) {
             -it / 3
         },
-        exit = slideOutVertically(animationSpec = tween(DURATION, easing = LinearEasing)) {
+        exit = slideOutVertically(animationSpec = tween(_root_ide_package_.pro.jayeshseth.animations.core.model.DURATION, easing = LinearEasing)) {
             it
         }
     ) {
@@ -68,10 +68,10 @@ fun RandomSlide(isVisible: Boolean) {
 
     AnimatedVisibility(
         visible = isVisible,
-        enter = slideIn(animationSpec = tween(DURATION, easing = LinearEasing)) {
+        enter = slideIn(animationSpec = tween(_root_ide_package_.pro.jayeshseth.animations.core.model.DURATION, easing = LinearEasing)) {
             IntOffset(randX, randY)
         } + fadeIn(),
-        exit = slideOut(animationSpec = tween(DURATION, easing = LinearEasing)) {
+        exit = slideOut(animationSpec = tween(_root_ide_package_.pro.jayeshseth.animations.core.model.DURATION, easing = LinearEasing)) {
             IntOffset(randX, randY)
         } + fadeOut()
     ) {
