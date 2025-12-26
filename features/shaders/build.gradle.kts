@@ -1,15 +1,3 @@
 plugins {
-    alias(libs.plugins.animations.library)
-}
-
-android {
-    namespace = "pro.jayeshseth.animations.shaders"
-}
-
-dependencies {
-    implementation(projects.core.model)
-    implementation(projects.core.ui)
-    implementation(projects.core.navigation)
-    implementation(libs.rebugger)
-    implementation(libs.haze)
+    alias(libs.plugins.animations.cmp.feature)
 }

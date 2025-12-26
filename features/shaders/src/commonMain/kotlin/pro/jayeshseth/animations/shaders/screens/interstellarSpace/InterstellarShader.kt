@@ -1,11 +1,5 @@
 package pro.jayeshseth.animations.shaders.screens.interstellarSpace
 
-import android.app.Activity
-import android.content.ClipData
-import android.content.ClipDescription
-import android.os.Build
-import androidx.activity.compose.LocalActivity
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.BoundsTransform
@@ -53,7 +47,6 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -71,26 +64,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalClipboard
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.rememberHazeState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.model.AnimationTabs
 import pro.jayeshseth.animations.core.model.Fields
 import pro.jayeshseth.animations.core.model.OnClickLink
@@ -99,7 +87,6 @@ import pro.jayeshseth.animations.core.model.lazyNavBarPadding
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
 import pro.jayeshseth.animations.core.ui.components.CodeBlockWithLineNumbers
 import pro.jayeshseth.animations.core.ui.components.CopyIconButton
-import pro.jayeshseth.animations.core.ui.components.FeatureUnavailableScreen
 import pro.jayeshseth.animations.core.ui.components.HazedIconButton
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
@@ -126,15 +113,19 @@ fun InterstellarShaderScreen(
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        InterstellarShader(hazeState, onClickLink, modifier)
-    } else {
-        FeatureUnavailableScreen("Feature Unavailable for api below ${Build.VERSION_CODES.TIRAMISU}")
-    }
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    InterstellarShader(
+        hazeState,
+        onClickLink,
+        modifier
+    )
+//    } else {
+//        FeatureUnavailableScreen("Feature Unavailable for api below ${Build.VERSION_CODES.TIRAMISU}")
+//    }
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+//@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun InterstellarShader(
     hazeState: HazeState,
@@ -142,13 +133,13 @@ private fun InterstellarShader(
     modifier: Modifier = Modifier,
     color: Color = Color.Cyan
 ) {
-    val view = LocalView.current
-    val activity = LocalActivity.current
-    val context = LocalContext.current
-    val window = activity?.window
-    val fallbackWindow = (context as Activity).window
-    val shader = remember { InterstellarSpaceShader() }
-    val shaderBrush = remember { derivedStateOf { ShaderBrush(shader) } }
+//    val view = LocalView.current
+//    val activity = LocalActivity.current
+//    val context = LocalContext.current
+//    val window = activity?.window
+//    val fallbackWindow = (context as Activity).window
+//    val shader = remember { InterstellarSpaceShader() }
+//    val shaderBrush = remember { derivedStateOf { ShaderBrush(shader) } }
     val pagerState = rememberPagerState { animationTabsList().size }
     val scope = rememberCoroutineScope { Dispatchers.Default }
     var showOverlay by remember { mutableStateOf(false) }
@@ -161,10 +152,10 @@ private fun InterstellarShader(
     val opacity by animateFloatAsState(
         targetValue = if (isSliderDragged) 0.5f else 1f,
     )
-    val controller = WindowInsetsControllerCompat(
-        window ?: fallbackWindow,
-        view
-    )
+//    val controller = WindowInsetsControllerCompat(
+//        window ?: fallbackWindow,
+//        view
+//    )
     var interstellarSpaceState by remember {
         mutableStateOf(
             InterstellarSpaceState()
@@ -226,18 +217,18 @@ private fun InterstellarShader(
         ), label = "time"
     )
 
-    if (!view.isInEditMode) {
-        DisposableEffect(Unit) {
-            controller.systemBarsBehavior =
-                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            controller.hide(WindowInsetsCompat.Type.systemBars())
-
-            onDispose {
-                controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
-                controller.show(WindowInsetsCompat.Type.systemBars())
-            }
-        }
-    }
+//    if (!view.isInEditMode) {
+//        DisposableEffect(Unit) {
+//            controller.systemBarsBehavior =
+//                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+//            controller.hide(WindowInsetsCompat.Type.systemBars())
+//
+//            onDispose {
+//                controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
+//                controller.show(WindowInsetsCompat.Type.systemBars())
+//            }
+//        }
+//    }
 
 
     SharedTransitionLayout {
@@ -251,19 +242,19 @@ private fun InterstellarShader(
                 }
                 .drawWithCache {
                     onDrawBehind {
-                        shader.updateResolution(size)
-                        shader.updateTime({ time.value })
-                        shader.updateMouse({ touchPosition.first }, { touchPosition.second })
-                        shader.updateBrightness({ animatedBrightness })
-                        shader.updateDarkmatter({ animatedDarkMatter })
-                        shader.updateDistFading { animatedDistFading }
-                        shader.updateFormuparam { animatedForm }
-                        shader.updateSaturation { animatedSaturation }
-                        shader.updateSpeed { animatedSpeed }
-                        shader.updateStepsize { animatedStepSize }
-                        shader.updateTile { animatedTile }
-                        shader.updateZoom { animatedZoom }
-                        drawRect(shaderBrush.value)
+//                        shader.updateResolution(size)
+//                        shader.updateTime({ time.value })
+//                        shader.updateMouse({ touchPosition.first }, { touchPosition.second })
+//                        shader.updateBrightness({ animatedBrightness })
+//                        shader.updateDarkmatter({ animatedDarkMatter })
+//                        shader.updateDistFading { animatedDistFading }
+//                        shader.updateFormuparam { animatedForm }
+//                        shader.updateSaturation { animatedSaturation }
+//                        shader.updateSpeed { animatedSpeed }
+//                        shader.updateStepsize { animatedStepSize }
+//                        shader.updateTile { animatedTile }
+//                        shader.updateZoom { animatedZoom }
+//                        drawRect(shaderBrush.value)
                     }
                 }
                 .clickable(
@@ -274,15 +265,15 @@ private fun InterstellarShader(
                             showControls && showOverlay -> showControls = false
                             else -> {
                                 showOverlay = !showOverlay
-                                if (controller.systemBarsBehavior == WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE) {
-                                    controller.show(WindowInsetsCompat.Type.systemBars())
-                                    controller.systemBarsBehavior =
-                                        WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
-                                } else {
-                                    controller.hide(WindowInsetsCompat.Type.systemBars())
-                                    controller.systemBarsBehavior =
-                                        WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-                                }
+//                                if (controller.systemBarsBehavior == WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE) {
+//                                    controller.show(WindowInsetsCompat.Type.systemBars())
+//                                    controller.systemBarsBehavior =
+//                                        WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
+//                                } else {
+//                                    controller.hide(WindowInsetsCompat.Type.systemBars())
+//                                    controller.systemBarsBehavior =
+//                                        WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+//                                }
                             }
                         }
 
@@ -349,7 +340,7 @@ private fun InterstellarShader(
                                     },
                                 ) {
                                     Icon(
-                                        painter = painterResource(id = tab.icon),
+                                        painter = painterResource(tab.icon),
                                         contentDescription = tab.title,
                                         tint = LocalContentColor.current,
                                         modifier = Modifier
@@ -643,19 +634,19 @@ private fun CodePreview(
                 CopyIconButton(
                     hazeState = hazeState,
                     onClick = {
-                        scope.launch {
-                            clipboardManager.setClipEntry(
-                                clipEntry = ClipEntry(
-                                    clipData = ClipData(
-                                        ClipDescription(
-                                            "interstellar Shader Code",
-                                            arrayOf("text/plain")
-                                        ),
-                                        ClipData.Item(code)
-                                    )
-                                )
-                            )
-                        }
+//                        scope.launch {
+//                            clipboardManager.setClipEntry(
+//                                clipEntry = ClipEntry(
+//                                    clipData = ClipData(
+//                                        ClipDescription(
+//                                            "interstellar Shader Code",
+//                                            arrayOf("text/plain")
+//                                        ),
+//                                        ClipData.Item(code)
+//                                    )
+//                                )
+//                            )
+//                        }
                     },
                     modifier = Modifier.fillMaxHeight()
                 )
@@ -735,7 +726,7 @@ private fun LinksButtons(
 }
 
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun PreviewInterstellarSpace() {
     MaterialTheme {

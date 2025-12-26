@@ -1,12 +1,10 @@
 package pro.jayeshseth.animations.shaders.screens.rainbowCircle
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Stable
 import pro.jayeshseth.animations.core.model.round
 import pro.jayeshseth.animations.core.model.toExponent
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+//@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Stable
 class RainbowShaderCode(
     val state: RainbowCircleState,

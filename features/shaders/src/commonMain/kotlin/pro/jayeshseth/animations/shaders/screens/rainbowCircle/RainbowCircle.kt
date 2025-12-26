@@ -1,11 +1,5 @@
 package pro.jayeshseth.animations.shaders.screens.rainbowCircle
 
-import android.content.ClipData
-import android.content.ClipDescription
-import android.content.res.Configuration
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -33,7 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -45,30 +38,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ShaderBrush
-import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewDynamicColors
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.theapache64.rebugger.Rebugger
 import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.rememberHazeState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.painterResource
 import pro.jayeshseth.animations.core.model.AnimationTabs
 import pro.jayeshseth.animations.core.model.Fields
 import pro.jayeshseth.animations.core.model.OnClickLink
@@ -77,7 +62,6 @@ import pro.jayeshseth.animations.core.model.lazyNavBarPadding
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
 import pro.jayeshseth.animations.core.ui.components.CodeBlockWithLineNumbers
 import pro.jayeshseth.animations.core.ui.components.CopyIconButton
-import pro.jayeshseth.animations.core.ui.components.FeatureUnavailableScreen
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
 import pro.jayeshseth.animations.core.ui.components.TabContent
@@ -91,14 +75,14 @@ fun RainbowCircle(
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        InnerRainbowCircle(hazeState, onClickLink, modifier)
-    } else {
-        FeatureUnavailableScreen("Feature Unavailable for api below ${Build.VERSION_CODES.TIRAMISU}")
-    }
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    InnerRainbowCircle(hazeState, onClickLink, modifier)
+//    } else {
+//        FeatureUnavailableScreen("Feature Unavailable for api below ${Build.VERSION_CODES.TIRAMISU}")
+//    }
 }
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+//@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun InnerRainbowCircle(
     hazeState: HazeState,
@@ -111,11 +95,11 @@ private fun InnerRainbowCircle(
     val time = remember { mutableFloatStateOf(0f) }
     var iterationLevel by remember { mutableStateOf(ShaderIterationLevel.LOW) }
     val rainbowCircleShader = remember(iterationLevel) {
-        Log.d("RainbowCircle", "Recreating RainbowCircleShader with level: $iterationLevel")
+//        Log.d("RainbowCircle", "Recreating RainbowCircleShader with level: $iterationLevel")
         RainbowCircleShader(iterationLevel)
     }
-    val shaderBrush =
-        remember(iterationLevel) { derivedStateOf { ShaderBrush(rainbowCircleShader) } }
+//    val shaderBrush =
+//        remember(iterationLevel) { derivedStateOf { ShaderBrush(rainbowCircleShader) } }
 
     val anim by remember { mutableStateOf(Animatable(200f)) }
 
@@ -131,75 +115,75 @@ private fun InnerRainbowCircle(
         animationSpec = tween(1000)
     )
 
-    val rainbowCircleState = remember(shaderBrush) {
-        mutableStateOf(
-            RainbowCircleState(
-                size = 2f,
-                red = 0f,
-                blue = 4.0f,
-                green = 2.0f,
-                alpha = 1.0f,
-                speed = 0.05f,
-                layers = if (iterationLevel == ShaderIterationLevel.HIGH) 200.0f else 100.0f,
-                brightness = 30000.0f,
-                pattern = 5.3f,
-                expand = 1.0f,
-                reduceDots = iterationLevel == ShaderIterationLevel.LOW
-            )
-        )
-    }
+//    val rainbowCircleState = remember(shaderBrush) {
+//        mutableStateOf(
+//            RainbowCircleState(
+//                size = 2f,
+//                red = 0f,
+//                blue = 4.0f,
+//                green = 2.0f,
+//                alpha = 1.0f,
+//                speed = 0.05f,
+//                layers = if (iterationLevel == ShaderIterationLevel.HIGH) 200.0f else 100.0f,
+//                brightness = 30000.0f,
+//                pattern = 5.3f,
+//                expand = 1.0f,
+//                reduceDots = iterationLevel == ShaderIterationLevel.LOW
+//            )
+//        )
+//    }
 
-    val animatedPattern by animateFloatAsState(
-        targetValue = rainbowCircleState.value.pattern,
-        animationSpec = tween(1000)
-    )
+//    val animatedPattern by animateFloatAsState(
+//        targetValue = rainbowCircleState.value.pattern,
+//        animationSpec = tween(1000)
+//    )
+//
+//    val animatedExpansion by animateFloatAsState(
+//        targetValue = rainbowCircleState.value.expand,
+//        animationSpec = tween(1000)
+//    )
+//
+//    val animatedBrightness by animateFloatAsState(
+//        targetValue = rainbowCircleState.value.brightness,
+//        animationSpec = tween(1000)
+//    )
+//
+//    val animatedLayers by animateFloatAsState(
+//        targetValue = rainbowCircleState.value.layers,
+//        animationSpec = tween(1000)
+//    )
+//
+//    val animatedSize by animateFloatAsState(
+//        targetValue = rainbowCircleState.value.size,
+//        animationSpec = tween(1000)
+//    )
+//
+//    val animatedSpeed by animateFloatAsState(
+//        targetValue = rainbowCircleState.value.speed,
+//        animationSpec = tween(1000)
+//    )
+//
+//    val animatedAlpha by animateFloatAsState(
+//        targetValue = rainbowCircleState.value.alpha,
+//        animationSpec = tween(1000)
+//    )
 
-    val animatedExpansion by animateFloatAsState(
-        targetValue = rainbowCircleState.value.expand,
-        animationSpec = tween(1000)
-    )
+//    LaunchedEffect(Unit, iterationLevel) {
+//        while (true) {
+//            time.floatValue += rainbowCircleState.value.speed
+//            delay(100)
+//            Log.d("time", "time:${time.floatValue}\nspeed: ${rainbowCircleState.value.speed}")
+//        }
+//    }
 
-    val animatedBrightness by animateFloatAsState(
-        targetValue = rainbowCircleState.value.brightness,
-        animationSpec = tween(1000)
-    )
-
-    val animatedLayers by animateFloatAsState(
-        targetValue = rainbowCircleState.value.layers,
-        animationSpec = tween(1000)
-    )
-
-    val animatedSize by animateFloatAsState(
-        targetValue = rainbowCircleState.value.size,
-        animationSpec = tween(1000)
-    )
-
-    val animatedSpeed by animateFloatAsState(
-        targetValue = rainbowCircleState.value.speed,
-        animationSpec = tween(1000)
-    )
-
-    val animatedAlpha by animateFloatAsState(
-        targetValue = rainbowCircleState.value.alpha,
-        animationSpec = tween(1000)
-    )
-
-    LaunchedEffect(Unit, iterationLevel) {
-        while (true) {
-            time.floatValue += rainbowCircleState.value.speed
-            delay(100)
-            Log.d("time", "time:${time.floatValue}\nspeed: ${rainbowCircleState.value.speed}")
-        }
-    }
-
-    LaunchedEffect(rainbowCircleState.value.reduceDots) {
-        iterationLevel = if (rainbowCircleState.value.reduceDots) {
-            ShaderIterationLevel.LOW
-        } else {
-            ShaderIterationLevel.HIGH
-        }
-        Log.d("iteration", "${rainbowCircleShader.toString()}")
-    }
+//    LaunchedEffect(rainbowCircleState.value.reduceDots) {
+//        iterationLevel = if (rainbowCircleState.value.reduceDots) {
+//            ShaderIterationLevel.LOW
+//        } else {
+//            ShaderIterationLevel.HIGH
+//        }
+//        Log.d("iteration", "${rainbowCircleShader.toString()}")
+//    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -226,20 +210,20 @@ private fun InnerRainbowCircle(
                 )
                 .drawWithCache {
                     onDrawBehind {
-                        rainbowCircleShader.updateTime({ time.floatValue })
-                        rainbowCircleShader.updatePattern({ animatedPattern })
-                        rainbowCircleShader.updateExpand({ animatedExpansion })
-                        rainbowCircleShader.updateBrightness({ animatedBrightness })
-                        rainbowCircleShader.updateLayers({ animatedLayers })
-                        rainbowCircleShader.updateSize({ animatedSize })
-                        rainbowCircleShader.updateResolution(Size(size.width, size.height))
-                        rainbowCircleShader.updateColor(
-                            { rainbowCircleState.value.red },
-                            { rainbowCircleState.value.green },
-                            { rainbowCircleState.value.blue },
-                            { animatedAlpha }
-                        )
-                        drawRect(shaderBrush.value)
+//                        rainbowCircleShader.updateTime({ time.floatValue })
+//                        rainbowCircleShader.updatePattern({ animatedPattern })
+//                        rainbowCircleShader.updateExpand({ animatedExpansion })
+//                        rainbowCircleShader.updateBrightness({ animatedBrightness })
+//                        rainbowCircleShader.updateLayers({ animatedLayers })
+//                        rainbowCircleShader.updateSize({ animatedSize })
+//                        rainbowCircleShader.updateResolution(Size(size.width, size.height))
+//                        rainbowCircleShader.updateColor(
+//                            { rainbowCircleState.value.red },
+//                            { rainbowCircleState.value.green },
+//                            { rainbowCircleState.value.blue },
+//                            { animatedAlpha }
+//                        )
+//                        drawRect(shaderBrush.value)
                     }
                 }
         )
@@ -260,7 +244,7 @@ private fun InnerRainbowCircle(
                     },
                 ) {
                     Icon(
-                        painter = painterResource(id = tab.icon),
+                        painter = painterResource(tab.icon),
                         contentDescription = tab.title,
                         tint = LocalContentColor.current
                     )
@@ -273,15 +257,15 @@ private fun InnerRainbowCircle(
             ) { page ->
                 when (animationTabsList()[page]) {
                     AnimationTabs.Settings -> {
-                        Configurations(
-                            hazeState = hazeState,
-                            rainbowCircleState = { rainbowCircleState.value },
-                            onRainbowCircleStateChange = { rainbowCircleState.value = it }
-                        )
+//                        Configurations(
+//                            hazeState = hazeState,
+//                            rainbowCircleState = { rainbowCircleState.value },
+//                            onRainbowCircleStateChange = { rainbowCircleState.value = it }
+//                        )
                     }
 
                     AnimationTabs.Code -> {
-                        CodePreview(hazeState, iterationLevel, rainbowCircleState.value)
+//                        CodePreview(hazeState, iterationLevel, rainbowCircleState.value)
                     }
 
                     AnimationTabs.Source -> {
@@ -326,7 +310,7 @@ private fun LinksButtons(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+//@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun CodePreview(
     hazeState: HazeState,
@@ -360,19 +344,19 @@ private fun CodePreview(
                 CopyIconButton(
                     hazeState = hazeState,
                     onClick = {
-                        scope.launch {
-                            clipboardManagerr.setClipEntry(
-                                clipEntry = ClipEntry(
-                                    clipData = ClipData(
-                                        ClipDescription(
-                                            "Rainbow Shader Code",
-                                            arrayOf("text/plain")
-                                        ),
-                                        ClipData.Item(code)
-                                    )
-                                )
-                            )
-                        }
+//                        scope.launch {
+//                            clipboardManagerr.setClipEntry(
+//                                clipEntry = ClipEntry(
+//                                    clipData = ClipData(
+//                                        ClipDescription(
+//                                            "Rainbow Shader Code",
+//                                            arrayOf("text/plain")
+//                                        ),
+//                                        ClipData.Item(code)
+//                                    )
+//                                )
+//                            )
+//                        }
                     },
                     modifier = Modifier.fillMaxHeight()
                 )
@@ -417,14 +401,14 @@ private fun CodePreview(
         lazyNavBarPadding()
     }
 
-    Rebugger(
-        composableName = "code preview",
-        trackMap = mapOf(
-            "code" to code,
-            "selectedTab" to selectedTab.intValue,
-            "rainbowCircleState" to rainbowCircleState,
-        )
-    )
+//    Rebugger(
+//        composableName = "code preview",
+//        trackMap = mapOf(
+//            "code" to code,
+//            "selectedTab" to selectedTab.intValue,
+//            "rainbowCircleState" to rainbowCircleState,
+//        )
+//    )
 }
 
 @Composable
@@ -617,12 +601,12 @@ private fun slidersList(
     )
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
-@PreviewDynamicColors
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
-@Composable
-private fun PreviewRainbowCircle() {
-    MaterialTheme {
-        RainbowCircle(rememberHazeState(), {})
-    }
-}
+//@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL)
+//@PreviewDynamicColors
+//@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+//@Composable
+//private fun PreviewRainbowCircle() {
+//    MaterialTheme {
+//        RainbowCircle(rememberHazeState(), {})
+//    }
+//}
