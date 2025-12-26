@@ -46,7 +46,7 @@ fun EasterEggScreen(
                         text = "Easter Eggs",
                         fontSize = 35.sp,
                         fontWeight = FontWeight(750),
-                        fontFamily = syneFontFamily
+                        fontFamily = syneFontFamily()
                     )
                 }
             )

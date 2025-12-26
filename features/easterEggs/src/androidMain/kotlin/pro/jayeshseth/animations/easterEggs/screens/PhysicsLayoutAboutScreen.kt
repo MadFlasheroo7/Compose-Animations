@@ -40,9 +40,9 @@ import de.apuri.physicslayout.lib.physicsBody
 import de.apuri.physicslayout.lib.simulation.rememberSimulation
 import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
-import pro.jayeshseth.animations.easterEggs.R
 import pro.jayeshseth.animations.easterEggs.components.GravitySensor
 import pro.jayeshseth.animations.easterEggs.components.SocialMedia
+import pro.jayeshseth.features.eastereggs.R
 
 /**
  * About Screen Easter Egg

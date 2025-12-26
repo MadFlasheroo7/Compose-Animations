@@ -6,23 +6,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.apuri.physicslayout.lib.BodyConfig
 import de.apuri.physicslayout.lib.physicsBody
-import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 
 @Composable
 internal fun SocialMedia(modifier: Modifier = Modifier) {
@@ -55,13 +51,14 @@ internal fun SocialMedia(modifier: Modifier = Modifier) {
                         .clickable { urlLauncher.openUri(github) },
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(AnimIcons.github),
-                        contentDescription = "github",
-                        modifier = Modifier
-                            .size(60.dp)
-                            .padding(12.dp)
-                    )
+                    // TODO
+//                    Icon(
+//                        painter = painterResource(AnimIcons.github),
+//                        contentDescription = "github",
+//                        modifier = Modifier
+//                            .size(60.dp)
+//                            .padding(12.dp)
+//                    )
                 }
                 Box(
                     modifier = Modifier
@@ -69,13 +66,14 @@ internal fun SocialMedia(modifier: Modifier = Modifier) {
                         .clickable { urlLauncher.openUri(twitter) },
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(AnimIcons.twitter),
-                        contentDescription = "twitter",
-                        modifier = Modifier
-                            .size(60.dp)
-                            .padding(12.dp)
-                    )
+                    // TODO
+//                    Icon(
+//                        painter = painterResource(AnimIcons.twitter),
+//                        contentDescription = "twitter",
+//                        modifier = Modifier
+//                            .size(60.dp)
+//                            .padding(12.dp)
+//                    )
                 }
                 Box(
                     modifier = Modifier
@@ -83,13 +81,14 @@ internal fun SocialMedia(modifier: Modifier = Modifier) {
                         .clickable { urlLauncher.openUri(linkedin) },
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(AnimIcons.linkedIn),
-                        contentDescription = "linkedin",
-                        modifier = Modifier
-                            .size(60.dp)
-                            .padding(12.dp)
-                    )
+                    // TODO
+//                    Icon(
+//                        painter = painterResource(AnimIcons.linkedIn),
+//                        contentDescription = "linkedin",
+//                        modifier = Modifier
+//                            .size(60.dp)
+//                            .padding(12.dp)
+//                    )
                 }
             }
             Row(
@@ -102,13 +101,14 @@ internal fun SocialMedia(modifier: Modifier = Modifier) {
                         .clickable { urlLauncher.openUri(mastadon) },
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(AnimIcons.mastadon),
-                        contentDescription = "mastadon",
-                        modifier = Modifier
-                            .size(60.dp)
-                            .padding(12.dp)
-                    )
+                    //TODO
+//                    Icon(
+//                        painter = painterResource(AnimIcons.mastadon),
+//                        contentDescription = "mastadon",
+//                        modifier = Modifier
+//                            .size(60.dp)
+//                            .padding(12.dp)
+//                    )
                 }
                 Box(
                     modifier = Modifier
@@ -116,13 +116,14 @@ internal fun SocialMedia(modifier: Modifier = Modifier) {
                         .clickable { urlLauncher.openUri(realogs) },
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(AnimIcons.blog),
-                        contentDescription = "realogs",
-                        modifier = Modifier
-                            .size(60.dp)
-                            .padding(12.dp)
-                    )
+                    //TODO
+//                    Icon(
+//                        painter = painterResource(AnimIcons.blog),
+//                        contentDescription = "realogs",
+//                        modifier = Modifier
+//                            .size(60.dp)
+//                            .padding(12.dp)
+//                    )
                 }
                 Box(
                     modifier = Modifier
@@ -130,13 +131,14 @@ internal fun SocialMedia(modifier: Modifier = Modifier) {
                         .clickable { urlLauncher.openUri(medium) },
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(AnimIcons.medium),
-                        contentDescription = "medium",
-                        modifier = Modifier
-                            .size(60.dp)
-                            .padding(12.dp)
-                    )
+                    // TODO
+//                    Icon(
+//                        painter = painterResource(AnimIcons.medium),
+//                        contentDescription = "medium",
+//                        modifier = Modifier
+//                            .size(60.dp)
+//                            .padding(12.dp)
+//                    )
                 }
             }
         }
