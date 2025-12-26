@@ -1,19 +1,23 @@
 package pro.jayeshseth.animations.itemPlacements.screens.listItemPlacements
 
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Easing
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -31,7 +35,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,28 +47,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import dev.chrisbanes.haze.HazeState
+import kotlinx.coroutines.delay
 import pro.jayeshseth.animations.core.model.AnimationControllerState
-import pro.jayeshseth.animations.core.model.AudioPlayer
 import pro.jayeshseth.animations.core.model.DampingRatioList
 import pro.jayeshseth.animations.core.model.EasingList
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.model.StiffnessList
 import pro.jayeshseth.animations.core.ui.components.Toggler
-import pro.jayeshseth.animations.core.ui.media.AnimMedia
 import pro.jayeshseth.animations.itemPlacements.components.AnimationController
 import pro.jayeshseth.animations.itemPlacements.components.AnimationItem
 import pro.jayeshseth.animations.itemPlacements.utils.BASE_FEATURE_ROUTE
 
 /**
- * Fade item placement animation by fading the opacity of the item
+ * Scale item placement animation by scaling X and Y position of the item
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FadeItemPlacement(
+fun ScaleItemPlacement(
     hazeState: HazeState,
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
@@ -73,7 +74,8 @@ fun FadeItemPlacement(
     var isVisible by remember { mutableStateOf(false) }
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-    val fade = remember { mutableStateOf(true) }
+    val scaleX = remember { mutableStateOf(true) }
+    val scaleY = remember { mutableStateOf(false) }
     val easingList = remember { EasingList }
     val selectedEasing by remember { mutableStateOf(easingList[0]) }
     val dampingRatioList = remember { DampingRatioList }
@@ -81,7 +83,7 @@ fun FadeItemPlacement(
     val stiffnessList = remember { StiffnessList }
     val selectedStiffness by remember { mutableStateOf(stiffnessList[0]) }
     val lazyListState = rememberLazyListState()
-    val context = LocalContext.current
+//    val context = LocalContext.current
 
     val state = remember {
         mutableStateOf(
@@ -89,8 +91,9 @@ fun FadeItemPlacement(
                 vibrationEffect = true,
                 showShadow = false,
                 shepardTone = false,
-                initialValue = 0f,
-                initialValueRange = -1f..1f,
+                initialValue = 0.5f,
+                initialValueRange = -5f..5f,
+                initialValueSteps = 0,
                 tweenDuration = 300,
                 selectedIndex = 0,
                 easingList = easingList,
@@ -99,7 +102,6 @@ fun FadeItemPlacement(
                 dampingRatio = selectedDampingRatio,
                 stiffnessList = stiffnessList,
                 stiffness = selectedStiffness,
-                initialValueSteps = 0,
                 blurValueSteps = 0,
                 blurValue = 200f,
                 blurValueRange = 0f..500f,
@@ -109,21 +111,21 @@ fun FadeItemPlacement(
         )
     }
 
-    if (state.value.shepardTone) {
-        LaunchedEffect(lazyListState.isScrollInProgress) {
-            if (lazyListState.isScrollInProgress) {
-                AudioPlayer.play(context, AnimMedia.waterFall)
-            } else {
-                AudioPlayer.stop()
-            }
-        }
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            AudioPlayer.stop()
-        }
-    }
+//    if (state.value.shepardTone) {
+//        LaunchedEffect(lazyListState.isScrollInProgress) {
+//            if (lazyListState.isScrollInProgress) {
+//                AudioPlayer.play(context, AnimMedia.windChimes)
+//            } else {
+//                AudioPlayer.stop()
+//            }
+//        }
+//    }
+//
+//    DisposableEffect(Unit) {
+//        onDispose {
+//            AudioPlayer.stop()
+//        }
+//    }
 
     Scaffold(
         modifier = modifier,
@@ -136,25 +138,39 @@ fun FadeItemPlacement(
                     scrolledContainerColor = Color.Transparent,
                 ),
                 title = {
-                    if (!isVisible) {
+                    AnimatedContent(
+                        targetState = isVisible,
+                        transitionSpec = {
+                            if (targetState > initialState) {
+                                slideInVertically(animationSpec = tween(easing = LinearEasing)) { -it } + fadeIn(
+                                    animationSpec = tween(easing = LinearEasing)
+                                ) togetherWith slideOutVertically { it } + fadeOut(
+                                    animationSpec = tween(easing = LinearEasing)
+                                )
+                            } else {
+                                slideInVertically(animationSpec = tween(easing = LinearEasing)) { it } + fadeIn(
+                                    animationSpec = tween(easing = LinearEasing)
+                                ) togetherWith slideOutVertically(animationSpec = tween(easing = LinearEasing)) { -it } + fadeOut(
+                                    animationSpec = tween(easing = LinearEasing)
+                                )
+                            }
+                        },
+                        label = "title transitions animation"
+                    ) {
                         Text(
-                            "Fade"
-                        )
-                    } else {
-                        Text(
-                            "Animation Controller"
+                            if (it) {
+                                "Animation Controller"
+                            } else {
+                                "Scale"
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center
                         )
                     }
-//                    Text(
-//                        text = "Animations",
-//                        fontSize = 25.sp,
-//                        fontWeight = FontWeight.Bold,
-//                        fontFamily = syneFontFamily
-//                    )
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-                        onClickLink("$BASE_FEATURE_ROUTE/screens/listItemPlacements/FadeItemPlacement.kt")
+                        onClickLink("${BASE_FEATURE_ROUTE}/screens/listItemPlacements/ScaleItemPlacement.kt")
                     }) {
                         Icon(imageVector = Icons.Rounded.Link, contentDescription = null)
                     }
@@ -165,7 +181,7 @@ fun FadeItemPlacement(
                     }
                 },
             )
-        },
+        }
     ) {
         LazyColumn(
             state = lazyListState,
@@ -181,19 +197,22 @@ fun FadeItemPlacement(
                     enter = slideInVertically(tween(500)),
                     exit = slideOutVertically(tween(500)),
                 ) {
-                    FadeAnimationController(
+                    ScaleAnimationController(
                         hazeState = hazeState,
                         state = state.value,
                         onStateUpdate = { state.value = it },
-                        fade = fade.value,
-                        onFadeChanged = { fade.value = it },
+                        scaleX = scaleX.value,
+                        onScaleXChanged = { scaleX.value = it },
+                        scaleY = scaleY.value,
+                        onScaleYChanged = { scaleY.value = it },
                     )
                 }
             }
             items(100000) {
-                FadeListItem(
+                ScaleListItem(
                     index = it,
-                    fade = fade.value,
+                    isScaleX = scaleX.value,
+                    isScaleY = scaleY.value,
                     isVibration = state.value.vibrationEffect,
                     initialValue = state.value.initialValue,
                     tweenDuration = state.value.tweenDuration,
@@ -204,6 +223,7 @@ fun FadeItemPlacement(
                     dampingRatio = state.value.dampingRatio.dampingRatio,
                     blurValue = state.value.blurValue,
                     doBlur = state.value.blurEffect,
+                    delay = state.value.delay
                 )
             }
         }
@@ -211,43 +231,55 @@ fun FadeItemPlacement(
 }
 
 @Composable
-private fun FadeAnimationController(
-    state: AnimationControllerState,
+private fun ScaleAnimationController(
     hazeState: HazeState,
+    state: AnimationControllerState,
     onStateUpdate: (AnimationControllerState) -> Unit,
-    fade: Boolean,
-    onFadeChanged: (Boolean) -> Unit,
+    scaleX: Boolean,
+    onScaleXChanged: (Boolean) -> Unit,
+    scaleY: Boolean,
+    onScaleYChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     AnimationController(
         state = state,
+        hazeState = hazeState,
         onStateUpdate = onStateUpdate,
         modifier = modifier,
         roundToInt = false,
-        hazeState = hazeState,
         content = {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Toggler(
-                    title = "Fade",
-                    hazeState = hazeState,
-                    checked = fade,
-                    onCheckedChanged = onFadeChanged
-                )
+            Column {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Toggler(
+                        title = "Scale X",
+                        hazeState = hazeState,
+                        checked = scaleX,
+                        onCheckedChanged = onScaleXChanged
+                    )
+                    Toggler(
+                        title = "Scale Y",
+                        hazeState = hazeState,
+                        checked = scaleY,
+                        onCheckedChanged = onScaleYChanged
+                    )
+                }
             }
         },
     )
 }
 
 @Composable
-private fun FadeListItem(
+private fun ScaleListItem(
     index: Int,
     initialValue: Float,
-    fade: Boolean,
     doBlur: Boolean,
     blurValue: Float,
+    isScaleX: Boolean,
+    isScaleY: Boolean,
     showShadow: Boolean,
     isTween: Boolean,
     isVibration: Boolean,
@@ -255,27 +287,30 @@ private fun FadeListItem(
     easing: Easing,
     dampingRatio: Float,
     stiffness: Float,
+    delay: Long,
     modifier: Modifier = Modifier,
     isDarkMode: Boolean = isSystemInDarkTheme()
 ) {
-    val context = LocalContext.current
+//    val context = LocalContext.current
     val animatedProgress = remember { Animatable(initialValue) }
     val animatedBlur = remember { Animatable(blurValue) }
-    val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
+//    val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
     val shadowColor = MaterialTheme.colorScheme.primary
 
     LaunchedEffect(index) {
-        if (isVibration) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                vibrator!!.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
-            }
-        }
+//        if (isVibration) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                vibrator!!.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+//            }
+//        }
         if (isTween) {
+            delay(delay)
             animatedProgress.animateTo(
                 targetValue = 1f,
                 animationSpec = tween(tweenDuration, easing = easing)
             )
         } else {
+            delay(delay)
             animatedProgress.animateTo(
                 targetValue = 1f,
                 animationSpec = spring(
@@ -287,11 +322,13 @@ private fun FadeListItem(
     }
     LaunchedEffect(index) {
         if (doBlur && isTween) {
+            delay(delay)
             animatedBlur.animateTo(
                 targetValue = 0f,
                 animationSpec = tween(tweenDuration, easing = easing)
             )
         } else {
+            delay(delay)
             animatedBlur.animateTo(
                 targetValue = 0f,
                 animationSpec = spring(
@@ -300,8 +337,8 @@ private fun FadeListItem(
                 )
             )
         }
-    }
 
+    }
     AnimationItem(
         modifier = modifier
             .padding(8.dp)
@@ -310,7 +347,8 @@ private fun FadeListItem(
                 if (showShadow) shadowElevation = animatedProgress.value
                 if (showShadow && isDarkMode) spotShadowColor = shadowColor
                 if (showShadow && isDarkMode) ambientShadowColor = shadowColor
-                if (fade) alpha = animatedProgress.value
+                if (isScaleX) scaleX = animatedProgress.value
+                if (isScaleY) scaleY = animatedProgress.value
                 if (doBlur && animatedBlur.value > 0f) {
                     renderEffect = BlurEffect(
                         animatedBlur.value,

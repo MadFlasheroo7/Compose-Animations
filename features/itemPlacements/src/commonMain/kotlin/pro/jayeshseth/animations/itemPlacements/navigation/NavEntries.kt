@@ -1,7 +1,6 @@
 package pro.jayeshseth.animations.itemPlacements.navigation
 
-import androidx.navigation3.runtime.EntryProviderBuilder
-import androidx.navigation3.runtime.entry
+import androidx.navigation3.runtime.EntryProviderScope
 import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.OnNavAction
@@ -13,22 +12,34 @@ import pro.jayeshseth.animations.itemPlacements.screens.listItemPlacements.Slide
 import pro.jayeshseth.animations.itemPlacements.screens.listItemPlacements.TrippyBlinders
 import pro.jayeshseth.animations.itemPlacements.screens.swipeRefresh.SwipeRefresh
 
-fun EntryProviderBuilder<Route>.itemPlacements(
+fun EntryProviderScope<Route>.itemPlacements(
     hazeState: HazeState,
     onClickLink: OnClickLink,
     onNavAction: OnNavAction
 ) {
     entry<ItemPlacementRoutes.ListItemPlacementRoute> {
-        ItemPlacementAnimation(hazeState, onNavAction)
+        ItemPlacementAnimation(
+            hazeState,
+            onNavAction
+        )
     }
     entry<ItemPlacementRoutes.SlideItemPlacementRoute> {
-        SlideItemPlacement(hazeState,onClickLink)
+        SlideItemPlacement(
+            hazeState,
+            onClickLink
+        )
     }
     entry<ItemPlacementRoutes.ScaleItemPlacementRoute> {
-        ScaleItemPlacement(hazeState, onClickLink)
+        ScaleItemPlacement(
+            hazeState,
+            onClickLink
+        )
     }
     entry<ItemPlacementRoutes.FadeItemPlacementRoute> {
-        FadeItemPlacement(hazeState, onClickLink)
+        FadeItemPlacement(
+            hazeState,
+            onClickLink
+        )
     }
     entry<ItemPlacementRoutes.TrippyBlindersRoute> {
         TrippyBlinders()

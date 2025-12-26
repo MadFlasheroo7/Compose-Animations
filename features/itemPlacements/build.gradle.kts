@@ -1,18 +1,14 @@
 plugins {
-    alias(libs.plugins.animations.library)
+    alias(libs.plugins.animations.cmp.feature)
 }
 
-android {
-    namespace = "pro.jayeshseth.animations.itemPlacements"
-}
-
-dependencies {
-    implementation(projects.core.ui)
-    implementation(projects.core.model)
-    implementation(projects.core.navigation)
-    implementation(libs.coil.kt)
-    implementation(libs.coil.kt.compose)
-    implementation(libs.hypnoticcanvas)
-    implementation(libs.hypnoticcanvas.shaders)
-    implementation(libs.haze)
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(libs.coil.kt)
+                implementation(libs.coil.kt.compose)
+            }
+        }
+    }
 }

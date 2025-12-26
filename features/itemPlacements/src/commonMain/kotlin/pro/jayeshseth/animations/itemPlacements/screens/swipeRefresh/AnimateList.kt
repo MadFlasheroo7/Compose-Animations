@@ -7,11 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,12 +15,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.core.model.CatItem
 import pro.jayeshseth.animations.itemPlacements.components.ListItem
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SwipeRefresh() {
     var catList by remember {
@@ -45,22 +38,22 @@ fun SwipeRefresh() {
         )
     }
 
-    val coroutineScope = rememberCoroutineScope()
-    val refreshState = rememberPullRefreshState(
-        refreshing = false,
-        onRefresh = {
-            coroutineScope.launch {
-                delay(500)
-                catList = catList.shuffled()
-            }
-        },
-    )
+    rememberCoroutineScope()
+//    val refreshState = rememberPullRefreshState(
+//        refreshing = false,
+//        onRefresh = {
+//            coroutineScope.launch {
+//                delay(500)
+//                catList = catList.shuffled()
+//            }
+//        },
+//    )
 
     Box(
-        modifier = Modifier.pullRefresh(
-            state = refreshState,
-            enabled = true
-        ),
+//        modifier = Modifier.pullRefresh(
+//            state = refreshState,
+//            enabled = true
+//        ),
         contentAlignment = Alignment.TopCenter
     ) {
         LazyColumn(
@@ -80,12 +73,12 @@ fun SwipeRefresh() {
                 )
             }
         }
-        PullRefreshIndicator(
-            refreshing = false,
-            state = refreshState,
-            backgroundColor = MaterialTheme.colorScheme.background,
-            contentColor = MaterialTheme.colorScheme.primary
-        )
+//        PullRefreshIndicator(
+//            refreshing = false,
+//            state = refreshState,
+//            backgroundColor = MaterialTheme.colorScheme.background,
+//            contentColor = MaterialTheme.colorScheme.primary
+//        )
     }
 }
 

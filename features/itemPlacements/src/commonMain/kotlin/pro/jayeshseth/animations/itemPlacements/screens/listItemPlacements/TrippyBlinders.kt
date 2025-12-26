@@ -1,10 +1,5 @@
 package pro.jayeshseth.animations.itemPlacements.screens.listItemPlacements
 
-import android.app.Activity
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
-import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.EaseInOutBounce
 import androidx.compose.animation.core.Spring
@@ -23,7 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,40 +28,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 
 private const val ITEM_COUNT = 1000000
 
 
 @Composable
 fun TrippyBlinders(modifier: Modifier = Modifier) {
-    val view = LocalView.current
-    val activity = LocalActivity.current
-    val context = LocalContext.current
-    val window = activity?.window
-    val fallbackWindow = (context as Activity).window
-    val controller = WindowInsetsControllerCompat(
-        window ?: fallbackWindow,
-        view
-    )
-    if (!view.isInEditMode) {
-        DisposableEffect(Unit) {
-            controller.systemBarsBehavior =
-                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            controller.hide(WindowInsetsCompat.Type.systemBars())
-
-            onDispose {
-                controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
-                controller.show(WindowInsetsCompat.Type.systemBars())
-            }
-        }
-    }
+//    val view = LocalView.current
+//    val activity = LocalActivity.current
+//    val context = LocalContext.current
+//    val window = activity?.window
+//    val fallbackWindow = (context as Activity).window
+//    val controller = WindowInsetsControllerCompat(
+//        window ?: fallbackWindow,
+//        view
+//    )
+//    if (!view.isInEditMode) {
+//        DisposableEffect(Unit) {
+//            controller.systemBarsBehavior =
+//                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+//            controller.hide(WindowInsetsCompat.Type.systemBars())
+//
+//            onDispose {
+//                controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
+//                controller.show(WindowInsetsCompat.Type.systemBars())
+//            }
+//        }
+//    }
 
     val lazyListState = rememberLazyListState()
     val animatedSpace by animateDpAsState(
@@ -129,16 +118,16 @@ private fun TrippyBlinderItem(
     val animatedCardShape = rememberUpdatedState(cardShape)
     val animatedProgress =
         remember(animatedIndex.value) { Animatable(initialValue = 360f) }
-    val context = LocalContext.current
-    val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)!!
+//    val context = LocalContext.current
+//    val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)!!
 
     var hasAnimated by remember { mutableStateOf(false) }
 
     LaunchedEffect(animatedIndex.value) {
         if (!isInitialLoad || hasAnimated) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+//            }
 
             if (hasAnimated) {
                 animatedProgress.snapTo(360f)
