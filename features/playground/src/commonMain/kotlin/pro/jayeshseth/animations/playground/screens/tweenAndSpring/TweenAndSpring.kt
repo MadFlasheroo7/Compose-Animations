@@ -46,10 +46,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,6 +57,8 @@ import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.model.AnimationTabs
 import pro.jayeshseth.animations.core.model.DampingRatioList
 import pro.jayeshseth.animations.core.model.EasingList
@@ -122,20 +122,6 @@ fun TweenAndSpringScreen(
             )
         )
     }
-    val previewSpec by remember(state.value.useCustomEasing) {
-        mutableStateOf(
-            if (state.value.useCustomEasing) {
-                CubicBezierEasing(
-                    state.value.cubicA,
-                    state.value.cubicB,
-                    state.value.cubicC,
-                    state.value.cubicD
-                )
-            } else {
-                state.value.easing.easing
-            }
-        )
-    }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -193,7 +179,7 @@ fun TweenAndSpringScreen(
                     },
                 ) {
                     Icon(
-                        painter = painterResource(id = tab.icon),
+                        painter = painterResource(tab.icon),
                         contentDescription = tab.title,
                         tint = LocalContentColor.current
                     )
@@ -244,7 +230,7 @@ private fun Preview() {
 private fun PreviewTabs() {
 
     var state by remember { mutableStateOf(0) }
-    val titles = listOf("Tab 1", "Tab 2", "Tab 3")
+    listOf("Tab 1", "Tab 2", "Tab 3")
     ShaderPreviewContent {
         Box(
             contentAlignment = Alignment.Center,
@@ -269,7 +255,7 @@ private fun PreviewTabs() {
                         onClick = { state = index },
                     ) {
                         Icon(
-                            painter = painterResource(id = tab.icon),
+                            painter = painterResource(tab.icon),
                             contentDescription = tab.title,
                             tint = LocalContentColor.current
                         )

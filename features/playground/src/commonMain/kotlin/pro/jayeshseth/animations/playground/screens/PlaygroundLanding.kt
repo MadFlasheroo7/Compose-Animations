@@ -13,7 +13,6 @@ import pro.jayeshseth.animations.core.navigation.OnNavAction
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
 
-
 @Composable
 fun PlaygroundLanding(
     hazeState: HazeState,

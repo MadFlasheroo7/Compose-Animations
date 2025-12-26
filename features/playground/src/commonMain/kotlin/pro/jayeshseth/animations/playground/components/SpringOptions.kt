@@ -32,11 +32,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.chrisbanes.haze.HazeState
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.model.DampingRatioOption
 import pro.jayeshseth.animations.core.model.EasingOption
 import pro.jayeshseth.animations.core.model.StiffnessOption
@@ -238,10 +238,10 @@ fun SpringOptions(
     }
 }
 
-@Preview(showSystemUi = false, showBackground = true)
+@Preview(showBackground = true)
 @Composable
 private fun PreviewSpringOptions() {
-    ShaderPreviewContent() {
+    ShaderPreviewContent {
         SpringOptions(
             hazeState = it,
             state = TweenAndSpringSpecState(
