@@ -23,12 +23,6 @@ kotlin {
         }
         commonMain {
             dependencies {
-                implementation(libs.compose.nav3)
-
-                implementation(projects.core.model)
-                implementation(projects.core.navigation)
-                implementation(libs.physics.layout)
-                implementation(libs.haze)
             }
         }
     }

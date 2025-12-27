@@ -22,7 +22,6 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
@@ -34,7 +33,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Animations"
-include(":app")
+include(":composeApp")
 // Core Modules
 include(":core:ui")
 include(":core:utils")

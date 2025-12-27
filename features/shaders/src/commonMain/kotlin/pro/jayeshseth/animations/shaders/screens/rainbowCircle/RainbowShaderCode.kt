@@ -8,9 +8,10 @@ import pro.jayeshseth.animations.core.model.toExponent
 @Stable
 class RainbowShaderCode(
     val state: RainbowCircleState,
-    iterationLevel: ShaderIterationLevel,
+//    iterationLevel: ShaderIterationLevel,
 ) {
-    val iteration = if (iterationLevel == ShaderIterationLevel.HIGH) "4e2" else "2e2"
+//    val iteration = if (iterationLevel == ShaderIterationLevel.HIGH) "4e2" else "2e2"
+    val iteration = ""
     fun composeCode(): String {
         return """
             Box(

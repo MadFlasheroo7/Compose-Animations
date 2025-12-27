@@ -93,27 +93,27 @@ private fun InnerRainbowCircle(
     val pagerState = rememberPagerState { animationTabsList().size }
     val scope = rememberCoroutineScope { Dispatchers.Default }
     val time = remember { mutableFloatStateOf(0f) }
-    var iterationLevel by remember { mutableStateOf(ShaderIterationLevel.LOW) }
-    val rainbowCircleShader = remember(iterationLevel) {
+//    var iterationLevel by remember { mutableStateOf(ShaderIterationLevel.LOW) }
+//    val rainbowCircleShader = remember(iterationLevel) {
 //        Log.d("RainbowCircle", "Recreating RainbowCircleShader with level: $iterationLevel")
-        RainbowCircleShader(iterationLevel)
-    }
+//        RainbowCircleShader(iterationLevel)
+//    }
 //    val shaderBrush =
 //        remember(iterationLevel) { derivedStateOf { ShaderBrush(rainbowCircleShader) } }
 
     val anim by remember { mutableStateOf(Animatable(200f)) }
 
-    LaunchedEffect(iterationLevel) {
-        anim.animateTo(
-            targetValue = if (iterationLevel == ShaderIterationLevel.HIGH) 200.0f else 100.0f,
-            animationSpec = tween(1000)
-        )
-    }
+//    LaunchedEffect(iterationLevel) {
+//        anim.animateTo(
+//            targetValue = if (iterationLevel == ShaderIterationLevel.HIGH) 200.0f else 100.0f,
+//            animationSpec = tween(1000)
+//        )
+//    }
 
-    val layers by animateFloatAsState(
-        targetValue = if (iterationLevel == ShaderIterationLevel.HIGH) 200.0f else 100.0f,
-        animationSpec = tween(1000)
-    )
+//    val layers by animateFloatAsState(
+//        targetValue = if (iterationLevel == ShaderIterationLevel.HIGH) 200.0f else 100.0f,
+//        animationSpec = tween(1000)
+//    )
 
 //    val rainbowCircleState = remember(shaderBrush) {
 //        mutableStateOf(
@@ -314,7 +314,7 @@ private fun LinksButtons(
 @Composable
 private fun CodePreview(
     hazeState: HazeState,
-    iterationLevel: ShaderIterationLevel,
+//    iterationLevel: ShaderIterationLevel,
     rainbowCircleState: RainbowCircleState,
     modifier: Modifier = Modifier
 ) {
@@ -324,15 +324,15 @@ private fun CodePreview(
     val clipboardManager = LocalClipboardManager.current
     val clipboardManagerr = LocalClipboard.current
 
-    var code by remember(selectedTab.intValue) {
-        mutableStateOf(
-            if (selectedTab.intValue == 0) {
-                RainbowShaderCode(rainbowCircleState, iterationLevel).shaderCode()
-            } else {
-                RainbowShaderCode(rainbowCircleState, iterationLevel).composeCode()
-            }
-        )
-    }
+//    var code by remember(selectedTab.intValue) {
+//        mutableStateOf(
+//            if (selectedTab.intValue == 0) {
+//                RainbowShaderCode(rainbowCircleState, iterationLevel).shaderCode()
+//            } else {
+//                RainbowShaderCode(rainbowCircleState, iterationLevel).composeCode()
+//            }
+//        )
+//    }
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
@@ -380,9 +380,9 @@ private fun CodePreview(
         }
 
         item {
-            val text = code.split("\n")
+//            val text = code.split("\n")
             CodeBlockWithLineNumbers(
-                text, modifier = Modifier
+                listOf("text"), modifier = Modifier
                     .windowInsetsPadding(
                         WindowInsets(
                             left = WindowInsets.safeGestures.getLeft(
