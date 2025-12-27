@@ -32,7 +32,8 @@ typealias OnNavAction = (Route) -> Unit
  * ```
  */
 @Immutable
-@Serializable(with = RoutePolymorphicSerializer::class)
+//@Serializable(with = RoutePolymorphicSerializer::class)
+@Serializable()
 open class Route
 
 
@@ -62,24 +63,28 @@ open class Route
  * @see Route
  */
 @OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
-private class RoutePolymorphicSerializer : KSerializer<Route> {
+class RoutePolymorphicSerializer : KSerializer<Route> {
 
     companion object {
-        // Runtime registry that tracks serialized route types
+        // Registry to hold the serializers
         private val routeRegistry = mutableMapOf<String, KSerializer<out Route>>()
-
-        // Lock for thread-safe registry access (Multiplatform compatible)
         private val registryLock = SynchronizedObject()
 
-        @Suppress("UNCHECKED_CAST")
-        fun <T : Route> registerRoute(kClass: KClass<T>) {
+        /**
+         * Register a route explicitly.
+         * MUST be called for every route on iOS/Native.
+         */
+        fun <T : Route> registerRoute(kClass: KClass<T>, serializer: KSerializer<T>) {
             synchronized(registryLock) {
                 val qualifiedName = kClass.qualifiedName
                     ?: error("Cannot register route without qualified name")
-                if (!routeRegistry.containsKey(qualifiedName)) {
-                    routeRegistry[qualifiedName] = kClass.serializer() as KSerializer<out Route>
-                }
+                routeRegistry[qualifiedName] = serializer
             }
+        }
+
+        // Helper for cleaner syntax: RoutePolymorphicSerializer.register<HomeScreen>()
+        inline fun <reified T : Route> register() {
+            registerRoute(T::class, serializer<T>())
         }
     }
 
@@ -88,7 +93,6 @@ private class RoutePolymorphicSerializer : KSerializer<Route> {
         element("payload", buildClassSerialDescriptor("RoutePayload"))
     }
 
-    @Suppress("UNCHECKED_CAST")
     override fun deserialize(decoder: Decoder): Route {
         return decoder.decodeStructure(descriptor) {
             var className: String? = null
@@ -98,42 +102,47 @@ private class RoutePolymorphicSerializer : KSerializer<Route> {
                 when (val index = decodeElementIndex(descriptor)) {
                     0 -> className = decodeStringElement(descriptor, 0)
                     1 -> {
+                        val name = requireNotNull(className) { "Type must be decoded before payload" }
                         val serializer = synchronized(registryLock) {
-                            routeRegistry[className]
-                                ?: error(
-                                    "Route type not registered: $className. " +
-                                            "Make sure to serialize an instance of this route at least once before deserializing."
-                                )
-                        }
-                        route = decodeSerializableElement(descriptor, 1, serializer) as Route
-                    }
+                            routeRegistry[name]
+                        } ?: error("Route '$name' is not registered. Call RoutePolymorphicSerializer.register<$name>() at app startup.")
 
+                        route = decodeSerializableElement(descriptor, 1, serializer)
+                    }
                     CompositeDecoder.DECODE_DONE -> break
                     else -> error("Unexpected index: $index")
                 }
             }
-
             route ?: error("Route payload not found")
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
     override fun serialize(encoder: Encoder, value: Route) {
         encoder.encodeStructure(descriptor) {
             val qualifiedName = value::class.qualifiedName
                 ?: error("Cannot serialize route without qualified name")
 
-            // Auto-register this route type
-            synchronized(registryLock) {
-                if (!routeRegistry.containsKey(qualifiedName)) {
-                    routeRegistry[qualifiedName] = value::class.serializer()
-                }
+            // 1. Look up the serializer in the registry
+            val serializer = synchronized(registryLock) {
+                routeRegistry[qualifiedName]
             }
 
-            encodeStringElement(descriptor, 0, qualifiedName)
+            // 2. On JVM, we can fallback to magic. On iOS, we MUST fail if not found.
+            @Suppress("UNCHECKED_CAST")
+            val finalSerializer = (serializer as? KSerializer<Route>)
+                ?: try {
+                    // Fallback for Android/JVM only
+                    value::class.serializer() as KSerializer<Route>
+                } catch (e: Exception) {
+                    // This creates the error message you are seeing on iOS
+                    throw SerializationException(
+                        "Serializer for '${qualifiedName}' not found. " +
+                                "On iOS, you must explicitly call RoutePolymorphicSerializer.register<${value::class.simpleName}>() at startup.", e
+                    )
+                }
 
-            val serializer = value::class.serializer() as KSerializer<Route>
-            encodeSerializableElement(descriptor, 1, serializer, value)
+            encodeStringElement(descriptor, 0, qualifiedName)
+            encodeSerializableElement(descriptor, 1, finalSerializer, value)
         }
     }
 }

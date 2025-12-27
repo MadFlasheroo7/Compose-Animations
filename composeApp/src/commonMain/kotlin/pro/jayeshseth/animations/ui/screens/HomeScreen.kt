@@ -38,7 +38,7 @@ import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
 import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
 import pro.jayeshseth.animations.itemPlacements.navigation.ItemPlacementRoutes
-import pro.jayeshseth.animations.navigation.NavDestinations
+import pro.jayeshseth.animations.navigation.LandingRoutes
 import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
 import pro.jayeshseth.animations.shaders.navigation.ShaderRoutes
 
@@ -189,7 +189,7 @@ private fun animationScreens(isItUnlocked: Boolean): List<AnimationScreen> {
                 ),*/
         AnimationScreen(
             title = "Canvas",
-            route = NavDestinations.BouncyRope
+            route = LandingRoutes.BouncyRope
         ),
         /*        AnimationScreen(
                     title = "Community",
@@ -206,12 +206,12 @@ private fun animationScreens(isItUnlocked: Boolean): List<AnimationScreen> {
                 ),*/
         if (isItUnlocked) AnimationScreen(
             title = "Master Customisations",
-            route = NavDestinations.AboutScreen,
+            route = LandingRoutes.AboutScreen,
             flip = false // TODO fix inner shadow recomposition
         ) else null,
         AnimationScreen(
             title = "About",
-            route = NavDestinations.AboutScreen
+            route = LandingRoutes.AboutScreen
         )
     )
 }

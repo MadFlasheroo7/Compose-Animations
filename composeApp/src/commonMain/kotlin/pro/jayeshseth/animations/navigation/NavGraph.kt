@@ -36,7 +36,10 @@ import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.Navigator
+import pro.jayeshseth.animations.core.navigation.RoutePolymorphicSerializer
 import pro.jayeshseth.animations.core.navigation.rememberNavigator
+import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
+import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes.DefaultApisLanding
 import pro.jayeshseth.animations.defaultApis.navigation.defaultApis
 import pro.jayeshseth.animations.itemPlacements.navigation.itemPlacements
 import pro.jayeshseth.animations.navigation.navigation.navigation
@@ -115,6 +118,10 @@ fun NavGraph(
 //        }
 //    }
 
+    LaunchedEffect(Unit) {
+        LandingRoutes.register()
+        DefaultApisRoutes.register()
+    }
 
     Box(
         Modifier.drawWithCache {
@@ -158,7 +165,7 @@ fun NavGraph(
 //            rememberSavedStateNavEntryDecorator()
 //        ),
         entryProvider = entryProvider {
-            entry<NavDestinations.Home> {
+            entry<LandingRoutes.Home> {
                 HomeScreen(
 //                    color = paletteColor,
                     color = Color.Cyan,
@@ -183,14 +190,14 @@ fun NavGraph(
                 onNavAction = { backStack.navigate(it) })
 //            easterEggs(hazeState = hazeState) { backStack.navigate(it) }
             navigation(hazeState = hazeState) //
-            entry<NavDestinations.BouncyRope> {
+            entry<LandingRoutes.BouncyRope> {
                 BouncyRope()
             }
-            entry<NavDestinations.AboutScreen> {
+            entry<LandingRoutes.AboutScreen> {
 //                AboutScreen(hazeState)
             }
             // TODO add community
-            entry<NavDestinations.Community> {
+            entry<LandingRoutes.Community> {
 //                AboutScreen(hazeState)
             }
         }
