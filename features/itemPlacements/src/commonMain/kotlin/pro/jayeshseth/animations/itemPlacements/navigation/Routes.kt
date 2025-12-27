@@ -2,6 +2,7 @@ package pro.jayeshseth.animations.itemPlacements.navigation
 
 import kotlinx.serialization.Serializable
 import pro.jayeshseth.animations.core.navigation.Route
+import pro.jayeshseth.animations.core.navigation.RouteSerializer
 
 object ItemPlacementRoutes {
 
@@ -25,4 +26,14 @@ object ItemPlacementRoutes {
 
     @Serializable
     data object TrippyBlindersRoute : Route()
+
+    fun register() {
+        RouteSerializer.register<ItemPlacementLandingRoute>()
+        RouteSerializer.register<SwipeRefreshRoute>()
+        RouteSerializer.register<ListItemPlacementRoute>()
+        RouteSerializer.register<FadeItemPlacementRoute>()
+        RouteSerializer.register<ScaleItemPlacementRoute>()
+        RouteSerializer.register<SlideItemPlacementRoute>()
+        RouteSerializer.register<TrippyBlindersRoute>()
+    }
 }

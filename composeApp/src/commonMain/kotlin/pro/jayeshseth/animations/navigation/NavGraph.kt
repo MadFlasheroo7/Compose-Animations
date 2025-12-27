@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.unit.dp
-import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.mikepenz.hypnoticcanvas.shaderBackground
@@ -36,14 +35,15 @@ import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.Navigator
-import pro.jayeshseth.animations.core.navigation.RoutePolymorphicSerializer
-import pro.jayeshseth.animations.core.navigation.rememberNavigator
 import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
-import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes.DefaultApisLanding
 import pro.jayeshseth.animations.defaultApis.navigation.defaultApis
+import pro.jayeshseth.animations.itemPlacements.navigation.ItemPlacementRoutes
 import pro.jayeshseth.animations.itemPlacements.navigation.itemPlacements
+import pro.jayeshseth.animations.navigation.navigation.NavigationRoutes
 import pro.jayeshseth.animations.navigation.navigation.navigation
+import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
 import pro.jayeshseth.animations.playground.navigation.playground
+import pro.jayeshseth.animations.shaders.navigation.ShaderRoutes
 import pro.jayeshseth.animations.shaders.navigation.shaders
 import pro.jayeshseth.animations.ui.screens.BouncyRope
 import pro.jayeshseth.animations.ui.screens.HomeScreen
@@ -121,6 +121,10 @@ fun NavGraph(
     LaunchedEffect(Unit) {
         LandingRoutes.register()
         DefaultApisRoutes.register()
+        NavigationRoutes.register()
+        PlaygroundRoutes.register()
+        ItemPlacementRoutes.register()
+        ShaderRoutes.register()
     }
 
     Box(

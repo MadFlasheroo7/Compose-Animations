@@ -17,7 +17,7 @@ typealias OnNavAction = (Route) -> Unit
  * This open class serves as a polymorphic base for defining specific navigation destinations.
  * Subclasses of `Route` represent individual screens or navigation paths.
  *
- * It uses a custom [RoutePolymorphicSerializer] to enable serialization
+ * It uses a custom [RouteSerializer] to enable serialization
  * of its various concrete subclasses, making it compatible with libraries that
  * require serializable arguments for navigation, such as when saving state
  * or passing complex objects between destinations.
@@ -32,8 +32,7 @@ typealias OnNavAction = (Route) -> Unit
  * ```
  */
 @Immutable
-//@Serializable(with = RoutePolymorphicSerializer::class)
-@Serializable()
+@Serializable(RouteSerializer::class)
 open class Route
 
 
@@ -63,9 +62,9 @@ open class Route
  * @see Route
  */
 @OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
-class RoutePolymorphicSerializer : KSerializer<Route> {
+class RouteSerializer : KSerializer<Route> {
 
-    companion object {
+    companion object Companion {
         // Registry to hold the serializers
         private val routeRegistry = mutableMapOf<String, KSerializer<out Route>>()
         private val registryLock = SynchronizedObject()
@@ -82,7 +81,7 @@ class RoutePolymorphicSerializer : KSerializer<Route> {
             }
         }
 
-        // Helper for cleaner syntax: RoutePolymorphicSerializer.register<HomeScreen>()
+        // Helper for cleaner syntax: RouteSerializer.register<HomeScreen>()
         inline fun <reified T : Route> register() {
             registerRoute(T::class, serializer<T>())
         }
@@ -105,7 +104,7 @@ class RoutePolymorphicSerializer : KSerializer<Route> {
                         val name = requireNotNull(className) { "Type must be decoded before payload" }
                         val serializer = synchronized(registryLock) {
                             routeRegistry[name]
-                        } ?: error("Route '$name' is not registered. Call RoutePolymorphicSerializer.register<$name>() at app startup.")
+                        } ?: error("Route '$name' is not registered. Call RouteSerializer.register<$name>() at app startup.")
 
                         route = decodeSerializableElement(descriptor, 1, serializer)
                     }
@@ -137,7 +136,7 @@ class RoutePolymorphicSerializer : KSerializer<Route> {
                     // This creates the error message you are seeing on iOS
                     throw SerializationException(
                         "Serializer for '${qualifiedName}' not found. " +
-                                "On iOS, you must explicitly call RoutePolymorphicSerializer.register<${value::class.simpleName}>() at startup.", e
+                                "On iOS, you must explicitly call RouteSerializer.register<${value::class.simpleName}>() at startup.", e
                     )
                 }
 

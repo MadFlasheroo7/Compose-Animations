@@ -2,7 +2,7 @@ package pro.jayeshseth.animations.navigation
 
 import kotlinx.serialization.Serializable
 import pro.jayeshseth.animations.core.navigation.Route
-import pro.jayeshseth.animations.core.navigation.RoutePolymorphicSerializer
+import pro.jayeshseth.animations.core.navigation.RouteSerializer
 
 
 object LandingRoutes {
@@ -19,9 +19,9 @@ object LandingRoutes {
     data object Community : Route()
 
     fun register() {
-        RoutePolymorphicSerializer.register<Home>()
-        RoutePolymorphicSerializer.register<BouncyRope>()
-        RoutePolymorphicSerializer.register<AboutScreen>()
-        RoutePolymorphicSerializer.register<Community>()
+        RouteSerializer.register<Home>()
+        RouteSerializer.register<BouncyRope>()
+        RouteSerializer.register<AboutScreen>()
+        RouteSerializer.register<Community>()
     }
 }

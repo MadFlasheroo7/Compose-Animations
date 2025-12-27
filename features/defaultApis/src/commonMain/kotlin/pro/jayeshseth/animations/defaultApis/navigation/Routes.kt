@@ -2,7 +2,7 @@ package pro.jayeshseth.animations.defaultApis.navigation
 
 import kotlinx.serialization.Serializable
 import pro.jayeshseth.animations.core.navigation.Route
-import pro.jayeshseth.animations.core.navigation.RoutePolymorphicSerializer
+import pro.jayeshseth.animations.core.navigation.RouteSerializer
 
 object DefaultApisRoutes {
     @Serializable
@@ -24,11 +24,11 @@ object DefaultApisRoutes {
     data object InfiniteRotationRoute : Route()
 
     fun register() {
-        RoutePolymorphicSerializer.register<DefaultApisLanding>()
-        RoutePolymorphicSerializer.register<AnimateVisibilityRoute>()
-        RoutePolymorphicSerializer.register<AnimateContentRoute>()
-        RoutePolymorphicSerializer.register<AnimateGestureRoute>()
-        RoutePolymorphicSerializer.register<AnimateValueAsStateRoute>()
-        RoutePolymorphicSerializer.register<InfiniteRotationRoute>()
+        RouteSerializer.register<DefaultApisLanding>()
+        RouteSerializer.register<AnimateVisibilityRoute>()
+        RouteSerializer.register<AnimateContentRoute>()
+        RouteSerializer.register<AnimateGestureRoute>()
+        RouteSerializer.register<AnimateValueAsStateRoute>()
+        RouteSerializer.register<InfiniteRotationRoute>()
     }
 }
