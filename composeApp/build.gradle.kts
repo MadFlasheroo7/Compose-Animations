@@ -6,6 +6,23 @@ plugins {
 }
 
 kotlin {
+    android {
+        buildTypes {
+            release {
+                isMinifyEnabled = true
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+                )
+            }
+            debug {
+                applicationIdSuffix = ".debug"
+                isDefault = true
+                versionNameSuffix = libs.versions.version.nameBetaSuffix.get()
+            }
+        }
+    }
+
     sourceSets {
         androidMain {
             dependencies {
@@ -27,13 +44,6 @@ kotlin {
                 implementation(projects.features.navigation)
                 implementation(projects.features.playground)
                 implementation(projects.features.shaders)
-//                implementation(projects.feature.auth.presentation)
-//
-//                implementation(projects.feature.chat.data)
-//                implementation(projects.feature.chat.database)
-//                implementation(projects.feature.chat.domain)
-//                implementation(projects.feature.chat.presentation)
-
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -55,42 +65,6 @@ kotlin {
         }
 
     }
-//    android {
-////    namespace = libs.versions.namespace.get()
-////    compileSdk = libs.versions.compile.sdk.get().toInt()
-//
-//        defaultConfig {
-////        applicationId = libs.versions.applicationId.get()
-////        minSdk = libs.versions.min.sdk.get().toInt()
-//            versionCode = libs.versions.version.code.get().toInt()
-//            versionName = libs.versions.version.name.get()
-//
-//            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-//            vectorDrawables {
-//                useSupportLibrary = true
-//            }
-//        }
-//
-//        buildTypes {
-//            release {
-//                isMinifyEnabled = true
-//                proguardFiles(
-//                    getDefaultProguardFile("proguard-android-optimize.txt"),
-//                    "proguard-rules.pro"
-//                )
-//            }
-//            debug {
-//                applicationIdSuffix = ".debug"
-//                isDefault = true
-//                versionNameSuffix = libs.versions.version.nameBetaSuffix.get()
-//            }
-//        }
-//        packaging {
-//            resources {
-//                excludes += "/META-INF/{AL2.0,LGPL2.1}"
-//            }
-//        }
-//    }
 }
 
 compose {
@@ -106,38 +80,3 @@ compose {
         }
     }
 }
-
-//dependencies {
-//    implementation(projects.core.ui)
-//    implementation(projects.core.utils)
-//    implementation(projects.core.model)
-//    implementation(projects.core.navigation)
-//    implementation(projects.features.defaultApis)
-////    implementation(projects.features.playground)
-////    implementation(projects.features.itemPlacements)
-////    implementation(projects.features.shaders)
-////    implementation(projects.features.easterEggs)
-////    implementation(projects.features.navigation)
-//    implementation(libs.hypnoticcanvas)
-//    implementation(libs.hypnoticcanvas.shaders)
-//
-//    implementation(libs.haze)
-//    implementation(libs.palette)
-//    implementation(libs.cascade)
-//    implementation(libs.cascade.compose)
-//    implementation(libs.core.ktx)
-//    implementation(libs.rebugger)
-//    implementation(libs.androidx.datastore.preferences)
-////    implementation(libs.androidx.datastore.preferences.core)
-//    implementation(libs.compose.code.editor)
-//    implementation(libs.accompanist.permissions)
-//    implementation(libs.kotlin.stdlib)
-//    implementation(libs.lifecycle.viewmodel.navigation3)
-//
-//    implementation(libs.physics.layout)
-//    testImplementation(libs.junit)
-//    androidTestImplementation(libs.androidx.test.ext.junit)
-//    androidTestImplementation(libs.espresso.core)
-//
-//    implementation(fileTree("libs") { include("*.jar") })
-//}
