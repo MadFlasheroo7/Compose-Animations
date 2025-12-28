@@ -30,6 +30,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import pro.jayeshseth.animations.core.ui.modifiers.glowingShadow
 import pro.jayeshseth.animations.core.ui.modifiers.shimmerBorder
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 
@@ -143,14 +144,14 @@ fun InteractiveButton(
         modifier = modifier
             .fillMaxWidth()
             .height(height)
-//            .glowingShadow(
-//                borderRadius = buttonDp,
-//                color = shadowColor,
-//                spread = spread.value.dp,
-//                blurRadius = 10.dp,
-//                offsetX = offsetX.value.dp,
-//                offsetY = offsetY.value.dp
-//            )
+            .glowingShadow(
+                borderRadius = buttonDp,
+                color = shadowColor,
+                spread = spread.value.dp,
+                blurRadius = 10.dp,
+                offsetX = offsetX.value.dp,
+                offsetY = offsetY.value.dp
+            )
             .clip(shape)
             .hazeEffect(state = hazeState, hazeStyle)
             .combinedClickable(

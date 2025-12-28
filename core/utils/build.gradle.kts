@@ -4,10 +4,30 @@ plugins {
 
 kotlin {
     sourceSets {
-        commonMain {
+        val nonWebMain by creating {
+            dependsOn(commonMain.get())
             dependencies {
                 api(libs.androidx.datastore)
                 api(libs.androidx.datastore.preferences)
+            }
+        }
+
+        androidMain {
+            dependsOn(nonWebMain)
+        }
+
+        // iOS
+        iosMain {
+            dependsOn(nonWebMain)
+        }
+
+        // Desktop
+        desktopMain {
+            dependsOn(nonWebMain)
+        }
+
+        commonMain {
+            dependencies {
             }
         }
     }

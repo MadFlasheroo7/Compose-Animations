@@ -75,7 +75,7 @@ class RouteSerializer : KSerializer<Route> {
          */
         fun <T : Route> registerRoute(kClass: KClass<T>, serializer: KSerializer<T>) {
             synchronized(registryLock) {
-                val qualifiedName = kClass.qualifiedName
+                val qualifiedName = kClass.simpleName
                     ?: error("Cannot register route without qualified name")
                 routeRegistry[qualifiedName] = serializer
             }
@@ -118,7 +118,7 @@ class RouteSerializer : KSerializer<Route> {
 
     override fun serialize(encoder: Encoder, value: Route) {
         encoder.encodeStructure(descriptor) {
-            val qualifiedName = value::class.qualifiedName
+            val qualifiedName = value::class.simpleName
                 ?: error("Cannot serialize route without qualified name")
 
             // 1. Look up the serializer in the registry

@@ -1,7 +1,5 @@
 package pro.jayeshseth.animations.core.ui.modifiers
 
-// TODO migrate to cmp
-
 import android.graphics.BlurMaskFilter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -13,25 +11,13 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-/**
- * Modified glowing shadow modifier from madifiers lib, ideally add support to that modifier itself 🤷
- *
- * Draws a **Canvas** behind the modified content giving it a glowing effect.
- *
- * @param color color of the glowing shadow
- * @param borderRadius border radius of the glowing shadow
- * @param blurRadius glow radius of the shadow
- * @param offsetX X offset of the shadow
- * @param offsetY Y offset of the shadow
- * @param spread spread radius of the shadow
- */
-fun Modifier.glowingShadow(
+actual fun Modifier.glowingShadow(
     color: Color,
-    borderRadius: Dp = 0.dp,
-    blurRadius: Dp = 0.dp,
-    offsetX: Dp = 0.dp,
-    offsetY: Dp = 0.dp,
-    spread: Dp = 0.dp,
+    borderRadius: Dp,
+    blurRadius: Dp,
+    offsetX: Dp,
+    offsetY: Dp,
+    spread: Dp
 ): Modifier {
     return this.drawBehind {
         this.drawIntoCanvas {

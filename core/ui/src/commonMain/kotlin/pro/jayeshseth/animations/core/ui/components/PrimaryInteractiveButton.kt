@@ -14,9 +14,6 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-//import androidx.compose.animation.graphics.res.animatedVectorResource
-//import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
-//import androidx.compose.animation.graphics.vector.AnimatedImageVector
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -65,6 +62,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import pro.jayeshseth.animations.core.ui.modifiers.glowingShadow
 import pro.jayeshseth.animations.core.ui.modifiers.shimmerBorder
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 
@@ -193,14 +191,25 @@ fun PrimaryInteractiveButton(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .fillMaxWidth()
-//            .glowingShadow(
-//                borderRadius = buttonDp,
-//                color = shadowColor,
-//                spread = spread.value.dp,
-//                blurRadius = 10.dp,
-//                offsetX = offsetX.value.dp,
-//                offsetY = offsetY.value.dp
-//            )
+            .glowingShadow(
+                borderRadius = buttonDp,
+                color = shadowColor,
+                spread = spread.value.dp,
+                blurRadius = 10.dp,
+                offsetX = offsetX.value.dp,
+                offsetY = offsetY.value.dp
+            )
+//            .dropShadow(RoundedCornerShape(buttonDp)) {
+//                val brush = Brush.radialGradient(
+//                    colors = listOf(color.copy(alpha = 0.1f), color),
+//                    center = Offset(
+//                        this.size.width / 2f,
+//                        this.size.height / 2f
+//                    ),
+//                    radius = maxDimension * scaleFactor
+//                )
+//
+//            }
             .clip(shape)
             .hazeEffect(state = hazeState, style = hazeStyle)
 //            .graphicsLayer {
@@ -226,10 +235,10 @@ fun PrimaryInteractiveButton(
                 }
             )
 
-//            .glowingShadow(
-//                borderRadius = buttonDp,
-//                color = shadowColor,
-//            )
+            .glowingShadow(
+                borderRadius = buttonDp,
+                color = shadowColor,
+            )
             .innerShadow(shape) {
                 this.color = shadowColor
                 this.radius = 10f
@@ -289,7 +298,7 @@ private fun PreviewInteractiveButton() {
                     .shaderBackground(InkFlow, speed = 0.2f)
             )
             LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
+                columns = GridCells.Fixed(1),
                 contentPadding = PaddingValues(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 horizontalArrangement = Arrangement.spacedBy(20.dp),
