@@ -9,16 +9,18 @@ import androidx.savedstate.read
 import androidx.savedstate.savedState
 import androidx.savedstate.serialization.decodeFromSavedState
 import androidx.savedstate.serialization.encodeToSavedState
-import androidx.savedstate.write
 import pro.jayeshseth.animations.core.navigation.Navigator.Companion.Saver
 
-class Navigator(private var startRoute: Route) {
+class Navigator(private var startRoute: Route,val onNavigate: (Route) -> Unit = {}) {
     val backStack = mutableStateListOf(startRoute)
 
     /**
      * Navigate to the given route.
      */
-    fun navigate(route: Route) = backStack.add(route)
+    fun navigate(route: Route) {
+        onNavigate(route)
+        backStack.add(route)
+    }
 
 
     /**
@@ -34,6 +36,7 @@ class Navigator(private var startRoute: Route) {
     companion object {
         private const val KEY_START_ROUTE = "start_route"
         private const val KEY_BACK_STACK = "back_stack"
+        private val routeSerializer = RouteSerializer()
 
         /**
          * A [Saver] for the [Navigator] class.
@@ -49,25 +52,32 @@ class Navigator(private var startRoute: Route) {
          */
         val Saver = Saver<Navigator, SavedState>(
             save = { navigator ->
-                var savedState: SavedState = savedState()
-                savedState.write {
-                    putSavedState(KEY_START_ROUTE, encodeToSavedState(navigator.startRoute))
+                var savedState: SavedState = savedState {
+                    putSavedState(
+                        KEY_START_ROUTE,
+                        encodeToSavedState(routeSerializer, navigator.startRoute)
+                    )
                     putSavedStateList(
                         KEY_BACK_STACK,
-                        navigator.backStack.map { encodeToSavedState(it) }
+                        navigator.backStack.map { encodeToSavedState(routeSerializer, it) }
                     )
                 }
                 savedState
             },
             restore = { savedState ->
                 savedState.read {
-                    val startRoute = decodeFromSavedState<Route>(getSavedState(KEY_START_ROUTE))
+                    val startRoute =
+                        decodeFromSavedState(routeSerializer, getSavedState(KEY_START_ROUTE))
                     val navigator = Navigator(startRoute)
 
-                    getSavedStateListOrNull(KEY_BACK_STACK)
-                        ?.map { decodeFromSavedState<Route>(it) }
-                        ?.let { navigator.backStack.addAll(it) }
+                    val restoredStack = getSavedStateListOrNull(KEY_BACK_STACK)?.map {
+                        decodeFromSavedState(routeSerializer, it)
+                    }
 
+                    if (!restoredStack.isNullOrEmpty()) {
+                        navigator.backStack.clear()
+                        navigator.backStack.addAll(restoredStack)
+                    }
                     println("route backstack ${navigator.backStack}") // TODO replace with a kmp logger
                     navigator
                 }
@@ -88,6 +98,6 @@ class Navigator(private var startRoute: Route) {
  * @return A remembered instance of [Navigator].
  */
 @Composable
-fun rememberNavigator(startRoute: Route) = rememberSaveable(saver = Navigator.Saver) {
-    Navigator(startRoute)
+fun rememberNavigator(startRoute: Route, onNavigate: (Route) -> Unit = {}) = rememberSaveable(saver = Navigator.Saver) {
+    Navigator(startRoute, onNavigate)
 }
