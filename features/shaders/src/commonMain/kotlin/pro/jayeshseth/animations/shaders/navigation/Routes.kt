@@ -7,13 +7,13 @@ import pro.jayeshseth.animations.core.navigation.RouteSerializer
 object ShaderRoutes {
 
     @Serializable
-    data object ShaderGraphRoute : Route()
+    data object ShaderGraphRoute : Route
 
     @Serializable
-    data object RainbowShaderRoute : Route()
+    data object RainbowShaderRoute : Route
 
     @Serializable
-    data object InterstellarShaderRoute : Route()
+    data object InterstellarShaderRoute : Route
 
     fun register() {
         RouteSerializer.register<ShaderGraphRoute>()

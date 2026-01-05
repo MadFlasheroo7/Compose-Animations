@@ -25,15 +25,15 @@ typealias OnNavAction = (Route) -> Unit
  * Example of a concrete route implementation:
  * ```kotlin
  * @Serializable
- * data object HomeScreen : Route()
+ * data object HomeScreen : Route
  *
  * @Serializable
- * data class ProfileScreen(val userId: String) : Route()
+ * data class ProfileScreen(val userId: String) : Route
  * ```
  */
 @Immutable
 @Serializable(RouteSerializer::class)
-open class Route
+interface Route
 
 
 

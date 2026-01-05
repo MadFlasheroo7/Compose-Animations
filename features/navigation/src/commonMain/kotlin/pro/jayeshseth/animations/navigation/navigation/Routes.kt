@@ -7,7 +7,7 @@ import pro.jayeshseth.animations.core.navigation.RouteSerializer
 object NavigationRoutes {
 
     @Serializable
-    data object Nav2GraphRoute : Route()
+    data object Nav2GraphRoute : Route
 
     fun register() {
         RouteSerializer.register<Nav2GraphRoute>()

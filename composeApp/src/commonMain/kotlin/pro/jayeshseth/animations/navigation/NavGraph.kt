@@ -45,6 +45,7 @@ import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
 import pro.jayeshseth.animations.playground.navigation.playground
 import pro.jayeshseth.animations.shaders.navigation.ShaderRoutes
 import pro.jayeshseth.animations.shaders.navigation.shaders
+import pro.jayeshseth.animations.ui.screens.AboutScreen
 import pro.jayeshseth.animations.ui.screens.BouncyRope
 import pro.jayeshseth.animations.ui.screens.HomeScreen
 
@@ -198,7 +199,7 @@ fun NavGraph(
                 BouncyRope()
             }
             entry<LandingRoutes.AboutScreen> {
-//                AboutScreen(hazeState)
+                AboutScreen(hazeState)
             }
             // TODO add community
             entry<LandingRoutes.Community> {

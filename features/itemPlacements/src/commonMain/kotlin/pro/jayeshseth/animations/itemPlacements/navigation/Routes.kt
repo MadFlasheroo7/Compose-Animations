@@ -7,25 +7,25 @@ import pro.jayeshseth.animations.core.navigation.RouteSerializer
 object ItemPlacementRoutes {
 
     @Serializable
-    data object ItemPlacementLandingRoute : Route()
+    data object ItemPlacementLandingRoute : Route
 
     @Serializable
-    data object SwipeRefreshRoute : Route()
+    data object SwipeRefreshRoute : Route
 
     @Serializable
-    data object ListItemPlacementRoute : Route()
+    data object ListItemPlacementRoute : Route
 
     @Serializable
-    data object FadeItemPlacementRoute : Route()
+    data object FadeItemPlacementRoute : Route
 
     @Serializable
-    data object ScaleItemPlacementRoute : Route()
+    data object ScaleItemPlacementRoute : Route
 
     @Serializable
-    data object SlideItemPlacementRoute : Route()
+    data object SlideItemPlacementRoute : Route
 
     @Serializable
-    data object TrippyBlindersRoute : Route()
+    data object TrippyBlindersRoute : Route
 
     fun register() {
         RouteSerializer.register<ItemPlacementLandingRoute>()

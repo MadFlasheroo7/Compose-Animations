@@ -6,22 +6,22 @@ import pro.jayeshseth.animations.core.navigation.RouteSerializer
 
 object DefaultApisRoutes {
     @Serializable
-    data object DefaultApisLanding : Route()
+    data object DefaultApisLanding : Route
 
     @Serializable
-    data object AnimateVisibilityRoute : Route()
+    data object AnimateVisibilityRoute : Route
 
     @Serializable
-    data object AnimateContentRoute : Route()
+    data object AnimateContentRoute : Route
 
     @Serializable
-    data object AnimateGestureRoute : Route()
+    data object AnimateGestureRoute : Route
 
     @Serializable
-    data object AnimateValueAsStateRoute : Route()
+    data object AnimateValueAsStateRoute : Route
 
     @Serializable
-    data object InfiniteRotationRoute : Route()
+    data object InfiniteRotationRoute : Route
 
     fun register() {
         RouteSerializer.register<DefaultApisLanding>()

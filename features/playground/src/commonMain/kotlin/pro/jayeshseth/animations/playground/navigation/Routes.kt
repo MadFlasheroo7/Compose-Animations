@@ -6,13 +6,13 @@ import pro.jayeshseth.animations.core.navigation.RouteSerializer
 
 object PlaygroundRoutes {
     @Serializable
-    data object PlaygroundLandingRoute : Route()
+    data object PlaygroundLandingRoute : Route
 
     @Serializable
-    data object AnimationSpecRoute : Route()
+    data object AnimationSpecRoute : Route
 
     @Serializable
-    data object TweenAndSpringRoute : Route()
+    data object TweenAndSpringRoute : Route
 
     fun register() {
         RouteSerializer.register<PlaygroundLandingRoute>()

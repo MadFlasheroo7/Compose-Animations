@@ -7,16 +7,16 @@ import pro.jayeshseth.animations.core.navigation.RouteSerializer
 
 object LandingRoutes {
     @Serializable
-    data object Home : Route()
+    data object Home : Route
 
     @Serializable
-    data object BouncyRope : Route()
+    data object BouncyRope : Route
 
     @Serializable
-    data object AboutScreen : Route()
+    data object AboutScreen : Route
 
     @Serializable
-    data object Community : Route()
+    data object Community : Route
 
     fun register() {
         RouteSerializer.register<Home>()
