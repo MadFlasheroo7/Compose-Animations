@@ -15,6 +15,19 @@ import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+/**
+ * A Composable that displays a title and a switch, arranged horizontally.
+ * The switch uses a haze effect.
+ *
+ * @param title The text to display next to the switch.
+ * @param hazeState The [HazeState] to apply the blur effect to the switch.
+ * @param checked The current state of the switch (true for on, false for off).
+ * @param onCheckedChanged A lambda function that is invoked when the user toggles the switch.
+ *                         It receives the new checked state as a Boolean.
+ * @param modifier The [Modifier] to be applied to the row containing the title and switch.
+ * @param enabled A boolean to enable or disable the switch.
+ * @param style The [TextStyle] to be applied to the title text.
+ */
 @Composable
 fun Toggler(
     title: String,

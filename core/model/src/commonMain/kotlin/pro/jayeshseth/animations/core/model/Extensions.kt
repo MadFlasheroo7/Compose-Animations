@@ -56,14 +56,47 @@ fun Float.round(): String {
 }
 
 
+/**
+ * Adds a spacer item to a [LazyListScope] that provides padding for the navigation bars.
+ * This is useful for preventing content at the end of a lazy list from being obscured
+ * by system navigation gestures or bars.
+ *
+ * Example usage:
+ * ```
+ * LazyColumn {
+ *     // ... other items
+ *     lazyNavBarPadding()
+ * }
+ * ```
+ */
 fun LazyListScope.lazyNavBarPadding() {
     item { Spacer(Modifier.navigationBarsPadding()) }
 }
 
+/**
+ * Adds a spacer item to a `LazyListScope` that applies padding to accommodate the system status bars.
+ *
+ * This is a convenience function for adding a spacer at the top of a lazy list (`LazyColumn`, `LazyRow`)
+ * to prevent content from being obscured by the status bar, especially when using edge-to-edge display.
+ *
+ * Example usage:
+ * ```
+ * LazyColumn {
+ *     lazyStatusBarPadding()
+ *     // ... other items
+ * }
+ * ```
+ */
 fun LazyListScope.lazyStatusBarPadding() {
     item { Spacer(Modifier.statusBarsPadding()) }
 }
 
+/**
+ * Adds a [Spacer] as an item in a [LazyListScope] with a specified size.
+ * This is a convenience function to easily add fixed-size spacing between items in a lazy list.
+ *
+ * @param size The size of the spacer. This will be applied to both width and height.
+ */
 fun LazyListScope.lazySpacer(size: Dp) {
     item { Spacer(Modifier.size(size)) }
 }

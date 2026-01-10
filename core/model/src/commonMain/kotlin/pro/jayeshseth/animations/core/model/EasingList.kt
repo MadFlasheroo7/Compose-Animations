@@ -38,11 +38,35 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 
+/**
+ * Represents a single easing option for animations.
+ *
+ * This data class pairs an `Easing` function with a human-readable name,
+ * making it suitable for use in UI elements like dropdown menus or lists
+ * where users can select different animation curves.
+ *
+ * @property easing The `Easing` object that defines the animation curve.
+ * @property name A `String` representing the name of the easing function (e.g., "LinearEasing").
+ */
 data class EasingOption(
     val easing: Easing,
     val name: String
 )
 
+/**
+ * A comprehensive list of built-in Jetpack Compose [Easing] functions.
+ *
+ * Each item in the list is an [EasingOption], which pairs the `Easing` instance with its
+ * corresponding string name. This is useful for UI elements like dropdowns or lists
+ * where users can select an easing curve to apply to an animation.
+ *
+ * Includes standard easing types such as Linear, FastOutSlowIn, and various curves
+ * like Sine, Cubic, Quint, Circ, Quad, Quart, Expo, Back, Elastic, and Bounce,
+ * each with their In, Out, and InOut variations.
+ *
+ * @see EasingOption
+ * @see androidx.compose.animation.core.Easing
+ */
 val EasingList = mutableListOf(
     EasingOption(
         LinearEasing,

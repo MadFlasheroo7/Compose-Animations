@@ -41,6 +41,21 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.ln
 import kotlin.math.sqrt
 
+/**
+ * A composable function that displays a row of tabs with a glassmorphism effect
+ * and a custom animated indicator. The background of the tab row uses the `hazeEffect`
+ * to create a blurred, translucent look. The selected tab is highlighted with an
+ * indicator that animates its position and size as the selection changes.
+ *
+ * @param T The type of data in the `tabsList`.
+ * @param tabsList A list of items to be displayed as tabs.
+ * @param hazeState The [HazeState] used to control the background blur effect.
+ * @param selectedIndex The index of the currently selected tab.
+ * @param tabComponent A composable lambda that defines the UI for each individual tab.
+ *                     It receives the `index` and the `tab` item.
+ * @param modifier The [Modifier] to be applied to the `TabRow`.
+ * @param color The color used for the tab indicator's shadow effect.
+ */
 @Composable
 fun <T> TabsRow(
     tabsList: List<T>,
@@ -78,6 +93,24 @@ fun <T> TabsRow(
     }
 }
 
+/**
+ * A composable function that renders the animated indicator for the [TabsRow].
+ *
+ * This indicator has a unique animation behavior: when moving to the next tab (forward),
+ * the start of the indicator moves slowly while the end moves quickly. When moving to a
+ * previous tab (backward), the start moves quickly while the end moves slowly. This creates
+ * a "stretching" and "compressing" effect.
+ *
+ * It uses the `hazeEffect` to create a glassmorphism look, consistent with the parent `TabsRow`,
+ * and an `innerShadow` for depth. The shadow color also animates to be more intense
+ * during the movement animation.
+ *
+ * @param hazeState The [HazeState] used to control the background blur effect of the indicator.
+ * @param tabPositions A list of [TabPosition]s provided by the `TabRow`'s indicator lambda,
+ *                     representing the positions of each tab.
+ * @param currentIndex The index of the currently selected tab.
+ * @param color The base color for the indicator's inner shadow effect.
+ */
 @Composable
 private fun TabIndicator(
     hazeState: HazeState,
@@ -168,9 +201,23 @@ private fun TabIndicator(
 }
 
 
+/**
+ * A composable function that represents a single tab item within the [TabsRow].
+ *
+ * This tab is designed to be clickable and has a rounded shape. It uses [CompositionLocalProvider]
+ * to set the local content color, which can be used by child composables like `Text`.
+ * The `zIndex` is set to ensure it appears above the animated indicator background.
+ *
+ * @param onClick A lambda function to be invoked when the tab is clicked.
+ * @param modifier The [Modifier] to be applied to the tab's container.
+ * @param color The color to be provided as the `LocalContentColor`. This color will be used by
+ *   the `content` composable (e.g., for `Text`). Defaults to `Color.Cyan`.
+ * @param interactionSource The [MutableInteractionSource] for this clickable component.
+ * @param contentPadding The padding applied inside the tab, around the `content`.
+ * @param content The composable content to be displayed inside the tab, such as a [Text] label.
+ */
 @Composable
 fun AnimatedTab(
-    isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     color: Color = Color.Cyan,
@@ -213,7 +260,6 @@ fun PreviewTab() {
                 selectedIndex = state,
                 tabComponent = { index, tab ->
                     AnimatedTab(
-                        isSelected = state == index,
                         onClick = { state = index },
                     ) {
                         Text(tab, color = Color.White)

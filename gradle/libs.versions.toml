@@ -3,6 +3,7 @@
 androidGradlePlugin = "8.10.1"
 androidDesugarJdkLibs = "2.1.5"
 androidTools = "31.12.0"
+kotlinxBrowser = "0.5.0"
 ksp = "2.1.20-1.0.31"
 
 # Kotlin
@@ -19,6 +20,7 @@ compose-multiplatform = "1.9.3"
 compose-jetbrains-m3 = "1.9.0"
 material-icons = "1.7.3"
 compose-lifecycle = "2.9.1"
+adaptive = "1.2.0-alpha04"
 
 # Androidx
 activity-compose = "1.10.1"
@@ -134,6 +136,7 @@ coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
 
 # Lottie
+kotlinx-browser = { module = "org.jetbrains.kotlinx:kotlinx-browser", version.ref = "kotlinxBrowser" }
 lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 
 # Navigation
@@ -158,6 +161,12 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotl
 lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "nav3Lifecycle" }
 
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
+
+# Material3 Adaptive
+material3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "adaptive" }
+material3-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "adaptive" }
+material3-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "adaptive" }
+
 
 # [Test Dependencies]
 # Android Tests

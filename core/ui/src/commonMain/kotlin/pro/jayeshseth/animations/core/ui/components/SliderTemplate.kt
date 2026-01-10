@@ -21,6 +21,28 @@ import pro.jayeshseth.animations.core.model.ComposeFriendlyInt
 import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 import kotlin.math.roundToInt
 
+/**
+ * A customizable slider component wrapped in a template that includes a title,
+ * the current value display, and increment/decrement buttons. This component
+ * is designed to be visually integrated with a background using a haze effect.
+ *
+ * It combines a `StretchySlider` with `HazedIconButton`s for a cohesive look and feel.
+ * The layout is managed by `ControllerTemplate`.
+ *
+ * @param title The text to be displayed as the title for the slider.
+ * @param hazeState The [HazeState] from the `dev.chrisbanes.haze` library, used to apply a glassmorphism/haze effect to the UI elements.
+ * @param value A lambda returning the current value of the slider. Using a lambda (`ComposeFriendlyFloat`) helps ensure stability and recomposition optimization.
+ * @param step A lambda returning the number of discrete steps the slider can have. If 0, the slider is continuous. `ComposeFriendlyInt` is used for stability.
+ * @param onValueChange A callback that is invoked when the slider's value changes. The new value is passed as a parameter.
+ * @param valueRange The range of values the slider can represent, from a minimum to a maximum.
+ * @param modifier The [Modifier] to be applied to the `ControllerTemplate` container.
+ * @param roundToInt A boolean flag that, when true, rounds the displayed value to the nearest integer.
+ * @param titlePadding The padding to be applied around the title row.
+ * @param style The [TextStyle] for the title text.
+ * @param onIncrement A lambda to be executed when the increment (+) button is clicked.
+ * @param onDecrement A lambda to be executed when the decrement (-) button is clicked.
+ * @param interactionSource The [MutableInteractionSource] for observing and controlling the slider's interactions.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SliderTemplate(
@@ -134,14 +156,6 @@ fun Modifier.negativePadding(horizontal: Dp): Modifier {
         }
     }
 }
-
-//private fun snapSliderValue(start: Float, value: Float, step: Int): Float {
-//    if (step == 0) return value
-//    val distance = value - start
-//    val stepsFromStart = (distance / step).roundToInt()
-//    val snappedDistance = stepsFromStart * step
-//    return DecimalFormat("#.##").format(start + snappedDistance).toFloat()
-//}
 
 @Preview(showBackground = true)
 @Composable

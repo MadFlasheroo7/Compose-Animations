@@ -236,7 +236,6 @@ private fun InnerRainbowCircle(
             selectedIndex = pagerState.currentPage,
             tabComponent = { index, tab ->
                 AnimatedTab(
-                    isSelected = pagerState.currentPage == index,
                     onClick = {
                         scope.launch(Dispatchers.Main) {
                             pagerState.animateScrollToPage(index)
@@ -367,7 +366,6 @@ private fun CodePreview(
                     modifier = Modifier.padding(start = 16.dp),
                     tabComponent = { index, tabTitle ->
                         AnimatedTab(
-                            isSelected = selectedTab.intValue == index,
                             onClick = {
                                 selectedTab.intValue = index
                             },

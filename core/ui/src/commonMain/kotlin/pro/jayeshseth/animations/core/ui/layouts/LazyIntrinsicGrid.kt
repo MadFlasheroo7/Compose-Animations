@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.core.ui.components
+package pro.jayeshseth.animations.core.ui.layouts
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,9 +14,21 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import pro.jayeshseth.animations.core.ui.components.PrimaryInteractiveButton
+import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
+import pro.jayeshseth.animations.core.ui.utils.DeviceConfiguration.DESKTOP
+import pro.jayeshseth.animations.core.ui.utils.DeviceConfiguration.MOBILE_LANDSCAPE
+import pro.jayeshseth.animations.core.ui.utils.DeviceConfiguration.MOBILE_PORTRAIT
+import pro.jayeshseth.animations.core.ui.utils.DeviceConfiguration.TABLET_LANDSCAPE
+import pro.jayeshseth.animations.core.ui.utils.DeviceConfiguration.TABLET_PORTRAIT
+import pro.jayeshseth.animations.core.ui.utils.currentDeviceConfiguration
 
 /**
  * A Lazy Grid that forces items in the same row to have equal height.
@@ -113,3 +125,38 @@ private data class GridItem<T>(
     val item: T,
     val span: Int
 )
+
+@Preview
+@Composable
+fun PreviewLazyGrid() {
+    ShaderPreviewContent {
+        val deviceConfiguration = currentDeviceConfiguration()
+
+        val columns by rememberUpdatedState(
+            newValue = when (deviceConfiguration) {
+                MOBILE_PORTRAIT -> 1
+                MOBILE_LANDSCAPE -> 2
+                TABLET_PORTRAIT -> 2
+                TABLET_LANDSCAPE -> 4
+                DESKTOP -> 4
+            }
+        )
+
+        LazyIntrinsicGrid(
+            items = (1..100).toList(),
+            columns = columns
+        ) { index, item ->
+
+            PrimaryInteractiveButton(
+                hazeState = it,
+                color = Color.White,
+                text = "Shape And Morphing",
+                onClick = {},
+                modifier = Modifier,
+                scale = 1f,
+                blur = 0f
+            )
+
+        }
+    }
+}

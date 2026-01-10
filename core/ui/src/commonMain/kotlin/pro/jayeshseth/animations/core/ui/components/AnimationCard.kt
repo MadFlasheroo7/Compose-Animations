@@ -46,6 +46,17 @@ import pro.jayeshseth.animations.core.model.AnimationContent
 import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 
+/**
+ * A composable that displays an animation within a card with a glassmorphism effect.
+ * The card animates in with a slide and blur effect when its index changes.
+ *
+ * @param index The current index of the card. Used to trigger enter animations.
+ * @param hazeState The [HazeState] used to apply the glassmorphism (haze) effect.
+ * @param animationContent An [AnimationContent] object containing the title and the composable content to be displayed.
+ * @param onClickLink A lambda function to be invoked when the link icon is clicked.
+ * @param isInitialLoad A boolean flag to prevent the enter animation on the first composition. Defaults to `false`.
+ * @param modifier The [Modifier] to be applied to the card.
+ */
 @OptIn(ExperimentalHazeApi::class)
 @Composable
 fun AnimationCard(
@@ -56,18 +67,13 @@ fun AnimationCard(
     isInitialLoad: Boolean = false,
     modifier: Modifier = Modifier
 ) {
-//    val context = LocalContext.current
     val animatedProgress = remember { Animatable(300f) }
     val animatedBlur = remember { Animatable(100f) }
-//    val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
     var hasAnimated by remember { mutableStateOf(false) }
     val hapticFeedback = LocalHapticFeedback.current
     LaunchedEffect(index) {
         if (!isInitialLoad || hasAnimated) {
             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//                vibrator!!.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
-//            }
             animatedProgress.animateTo(
                 targetValue = 1f,
                 animationSpec = spring(

@@ -22,13 +22,7 @@ class MainActivity : ComponentActivity() {
             val backStack = rememberNavigator(LandingRoutes.Home)
             val urlHandler = LocalUriHandler.current
             AnimationsTheme {
-//                Surface(
-//                    modifier = Modifier
-//                        .fillMaxSize(),
-//                    color = MaterialTheme.colorScheme.background
-//                ) {
                 NavGraph(backStack) { urlHandler.openUri("$BASE_URL/$it") }
-//                }
             }
         }
     }

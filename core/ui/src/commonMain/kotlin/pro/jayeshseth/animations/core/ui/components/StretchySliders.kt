@@ -48,6 +48,34 @@ import pro.jayeshseth.animations.core.ui.modifiers.shimmerBorder
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 
 
+/**
+ * A highly stylized and animated slider component that provides a "stretchy" or "bouncy"
+ * visual effect when the user drags beyond the start or end points. It integrates effects
+ * like haze, inner/outer shadows, and a shimmering border.
+ *
+ * The slider's track is custom-drawn, featuring animated corner radii, colors, and shadow
+ * properties that react to the slider's value, particularly when it reaches its maximum.
+ * When the slider's value is at its maximum, it triggers a more pronounced visual state,
+ * including a glowing effect and a shimmer animation.
+ *
+ * This component is built on top of Material 3's `Slider` but replaces the default track
+ * and thumb with a custom implementation to achieve its unique appearance and behavior.
+ * The "stretchy" effect is managed by the `trackOverslide` modifier, which detects
+ * over-dragging and applies transformations (scale, translation) to create a rubber-band feel.
+ *
+ * Note: The `ComposeFriendlyFloat` and `ComposeFriendlyInt` types are used to ensure that
+ * recomposition occurs correctly when the values are updated, which is crucial for
+ * state-driven UI in Compose.
+ *
+ * @param hazeState The [HazeState] required for the `hazeEffect` modifier, which adds a
+ *   frosted glass effect to the slider track.
+ * @param value A lambda returning the current value of the slider. Using a lambda
+ *   ensures recomposition when the value changes.
+ * @param onValueChange A callback that is invoked when the slider's value changes. The new
+ *   value is provided as a `Float`.
+ * @param modifier The [Modifier] to be applied to the slider.
+ * @param color The primary color used for the slider's track, shadows, and shimmer effects.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StretchySlider(

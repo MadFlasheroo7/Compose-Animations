@@ -30,6 +30,28 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.ui.modifiers.shimmerBorder
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 
+/**
+ * A Composable that creates an interactive icon button with a "haze" or glassmorphism effect.
+ * The button features complex animations on interaction (press, hover, or click), including
+ * changes to its shape, shadow, and an inner shadow effect. It also includes a continuous
+ * shimmering border animation.
+ *
+ * The button's shape animates from a rounded rectangle to a circle upon interaction.
+ * It leverages the `Haze` library for the glassmorphism effect, blurring content behind it.
+ *
+ * @param onClick Lambda to be invoked when the button is clicked.
+ * @param hazeState The [HazeState] used to apply the blur effect. The content behind this
+ *   button should be blurred using a `hazeSource` modifier with the same [HazeState].
+ * @param modifier The [Modifier] to be applied to the button.
+ * @param hazeStyle The [HazeStyle] to configure the appearance of the haze effect, such as
+ *   tint, blur radius, and noise.
+ * @param onLongClick Lambda to be invoked for a long-click gesture.
+ * @param color The primary color used for the button's animated shadow and effects.
+ * @param clickDelay A delay in milliseconds after the click animation finishes before the
+ *   internal state is reset.
+ * @param contentPadding The padding applied around the icon content.
+ * @param icon The composable content to be displayed inside the button, typically an [Icon].
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HazedIconButton(

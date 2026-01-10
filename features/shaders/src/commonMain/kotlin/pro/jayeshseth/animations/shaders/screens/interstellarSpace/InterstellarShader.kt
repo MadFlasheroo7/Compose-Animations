@@ -323,7 +323,6 @@ private fun InterstellarShader(
                             selectedIndex = pagerState.currentPage,
                             tabComponent = { index, tab ->
                                 AnimatedTab(
-                                    isSelected = pagerState.currentPage == index,
                                     modifier = Modifier
                                         .sharedBounds(
                                             sharedContentState = rememberSharedContentState("shared_inner_background"),
@@ -655,7 +654,6 @@ private fun CodePreview(
                     hazeState = hazeState,
                     tabComponent = { index, tabTitle ->
                         AnimatedTab(
-                            isSelected = selectedTab.intValue == index,
                             onClick = {
                                 selectedTab.intValue = index
                             },

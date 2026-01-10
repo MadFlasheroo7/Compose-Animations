@@ -94,7 +94,6 @@ fun CodePreview(
                     hazeState = hazeState,
                     tabComponent = { index, tabTitle ->
                         AnimatedTab(
-                            isSelected = selectedTab.intValue == index,
                             onClick = {},
                         ) {
                             Text(

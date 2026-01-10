@@ -11,7 +11,21 @@ import androidx.savedstate.serialization.decodeFromSavedState
 import androidx.savedstate.serialization.encodeToSavedState
 import pro.jayeshseth.animations.core.navigation.Navigator.Companion.Saver
 
-class Navigator(private var startRoute: Route,val onNavigate: (Route) -> Unit = {}) {
+/**
+ * A simple navigation controller that manages a back stack of [Route]s.
+ *
+ * This class provides basic navigation functionalities like navigating to a new route and
+ * navigating back to the previous one. It maintains a back stack of routes to keep track
+ * of the navigation history.
+ *
+ * The state of the navigator, including its back stack, can be saved and restored across
+ * configuration changes or process death using the provided [Saver].
+ *
+ * @param startRoute The initial route for the navigator. This will be the first item in the back stack.
+ * @param onNavigate A callback function that is invoked whenever a navigation event occurs.
+ *                   This can be used for side effects like logging or analytics.
+ */
+class Navigator(private var startRoute: Route, val onNavigate: (Route) -> Unit = {}) {
     val backStack = mutableStateListOf(startRoute)
 
     /**

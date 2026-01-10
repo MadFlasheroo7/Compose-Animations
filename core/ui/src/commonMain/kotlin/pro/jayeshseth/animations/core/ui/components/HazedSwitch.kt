@@ -24,6 +24,22 @@ import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+/**
+ * A Composable that renders a Switch with a "hazed" or frosted glass effect.
+ * This component leverages the `Haze` library to create a visually appealing toggle
+ * that blurs the content behind it. It features smooth animations for toggling,
+ * shadow effects, and color changes.
+ *
+ * @param hazeState The state object for the Haze effect, used to coordinate the blurring
+ *                  between the content and the UI elements.
+ * @param toggled The current state of the switch (true for on, false for off).
+ * @param onToggleChanged A callback that is invoked when the user interacts with the switch.
+ *                        The new boolean state is passed as a parameter.
+ * @param modifier The [Modifier] to be applied to the switch.
+ * @param enabled Controls the enabled state of the switch. When `false`, the switch will not
+ *                be interactive.
+ * @param color The primary color used for the switch's glow and shadow effects when toggled on.
+ */
 @Composable
 fun HazedSwitch(
     hazeState: HazeState,

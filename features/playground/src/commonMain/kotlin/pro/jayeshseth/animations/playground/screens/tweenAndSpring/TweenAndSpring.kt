@@ -171,7 +171,6 @@ fun TweenAndSpringScreen(
             selectedIndex = configsPagerState.currentPage,
             tabComponent = { index, tab ->
                 AnimatedTab(
-                    isSelected = configsPagerState.currentPage == index,
                     onClick = {
                         scope.launch(Dispatchers.Main) {
                             configsPagerState.animateScrollToPage(index)
@@ -251,7 +250,6 @@ private fun PreviewTabs() {
                 selectedIndex = state,
                 tabComponent = { index, tab ->
                     AnimatedTab(
-                        isSelected = state == index,
                         onClick = { state = index },
                     ) {
                         Icon(

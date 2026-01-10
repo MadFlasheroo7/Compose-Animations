@@ -13,6 +13,26 @@ import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 
+/**
+ * A composable that renders an animated line chart.
+ *
+ * The chart path is drawn based on a list of points and a progress value,
+ * which animates the drawing of the path from start to finish. It also includes
+ * two horizontal dashed grid lines at y=0.0 and y=1.0, and a "head" circle
+ * at the current end of the animated path.
+ *
+ * The coordinate system for the input points is normalized, where the X-axis
+ * is expected to be between 0f and 1f. The Y-axis is automatically scaled
+ * to fit the provided points, while ensuring the 0f to 1f range is visible.
+ *
+ * @param points A list of [Offset] points to draw the chart line. The x-values should be
+ *   normalized between 0.0 and 1.0.
+ * @param progress A float value between 0.0 and 1.0 indicating the progress of the
+ *   path drawing animation. 0.0 means no path is drawn, 1.0 means the full path is drawn.
+ * @param modifier The [Modifier] to be applied to the chart container.
+ * @param gridColor The [Color] of the horizontal grid lines.
+ * @param pathColor The [Color] of the chart path and the head circle.
+ */
 @Composable
 fun AnimatedChart(
     points: List<Offset>,

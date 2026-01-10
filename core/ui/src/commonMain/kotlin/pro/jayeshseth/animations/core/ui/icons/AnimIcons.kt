@@ -17,6 +17,13 @@ import animations.core.ui.generated.resources.ic_twitter
 import animations.core.ui.generated.resources.link
 import animations.core.ui.generated.resources.minus
 
+/**
+ * A singleton object that provides easy access to all the icons used throughout the Animations app.
+ * This object centralizes icon references, making it easier to manage and reuse them.
+ *
+ * It includes both custom drawable resources from `Res.drawable` and standard Material icons
+ * from `androidx.compose.material.icons`.
+ */
 object AnimIcons {
     val fan = Res.drawable.fan
     val cat = Res.drawable.cat

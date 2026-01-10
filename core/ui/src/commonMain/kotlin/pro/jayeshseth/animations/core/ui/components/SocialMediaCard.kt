@@ -22,6 +22,14 @@ import dev.chrisbanes.haze.hazeEffect
 import org.jetbrains.compose.resources.painterResource
 import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 
+/**
+ * A Composable that displays a card with links to various social media profiles.
+ * The card has a glassmorphism effect using the haze library. Clicking on an icon
+ * opens the corresponding social media URL.
+ *
+ * @param hazeState The [HazeState] used to apply the blur and tint effect to the card.
+ * @param modifier The [Modifier] to be applied to the component.
+ */
 @Composable
 fun SocialMedia(hazeState: HazeState, modifier: Modifier = Modifier) {
     val urlLauncher = LocalUriHandler.current

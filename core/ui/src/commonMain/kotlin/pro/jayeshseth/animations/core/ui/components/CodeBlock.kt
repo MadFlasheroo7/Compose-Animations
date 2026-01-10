@@ -24,6 +24,20 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+// TODO fix codelines
+/**
+ * A Jetpack Compose composable that displays a block of code with line numbers.
+ *
+ * This component takes a list of strings, where each string is a line of code,
+ * and renders it in a monospaced font. It automatically calculates the necessary
+ * width for the line number column based on the total number of lines, ensuring
+ * proper alignment. The code content is wrapped in a `SelectionContainer` to allow
+ * users to copy the text, while the line numbers themselves are not selectable.
+ * The entire block is horizontally scrollable to accommodate long lines of code.
+ *
+ * @param text A `List<String>` where each element represents a line of code.
+ * @param modifier The `Modifier` to be applied to the `Column` that contains the code block.
+ */
 @Composable
 fun CodeBlockWithLineNumbers(text: List<String>, modifier: Modifier = Modifier) {
     val maxDigits = text.size.toString().length

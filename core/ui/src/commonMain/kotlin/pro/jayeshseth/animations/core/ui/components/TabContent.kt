@@ -14,6 +14,20 @@ import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 
+/**
+ * A composable that displays a container with a row of tabs and the content below them.
+ * It applies a "haze" or "glassmorphism" effect to its background, blurring the content behind it.
+ * The container has rounded top corners.
+ *
+ * @param T The type of data in the [tabsList].
+ * @param hazeState The state object that controls the haze effect, shared with the background content.
+ * @param tabsList A list of data items, one for each tab.
+ * @param selectedIndex The index of the currently selected tab.
+ * @param tabComponent A composable lambda to render a single tab. It receives the index and the data item for the tab.
+ * @param modifier The [Modifier] to be applied to the main column container.
+ * @param color The color used for the selected tab's indicator.
+ * @param content A composable lambda that defines the content to be displayed below the tab row.
+ */
 @Composable
 fun <T> TabContent(
     hazeState: HazeState,

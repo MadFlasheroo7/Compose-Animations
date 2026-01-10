@@ -66,6 +66,27 @@ import pro.jayeshseth.animations.core.ui.modifiers.glowingShadow
 import pro.jayeshseth.animations.core.ui.modifiers.shimmerBorder
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 
+/**
+ * A highly interactive and visually complex button Composable.
+ *
+ * This button features multiple animations that trigger on user interaction (press, hover, or click).
+ * Animations include changing corner radius, shadow color, glowing effects, and a shimmering border.
+ * It also integrates with the `Haze` library for a frosted glass effect.
+ *
+ * The `onClick` lambda is executed after a series of animations complete, with a configurable delay.
+ *
+ * @param hazeState The [HazeState] to apply the glassmorphism (haze) effect.
+ * @param text The text to display inside the button.
+ * @param modifier The [Modifier] to be applied to the button.
+ * @param hazeStyle The [HazeStyle] to customize the appearance of the haze effect.
+ * @param onLongClick A lambda to be invoked on a long-click gesture. Note: this currently triggers the same animation as a regular click.
+ * @param clickDelay The delay in milliseconds after the interaction animation finishes before the `onClick` lambda is executed.
+ * @param color The primary color used for the button's text, border, and shadow effects.
+ * @param flip A boolean that inverts the animation target for the button's shape. If true, the button will become more rounded when not interacted with, and less rounded on interaction.
+ * @param scale The scale factor to be applied to the button via `graphicsLayer`.
+ * @param blur The blur radius to be applied to the button via `graphicsLayer`.
+ * @param onClick A lambda to be invoked when the button is clicked and the subsequent animation completes.
+ */
 @OptIn(ExperimentalFoundationApi::class, ExperimentalHazeApi::class)
 @Composable
 fun PrimaryInteractiveButton(

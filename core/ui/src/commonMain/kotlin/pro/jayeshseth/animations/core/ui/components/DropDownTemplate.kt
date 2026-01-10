@@ -22,6 +22,29 @@ import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+/**
+ * A composable that provides a customizable dropdown menu with a glass-morphism effect
+ * and inner shadow animations. It's built upon `ExposedDropdownMenuBox` and integrates
+ * with the `Haze` library for the blur effect.
+ *
+ * The dropdown's appearance, including the inner shadow's spread, radius, and color,
+ * animates based on its expanded state.
+ *
+ * @param hazeState The [HazeState] used to apply the glass-morphism (blur) effect to the
+ *   dropdown and its menu.
+ * @param value The currently selected value to be displayed in the dropdown's text field.
+ * @param expanded Whether the dropdown menu is currently expanded (visible).
+ * @param onExpandedChange Callback that is invoked when the user clicks the dropdown
+ *   to change its expanded state.
+ * @param title A composable lambda for rendering the title of the dropdown section,
+ *   displayed above the dropdown itself.
+ * @param onDismissRequest Callback that is invoked when the user requests to dismiss the
+ *   expanded menu (e.g., by tapping outside of it).
+ * @param color The base color for the animated inner shadow. Defaults to [Color.Cyan].
+ * @param modifier The [Modifier] to be applied to the root `ControllerTemplate` composable.
+ * @param content The composable content to be displayed inside the expanded dropdown menu.
+ *   This is typically a list of `DropdownMenuItem`s.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropDownTemplate(

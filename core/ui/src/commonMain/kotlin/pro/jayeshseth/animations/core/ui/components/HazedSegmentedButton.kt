@@ -34,6 +34,32 @@ import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 
+/**
+ * A segmented button with a glassmorphism ("haze") effect, designed to be used within a
+ * `SingleChoiceSegmentedButtonRow`. This component leverages the `haze-jetpack-compose` library
+ * to create a frosted glass look that blurs the content behind it.
+ *
+ * It features smooth animations for selection state changes, including color, tint, noise factor,
+ * and an inner shadow, providing a visually engaging user experience.
+ *
+ * This composable should be used as a child of `SegmentedButtonRow`.
+ *
+ * @param hazeState The [HazeState] that controls the haze effect. This should be shared
+ *   with the content that appears behind the button.
+ * @param selected Whether this button is currently selected.
+ * @param onClick The callback to be invoked when this button is clicked.
+ * @param shape The shape of the button.
+ * @param modifier The [Modifier] to be applied to the button.
+ * @param enabled Controls the enabled state of the button. When `false`, this button will not be
+ *   clickable.
+ * @param color The primary color used for the content and the inner shadow when selected.
+ * @param interactionSource The [MutableInteractionSource] that represents the stream of
+ *   [Interaction]s for this button. You can create and pass in your own `remember`ed
+ *   instance to observe `Interaction`s and customize the appearance / behavior of this button in
+ *   different states.
+ * @param icon The icon to be displayed in the button. By default, it uses [SegmentedButtonDefaults.Icon].
+ * @param label The label to be displayed in the button.
+ */
 @Composable
 fun SingleChoiceSegmentedButtonRowScope.HazedSegmentedButton(
     hazeState: HazeState,

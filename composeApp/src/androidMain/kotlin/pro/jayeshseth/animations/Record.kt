@@ -15,6 +15,23 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 
 
+/**
+ * Continuously records audio from the microphone to detect claps, providing detailed logging for debugging purposes.
+ * This is a suspend function and should be called from a coroutine. It runs on the IO dispatcher.
+ *
+ * It initializes an [AudioRecord] instance, configures it, and then enters a loop to read audio data.
+ * The audio data is processed by `com.musicg.api.ClapApi` to check for clap sounds.
+ * The function ensures that resources like [AudioRecord] are properly released when the coroutine is cancelled
+ * or an error occurs.
+ *
+ * This function requires the `android.permission.RECORD_AUDIO` permission. The caller is responsible for
+ * ensuring this permission is granted before calling the function.
+ *
+ * @param onClapDetected A callback lambda that is invoked on the Main thread whenever a clap is detected.
+ * @param onLog A callback lambda for receiving detailed debug log messages throughout the process.
+ *              This is useful for monitoring the state of the audio recording and clap detection.
+ * @param onError A callback lambda for reporting errors that occur during initialization or recording.
+ */
 @RequiresPermission(Manifest.permission.RECORD_AUDIO)
 suspend fun detectClapsDebug(
     onClapDetected: () -> Unit,

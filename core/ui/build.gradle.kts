@@ -2,10 +2,6 @@ plugins {
     alias(libs.plugins.animations.cmp.library)
 }
 
-//android {
-//    namespace = "pro.jayeshseth.animations.core.ui"
-//}
-
 kotlin {
     sourceSets {
         wasmJsMain {
@@ -19,6 +15,8 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(projects.core.model)
+//                implementation(libs.compose.material3.material3window)
+                implementation(libs.material3.adaptive)
                 implementation(libs.haze)
                 implementation(libs.compose.unstyled)
                 implementation(libs.hypnoticcanvas)
@@ -27,11 +25,3 @@ kotlin {
         }
     }
 }
-
-//dependencies {
-//    implementation(projects.core.model)
-//    implementation(libs.palette)
-//    implementation(libs.compose.code.editor)
-//    implementation(libs.compose.animation.graphics)
-//
-//}

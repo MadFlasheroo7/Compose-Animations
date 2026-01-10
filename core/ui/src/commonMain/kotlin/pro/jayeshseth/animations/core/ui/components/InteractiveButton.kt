@@ -34,6 +34,33 @@ import pro.jayeshseth.animations.core.ui.modifiers.glowingShadow
 import pro.jayeshseth.animations.core.ui.modifiers.shimmerBorder
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 
+/**
+ * A highly interactive and visually appealing button with complex animations.
+ *
+ * This button features several animations that trigger on interaction (hover or press):
+ * - The corner radius animates from a small value to a large one, morphing the shape.
+ * - A glowing shadow effect animates its color, spread, and offset.
+ * - An inner shadow provides depth.
+ * - A continuous shimmer effect animates along the border.
+ * - A "haze" effect is applied to the background, blurring content behind it.
+ *
+ * The click action is delayed until the main interaction animation completes to ensure a smooth
+ * visual experience.
+ *
+ * @param hazeState The [HazeState] to control the background blur effect. The composable's
+ *   parent should use `hazeSource` for this to work.
+ * @param text The text to display inside the button.
+ * @param modifier The [Modifier] to be applied to the button.
+ * @param hazeStyle The [HazeStyle] to customize the appearance of the haze effect.
+ * @param onLongClick A lambda to be executed on a long click. Note that this also triggers
+ *   the main interaction animation.
+ * @param color The primary color for the button's text, shadow, and shimmer effect.
+ * @param clickDelay A delay in milliseconds after the interaction animation finishes before
+ *   the `onClick` lambda is executed.
+ * @param height The height of the button.
+ * @param onClick A lambda to be executed on a regular click, after the interaction animation
+ *   and any specified [clickDelay].
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun InteractiveButton(

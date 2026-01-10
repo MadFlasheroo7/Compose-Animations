@@ -10,6 +10,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 
+/**
+ * A composable that displays a centered message indicating that a feature is unavailable.
+ * This is useful as a placeholder for features that are not yet implemented or are
+ * disabled for any reason.
+ *
+ * The screen consists of a [Box] that fills the maximum available size and centers its content.
+ * Inside the box, a [Text] composable displays the provided message with a prominent style.
+ *
+ * @param message The text message to display on the screen.
+ * @param modifier The [Modifier] to be applied to the container [Box]. Defaults to [Modifier].
+ */
 @Composable
 fun FeatureUnavailableScreen(
     message: String,
