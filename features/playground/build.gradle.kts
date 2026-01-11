@@ -1,14 +1,14 @@
 plugins {
-    alias(libs.plugins.animations.library)
+    alias(libs.plugins.animations.cmp.feature)
 }
 
-android {
-    namespace = "pro.jayeshseth.animations.playground"
-}
-
-dependencies {
-    implementation(projects.core.model)
-    implementation(projects.core.ui)
-    implementation(projects.core.navigation)
-    implementation(libs.haze)
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(compose.components.uiToolingPreview) // TODO move to convention plugin
+                implementation(compose.components.resources)
+            }
+        }
+    }
 }

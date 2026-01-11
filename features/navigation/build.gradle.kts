@@ -1,15 +1,13 @@
 plugins {
-    alias(libs.plugins.animations.library)
+    alias(libs.plugins.animations.cmp.feature)
 }
 
-android {
-    namespace = "pro.jayeshseth.animations.navigation"
-}
-
-dependencies {
-    implementation(projects.core.ui)
-    implementation(projects.core.model)
-    implementation(projects.core.navigation)
-    implementation(libs.lottie)
-    implementation(libs.haze)
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(libs.navigation.compose)
+            }
+        }
+    }
 }

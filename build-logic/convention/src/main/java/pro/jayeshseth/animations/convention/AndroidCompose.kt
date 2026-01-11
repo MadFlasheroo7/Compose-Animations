@@ -4,15 +4,25 @@ import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
+
 /**
- * shared compose configuration plugin
+ * Configures Compose for an Android module (application or library).
+ * This function applies common Compose settings and dependencies to the given `commonExtension`.
+ *
+ * It enables the Compose feature in the build, handles packaging options to exclude
+ * duplicate license files, and adds essential Compose dependencies.
+ *
+ * Dependencies added:
+ * - Compose Bill of Materials (BOM) for consistent library versions.
+ * - Tooling and preview support for `debug` builds, enabling features like @Preview.
+ *
+ * @param commonExtension The `CommonExtension` from the Android Gradle Plugin to which the configuration is applied.
+ *                        This can be for an `application` or `library` module.
  */
 internal fun Project.configureAndroidCompose(
     commonExtension: CommonExtension<*, *, *, *, *, *>
 ) {
     commonExtension.apply {
-        pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
-
         buildFeatures {
             buildConfig = true
             compose = true
@@ -26,10 +36,12 @@ internal fun Project.configureAndroidCompose(
 
         dependencies {
             val bom = libs.findLibrary("compose-bom").get()
-            add("implementation", platform(bom))
-            add("debugImplementation", libs.findLibrary("compose-ui-manifest").get())
-            add("debugImplementation", libs.findLibrary("compose-ui-tooling").get())
-            add("androidTestImplementation", platform(bom))
+            "implementation"(platform(bom))
+            "testImplementation"(platform(bom))
+
+            "debugImplementation"(libs.findLibrary("compose-ui-tooling").get())
+            "debugImplementation"(libs.findLibrary("compose-ui-tooling-preview").get())
+            "debugImplementation"( libs.findLibrary("compose-ui-manifest").get())
         }
     }
 }
