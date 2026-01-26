@@ -35,7 +35,15 @@ typealias OnNavAction = (Route) -> Unit
 @Serializable(RouteSerializer::class)
 interface Route
 
+@Immutable
+interface SecondaryRoute : Route
 
+
+/**
+ * Extension to check if a route should be treated as secondary content
+ */
+val Route.isSecondary: Boolean
+    get() = this is SecondaryRoute
 
 /**
  * A custom [KSerializer] for handling polymorphic serialization of [Route] subclasses.

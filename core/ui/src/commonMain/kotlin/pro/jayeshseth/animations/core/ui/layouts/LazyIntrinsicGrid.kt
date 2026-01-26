@@ -1,5 +1,6 @@
 package pro.jayeshseth.animations.core.ui.layouts
 
+import androidx.compose.animation.animateBounds
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.LookaheadScope
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.ui.components.PrimaryInteractiveButton
@@ -51,40 +53,43 @@ fun <T> LazyIntrinsicGrid(
     val gridRows = remember(items, columns) {
         buildGridRows(items, columns, span)
     }
+    LookaheadScope {
+        LazyColumn(
+            state = state,
+            modifier = modifier,
+            contentPadding = contentPadding,
+            verticalArrangement = verticalArrangement
+        ) {
+            itemsIndexed(gridRows) { index, rowItems ->
+                val totalSpanUsed = rowItems.sumOf { it.span }
 
-    LazyColumn(
-        state = state,
-        modifier = modifier,
-        contentPadding = contentPadding,
-        verticalArrangement = verticalArrangement
-    ) {
-        itemsIndexed(gridRows) { index, rowItems ->
-            val totalSpanUsed = rowItems.sumOf { it.span }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(IntrinsicSize.Max),
-                horizontalArrangement = horizontalArrangement
-            ) {
-                rowItems.forEach { wrapper ->
-                    Box(
-                        modifier = Modifier
-                            .weight(wrapper.span.toFloat())
-                            .fillMaxHeight(),
-                        propagateMinConstraints = true
-                    ) {
-                        content(index, wrapper.item)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(IntrinsicSize.Max),
+                    horizontalArrangement = horizontalArrangement
+                ) {
+                    rowItems.forEach { wrapper ->
+                        Box(
+                            modifier = Modifier
+                                .weight(wrapper.span.toFloat())
+                                .fillMaxHeight()
+                                .animateBounds(this@LookaheadScope),
+                            propagateMinConstraints = true
+                        ) {
+                            content(index, wrapper.item)
+                        }
                     }
-                }
 
-                if (totalSpanUsed < columns) {
-                    val missingSpans = columns - totalSpanUsed
-                    Spacer(modifier = Modifier.weight(missingSpans.toFloat()))
+                    if (totalSpanUsed < columns) {
+                        val missingSpans = columns - totalSpanUsed
+                        Spacer(modifier = Modifier.weight(missingSpans.toFloat()))
+                    }
                 }
             }
         }
     }
+
 }
 
 

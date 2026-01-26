@@ -3,10 +3,11 @@ package pro.jayeshseth.animations.defaultApis.navigation
 import kotlinx.serialization.Serializable
 import pro.jayeshseth.animations.core.navigation.Route
 import pro.jayeshseth.animations.core.navigation.RouteSerializer
+import pro.jayeshseth.animations.core.navigation.SecondaryRoute
 
 object DefaultApisRoutes {
     @Serializable
-    data object DefaultApisLanding : Route
+    data object DefaultApisLanding : SecondaryRoute
 
     @Serializable
     data object AnimateVisibilityRoute : Route

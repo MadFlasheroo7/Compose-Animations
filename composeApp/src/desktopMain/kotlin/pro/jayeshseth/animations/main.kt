@@ -11,18 +11,13 @@ import pro.jayeshseth.animations.core.navigation.rememberNavigator
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.navigation.LandingRoutes
 import pro.jayeshseth.animations.navigation.NavGraph
+import pro.jayeshseth.animations.navigation.registerAllRoutes
 
 /**
  * The main entry point of the Compose Animations application.
- *
- * This function sets up the main application window, initializes the navigation back stack,
- * and configures global key events. It establishes the root of the UI, wrapping it with
- * the [AnimationsTheme] and setting up the [NavGraph] for navigation.
- *
- * A key binding is set up to handle back navigation: pressing `Alt + Left Arrow`
- * will trigger a `navBack()` action on the navigator.
  */
 fun main() = application {
+    registerAllRoutes()
     val backStack = rememberNavigator(LandingRoutes.Home)
 
     Window(

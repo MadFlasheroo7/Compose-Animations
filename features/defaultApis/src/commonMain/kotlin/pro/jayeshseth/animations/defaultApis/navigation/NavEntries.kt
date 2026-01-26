@@ -5,6 +5,7 @@ import androidx.navigation3.runtime.EntryProviderScope
 import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.navigation.OnNavAction
 import pro.jayeshseth.animations.core.navigation.Route
+import pro.jayeshseth.animations.core.navigation.scenesAndStrategies.BasicTwoPaneScene
 import pro.jayeshseth.animations.defaultApis.animations.infiniteTransistions.InfiniteRotation
 import pro.jayeshseth.animations.defaultApis.screens.AnimateValueAsState
 import pro.jayeshseth.animations.defaultApis.screens.AnimatedGestures
@@ -18,31 +19,43 @@ fun EntryProviderScope<Route>.defaultApis(
     color: Color,
     navAction: OnNavAction,
 ) {
-    entry<DefaultApisRoutes.DefaultApisLanding> {
+    entry<DefaultApisRoutes.DefaultApisLanding>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
         DefaultApisLanding(
             hazeState,
 //            color = color
         ) { navAction(it) }
     }
-    entry<DefaultApisRoutes.AnimateVisibilityRoute> {
+    entry<DefaultApisRoutes.AnimateVisibilityRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
         VisibilityAnimations(
             hazeState,
             onClickLink
         )
     }
-    entry<DefaultApisRoutes.AnimateContentRoute> {
+    entry<DefaultApisRoutes.AnimateContentRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
         AnimatedTransition(
             hazeState
         )
     }
-    entry<DefaultApisRoutes.AnimateValueAsStateRoute> {
+    entry<DefaultApisRoutes.AnimateValueAsStateRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
         AnimateValueAsState(
             hazeState,
             onClickLink
         )
     }
-    entry<DefaultApisRoutes.AnimateGestureRoute> { AnimatedGestures() }
-    entry<DefaultApisRoutes.InfiniteRotationRoute> {
+    entry<DefaultApisRoutes.AnimateGestureRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) { AnimatedGestures() }
+    entry<DefaultApisRoutes.InfiniteRotationRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
         InfiniteRotation(
             hazeState
         )

@@ -6,15 +6,9 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.InputTransformation
-import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -32,8 +26,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.chrisbanes.haze.HazeState
@@ -62,6 +57,7 @@ import pro.jayeshseth.animations.shaders.navigation.ShaderRoutes
 fun HomeScreen(
     hazeState: HazeState,
     color: Color,
+    isSceneActivated: Boolean = false,
     navAction: OnNavAction = {}
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -86,9 +82,9 @@ fun HomeScreen(
         newValue = when (deviceConfiguration) {
             MOBILE_PORTRAIT -> 1
             MOBILE_LANDSCAPE -> 2
-            TABLET_PORTRAIT -> 3
-            TABLET_LANDSCAPE -> 4
-            DESKTOP -> 5
+            TABLET_PORTRAIT -> 2
+            TABLET_LANDSCAPE -> 3
+            DESKTOP -> 3
         }
     )
 
@@ -103,6 +99,7 @@ fun HomeScreen(
             }
         )
     }
+    val local = LocalWindowInfo.current
 //    Log.d("HomeScreen", "isUnlocked: ${isUnlocked.value}")
     Scaffold(
         containerColor = Color.Transparent,
@@ -115,9 +112,15 @@ fun HomeScreen(
                 ),
                 title = {
                     Text(
-                        text = device,
+                        text = "Animations",
+                        autoSize = TextAutoSize.StepBased(
+                            minFontSize = 5.sp,
+                            maxFontSize = 35.sp,
+                            stepSize = 1.sp
+                        ),
                         fontSize = 35.sp,
                         fontWeight = FontWeight(750),
+                        textAlign = TextAlign.Center,
                         fontFamily = syneFontFamily()
                     )
                 }
@@ -128,7 +131,7 @@ fun HomeScreen(
             state = lazyListState,
 //            items = animationScreens(isUnlocked.value),
             items = animationScreens(true),
-            columns = columns,
+            columns = if (isSceneActivated) 1 else columns,
             contentPadding = it,
             span = { 1 },
             modifier = Modifier
@@ -147,44 +150,6 @@ fun HomeScreen(
             )
         }
     }
-}
-
-@Composable
-fun DecimalTextField() {
-    val state = rememberTextFieldState()
-
-    // Define the transformation logic
-    val decimalTransformation = remember {
-        InputTransformation {
-            // 'this' is the TextFieldBuffer containing the proposed text.
-
-            // 1. Validate characters: Allow only digits and '.'
-            if (!asCharSequence().all { it.isDigit() || it == '.' }) {
-                revertAllChanges()
-                return@InputTransformation
-            }
-
-            // 2. Validate format: Ensure at most one decimal point exists
-            if (asCharSequence().count { it == '.' } > 1) {
-                revertAllChanges()
-            }
-        }
-    }
-
-    BasicTextField(
-        state = state,
-        // Apply the transformation here
-        inputTransformation = decimalTransformation,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Decimal
-        ),
-        // formatting for visibility
-        modifier = androidx.compose.ui.Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
-            .padding(16.dp)
-    )
 }
 
 // temp

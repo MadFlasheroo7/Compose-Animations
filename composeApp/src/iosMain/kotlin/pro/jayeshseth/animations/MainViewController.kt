@@ -5,6 +5,7 @@ import pro.jayeshseth.animations.core.navigation.rememberNavigator
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.navigation.LandingRoutes
 import pro.jayeshseth.animations.navigation.NavGraph
+import pro.jayeshseth.animations.navigation.registerAllRoutes
 
 /**
  * The main entry point for the iOS application.
@@ -13,11 +14,12 @@ import pro.jayeshseth.animations.navigation.NavGraph
  * `ComposeUIViewController`. It initializes the navigation stack with a `rememberNavigator`,
  * sets the initial screen to `LandingRoutes.Home`, and wraps the entire UI
  * in the `AnimationsTheme`. The `NavGraph` composable is then used to handle
-plemented navigation logic based on the provided back stack.
+ * navigation logic based on the provided back stack.
  *
  * @return A `UIViewController` that hosts the Compose UI.
  */
 fun MainViewController() = ComposeUIViewController {
+    registerAllRoutes()
     val backStack = rememberNavigator(LandingRoutes.Home)
     AnimationsTheme {
         NavGraph(backStack) { }

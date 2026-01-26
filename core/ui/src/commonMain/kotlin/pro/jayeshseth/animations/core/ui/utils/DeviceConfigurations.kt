@@ -62,7 +62,7 @@ enum class DeviceConfiguration {
         get() = this in listOf(MOBILE_PORTRAIT, MOBILE_LANDSCAPE)
 
     val isWideScreen: Boolean
-        get() = this in listOf(TABLET_LANDSCAPE, DESKTOP)
+        get() = this in listOf(TABLET_PORTRAIT, TABLET_LANDSCAPE, DESKTOP, MOBILE_LANDSCAPE)
 
     companion object {
 
@@ -137,39 +137,39 @@ enum class DeviceConfiguration {
  *
  * @see <a href="https://developer.android.com/develop/ui/compose/layouts/adaptive/use-window-size-classes">Source</a>
  */
-private val COMPACT_WIDTH = 600.dp
+val COMPACT_WIDTH = 600.dp
 
 /**
  * A Standard Expanded Width for inner display of foldables.
  *
  * @see <a href="https://developer.android.com/develop/ui/compose/layouts/adaptive/use-window-size-classes">Source</a>
  */
-private val EXPANDED_WIDTH = 840.dp
+val EXPANDED_WIDTH = 840.dp
 
 /**
  * Width of very large displays usually tablets or large monitors.
  *
  * @see <a href="https://developer.android.com/develop/ui/compose/layouts/adaptive/use-window-size-classes">Source</a>
  */
-private val EXTRA_EXPANDED_WIDTH = 1600.dp
+val EXTRA_EXPANDED_WIDTH = 1600.dp
 
 /**
  * A Standard height for mobile devices in landscape orientation.
  *
  * @see <a href="https://developer.android.com/develop/ui/compose/layouts/adaptive/use-window-size-classes">Source</a>
  */
-private val COMPACT_HEIGHT = 480.dp
+val COMPACT_HEIGHT = 480.dp
 
 /**
  * A Standard Expanded Height of large displays in portrait orientation.
  *
  * @see <a href="https://developer.android.com/develop/ui/compose/layouts/adaptive/use-window-size-classes">Source</a>
  */
-private val EXPANDED_HEIGHT = 900.dp
+val EXPANDED_HEIGHT = 900.dp
 
 /**
  * Height of a very large display usually tablets or large monitors.
  *
  * @see <a href="https://developer.android.com/develop/ui/compose/layouts/adaptive/use-window-size-classes">Source</a>
  */
-private val EXTRA_EXPANDED_HEIGHT = 1200.dp
+val EXTRA_EXPANDED_HEIGHT = 1200.dp

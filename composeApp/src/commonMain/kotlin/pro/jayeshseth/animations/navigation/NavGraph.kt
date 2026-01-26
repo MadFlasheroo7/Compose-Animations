@@ -1,5 +1,10 @@
 package pro.jayeshseth.animations.navigation
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,6 +40,10 @@ import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.Navigator
+import pro.jayeshseth.animations.core.navigation.Route
+import pro.jayeshseth.animations.core.navigation.isSecondary
+import pro.jayeshseth.animations.core.navigation.scenesAndStrategies.BasicTwoPaneScene
+import pro.jayeshseth.animations.core.navigation.scenesAndStrategies.rememberBasicTwoPaneSceneStrategy
 import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
 import pro.jayeshseth.animations.defaultApis.navigation.defaultApis
 import pro.jayeshseth.animations.itemPlacements.navigation.ItemPlacementRoutes
@@ -154,9 +163,64 @@ fun NavGraph(
 //            )
 //        }
     }
+
+    val basicTwoPaneSceneStrategy = rememberBasicTwoPaneSceneStrategy<Route>()
+
+    LaunchedEffect(backStack.backStack.count()) {
+        println("route backstack ${backStack.backStack.last()}")
+    }
     NavDisplay(
         backStack = backStack.backStack,
         onBack = { backStack.navBack() },
+        sceneStrategy = basicTwoPaneSceneStrategy,
+        transitionSpec = {
+            // Slide in from right when navigating forward
+            slideInHorizontally(
+                initialOffsetX = { it },
+//                animationSpec = spring(
+//                    dampingRatio = Spring.DampingRatioLowBouncy,
+//                    stiffness = Spring.StiffnessLow,
+//                )
+            ) togetherWith slideOutHorizontally(
+                targetOffsetX = { -it },
+//                animationSpec = spring(
+//                    dampingRatio = Spring.DampingRatioLowBouncy,
+//                    stiffness = Spring.StiffnessLow,
+//                )
+            )
+        },
+        popTransitionSpec = {
+            // Slide in from left when navigating back
+            slideInHorizontally(
+                initialOffsetX = { -it },
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioLowBouncy,
+                    stiffness = Spring.StiffnessLow,
+                )
+            ) togetherWith slideOutHorizontally(
+                targetOffsetX = { it },
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioLowBouncy,
+                    stiffness = Spring.StiffnessLow,
+                )
+            )
+        },
+        predictivePopTransitionSpec = {
+            // Slide in from left when navigating back
+            slideInHorizontally(
+                initialOffsetX = { -it },
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioLowBouncy,
+                    stiffness = Spring.StiffnessLow,
+                )
+            ) togetherWith slideOutHorizontally(
+                targetOffsetX = { it },
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioLowBouncy,
+                    stiffness = Spring.StiffnessLow,
+                )
+            )
+        },
         modifier = Modifier
             .clickable(
                 indication = null,
@@ -170,11 +234,14 @@ fun NavGraph(
 //            rememberSavedStateNavEntryDecorator()
 //        ),
         entryProvider = entryProvider {
-            entry<LandingRoutes.Home> {
+            entry<LandingRoutes.Home>(
+                metadata = BasicTwoPaneScene.primaryPane()
+            ) {
                 HomeScreen(
 //                    color = paletteColor,
                     color = Color.Cyan,
-                    hazeState = hazeState
+                    hazeState = hazeState,
+                    isSceneActivated = backStack.backStack.lastOrNull()?.isSecondary == true
                 ) { route ->
                     backStack.navigate(route)
                 }
@@ -207,4 +274,14 @@ fun NavGraph(
             }
         }
     )
+}
+
+
+fun registerAllRoutes() {
+    LandingRoutes.register()
+    DefaultApisRoutes.register()
+    NavigationRoutes.register()
+    PlaygroundRoutes.register()
+    ItemPlacementRoutes.register()
+    ShaderRoutes.register()
 }
