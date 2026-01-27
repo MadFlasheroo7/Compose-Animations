@@ -1,7 +1,6 @@
 package pro.jayeshseth.animations.defaultApis.navigation
 
 import kotlinx.serialization.Serializable
-import pro.jayeshseth.animations.core.navigation.Route
 import pro.jayeshseth.animations.core.navigation.RouteSerializer
 import pro.jayeshseth.animations.core.navigation.SecondaryRoute
 
@@ -10,19 +9,19 @@ object DefaultApisRoutes {
     data object DefaultApisLanding : SecondaryRoute
 
     @Serializable
-    data object AnimateVisibilityRoute : Route
+    data object AnimateVisibilityRoute : SecondaryRoute
 
     @Serializable
-    data object AnimateContentRoute : Route
+    data object AnimateContentRoute : SecondaryRoute
 
     @Serializable
-    data object AnimateGestureRoute : Route
+    data object AnimateGestureRoute : SecondaryRoute
 
     @Serializable
-    data object AnimateValueAsStateRoute : Route
+    data object AnimateValueAsStateRoute : SecondaryRoute
 
     @Serializable
-    data object InfiniteRotationRoute : Route
+    data object InfiniteRotationRoute : SecondaryRoute
 
     fun register() {
         RouteSerializer.register<DefaultApisLanding>()

@@ -3,6 +3,7 @@ package pro.jayeshseth.animations.defaultApis.navigation
 import androidx.compose.ui.graphics.Color
 import androidx.navigation3.runtime.EntryProviderScope
 import dev.chrisbanes.haze.HazeState
+import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.OnNavAction
 import pro.jayeshseth.animations.core.navigation.Route
 import pro.jayeshseth.animations.core.navigation.scenesAndStrategies.BasicTwoPaneScene
@@ -14,7 +15,7 @@ import pro.jayeshseth.animations.defaultApis.screens.DefaultApisLanding
 import pro.jayeshseth.animations.defaultApis.screens.VisibilityAnimations
 
 fun EntryProviderScope<Route>.defaultApis(
-    onClickLink: pro.jayeshseth.animations.core.model.OnClickLink,
+    onClickLink: OnClickLink,
     hazeState: HazeState,
     color: Color,
     navAction: OnNavAction,

@@ -167,7 +167,7 @@ fun NavGraph(
     val basicTwoPaneSceneStrategy = rememberBasicTwoPaneSceneStrategy<Route>()
 
     LaunchedEffect(backStack.backStack.count()) {
-        println("route backstack ${backStack.backStack.last()}")
+        println("route backstack ${backStack.backStack.last().isSecondary}")
     }
     NavDisplay(
         backStack = backStack.backStack,
