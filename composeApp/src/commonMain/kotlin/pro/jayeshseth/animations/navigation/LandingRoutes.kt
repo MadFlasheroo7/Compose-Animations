@@ -25,6 +25,9 @@ object LandingRoutes {
     @Serializable
     data object Community : Route
 
+    @Serializable
+    data object MasterCustomization : Route
+
     /**
      * Registers all the routes defined within the [LandingRoutes] object.
      * This function should be called during application startup to ensure that these routes
@@ -35,5 +38,6 @@ object LandingRoutes {
         RouteSerializer.register<BouncyRope>()
         RouteSerializer.register<AboutScreen>()
         RouteSerializer.register<Community>()
+        RouteSerializer.register<MasterCustomization>()
     }
 }

@@ -5,7 +5,6 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -48,6 +47,7 @@ import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
 import pro.jayeshseth.animations.defaultApis.navigation.defaultApis
 import pro.jayeshseth.animations.itemPlacements.navigation.ItemPlacementRoutes
 import pro.jayeshseth.animations.itemPlacements.navigation.itemPlacements
+import pro.jayeshseth.animations.masterCustomization.screens.MasterCustomization
 import pro.jayeshseth.animations.navigation.navigation.NavigationRoutes
 import pro.jayeshseth.animations.navigation.navigation.navigation
 import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
@@ -221,13 +221,14 @@ fun NavGraph(
                 )
             )
         },
-        modifier = Modifier
-            .clickable(
-                indication = null,
-                interactionSource = null
-            ) {
-                currentShaderIndex = (currentShaderIndex + 1) % shaders.size
-            },
+//        modifier = Modifier
+//            .clickable(
+//                indication = null,
+//                interactionSource = null
+//            ) {
+//                currentShaderIndex = (currentShaderIndex + 1) % shaders.size
+//            },
+
 //        entryDecorators = listOf(
 //            entryWithClippedBackgroundDecorator,
 //            rememberSceneSetupNavEntryDecorator(),
@@ -264,6 +265,9 @@ fun NavGraph(
             navigation(hazeState = hazeState) //
             entry<LandingRoutes.BouncyRope> {
                 BouncyRope()
+            }
+            entry<LandingRoutes.MasterCustomization> {
+                MasterCustomization(hazeState)
             }
             entry<LandingRoutes.AboutScreen> {
                 AboutScreen(hazeState)

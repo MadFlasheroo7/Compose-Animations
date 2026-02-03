@@ -49,7 +49,7 @@ fun currentDeviceConfiguration(): DeviceConfiguration {
  * @property TABLET_LANDSCAPE A tablet in landscape orientation.
  * @property DESKTOP A large screen, typical of a desktop or a large tablet in landscape.
  * @property isMobile Returns true for [MOBILE_PORTRAIT] or [MOBILE_LANDSCAPE].
- * @property isWideScreen Returns true for [TABLET_LANDSCAPE] or [DESKTOP].
+ * @property isWideScreen Returns true for [MOBILE_LANDSCAPE], [TABLET_PORTRAIT], [TABLET_LANDSCAPE], [DESKTOP].
  */
 enum class DeviceConfiguration {
     MOBILE_PORTRAIT,
