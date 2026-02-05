@@ -7,6 +7,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +23,8 @@ import androidx.navigation3.scene.SceneStrategy
 import androidx.navigation3.scene.SceneStrategyScope
 import pro.jayeshseth.animations.core.navigation.scenesAndStrategies.BasicTwoPaneScene.Companion.PRIMARY_CONTENT_KEY
 import pro.jayeshseth.animations.core.navigation.scenesAndStrategies.BasicTwoPaneScene.Companion.SECONDARY_CONTENT_KEY
-import pro.jayeshseth.animations.core.ui.utils.COMPACT_WIDTH
+import pro.jayeshseth.animations.core.ui.utils.DeviceConfiguration
+import pro.jayeshseth.animations.core.ui.utils.currentDeviceConfiguration
 
 /**
  * A Basic Two [Scene] that divides contents in 40:60 split
@@ -79,8 +81,8 @@ class BasicTwoPaneScene<T : Any>(
 
 @Composable
 fun <T : Any> rememberBasicTwoPaneSceneStrategy(): BasicTwoPaneSceneStrategy<T> {
-//    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
-//    val configuration = currentDeviceConfiguration()
+    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+    val configuration = currentDeviceConfiguration()
     val windowInfo = LocalWindowInfo.current
     val density = LocalDensity.current
 
@@ -88,14 +90,17 @@ fun <T : Any> rememberBasicTwoPaneSceneStrategy(): BasicTwoPaneSceneStrategy<T> 
 
     val widthDp = with(density) { sizePx.width.toDp() }
 //    val heightDp = with(density) { sizePx.height.toDp() }
-    return remember(widthDp) {
-//        println("rememberBasicTwoPaneSceneStrategy $widthDp")
-        BasicTwoPaneSceneStrategy(widthDp)
+    return remember(configuration) {
+        println("rememberBasicTwoPaneSceneStrategy $widthDp")
+        BasicTwoPaneSceneStrategy(configuration, widthDp)
     }
 }
 
 
-class BasicTwoPaneSceneStrategy<T : Any>(val width: Dp) : SceneStrategy<T> {
+class BasicTwoPaneSceneStrategy<T : Any>(
+    val configuration: DeviceConfiguration,
+    val width: Dp
+) : SceneStrategy<T> {
     var isSceneActive by mutableStateOf(false)
         private set
 
@@ -107,10 +112,13 @@ class BasicTwoPaneSceneStrategy<T : Any>(val width: Dp) : SceneStrategy<T> {
 //            isSceneActive = false
 //            return null
 //        }
-        if (width < COMPACT_WIDTH) {
+//        if (width < COMPACT_WIDTH) {
+        println("isSceneActive ${configuration}")
+        if (!configuration.isWideScreen) {
             isSceneActive = false
             return null
         }
+
 //        println(entries)
 //        val hasPrimary = entries.any { it.metadata.containsKey(PRIMARY_CONTENT_KEY) }
 //        val hasSecondary =

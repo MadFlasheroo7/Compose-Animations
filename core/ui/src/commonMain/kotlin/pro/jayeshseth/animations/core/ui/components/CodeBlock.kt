@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -84,6 +85,7 @@ fun CodeBlockWithLineNumbers(text: List<String>, modifier: Modifier = Modifier) 
 //                            if (isSystemInDarkTheme()) CodeThemeType.Monokai else CodeThemeType.Default
 //                        ),
                         text = line,
+                        color = Color.White,
                         fontSize = 14.sp,
                         maxLines = 1
                     )

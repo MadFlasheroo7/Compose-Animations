@@ -2,6 +2,7 @@ package pro.jayeshseth.animations.core.ui.utils
 
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Dp
@@ -34,7 +35,7 @@ fun currentDeviceConfiguration(): DeviceConfiguration {
     val widthDp = with(density) { sizePx.width.toDp() }
     val heightDp = with(density) { sizePx.height.toDp() }
 
-    return DeviceConfiguration.fromWindowInfo(widthDp, heightDp)
+    return remember(widthDp, heightDp) { DeviceConfiguration.fromWindowInfo(widthDp, heightDp) }
 }
 
 /**
@@ -62,7 +63,7 @@ enum class DeviceConfiguration {
         get() = this in listOf(MOBILE_PORTRAIT, MOBILE_LANDSCAPE)
 
     val isWideScreen: Boolean
-        get() = this in listOf(TABLET_PORTRAIT, TABLET_LANDSCAPE, DESKTOP, MOBILE_LANDSCAPE)
+        get() = this in listOf(TABLET_LANDSCAPE, DESKTOP, MOBILE_LANDSCAPE)
 
     companion object {
 

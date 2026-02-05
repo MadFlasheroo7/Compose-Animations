@@ -14,7 +14,7 @@ kotlin-coroutines = "1.10.2"
 kotlinxSerializationCore = "1.9.0"
 
 # Compose
-compose-bom = "2025.08.01"
+compose-bom = "2026.01.01"
 compose-hot-reload = "1.0.0"
 compose-multiplatform = "1.10.0"
 compose-jetbrains-m3 = "1.9.0"
@@ -43,6 +43,7 @@ lottie = "6.6.6"
 lifecycle = "2.6.2"
 lifecycle-runtime-ktx = "2.6.1"
 navigation = "2.9.0"
+kmpalette = "3.1.0"
 palette = "1.0.0"
 physicsLayout = "0.4.1"
 rebugger = "1.0.1"
@@ -150,6 +151,11 @@ hypnoticcanvas-shaders = { module = "com.mikepenz.hypnoticcanvas:hypnoticcanvas-
 
 # Palette
 palette = { group = "androidx.palette", name = "palette", version.ref = "palette" }
+kmpalette-core = { module = "com.kmpalette:kmpalette-core", version.ref = "kmpalette" }
+kmpalette-extensions-base64 = { module = "com.kmpalette:extensions-base64", version.ref = "kmpalette" }
+kmpalette-extensions-bytearray = { module = "com.kmpalette:extensions-bytearray", version.ref = "kmpalette" }
+kmpalette-extensions-network = { module = "com.kmpalette:extensions-network", version.ref = "kmpalette" }
+kmpalette-extensions-file = { module = "com.kmpalette:extensions-file", version.ref = "kmpalette" }
 
 # Kotlin
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }

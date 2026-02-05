@@ -59,6 +59,7 @@ fun SpringOptions(
     var stiffnessExpanded by remember { mutableStateOf(false) }
 
     Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier
             .fillMaxSize()
             .windowInsetsPadding(

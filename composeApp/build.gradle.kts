@@ -32,6 +32,7 @@ kotlin {
         androidMain {
             dependencies {
                 implementation(compose.preview)
+                implementation("androidx.compose.foundation:foundation:1.11.0-alpha04")
                 implementation(libs.androidx.activity.compose)
                 implementation(fileTree("libs") { include("*.jar") })
             }
@@ -49,6 +50,7 @@ kotlin {
                 implementation(projects.features.navigation)
                 implementation(projects.features.playground)
                 implementation(projects.features.shaders)
+                implementation(projects.features.masterCustomization)
 
                 implementation(compose.runtime)
                 implementation(compose.foundation)

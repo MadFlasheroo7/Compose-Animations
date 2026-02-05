@@ -19,11 +19,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboard
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeState
+import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.core.model.lazyNavBarPadding
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
 import pro.jayeshseth.animations.core.ui.components.CodeBlockWithLineNumbers
@@ -45,7 +48,8 @@ fun CodePreview(
     val selectedTab = remember { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope()
     // TODO
-    val clipboardManager = LocalClipboard.current
+    val clipboard = LocalClipboard.current
+    val clipboardManager = LocalClipboardManager.current
 
     var code by remember {
         mutableStateOf(
@@ -71,6 +75,14 @@ fun CodePreview(
                 CopyIconButton(
                     hazeState = hazeState,
                     onClick = {
+                        scope.launch {
+                            clipboardManager.setText(
+                                AnnotatedString(code)
+                            )
+//                            clipboard.setClipEntry(
+//                                clipEntry =
+//                            )
+                        }
 //                        scope.launch {
 //                            clipboardManager.setClipEntry(
 //                                clipEntry = ClipEntry(

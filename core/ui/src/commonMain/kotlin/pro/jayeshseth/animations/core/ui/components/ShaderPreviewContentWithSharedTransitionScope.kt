@@ -1,14 +1,14 @@
-package pro.jayeshseth.animations.masterCustomization.components
+package pro.jayeshseth.animations.core.ui.components
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.chrisbanes.haze.HazeState
-import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
-import pro.jayeshseth.animations.masterCustomization.screens.LocalSharedTransitionScope
 
 
 @Composable
@@ -31,3 +31,7 @@ fun ShaderPreviewContentWithSharedTransitionScope(
         }
     }
 }
+
+
+val LocalSharedTransitionScope = compositionLocalOf<SharedTransitionScope?> { null }
+val LocalAnimatedVisibilityScope = compositionLocalOf<AnimatedVisibilityScope?> { null }

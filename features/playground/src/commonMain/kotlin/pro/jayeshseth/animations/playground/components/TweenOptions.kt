@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,6 +46,7 @@ fun TweenOptions(
     var expanded by remember { mutableStateOf(false) }
 
     Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())

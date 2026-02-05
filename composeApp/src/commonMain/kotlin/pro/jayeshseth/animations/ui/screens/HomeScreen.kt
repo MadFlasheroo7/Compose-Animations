@@ -248,7 +248,7 @@ private fun animationScreens(isItUnlocked: Boolean): List<AnimationScreen> {
                 ),*/
         if (isItUnlocked) AnimationScreen(
             title = "Master Customisations",
-            route = LandingRoutes.AboutScreen,
+            route = LandingRoutes.MasterCustomization,
             flip = false // TODO fix inner shadow recomposition
         ) else null,
         AnimationScreen(

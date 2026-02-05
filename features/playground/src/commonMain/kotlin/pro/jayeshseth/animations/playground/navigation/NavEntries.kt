@@ -5,6 +5,7 @@ import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.OnNavAction
 import pro.jayeshseth.animations.core.navigation.Route
+import pro.jayeshseth.animations.core.navigation.scenesAndStrategies.BasicTwoPaneScene
 import pro.jayeshseth.animations.playground.screens.AnimationSpecs
 import pro.jayeshseth.animations.playground.screens.PlaygroundLanding
 import pro.jayeshseth.animations.playground.screens.tweenAndSpring.TweenAndSpringScreen
@@ -14,7 +15,9 @@ fun EntryProviderScope<Route>.playground(
     onNavAction: OnNavAction,
     onClickLink: OnClickLink
 ) {
-    entry<PlaygroundRoutes.PlaygroundLandingRoute> {
+    entry<PlaygroundRoutes.PlaygroundLandingRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
         PlaygroundLanding(
             hazeState = hazeState,
             navAction = onNavAction

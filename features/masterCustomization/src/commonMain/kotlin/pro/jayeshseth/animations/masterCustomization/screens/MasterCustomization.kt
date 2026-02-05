@@ -30,7 +30,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,7 +49,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.model.AnimationTabs
 import pro.jayeshseth.animations.core.model.animationTabsList
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
+import pro.jayeshseth.animations.core.ui.components.LocalSharedTransitionScope
 import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
+import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContentWithSharedTransitionScope
 import pro.jayeshseth.animations.core.ui.components.TabContent
 import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
 import pro.jayeshseth.animations.core.ui.utils.currentDeviceConfiguration
@@ -58,7 +59,6 @@ import pro.jayeshseth.animations.masterCustomization.components.DemoDropDown
 import pro.jayeshseth.animations.masterCustomization.components.DemoInteractiveButtons
 import pro.jayeshseth.animations.masterCustomization.components.DemoSlider
 import pro.jayeshseth.animations.masterCustomization.components.DemoSwitch
-import pro.jayeshseth.animations.masterCustomization.components.ShaderPreviewContentWithSharedTransitionScope
 import pro.jayeshseth.animations.masterCustomization.screens.StandardPages.Background
 import pro.jayeshseth.animations.masterCustomization.screens.StandardPages.Buttons
 import pro.jayeshseth.animations.masterCustomization.screens.StandardPages.DropDownMenu
@@ -469,8 +469,6 @@ private fun TabsSection(
 }
 
 // CompositionLocal for SharedTransitionScope
-val LocalSharedTransitionScope = compositionLocalOf<SharedTransitionScope?> { null }
-val LocalAnimatedVisibilityScope = compositionLocalOf<AnimatedVisibilityScope?> { null }
 
 
 enum class MasterCustomizationTabs {

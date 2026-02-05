@@ -5,6 +5,7 @@ import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.OnNavAction
 import pro.jayeshseth.animations.core.navigation.Route
+import pro.jayeshseth.animations.core.navigation.scenesAndStrategies.BasicTwoPaneScene
 import pro.jayeshseth.animations.itemPlacements.screens.ItemPlacementAnimation
 import pro.jayeshseth.animations.itemPlacements.screens.listItemPlacements.FadeItemPlacement
 import pro.jayeshseth.animations.itemPlacements.screens.listItemPlacements.ScaleItemPlacement
@@ -17,7 +18,9 @@ fun EntryProviderScope<Route>.itemPlacements(
     onClickLink: OnClickLink,
     onNavAction: OnNavAction
 ) {
-    entry<ItemPlacementRoutes.ListItemPlacementRoute> {
+    entry<ItemPlacementRoutes.ListItemPlacementRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
         ItemPlacementAnimation(
             hazeState,
             onNavAction

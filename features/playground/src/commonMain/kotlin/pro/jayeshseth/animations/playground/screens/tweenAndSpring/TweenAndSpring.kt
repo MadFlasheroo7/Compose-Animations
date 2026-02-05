@@ -1,6 +1,9 @@
 package pro.jayeshseth.animations.playground.screens.tweenAndSpring
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -8,6 +11,9 @@ import androidx.compose.animation.core.TargetBasedAnimation
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,14 +22,11 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -32,6 +35,7 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -59,7 +63,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import pro.jayeshseth.animations.core.model.AnimationTabs
 import pro.jayeshseth.animations.core.model.DampingRatioList
 import pro.jayeshseth.animations.core.model.EasingList
 import pro.jayeshseth.animations.core.model.OnClickLink
@@ -69,11 +72,11 @@ import pro.jayeshseth.animations.core.ui.components.AnimatedChart
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
 import pro.jayeshseth.animations.core.ui.components.HazedSegmentedButton
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
+import pro.jayeshseth.animations.core.ui.components.LocalSharedTransitionScope
 import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
 import pro.jayeshseth.animations.core.ui.components.TabContent
 import pro.jayeshseth.animations.core.ui.components.Toggler
-import pro.jayeshseth.animations.playground.components.CodePreview
-import pro.jayeshseth.animations.playground.components.PreviewGrid
+import pro.jayeshseth.animations.core.ui.utils.currentDeviceConfiguration
 import pro.jayeshseth.animations.playground.components.SpringOptions
 import pro.jayeshseth.animations.playground.components.TweenOptions
 import pro.jayeshseth.animations.playground.model.TweenAndSpringSpecState
@@ -122,91 +125,97 @@ fun TweenAndSpringScreen(
             )
         )
     }
+    val deviceConfig = currentDeviceConfiguration()
+    val isWideScreen = deviceConfig.isWideScreen
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = modifier.fillMaxSize()
-    ) {
-        Box(Modifier.weight(1f)) {
-            HorizontalPager(
-                state = contentPagerState,
-                modifier = Modifier.fillMaxSize()
-            ) { page ->
-                when (previewTabs[page]) {
-                    PlaygroundPreviewTabs.Chart -> {
-                        AnimationChart(
-                            state = state.value,
-                            replay = replay,
-                            animationType = state.value.selectedSpec
-                        )
-                    }
-
-                    PlaygroundPreviewTabs.Preview -> {
-                        PreviewGrid(
-                            state.value,
-                            replay,
-                            Modifier
-                                .padding(16.dp)
-                                .safeContentPadding()
-                        )
-                    }
-                }
-            }
-        }
-        InteractiveButton(
-            hazeState = hazeState,
-            text = "Replay Animation",
-            height = 45.dp,
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(horizontal = 12.dp),
-            onClick = { replay = !replay }
-        )
-
-        TabContent(
-            color = color,
-            modifier = Modifier.weight(1f),
-            hazeState = hazeState,
-            tabsList = animationTabsList(),
-            selectedIndex = configsPagerState.currentPage,
-            tabComponent = { index, tab ->
-                AnimatedTab(
-                    onClick = {
-                        scope.launch(Dispatchers.Main) {
-                            configsPagerState.animateScrollToPage(index)
-                        }
-                    },
-                ) {
-                    Icon(
-                        painter = painterResource(tab.icon),
-                        contentDescription = tab.title,
-                        tint = LocalContentColor.current
-                    )
-                }
-            }
+    SharedTransitionLayout {
+        CompositionLocalProvider(
+            LocalSharedTransitionScope provides this
         ) {
-            HorizontalPager(
-                state = configsPagerState,
-                modifier = Modifier.fillMaxSize()
-            ) { page ->
-                when (animationTabsList()[page]) {
-                    AnimationTabs.Settings -> {
-                        Configurations(
-                            state = state.value,
-                            hazeState = hazeState,
-                            selectedIndex = selectedPreviewIndex,
-                            onSpecChange = { selectedPreviewIndex = it },
-                            onStateUpdate = { state.value = it }
-                        )
-                    }
-
-                    AnimationTabs.Code -> {
-                        CodePreview(hazeState, state.value)
-                    }
-
-                    AnimationTabs.Source -> {
-                        LinksButtons(hazeState, onClickLink)
-                    }
+            AnimatedContent(
+                targetState = isWideScreen,
+                transitionSpec = {
+                    fadeIn(tween(400)) togetherWith fadeOut(tween(400)) using
+                            SizeTransform { initialSize, targetSize ->
+                                tween(400, easing = FastOutSlowInEasing)
+                            }
+                },
+                modifier = modifier.fillMaxSize()
+            ) { isWide ->
+                if (isWide) {
+                    WideTweenAndSpring(
+                        hazeState = hazeState,
+                        previewPagerState = contentPagerState,
+                        configPagerState = configsPagerState,
+                        selectedIndex = selectedPreviewIndex,
+                        onClickLink = onClickLink,
+                        onTabClick = { index ->
+                            scope.launch(Dispatchers.Main) {
+                                configsPagerState.animateScrollToPage(index)
+                            }
+                        },
+                        replay = replay,
+                        state = state.value,
+                        previewTabs = previewTabs,
+                        onReplayClick = {
+                            replay = !replay
+                        },
+                        onSpecChange = {
+                            selectedPreviewIndex = it
+                        },
+                        onStateUpdate = {
+                            state.value = it
+                        },
+                        modifier = Modifier,
+                        color = color,
+                        onMouseUp = {
+                            scope.launch(Dispatchers.Main) {
+                                contentPagerState.animateScrollToPage(contentPagerState.currentPage + 1)
+                            }
+                        },
+                        onMouseDown = {
+                            scope.launch(Dispatchers.Main) {
+                                contentPagerState.animateScrollToPage(contentPagerState.currentPage - 1)
+                            }
+                        }
+                    )
+                } else {
+                    StandardTweenAndSpring(
+                        hazeState = hazeState,
+                        previewPagerState = contentPagerState,
+                        configPagerState = configsPagerState,
+                        selectedIndex = selectedPreviewIndex,
+                        onClickLink = onClickLink,
+                        onTabClick = { index ->
+                            scope.launch(Dispatchers.Main) {
+                                configsPagerState.animateScrollToPage(index)
+                            }
+                        },
+                        replay = replay,
+                        state = state.value,
+                        previewTabs = previewTabs,
+                        onReplayClick = {
+                            replay = !replay
+                        },
+                        onSpecChange = {
+                            selectedPreviewIndex = it
+                        },
+                        onStateUpdate = {
+                            state.value = it
+                        },
+                        modifier = Modifier,
+                        color = color,
+                        onMouseUp = {
+                            scope.launch(Dispatchers.Main) {
+                                contentPagerState.animateScrollToPage(contentPagerState.currentPage + 1)
+                            }
+                        },
+                        onMouseDown = {
+                            scope.launch(Dispatchers.Main) {
+                                contentPagerState.animateScrollToPage(contentPagerState.currentPage - 1)
+                            }
+                        }
+                    )
                 }
             }
         }
@@ -266,7 +275,7 @@ private fun PreviewTabs() {
 }
 
 @Composable
-private fun Configurations(
+fun Configurations(
     hazeState: HazeState,
     state: TweenAndSpringSpecState,
     onStateUpdate: (TweenAndSpringSpecState) -> Unit,
@@ -276,6 +285,7 @@ private fun Configurations(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier
             .fillMaxSize()
             .windowInsetsPadding(
@@ -362,7 +372,7 @@ private fun Configurations(
 }
 
 @Composable
-private fun LinksButtons(
+fun LinksButtons(
     hazeState: HazeState,
     onClickLink: OnClickLink,
 ) {
@@ -378,7 +388,10 @@ private fun LinksButtons(
                 text = "Blog",
                 height = 70.dp,
                 hazeState = hazeState,
-                onClick = { urlLauncher.openUri(blog) }
+                onClick = {
+                    print(urlLauncher.openUri(blog))
+                    urlLauncher.openUri(blog)
+                }
             )
         }
         item {
@@ -395,10 +408,11 @@ private fun LinksButtons(
 
 // TODO Generalize chart
 @Composable
-private fun AnimationChart(
+fun AnimationChart(
     state: TweenAndSpringSpecState,
     replay: Boolean,
     animationType: TweenNSpringSpec,
+    modifier: Modifier = Modifier
 ) {
     var points by remember { mutableStateOf(emptyList<Offset>()) }
 
@@ -506,7 +520,7 @@ private fun AnimationChart(
         AnimatedChart(
             points,
             animationProgress.value,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp, vertical = 12.dp)
                 .statusBarsPadding()
