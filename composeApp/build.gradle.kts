@@ -26,6 +26,7 @@ kotlin {
     sourceSets {
         webMain {
             dependencies {
+                implementation(npm("@js-joda/core", "3.2.0"))
                 implementation(libs.kotlinx.browser)
             }
         }
@@ -70,7 +71,6 @@ kotlin {
                 implementation(compose.desktop.currentOs)
             }
         }
-
     }
 }
 

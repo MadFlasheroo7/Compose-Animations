@@ -1,3 +1,4 @@
+
 plugins {
     alias(libs.plugins.animations.cmp.library)
 }

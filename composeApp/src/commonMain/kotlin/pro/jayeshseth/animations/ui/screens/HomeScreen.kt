@@ -6,6 +6,7 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.TextAutoSize
@@ -60,7 +61,7 @@ fun HomeScreen(
     isSceneActivated: Boolean = false,
     navAction: OnNavAction = {}
 ) {
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 //    val context = LocalContext.current
     val updateTransition = updateTransition(color)
     val transitionColor by updateTransition.animateColor { it }
@@ -131,10 +132,12 @@ fun HomeScreen(
             state = lazyListState,
 //            items = animationScreens(isUnlocked.value),
             items = animationScreens(true),
-            columns = if (isSceneActivated) 1 else columns,
+//            columns = if (isSceneActivated) 1 else columns,
+            columns = 1,
             contentPadding = it,
             span = { 1 },
             modifier = Modifier
+                .fillMaxSize()
                 .padding(horizontal = 20.dp)
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) { index, item ->
@@ -209,18 +212,18 @@ private fun animationScreens(isItUnlocked: Boolean): List<AnimationScreen> {
             title = "Default Apis",
             route = DefaultApisRoutes.DefaultApisLanding
         ),
-        AnimationScreen(
-            title = "Playground",
-            route = PlaygroundRoutes.PlaygroundLandingRoute
-        ),
-        AnimationScreen(
-            title = "Item Placements",
-            route = ItemPlacementRoutes.ListItemPlacementRoute
-        ),
-        AnimationScreen(
-            title = "Shaders",
-            route = ShaderRoutes.ShaderGraphRoute
-        ),
+//        AnimationScreen(
+//            title = "Playground",
+//            route = PlaygroundRoutes.PlaygroundLandingRoute
+//        ),
+//        AnimationScreen(
+//            title = "Item Placements",
+//            route = ItemPlacementRoutes.ListItemPlacementRoute
+//        ),
+//        AnimationScreen(
+//            title = "Shaders",
+//            route = ShaderRoutes.ShaderGraphRoute
+//        ),
         /*        AnimationScreen(
                     title = "Shapes & Morphing",
                     route = DefaultApisRoutes.AnimateVisibilityRoute
@@ -229,32 +232,32 @@ private fun animationScreens(isItUnlocked: Boolean): List<AnimationScreen> {
                     title = "Text",
                     route = DefaultApisRoutes.AnimateVisibilityRoute
                 ),*/
-        AnimationScreen(
-            title = "Canvas",
-            route = LandingRoutes.BouncyRope
-        ),
-        /*        AnimationScreen(
-                    title = "Community",
-                    route = DefaultApisRoutes.AnimateVisibilityRoute
-                ),*/
-        AnimationScreen(
-            title = "Past Easter Eggs",
-            route = DefaultApisRoutes.DefaultApisLanding
-//            route = EasterEggsRoutes.EasterEggsLandingRoute
-        ),
+//        AnimationScreen(
+//            title = "Canvas",
+//            route = LandingRoutes.BouncyRope
+//        ),
+//        /*        AnimationScreen(
+//                    title = "Community",
+//                    route = DefaultApisRoutes.AnimateVisibilityRoute
+//                ),*/
+//        AnimationScreen(
+//            title = "Past Easter Eggs",
+//            route = DefaultApisRoutes.DefaultApisLanding
+////            route = EasterEggsRoutes.EasterEggsLandingRoute
+//        ),
         /*        AnimationScreen(
                     title = "Community",
                     route = NavDestinations.Community.route
                 ),*/
-        if (isItUnlocked) AnimationScreen(
-            title = "Master Customisations",
-            route = LandingRoutes.MasterCustomization,
-            flip = false // TODO fix inner shadow recomposition
-        ) else null,
-        AnimationScreen(
-            title = "About",
-            route = LandingRoutes.AboutScreen
-        )
+//        if (isItUnlocked) AnimationScreen(
+//            title = "Master Customisations",
+//            route = LandingRoutes.MasterCustomization,
+//            flip = false // TODO fix inner shadow recomposition
+//        ) else null,
+//        AnimationScreen(
+//            title = "About",
+//            route = LandingRoutes.AboutScreen
+//        )
     )
 }
 

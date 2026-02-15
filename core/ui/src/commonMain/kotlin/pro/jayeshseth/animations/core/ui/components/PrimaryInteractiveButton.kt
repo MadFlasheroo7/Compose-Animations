@@ -26,9 +26,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
@@ -41,8 +43,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.draw.innerShadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlurEffect
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.graphicsLayer
@@ -50,18 +56,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mikepenz.hypnoticcanvas.RuntimeEffect
 import com.mikepenz.hypnoticcanvas.shaderBackground
 import com.mikepenz.hypnoticcanvas.shaders.InkFlow
 import dev.chrisbanes.haze.ExperimentalHazeApi
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
+import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 import pro.jayeshseth.animations.core.ui.modifiers.glowingShadow
 import pro.jayeshseth.animations.core.ui.modifiers.shimmerBorder
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
@@ -106,8 +116,8 @@ fun PrimaryInteractiveButton(
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val isHovered by interactionSource.collectIsHoveredAsState()
-    val buttonInteracted = isPressed.or(isHovered || clickTracker > 0)
-//    val buttonInteracted = true
+//    val buttonInteracted = isPressed.or(isHovered || clickTracker > 0)
+    val buttonInteracted = true
     var canExecute by remember { mutableStateOf(false) }
 
     val buttonDp by animateDpAsState(
@@ -208,13 +218,41 @@ fun PrimaryInteractiveButton(
         ),
         label = "translate"
     )
+
+    val infSpread by infiniteTransition.animateFloat(
+        initialValue = 500f,
+        targetValue = 2000f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(5000, easing = EaseInCubic),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "translate"
+    )
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .fillMaxWidth()
+//            .dropShadow(RoundedCornerShape(buttonDp)) {
+//                this.brush = Brush.radialGradient(
+//                    colors = listOf(
+//                        color.copy(alpha = 0.1f),
+//                        color
+//                    )
+//                )
+//                this.spread = 10f
+//            }
+//            .glowingShadow(
+//                borderRadius = buttonDp,
+//                color = color,
+////                spread = spread.value.dp,
+//                spread = 0.dp,
+//                blurRadius = 0.dp,
+////                offsetX = offsetX.value.dp,
+////                offsetY = offsetY.value.dp
+//            )
             .glowingShadow(
                 borderRadius = buttonDp,
-                color = shadowColor,
+                color = color,
                 spread = spread.value.dp,
                 blurRadius = 10.dp,
                 offsetX = offsetX.value.dp,
@@ -233,21 +271,12 @@ fun PrimaryInteractiveButton(
 //            }
             .clip(shape)
             .hazeEffect(state = hazeState, style = hazeStyle)
-//            .graphicsLayer {
-//                this.shape = shape
-//                scaleX = scale
-//                scaleY = scale
-//                renderEffect = BlurEffect(
-//                    blur,
-//                    blur,
-//                    TileMode.Decal
-//                )
-//            }
+
             .combinedClickable(
                 interactionSource = interactionSource,
                 indication = ripple(),
                 onClick = {
-                    canExecute = true
+//                    canExecute = true
                     clickTracker++
                 },
                 onLongClick = {
@@ -256,13 +285,28 @@ fun PrimaryInteractiveButton(
                 }
             )
 
-            .glowingShadow(
-                borderRadius = buttonDp,
-                color = shadowColor,
-            )
+            .dropShadow(RoundedCornerShape(buttonDp)) {
+                print("offset ${this.offset}")
+                this.brush = Brush.radialGradient(
+                    colors = listOf(
+                        color.copy(alpha = 0.1f),
+                        color,
+                        color
+                    ),
+//                    center = Offset(100 / 2.0f, 200 / 2.0f),
+//                    radius = 50f,
+                    tileMode = TileMode.Mirror
+                )
+                this.spread = infSpread
+            }
+//            .glowingShadow(
+//                borderRadius = buttonDp,
+//                color = shadowColor,
+//                spread = infSpread.dp
+//            )
             .innerShadow(shape) {
                 this.color = shadowColor
-                this.radius = 10f
+                this.radius = 5f
                 this.spread = 10f
             }
             .graphicsLayer {
@@ -288,12 +332,12 @@ fun PrimaryInteractiveButton(
                 vertical = 25.dp
             )
         ) {
-//            Icon(
-//                painter = avd,
-//                contentDescription = "",
-//                tint = color,
-//                modifier = Modifier.size(60.dp)
-//            )
+            Icon(
+                painter = painterResource(AnimIcons.settings),
+                contentDescription = "",
+                tint = color,
+                modifier = Modifier.size(60.dp)
+            )
 
             Text(
                 text = text,
