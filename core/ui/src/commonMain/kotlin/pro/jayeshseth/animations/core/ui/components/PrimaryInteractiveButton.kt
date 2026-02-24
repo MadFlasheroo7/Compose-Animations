@@ -1,24 +1,19 @@
 package pro.jayeshseth.animations.core.ui.components
 
-import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.AnimationEndReason
 import androidx.compose.animation.core.EaseInCubic
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsHoveredAsState
-import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,43 +27,41 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.innerShadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mikepenz.hypnoticcanvas.RuntimeEffect
 import com.mikepenz.hypnoticcanvas.shaderBackground
 import com.mikepenz.hypnoticcanvas.shaders.InkFlow
 import dev.chrisbanes.haze.ExperimentalHazeApi
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.ui.icons.AnimIcons
@@ -76,6 +69,7 @@ import pro.jayeshseth.animations.core.ui.modifiers.glowingShadow
 import pro.jayeshseth.animations.core.ui.modifiers.shimmerBorder
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 
+// TODO make is accessible and testable
 /**
  * A highly interactive and visually complex button Composable.
  *
@@ -105,110 +99,49 @@ fun PrimaryInteractiveButton(
     modifier: Modifier = Modifier,
     hazeStyle: HazeStyle = HazeStyle.Unspecified,
     onLongClick: () -> Unit = {},
-    clickDelay: Long = 400,
+    clickDelay: Long = 0L,
     color: Color = Color.Cyan,
     flip: Boolean = false,
-    scale: Float,
-    blur: Float,
+    scale: Float = 1f,
+    blur: Float = 0f,
     onClick: () -> Unit,
 ) {
-    var clickTracker by remember { mutableIntStateOf(0) }
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val isHovered by interactionSource.collectIsHoveredAsState()
-//    val buttonInteracted = isPressed.or(isHovered || clickTracker > 0)
-    val buttonInteracted = true
-    var canExecute by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
-    val buttonDp by animateDpAsState(
-        targetValue = if (buttonInteracted xor flip) {
-            100.dp
-        } else {
-            20.dp
-        },
-        animationSpec = tween(500),
-        label = "animate button shape",
-    )
+    val spread = remember { Animatable(0f) }
+    val radius = remember { Animatable(0f) }
+    val spread2 = remember { Animatable(1500f) }
 
-    val shadowColor by animateColorAsState(
-        targetValue = if (buttonInteracted) color else color.copy(.40f),
-        animationSpec = tween(500),
-        label = "animated button color",
-    )
-    val offsetX = remember { Animatable(0f) }
-    val offsetY = remember { Animatable(0f) }
-    var moffsetX by remember { mutableStateOf(0f) }
-    var moffsetY by remember { mutableStateOf(0f) }
-    val spread by remember { mutableStateOf(Animatable(0f)) }
+    var isPressed by remember { mutableStateOf(false) }
+    var isHovered by remember { mutableStateOf(false) }
+    var isAnimatingClick by remember { mutableStateOf(false) }
 
-//    val avd = rememberAnimatedVectorPainter(
-//        animatedImageVector = AnimatedImageVector.animatedVectorResource(R.drawable.avd),
-//        atEnd = !buttonInteracted
-//    )
+    val isVisuallyActive = isPressed || isAnimatingClick || isHovered
+
+    val infiniteTransition = rememberInfiniteTransition(label = "shimmer")
+    val transition = updateTransition(isVisuallyActive, "button animation")
+
+    val buttonDp by transition.animateDp(
+        transitionSpec = {
+            spring(
+                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessLow,
+            )
+        }
+    ) { if (it xor flip) 100.dp else 20.dp }
+
+    val shadowColor by transition.animateColor(
+        transitionSpec = {
+            spring(
+                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessLow,
+            )
+        }
+    ) { if (it xor flip) color else color.copy(alpha = .4f) }
 
     val shape by remember(buttonDp, flip) { mutableStateOf(RoundedCornerShape(buttonDp)) }
 
-    LaunchedEffect(Unit) {
-//        Log.d("TAG", "PrimaryInteractiveButton:flip: $flip text: $text dp:$buttonDp")
-    }
-
-    LaunchedEffect(buttonInteracted, clickTracker) {
-        if (buttonInteracted) {
-            val spreadJob = async {
-                spread.animateTo(
-                    targetValue = 10f,
-                    animationSpec = keyframes {
-                        durationMillis = 500
-                        0f at 0 using LinearOutSlowInEasing
-                        0f at 200 using FastOutSlowInEasing
-                        10f at 500 using FastOutSlowInEasing
-                    }
-                )
-            }
-
-            val offsetXJob = async {
-                offsetX.animateTo(
-                    targetValue = 0f,
-                    animationSpec = keyframes {
-                        durationMillis = 500
-                        0f at 0 using LinearOutSlowInEasing
-                        -10f at 100 using FastOutSlowInEasing
-                        -10f at 300 using LinearEasing
-                        0f at 500 using FastOutSlowInEasing
-                    }
-                )
-            }
-
-            val offsetYJob = async {
-                offsetY.animateTo(
-                    targetValue = 0f,
-                    animationSpec = keyframes {
-                        durationMillis = 500
-                        0f at 0 with LinearOutSlowInEasing
-                        -10f at 200 with FastOutSlowInEasing
-                        -10f at 300 with LinearEasing
-                        0f at 500 with FastOutSlowInEasing
-                    }
-                )
-            }
-
-            val results = awaitAll(spreadJob, offsetXJob, offsetYJob)
-
-            val allFinished = results.all { it.endReason == AnimationEndReason.Finished }
-            if (allFinished) {
-                println("✨ Animation complete!")
-                delay(clickDelay)
-                spread.snapTo(0f)
-                offsetX.snapTo(0f)
-                offsetY.snapTo(0f)
-                if (canExecute) onClick()
-                if (canExecute) canExecute = false
-                clickTracker = 0
-            }
-        }
-    }
-
-    val infiniteTransition = rememberInfiniteTransition(label = "shimmer")
+    // Infinite Shimmer anim
     val translateAnim by infiniteTransition.animateFloat(
         initialValue = -2f,
         targetValue = 1f,
@@ -216,108 +149,118 @@ fun PrimaryInteractiveButton(
             animation = tween(5500, easing = EaseInCubic),
             repeatMode = RepeatMode.Restart
         ),
-        label = "translate"
+        label = "shimmer"
     )
 
-    val infSpread by infiniteTransition.animateFloat(
-        initialValue = 500f,
-        targetValue = 2000f,
+    // Temp inner radius, a workaround for inner shadow bug
+    val innerRadius by infiniteTransition.animateFloat(
+        initialValue = 4.9f,
+        targetValue = 5f,
+        label = "",
         animationSpec = infiniteRepeatable(
-            animation = tween(5000, easing = EaseInCubic),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "translate"
+            animation = tween(5000),
+        )
     )
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .fillMaxWidth()
-//            .dropShadow(RoundedCornerShape(buttonDp)) {
-//                this.brush = Brush.radialGradient(
-//                    colors = listOf(
-//                        color.copy(alpha = 0.1f),
-//                        color
-//                    )
-//                )
-//                this.spread = 10f
-//            }
-//            .glowingShadow(
-//                borderRadius = buttonDp,
-//                color = color,
-////                spread = spread.value.dp,
-//                spread = 0.dp,
-//                blurRadius = 0.dp,
-////                offsetX = offsetX.value.dp,
-////                offsetY = offsetY.value.dp
-//            )
             .glowingShadow(
                 borderRadius = buttonDp,
                 color = color,
                 spread = spread.value.dp,
-                blurRadius = 10.dp,
-                offsetX = offsetX.value.dp,
-                offsetY = offsetY.value.dp
+                blurRadius = radius.value.dp
             )
-//            .dropShadow(RoundedCornerShape(buttonDp)) {
-//                val brush = Brush.radialGradient(
-//                    colors = listOf(color.copy(alpha = 0.1f), color),
-//                    center = Offset(
-//                        this.size.width / 2f,
-//                        this.size.height / 2f
-//                    ),
-//                    radius = maxDimension * scaleFactor
-//                )
-//
-//            }
             .clip(shape)
             .hazeEffect(state = hazeState, style = hazeStyle)
-
-            .combinedClickable(
-                interactionSource = interactionSource,
-                indication = ripple(),
-                onClick = {
-//                    canExecute = true
-                    clickTracker++
-                },
-                onLongClick = {
-//                    canExecute = true
-                    clickTracker++
+            .pointerInput(Unit) {
+                awaitPointerEventScope {
+                    while (true) {
+                        val event = awaitPointerEvent()
+                        when (event.type) {
+                            PointerEventType.Enter -> isHovered = true
+                            PointerEventType.Exit -> isHovered = false
+                        }
+                    }
                 }
-            )
-
-            .dropShadow(RoundedCornerShape(buttonDp)) {
-                print("offset ${this.offset}")
-                this.brush = Brush.radialGradient(
-                    colors = listOf(
-                        color.copy(alpha = 0.1f),
-                        color,
-                        color
-                    ),
-//                    center = Offset(100 / 2.0f, 200 / 2.0f),
-//                    radius = 50f,
-                    tileMode = TileMode.Mirror
-                )
-                this.spread = infSpread
             }
-//            .glowingShadow(
-//                borderRadius = buttonDp,
-//                color = shadowColor,
-//                spread = infSpread.dp
-//            )
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = { onLongClick() },
+                    onPress = {
+                        isPressed = true
+
+                        val isReleased = tryAwaitRelease()
+
+                        isPressed = false
+
+                        if (isReleased) {
+                            isAnimatingClick = true
+
+                            /**
+                             * runs the animation concurrently and handles the cancellation
+                             */
+                            scope.launch {
+                                // Run the outward spread animations concurrently
+                                awaitAll(
+                                    async { radius.animateTo(20f, tween(500)) },
+                                    async { spread.animateTo(20f, tween(500)) },
+                                    async { spread2.animateTo(400f, tween(500)) }
+                                )
+
+                                onClick()
+
+                                awaitAll(
+                                    async { radius.animateTo(0f, tween(300)) },
+                                    async { spread.animateTo(0f, tween(300)) },
+                                    async { spread2.animateTo(1500f, tween(300)) }
+                                )
+
+                                isAnimatingClick = false
+                            }
+                        } else {
+                            scope.launch {
+                                awaitAll(
+                                    async { radius.animateTo(0f, tween(300)) },
+                                    async { spread.animateTo(0f, tween(300)) },
+                                    async { spread2.animateTo(1500f, tween(300)) }
+                                )
+                            }
+                        }
+                    }
+                )
+            }
+            // TODO migrate glowing shadow and replace this
+            .drawBehind {
+                drawIntoCanvas { canvas ->
+                    val brush = Brush.radialGradient(
+                        radius = this.size.maxDimension * .9f,
+                        center = Offset(
+                            this.size.width / 2f,
+                            this.size.height / 2f
+                        ),
+                        colors = listOf(
+                            shadowColor.copy(alpha = 0.1f),
+                            shadowColor,
+                            shadowColor,
+                        )
+                    )
+                    this.drawRoundRect(brush = brush)
+                }
+            }
             .innerShadow(shape) {
                 this.color = shadowColor
-                this.radius = 5f
+                this.radius = innerRadius
                 this.spread = 10f
             }
             .graphicsLayer {
                 this.shape = shape
-                scaleX = scale
-                scaleY = scale
-                renderEffect = BlurEffect(
-                    blur,
-                    blur,
-                    TileMode.Decal
-                )
+                this.scaleX = scale
+                this.scaleY = scale
+                if (blur > 0f) {
+                    renderEffect = BlurEffect(blur, blur, TileMode.Decal)
+                }
             }
             .shimmerBorder(
                 cornerRadius = buttonDp,
@@ -334,7 +277,7 @@ fun PrimaryInteractiveButton(
         ) {
             Icon(
                 painter = painterResource(AnimIcons.settings),
-                contentDescription = "",
+                contentDescription = null,
                 tint = color,
                 modifier = Modifier.size(60.dp)
             )
@@ -371,13 +314,15 @@ private fun PreviewInteractiveButton() {
             ) {
                 items(120) {
                     PrimaryInteractiveButton(
-                        hazeState,
+                        hazeState = hazeState,
                         color = Color.Magenta,
                         scale = 1f,
                         blur = 0f,
-                        text = "Shapes & Morphing", onClick = {
+                        text = "Shapes & Morphing",
+                        onClick = {
                             println("✨ Animation complete onclick triggred!")
-                        })
+                        }
+                    )
                 }
             }
         }
