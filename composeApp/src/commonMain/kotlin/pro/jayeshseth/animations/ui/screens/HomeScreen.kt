@@ -132,8 +132,7 @@ fun HomeScreen(
             state = lazyListState,
 //            items = animationScreens(isUnlocked.value),
             items = animationScreens(true),
-//            columns = if (isSceneActivated) 1 else columns,
-            columns = 1,
+            columns = if (isSceneActivated) 1 else columns,
             contentPadding = it,
             span = { 1 },
             modifier = Modifier
@@ -212,18 +211,18 @@ private fun animationScreens(isItUnlocked: Boolean): List<AnimationScreen> {
             title = "Default Apis",
             route = DefaultApisRoutes.DefaultApisLanding
         ),
-//        AnimationScreen(
-//            title = "Playground",
-//            route = PlaygroundRoutes.PlaygroundLandingRoute
-//        ),
-//        AnimationScreen(
-//            title = "Item Placements",
-//            route = ItemPlacementRoutes.ListItemPlacementRoute
-//        ),
-//        AnimationScreen(
-//            title = "Shaders",
-//            route = ShaderRoutes.ShaderGraphRoute
-//        ),
+        AnimationScreen(
+            title = "Playground",
+            route = PlaygroundRoutes.PlaygroundLandingRoute
+        ),
+        AnimationScreen(
+            title = "Item Placements",
+            route = ItemPlacementRoutes.ListItemPlacementRoute
+        ),
+        AnimationScreen(
+            title = "Shaders",
+            route = ShaderRoutes.ShaderGraphRoute
+        ),
         /*        AnimationScreen(
                     title = "Shapes & Morphing",
                     route = DefaultApisRoutes.AnimateVisibilityRoute
@@ -232,32 +231,32 @@ private fun animationScreens(isItUnlocked: Boolean): List<AnimationScreen> {
                     title = "Text",
                     route = DefaultApisRoutes.AnimateVisibilityRoute
                 ),*/
-//        AnimationScreen(
-//            title = "Canvas",
-//            route = LandingRoutes.BouncyRope
-//        ),
+        AnimationScreen(
+            title = "Canvas",
+            route = LandingRoutes.BouncyRope
+        ),
 //        /*        AnimationScreen(
 //                    title = "Community",
 //                    route = DefaultApisRoutes.AnimateVisibilityRoute
 //                ),*/
-//        AnimationScreen(
-//            title = "Past Easter Eggs",
-//            route = DefaultApisRoutes.DefaultApisLanding
-////            route = EasterEggsRoutes.EasterEggsLandingRoute
-//        ),
+        AnimationScreen(
+            title = "Past Easter Eggs",
+            route = DefaultApisRoutes.DefaultApisLanding
+//            route = EasterEggsRoutes.EasterEggsLandingRoute
+        ),
         /*        AnimationScreen(
                     title = "Community",
                     route = NavDestinations.Community.route
                 ),*/
-//        if (isItUnlocked) AnimationScreen(
-//            title = "Master Customisations",
-//            route = LandingRoutes.MasterCustomization,
-//            flip = false // TODO fix inner shadow recomposition
-//        ) else null,
-//        AnimationScreen(
-//            title = "About",
-//            route = LandingRoutes.AboutScreen
-//        )
+        if (isItUnlocked) AnimationScreen(
+            title = "Master Customisations",
+            route = LandingRoutes.MasterCustomization,
+            flip = false // TODO fix inner shadow recomposition
+        ) else null,
+        AnimationScreen(
+            title = "About",
+            route = LandingRoutes.AboutScreen
+        )
     )
 }
 
