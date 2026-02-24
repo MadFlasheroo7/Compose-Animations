@@ -42,7 +42,11 @@ actual fun Modifier.glowingShadow(
                     this.size.height / 2f
                 ),
                 radius = maxDimension * scaleFactor,
-                colors = listOf(color.copy(alpha = 0.1f), color)
+                colors = listOf(
+                    color.copy(alpha = 0.1f),
+                    color,
+                    color
+                )
             )
             it.drawRoundRect(
                 left = leftPixel,

@@ -8,6 +8,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.Dp
 
+// TODO not the most accurate version just migrate asap
 actual fun Modifier.glowingShadow(
     color: Color,
     borderRadius: Dp,

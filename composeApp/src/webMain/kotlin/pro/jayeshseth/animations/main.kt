@@ -72,8 +72,8 @@ fun main() {
             backStack.navBack()
         }
         AnimationsTheme {
-            CrossPlatformJellyButton()
-//            NavGraph(backStack) { }
+//            CrossPlatformJellyButton()
+            NavGraph(backStack) { }
         }
     }
 }

@@ -1,7 +1,7 @@
 package pro.jayeshseth.animations.core.ui.modifiers
 
 // TODO migrate to madifiers
-
+// TODO build v2 and move to modifiers ( blur is only diff so make that as extension)
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp

@@ -8,8 +8,6 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.Dp
 import org.jetbrains.skia.FilterBlurMode
-import org.jetbrains.skia.FilterTileMode
-import org.jetbrains.skia.GradientStyle
 import org.jetbrains.skia.MaskFilter
 
 actual fun Modifier.glowingShadow(
@@ -45,17 +43,10 @@ actual fun Modifier.glowingShadow(
         nativePaint.shader = org.jetbrains.skia.Shader.makeRadialGradient(
             x = size.width / 2f + offsetXPx,
             y = size.height / 2f + offsetYPx,
-//            r = maxDimension * scaleFactor,
-//            r = 500f,
-            r = spreadPx,
-            style = GradientStyle(
-                tileMode = FilterTileMode.MIRROR, true, null
-            ),
+            r = maxDimension * scaleFactor,
             colors = intArrayOf(
-//                Color.Red.toArgb(),
                 color.copy(alpha = 0.1f).toArgb(),
-                color.copy(alpha = 0.1f).toArgb(),
-                color.copy(alpha = 1f).toArgb(),
+                color.toArgb(),
                 color.toArgb()
             )
         )
