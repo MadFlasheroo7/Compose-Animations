@@ -3,6 +3,7 @@
 androidGradlePlugin = "8.10.1"
 androidDesugarJdkLibs = "2.1.5"
 androidTools = "31.12.0"
+glowingbutton = "0.1.0-alpha01"
 kotlinxBrowser = "0.5.0"
 ksp = "2.1.20-1.0.31"
 
@@ -116,6 +117,7 @@ compose-animation-graphics = { group = "androidx.compose.animation", name = "ani
 compose-unstyled = { group = "com.composables", name = "composeunstyled", version.ref = "composeUnstyled" }
 
 # Jetbrains Compose
+glowingbutton = { module = "pro.jayeshseth.madifiers:glowingButton", version.ref = "glowingbutton" }
 jetbrains-compose-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "compose-multiplatform" }
 jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-multiplatform" }
 jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "compose-jetbrains-m3" }

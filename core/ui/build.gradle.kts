@@ -19,6 +19,7 @@ kotlin {
 //                implementation(libs.compose.material3.material3window)
                 implementation(libs.material3.adaptive)
                 implementation(libs.haze)
+                implementation(libs.glowingbutton)
                 implementation(libs.compose.unstyled)
                 implementation(libs.hypnoticcanvas)
                 implementation(libs.hypnoticcanvas.shaders)

@@ -45,8 +45,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import pro.jayeshseth.animations.core.ui.modifiers.glowingShadow
 import pro.jayeshseth.animations.core.ui.modifiers.shimmerBorder
+import pro.jayeshseth.glowingButton.glowingShadow
 
 // TODO make is accessible and testable
 /**
@@ -145,12 +145,12 @@ fun BaseInteractiveButton(
         content = content,
         modifier = modifier
             .fillMaxWidth()
-            .glowingShadow(
-                borderRadius = buttonDp,
-                color = color,
-                spread = spread.value.dp,
-                blurRadius = radius.value.dp
-            )
+            .glowingShadow {
+                this.shape = shape
+                this.color = color
+                this.spread = spread.value
+                this.blurRadius = radius.value
+            }
             .clip(shape)
             .hazeEffect(state = hazeState, style = hazeStyle)
             .pointerInput(Unit) {

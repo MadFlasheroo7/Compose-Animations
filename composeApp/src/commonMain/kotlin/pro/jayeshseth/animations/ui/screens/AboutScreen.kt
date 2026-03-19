@@ -70,9 +70,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
 import pro.jayeshseth.animations.core.ui.components.SocialMedia
-import pro.jayeshseth.animations.core.ui.modifiers.glowingShadow
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
+import pro.jayeshseth.glowingButton.glowingShadow
 
 @OptIn(
     ExperimentalLayoutApi::class,
@@ -530,11 +530,11 @@ fun RationalDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier
                     .padding(horizontal = 30.dp)
-                    .glowingShadow(
-                        color = Color.Cyan,
-                        spread = 18.dp,
-                        blurRadius = pulseAlpha.dp
-                    )
+                    .glowingShadow {
+                        color = Color.Cyan
+                        spread = 18f
+                        blurRadius = pulseAlpha
+                    }
                     .clip(RoundedCornerShape(16.dp))
                     .hazeEffect(
                         hazeState,
