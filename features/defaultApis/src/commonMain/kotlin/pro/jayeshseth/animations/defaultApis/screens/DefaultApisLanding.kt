@@ -32,8 +32,8 @@ fun DefaultApisLanding(
     navAction: OnNavAction
 ) {
     LazyColumn(
-        contentPadding = PaddingValues(horizontal = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(18.dp),
+        contentPadding = PaddingValues(20.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier
             .fillMaxSize()
     ) {

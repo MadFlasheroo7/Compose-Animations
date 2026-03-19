@@ -14,7 +14,7 @@ object ItemPlacementRoutes {
     data object SwipeRefreshRoute : Route
 
     @Serializable
-    data object ListItemPlacementRoute : Route
+    data object ListItemPlacementRoute : SecondaryRoute
 
     @Serializable
     data object FadeItemPlacementRoute : Route

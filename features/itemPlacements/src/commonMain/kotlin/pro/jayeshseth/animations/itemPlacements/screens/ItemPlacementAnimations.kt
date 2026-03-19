@@ -2,6 +2,7 @@ package pro.jayeshseth.animations.itemPlacements.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -23,11 +24,12 @@ fun ItemPlacementAnimation(
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier
+            .fillMaxSize()
             .verticalScroll(
                 rememberScrollState()
             )
             .systemBarsPadding()
-            .padding(horizontal = 20.dp)
+            .padding(20.dp)
     ) {
         InteractiveButton(
             hazeState = hazeState,

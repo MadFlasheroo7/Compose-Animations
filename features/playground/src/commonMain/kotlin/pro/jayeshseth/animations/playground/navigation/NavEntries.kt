@@ -23,7 +23,9 @@ fun EntryProviderScope<Route>.playground(
             navAction = onNavAction
         )
     }
-    entry<PlaygroundRoutes.AnimationSpecRoute> {
+    entry<PlaygroundRoutes.AnimationSpecRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
         AnimationSpecs(
             hazeState = hazeState,
             navAction = onNavAction
