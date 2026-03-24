@@ -9,11 +9,9 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,19 +26,16 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import dev.chrisbanes.haze.HazeState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.navigation.AnimationScreen
 import pro.jayeshseth.animations.core.navigation.OnNavAction
+import pro.jayeshseth.animations.core.ui.components.HeadingText
 import pro.jayeshseth.animations.core.ui.components.PrimaryInteractiveButton
 import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
 import pro.jayeshseth.animations.core.ui.layouts.LazyIntrinsicGrid
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
-import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
 import pro.jayeshseth.animations.core.ui.utils.DeviceConfiguration.DESKTOP
 import pro.jayeshseth.animations.core.ui.utils.DeviceConfiguration.MOBILE_LANDSCAPE
 import pro.jayeshseth.animations.core.ui.utils.DeviceConfiguration.MOBILE_PORTRAIT
@@ -57,14 +52,13 @@ import pro.jayeshseth.animations.shaders.navigation.ShaderRoutes
 @Composable
 fun HomeScreen(
     hazeState: HazeState,
-    color: Color,
     isSceneActivated: Boolean = false,
     navAction: OnNavAction = {}
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 //    val context = LocalContext.current
-    val updateTransition = updateTransition(color)
-    val transitionColor by updateTransition.animateColor { it }
+//    val updateTransition = updateTransition(color)
+//    val transitionColor by updateTransition.animateColor { it }
     var isInitialLoad by remember { mutableStateOf(true) }
     val lazyListState = rememberLazyListState()
 //    val prefs = context.commonPrefs
@@ -112,18 +106,7 @@ fun HomeScreen(
                     scrolledContainerColor = Color.Transparent,
                 ),
                 title = {
-                    Text(
-                        text = "Animations",
-                        autoSize = TextAutoSize.StepBased(
-                            minFontSize = 5.sp,
-                            maxFontSize = 35.sp,
-                            stepSize = 1.sp
-                        ),
-                        fontSize = 35.sp,
-                        fontWeight = FontWeight(750),
-                        textAlign = TextAlign.Center,
-                        fontFamily = syneFontFamily()
-                    )
+                    HeadingText("Animations")
                 }
             )
         },
@@ -194,7 +177,6 @@ private fun AnimateButtonScale(
     }
     PrimaryInteractiveButton(
         hazeState = hazeState,
-        color = Color.White,
         flip = flip,
         text = text,
         onClick = onClick,
@@ -265,7 +247,7 @@ private fun animationScreens(isItUnlocked: Boolean): List<AnimationScreen> {
 private fun PreviewHomeScreen() {
     AnimationsTheme {
         ShaderPreviewContent { hazeState ->
-            HomeScreen(hazeState = hazeState, color = Color.White)
+            HomeScreen(hazeState = hazeState)
         }
     }
 

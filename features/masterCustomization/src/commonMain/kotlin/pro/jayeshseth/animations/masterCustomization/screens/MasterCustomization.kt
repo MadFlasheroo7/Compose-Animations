@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -38,27 +39,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import dev.chrisbanes.haze.HazeState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import pro.jayeshseth.animations.core.model.AnimationTabs
-import pro.jayeshseth.animations.core.model.animationTabsList
+import pro.jayeshseth.animations.core.model.AnimationContent
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
+import pro.jayeshseth.animations.core.ui.components.AnimationCard
+import pro.jayeshseth.animations.core.ui.components.HeadingText
 import pro.jayeshseth.animations.core.ui.components.LocalSharedTransitionScope
 import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
 import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContentWithSharedTransitionScope
 import pro.jayeshseth.animations.core.ui.components.TabContent
-import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
 import pro.jayeshseth.animations.core.ui.utils.currentDeviceConfiguration
+import pro.jayeshseth.animations.masterCustomization.components.BackgroundCustomizationContent
 import pro.jayeshseth.animations.masterCustomization.components.DemoDropDown
 import pro.jayeshseth.animations.masterCustomization.components.DemoInteractiveButtons
 import pro.jayeshseth.animations.masterCustomization.components.DemoSlider
 import pro.jayeshseth.animations.masterCustomization.components.DemoSwitch
+import pro.jayeshseth.animations.masterCustomization.components.ThemeCustomizationContent
 import pro.jayeshseth.animations.masterCustomization.screens.StandardPages.Background
 import pro.jayeshseth.animations.masterCustomization.screens.StandardPages.Buttons
 import pro.jayeshseth.animations.masterCustomization.screens.StandardPages.DropDownMenu
@@ -72,7 +72,10 @@ fun MasterCustomization(
     modifier: Modifier = Modifier
 ) {
 
-    val pagerState = rememberPagerState { animationTabsList().size }
+//    val customizationState = LocalCustomizationState.current
+//    val accentColor = Color(customizationState.buttonAccentColorArgb)
+
+    val pagerState = rememberPagerState { MasterCustomizationTabs.entries.size }
     val pagerState2 = rememberPagerState { entries.size }
     val scope = rememberCoroutineScope { Dispatchers.Default }
 
@@ -99,6 +102,7 @@ fun MasterCustomization(
                     WideScreenMasterCustomization(
                         hazeState = hazeState,
                         pagerState = pagerState,
+//                        color = accentColor,
                         onClick = {
                             scope.launch {
                                 val nextPage = if (forward) {
@@ -126,6 +130,7 @@ fun MasterCustomization(
                     StandardMasterCustomization(
                         hazeState = hazeState,
                         pagerState = pagerState,
+//                        color = accentColor,
                         onClick = {
                             scope.launch {
                                 val nextPage = if (forward) {
@@ -165,6 +170,7 @@ private fun AnimatedContentScope.StandardMasterCustomization(
     hazeState: HazeState,
     pagerState: PagerState,
     pagerState2: PagerState,
+//    color: Color,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -185,13 +191,7 @@ private fun AnimatedContentScope.StandardMasterCustomization(
                     scrolledContainerColor = Color.Transparent,
                 ),
                 title = {
-                    Text(
-                        text = "Master Customization",
-                        fontSize = 35.sp,
-                        fontWeight = FontWeight(750),
-                        textAlign = TextAlign.Center,
-                        fontFamily = syneFontFamily()
-                    )
+                    HeadingText("Master Customization")
                 }
             )
             Box(
@@ -209,7 +209,8 @@ private fun AnimatedContentScope.StandardMasterCustomization(
                     hazeState,
                     pagerState2,
                     sharedTransitionScope,
-                    this@StandardMasterCustomization
+                    this@StandardMasterCustomization,
+//                    color = color
                 )
             }
 
@@ -236,6 +237,7 @@ private fun AnimatedContentScope.StandardMasterCustomization(
 private fun AnimatedVisibilityScope.WideScreenMasterCustomization(
     hazeState: HazeState,
     pagerState: PagerState,
+//    color: Color,
     onClick: () -> Unit
 //    pagerState2: PagerState
 ) {
@@ -267,14 +269,21 @@ private fun AnimatedVisibilityScope.WideScreenMasterCustomization(
                             scrolledContainerColor = Color.Transparent,
                         ),
                         title = {
-                            Text(
-                                text = "Master Customization",
-                                fontSize = 35.sp,
-                                fontWeight = FontWeight(750),
-                                textAlign = TextAlign.Center,
-                                fontFamily = syneFontFamily()
-                            )
+                            HeadingText("Master Customization")
                         }
+                    )
+                    AnimationCard(
+                        index = 0,
+                        hazeState = hazeState,
+                        onClickLink = {},
+                        modifier = Modifier
+                            .padding(32.dp),
+                        animationContent = AnimationContent(
+                            title = "Background",
+                            content = {
+//                                BackgroundCustomizationContent()
+                            }
+                        )
                     )
                     DemoInteractiveButtons(
                         hazeState,
@@ -286,7 +295,7 @@ private fun AnimatedVisibilityScope.WideScreenMasterCustomization(
 //                            )
                     )
                     DemoSlider(
-                        hazeState, modifier = Modifier
+                        hazeState, modifier = Modifier,
 //                            .sharedBounds(
 //                                rememberSharedContentState(key = MasterCustomizationSharedKeys.Slider),
 //                                this@WideScreenMasterCustomization,
@@ -295,12 +304,13 @@ private fun AnimatedVisibilityScope.WideScreenMasterCustomization(
                     )
                     DemoSwitch(
                         hazeState = hazeState, toggled = true, onToggleChanged = {},
-                        modifier = Modifier
+                        modifier = Modifier,
 //                            .sharedBounds(
 //                                rememberSharedContentState(key = MasterCustomizationSharedKeys.Switch),
 //                                this@WideScreenMasterCustomization,
 //                                boundsTransform = { _, _ -> tween(300) }
 //                            )
+//                        color = color
                     )
 
                     DemoDropDown(
@@ -309,6 +319,7 @@ private fun AnimatedVisibilityScope.WideScreenMasterCustomization(
                         expanded = false,
                         onExpandedChange = {},
                         onDismissRequest = {},
+//                        color = color,
                         content = {},
                         modifier = Modifier
 //                            .sharedBounds(
@@ -385,24 +396,26 @@ private fun CustomizationPager(
                 Slider -> {
                     DemoSlider(
                         hazeState,
-                        modifier = Modifier
+                        modifier = Modifier,
 //                            .sharedBounds(
 //                                rememberSharedContentState(key = MasterCustomizationSharedKeys.Slider),
 //                                animatedContentScope,
 //                                boundsTransform = { _, _ -> tween(300) }
 //                            )
+//                        color = color
                     )
                 }
 
                 Switch -> {
                     DemoSwitch(
                         hazeState = hazeState, toggled = true, onToggleChanged = {},
-                        modifier = Modifier
+                        modifier = Modifier,
 //                            .sharedBounds(
 //                                rememberSharedContentState(key = MasterCustomizationSharedKeys.Switch),
 //                                animatedContentScope,
 //                                boundsTransform = { _, _ -> tween(300) }
 //                            )
+//                        color = color
                     )
                 }
 
@@ -413,6 +426,7 @@ private fun CustomizationPager(
                         expanded = true,
                         onExpandedChange = {},
                         onDismissRequest = {},
+//                        color = color,
                         content = {},
                         modifier = Modifier
 //                            .sharedBounds(
@@ -444,13 +458,17 @@ private fun TabsSection(
     pagerState: PagerState,
     onClick: () -> Unit,
 ) {
+    val scope = rememberCoroutineScope()
     TabContent(
         hazeState = hazeState,
         modifier = Modifier.fillMaxSize(),
         tabsList = MasterCustomizationTabs.entries,
         selectedIndex = pagerState.currentPage,
         tabComponent = { index, tab ->
-            AnimatedTab(onClick = onClick) {
+            AnimatedTab(onClick = {
+                scope.launch { pagerState.animateScrollToPage(index) }
+                onClick()
+            }) {
                 Text(tab.name)
             }
         }
@@ -459,10 +477,9 @@ private fun TabsSection(
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) { page ->
-            when (animationTabsList()[page]) {
-                AnimationTabs.Settings -> {}
-                AnimationTabs.Code -> {}
-                AnimationTabs.Source -> {}
+            when (MasterCustomizationTabs.entries[page]) {
+                MasterCustomizationTabs.Theme -> ThemeCustomizationContent(hazeState)
+                MasterCustomizationTabs.Background -> BackgroundCustomizationContent()
             }
         }
     }

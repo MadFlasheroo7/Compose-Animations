@@ -35,7 +35,6 @@ fun <T> TabContent(
     selectedIndex: Int,
     tabComponent: @Composable (index: Int, tab: T) -> Unit,
     modifier: Modifier = Modifier,
-    color: Color = Color.Cyan,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val cardStyle = HazeStyle(
@@ -57,7 +56,6 @@ fun <T> TabContent(
             selectedIndex = selectedIndex,
             hazeState = hazeState,
             tabComponent = tabComponent,
-            color = color
         )
         content()
     }

@@ -128,8 +128,7 @@ fun InterstellarShaderScreen(
 private fun InterstellarShader(
     hazeState: HazeState,
     onClickLink: OnClickLink,
-    modifier: Modifier = Modifier,
-    color: Color = Color.Cyan
+    modifier: Modifier = Modifier
 ) {
 //    val view = LocalView.current
 //    val activity = LocalActivity.current
@@ -318,7 +317,6 @@ private fun InterstellarShader(
                     if (it) {
                         TabContent(
                             hazeState = hazeState,
-                            color = color,
                             tabsList = animationTabsList(),
                             selectedIndex = pagerState.currentPage,
                             tabComponent = { index, tab ->

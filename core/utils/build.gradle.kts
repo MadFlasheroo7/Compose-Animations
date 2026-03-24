@@ -16,18 +16,23 @@ kotlin {
             dependsOn(nonWebMain)
         }
 
-        // iOS
         iosMain {
             dependsOn(nonWebMain)
         }
 
-        // Desktop
         desktopMain {
             dependsOn(nonWebMain)
         }
 
         commonMain {
             dependencies {
+                implementation(projects.core.model)
+            }
+        }
+
+        webMain {
+            dependencies {
+                implementation(libs.kotlinx.browser)
             }
         }
     }

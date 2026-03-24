@@ -6,7 +6,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import animations.core.ui.generated.resources.*
+import animations.core.ui.generated.resources.Res
+import animations.core.ui.generated.resources.syne_bold
+import animations.core.ui.generated.resources.syne_extra_bold
+import animations.core.ui.generated.resources.syne_medium
+import animations.core.ui.generated.resources.syne_regular
+import animations.core.ui.generated.resources.syne_semi_bold
 import org.jetbrains.compose.resources.Font
 
 @Composable

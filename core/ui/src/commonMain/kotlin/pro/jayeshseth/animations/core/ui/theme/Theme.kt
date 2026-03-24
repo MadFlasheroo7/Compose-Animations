@@ -1,55 +1,38 @@
 package pro.jayeshseth.animations.core.ui.theme
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
-)
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun AnimationsTheme(
-//    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-//    val view = LocalView.current
-//    if (!view.isInEditMode) {
-//        val window = (view.context as Activity).window
-//        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
-//        WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = false
-//    }
+    val customization = LocalCustomizationState.current
+    val animatedPrimary by animateColorAsState(
+        targetValue = Color(customization.primaryColorArgb),
+        animationSpec = spring(stiffness = Spring.StiffnessLow)
+    )
+    val colorScheme = darkColorScheme(
+        primary = animatedPrimary,
+    )
 
     CompositionLocalProvider(
         LocalTextStyle provides LocalTextStyle.current.copy(
             fontFamily = syneFontFamily()
         )
     ) {
+        // TODO Build Custom design system
         MaterialTheme(
-            colorScheme = DarkColorScheme,
+            colorScheme = colorScheme,
             typography = Typography(),
             content = content
         )

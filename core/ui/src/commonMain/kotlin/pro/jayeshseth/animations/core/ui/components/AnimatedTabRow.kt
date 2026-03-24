@@ -2,7 +2,9 @@ package pro.jayeshseth.animations.core.ui.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -38,6 +40,7 @@ import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 import kotlin.math.ln
 import kotlin.math.sqrt
 
@@ -63,14 +66,12 @@ fun <T> TabsRow(
     selectedIndex: Int,
     tabComponent: @Composable (index: Int, tab: T) -> Unit,
     modifier: Modifier = Modifier,
-    color: Color = Color.Cyan
 ) {
     val indicator = @Composable { tabPositions: List<TabPosition> ->
         TabIndicator(
             hazeState,
             tabPositions,
-            selectedIndex,
-            color
+            selectedIndex
         )
     }
     val cardStyle = HazeStyle(
@@ -109,15 +110,19 @@ fun <T> TabsRow(
  * @param tabPositions A list of [TabPosition]s provided by the `TabRow`'s indicator lambda,
  *                     representing the positions of each tab.
  * @param currentIndex The index of the currently selected tab.
- * @param color The base color for the indicator's inner shadow effect.
  */
 @Composable
 private fun TabIndicator(
     hazeState: HazeState,
     tabPositions: List<TabPosition>,
     currentIndex: Int,
-    color: Color = Color.Cyan,
 ) {
+    val customizationState = LocalCustomizationState.current
+    val color by animateColorAsState(
+        targetValue = Color(customizationState.accentColorArgb),
+        animationSpec = spring(stiffness = Spring.StiffnessLow)
+    )
+
     val stiffness = 1000f
     val dampingRatio = 1f
     val threshold = 0.001f
@@ -210,8 +215,6 @@ private fun TabIndicator(
  *
  * @param onClick A lambda function to be invoked when the tab is clicked.
  * @param modifier The [Modifier] to be applied to the tab's container.
- * @param color The color to be provided as the `LocalContentColor`. This color will be used by
- *   the `content` composable (e.g., for `Text`). Defaults to `Color.Cyan`.
  * @param interactionSource The [MutableInteractionSource] for this clickable component.
  * @param contentPadding The padding applied inside the tab, around the `content`.
  * @param content The composable content to be displayed inside the tab, such as a [Text] label.
@@ -220,11 +223,15 @@ private fun TabIndicator(
 fun AnimatedTab(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    color: Color = Color.Cyan,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     contentPadding: PaddingValues = PaddingValues(horizontal = 20.dp, vertical = 14.dp),
     content: @Composable () -> Unit
 ) {
+    val customizationState = LocalCustomizationState.current
+    val color by animateColorAsState(
+        targetValue = Color(customizationState.accentColorArgb),
+        animationSpec = spring(stiffness = Spring.StiffnessLow)
+    )
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier

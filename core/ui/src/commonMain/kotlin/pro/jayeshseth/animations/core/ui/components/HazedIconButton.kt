@@ -1,19 +1,45 @@
 package pro.jayeshseth.animations.core.ui.components
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationEndReason
+import androidx.compose.animation.core.EaseInOutCubic
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ripple
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,13 +48,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mikepenz.hypnoticcanvas.shaderBackground
 import com.mikepenz.hypnoticcanvas.shaders.InkFlow
-import dev.chrisbanes.haze.*
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.HazeStyle
+import dev.chrisbanes.haze.HazeTint
+import dev.chrisbanes.haze.hazeEffect
+import dev.chrisbanes.haze.hazeSource
+import dev.chrisbanes.haze.rememberHazeState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.ui.modifiers.shimmerBorder
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
+import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 
 /**
  * A Composable that creates an interactive icon button with a "haze" or glassmorphism effect.
@@ -60,11 +92,15 @@ fun HazedIconButton(
     modifier: Modifier = Modifier,
     hazeStyle: HazeStyle = cardStyle,
     onLongClick: () -> Unit = {},
-    color: Color = Color.Cyan,
     clickDelay: Long = 0,
     contentPadding: PaddingValues = PaddingValues(12.dp),
     icon: @Composable (BoxScope.() -> Unit)
 ) {
+    val customizationState = LocalCustomizationState.current
+    val color by animateColorAsState(
+        targetValue = Color(customizationState.accentColorArgb),
+        animationSpec = spring(stiffness = Spring.StiffnessLow)
+    )
     var clickTracker by remember { mutableIntStateOf(0) }
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -160,16 +196,6 @@ fun HazedIconButton(
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-//            .fillMaxWidth()
-//            .height(height)
-//            .glowingShadow(
-//                borderRadius = buttonDp,
-//                color = shadowColor,
-//                spread = spread.value.dp,
-//                blurRadius = 10.dp,
-//                offsetX = offsetX.value.dp,
-//                offsetY = offsetY.value.dp
-//            )
             .clip(shape)
             .hazeEffect(state = hazeState, hazeStyle)
             .combinedClickable(
@@ -195,11 +221,13 @@ fun HazedIconButton(
                 animatedTranslation = translateAnim
             )
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.padding(contentPadding),
-            content = icon
-        )
+        CompositionLocalProvider(LocalContentColor provides color) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.padding(contentPadding),
+                content = icon
+            )
+        }
     }
 }
 
@@ -218,7 +246,6 @@ private fun PreviewInteractiveButton() {
             HazedIconButton(
                 onClick = {},
                 hazeState = hazeState,
-                color = Color.Magenta,
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,

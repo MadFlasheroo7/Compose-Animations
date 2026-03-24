@@ -1,5 +1,6 @@
 package pro.jayeshseth.animations.core.ui.components
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
@@ -45,6 +46,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.model.AnimationContent
 import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
+import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 
 /**
  * A composable that displays an animation within a card with a glassmorphism effect.
@@ -67,6 +69,11 @@ fun AnimationCard(
     isInitialLoad: Boolean = false,
     modifier: Modifier = Modifier
 ) {
+    val customizationState = LocalCustomizationState.current
+    val primaryColor by animateColorAsState(
+        targetValue = Color(customizationState.primaryColorArgb),
+        animationSpec = spring(stiffness = Spring.StiffnessLow)
+    )
     val animatedProgress = remember { Animatable(300f) }
     val animatedBlur = remember { Animatable(100f) }
     var hasAnimated by remember { mutableStateOf(false) }
@@ -132,12 +139,17 @@ fun AnimationCard(
                     text = animationContent.title!!,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
+                    color = primaryColor,
                     modifier = Modifier
                         .basicMarquee()
                         .weight(1f),
                 )
                 IconButton(onClickLink, modifier = Modifier) {
-                    Icon(AnimIcons.link, contentDescription = "link icon")
+                    Icon(
+                        imageVector = AnimIcons.link,
+                        tint = primaryColor,
+                        contentDescription = "link icon"
+                    )
                 }
             }
         }

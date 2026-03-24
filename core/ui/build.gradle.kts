@@ -16,6 +16,7 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(projects.core.model)
+                implementation(projects.core.utils)
 //                implementation(libs.compose.material3.material3window)
                 implementation(libs.material3.adaptive)
                 implementation(libs.haze)

@@ -21,7 +21,8 @@ import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 @Composable
 fun DemoSlider(
     hazeState: HazeState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+//    color: Color = Color.Cyan
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,

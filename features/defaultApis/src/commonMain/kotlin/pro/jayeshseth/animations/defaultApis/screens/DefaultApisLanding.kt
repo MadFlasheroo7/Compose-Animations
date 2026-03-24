@@ -28,7 +28,6 @@ import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
 fun DefaultApisLanding(
     hazeState: HazeState,
     modifier: Modifier = Modifier,
-//    color: Color = Color.Cyan,
     navAction: OnNavAction
 ) {
     LazyColumn(
@@ -41,7 +40,6 @@ fun DefaultApisLanding(
         items(defaultApiAnimations) {
             InteractiveButton(
                 hazeState = hazeState,
-//                color = color,
                 text = it.title,
                 height = 100.dp
             ) {

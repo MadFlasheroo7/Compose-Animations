@@ -156,7 +156,6 @@ fun PreviewLazyGrid() {
 
             PrimaryInteractiveButton(
                 hazeState = it,
-                color = Color.White,
                 text = "Shape And Morphing",
                 onClick = {},
                 modifier = Modifier,

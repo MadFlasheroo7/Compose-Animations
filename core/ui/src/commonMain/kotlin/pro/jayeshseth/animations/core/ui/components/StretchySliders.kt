@@ -46,6 +46,7 @@ import pro.jayeshseth.animations.core.model.ComposeFriendlyFloat
 import pro.jayeshseth.animations.core.model.ComposeFriendlyInt
 import pro.jayeshseth.animations.core.ui.modifiers.shimmerBorder
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
+import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 
 
 /**
@@ -83,7 +84,6 @@ fun StretchySlider(
     value: ComposeFriendlyFloat,
     onValueChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
-    color: Color = Color.Cyan,
     steps: ComposeFriendlyInt = { 0 },
     height: Dp = 60.dp,
     valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
@@ -91,7 +91,12 @@ fun StretchySlider(
 ) {
     val density = LocalDensity.current
     val isLtr = LocalLayoutDirection.current == LayoutDirection.Ltr
+    val customizationState = LocalCustomizationState.current
 
+    val color by animateColorAsState(
+        targetValue = Color(customizationState.accentColorArgb),
+        animationSpec = spring(stiffness = Spring.StiffnessLow)
+    )
     var scaleX by remember { mutableFloatStateOf(1f) }
     var scaleY by remember { mutableFloatStateOf(1f) }
     var translateX by remember { mutableFloatStateOf(0f) }
@@ -440,7 +445,6 @@ private fun PreviewStretchySlider() {
                     StretchySlider(
                         value = { value },
                         interactionSource = interactionSource,
-                        color = Color.White,
                         steps = { 10 },
                         valueRange = 0f..100f,
                         height = 29.dp,

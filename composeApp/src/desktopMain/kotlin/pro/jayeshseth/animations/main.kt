@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,18 +39,22 @@ import org.jetbrains.skia.ImageFilter
 import org.jetbrains.skia.Paint
 import org.jetbrains.skia.RuntimeEffect
 import org.jetbrains.skia.RuntimeShaderBuilder
+import pro.jayeshseth.animations.core.model.CustomizationState
 import pro.jayeshseth.animations.core.navigation.rememberNavigator
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
+import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationRepository
+import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
+import pro.jayeshseth.animations.core.utils.rememberCustomizationRepository
 import pro.jayeshseth.animations.navigation.LandingRoutes
 import pro.jayeshseth.animations.navigation.NavGraph
-import pro.jayeshseth.animations.navigation.registerAllRoutes
+import pro.jayeshseth.animations.navigation.initializeApp
 import pro.jayeshseth.animations.ui.screens.JELLY_SKSL
 
 /**
  * The main entry point of the Compose Animations application.
  */
 fun main() = application {
-    registerAllRoutes()
+    initializeApp()
     val backStack = rememberNavigator(LandingRoutes.Home)
 
     Window(
@@ -66,9 +72,15 @@ fun main() = application {
             }
         },
     ) {
-        AnimationsTheme {
-//            CrossPlatformJellyButton()
-            NavGraph(backStack) { }
+        val repo = rememberCustomizationRepository()
+        val customizationState by repo.state.collectAsState(initial = CustomizationState())
+        CompositionLocalProvider(
+            LocalCustomizationState provides customizationState,
+            LocalCustomizationRepository provides repo,
+        ) {
+            AnimationsTheme {
+                NavGraph(backStack) { }
+            }
         }
     }
 }

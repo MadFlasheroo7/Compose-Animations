@@ -1,5 +1,8 @@
 package pro.jayeshseth.animations.core.ui.components
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +35,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
+import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 
 /**
  * A highly interactive and visually complex button Composable.
@@ -62,12 +67,16 @@ fun PrimaryInteractiveButton(
     hazeStyle: HazeStyle = HazeStyle.Unspecified,
     onLongClick: () -> Unit = {},
     clickDelay: Long = 0L,
-    color: Color = Color.Cyan,
     flip: Boolean = false,
     scale: Float = 1f,
     blur: Float = 0f,
     onClick: () -> Unit,
 ) {
+    val customizationState = LocalCustomizationState.current
+    val color by animateColorAsState(
+        targetValue = Color(customizationState.primaryButtonAccentColorArgb),
+        animationSpec = spring(stiffness = Spring.StiffnessLow)
+    )
     BaseInteractiveButton(
         hazeState = hazeState,
         hazeStyle = hazeStyle,
@@ -130,7 +139,6 @@ private fun PreviewInteractiveButton() {
                 items(120) {
                     PrimaryInteractiveButton(
                         hazeState = hazeState,
-                        color = Color.Magenta,
                         scale = 1f,
                         blur = 0f,
                         text = "Shapes & Morphing",

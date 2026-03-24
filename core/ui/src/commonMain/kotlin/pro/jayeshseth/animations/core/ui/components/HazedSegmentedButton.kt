@@ -2,7 +2,9 @@ package pro.jayeshseth.animations.core.ui.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +35,7 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
+import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 
 /**
  * A segmented button with a glassmorphism ("haze") effect, designed to be used within a
@@ -68,11 +71,16 @@ fun SingleChoiceSegmentedButtonRowScope.HazedSegmentedButton(
     shape: Shape,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    color: Color = Color.Cyan,
+//    color: Color = Color.Cyan,
     interactionSource: MutableInteractionSource? = null,
     icon: @Composable () -> Unit = { SegmentedButtonDefaults.Icon(selected) },
     label: @Composable () -> Unit,
 ) {
+    val customizationState = LocalCustomizationState.current
+    val color by animateColorAsState(
+        targetValue = Color(customizationState.accentColorArgb),
+        animationSpec = spring(stiffness = Spring.StiffnessLow)
+    )
     @Suppress("NAME_SHADOWING")
     val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
 //    val interactionCount = interactionSource.interactionCountAsState()

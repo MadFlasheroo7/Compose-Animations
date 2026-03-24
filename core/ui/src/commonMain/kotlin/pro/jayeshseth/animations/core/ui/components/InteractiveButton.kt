@@ -1,5 +1,8 @@
 package pro.jayeshseth.animations.core.ui.components
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +31,7 @@ import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
+import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 
 /**
  * A highly interactive and visually appealing button with complex animations.
@@ -63,11 +68,15 @@ fun InteractiveButton(
     modifier: Modifier = Modifier,
     hazeStyle: HazeStyle = cardStyle,
     onLongClick: () -> Unit = {},
-    color: Color = Color.Cyan,
     clickDelay: Long = 0,
     height: Dp = 60.dp,
     onClick: () -> Unit
 ) {
+    val customizationState = LocalCustomizationState.current
+    val color by animateColorAsState(
+        targetValue = Color(customizationState.buttonAccentColorArgb),
+        animationSpec = spring(stiffness = Spring.StiffnessLow)
+    )
     BaseInteractiveButton(
         hazeState = hazeState,
         hazeStyle = hazeStyle,
@@ -115,7 +124,6 @@ private fun PreviewInteractiveButton() {
                 items(120) {
                     InteractiveButton(
                         hazeState,
-                        color = Color.Magenta,
                         text = "Shapes & Morphing", onClick = {
                             println("✨ Animation complete onclick triggred!")
                         })

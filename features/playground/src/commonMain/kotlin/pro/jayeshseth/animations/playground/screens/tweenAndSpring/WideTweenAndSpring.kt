@@ -24,7 +24,6 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -39,10 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.isPrimaryPressed
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import dev.chrisbanes.haze.HazeState
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -53,11 +49,11 @@ import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.model.StiffnessList
 import pro.jayeshseth.animations.core.model.animationTabsList
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
+import pro.jayeshseth.animations.core.ui.components.HeadingText
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.ui.components.LocalSharedTransitionScope
 import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
 import pro.jayeshseth.animations.core.ui.components.TabContent
-import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
 import pro.jayeshseth.animations.core.ui.utils.DeviceConfiguration
 import pro.jayeshseth.animations.core.ui.utils.currentDeviceConfiguration
 import pro.jayeshseth.animations.playground.components.CodePreview
@@ -84,7 +80,7 @@ internal fun AnimatedContentScope.WideTweenAndSpring(
     onMouseUp: () -> Unit,
     onMouseDown: () -> Unit,
     modifier: Modifier = Modifier,
-    color: Color = Color.Cyan
+//    color: Color = Color.Cyan
 ) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
         ?: throw IllegalStateException("No SharedTransitionScope found")
@@ -110,13 +106,7 @@ internal fun AnimatedContentScope.WideTweenAndSpring(
                         scrolledContainerColor = Color.Transparent,
                     ),
                     title = {
-                        Text(
-                            text = "Tween And Spring",
-                            fontSize = 35.sp,
-                            fontWeight = FontWeight(750),
-                            textAlign = TextAlign.Center,
-                            fontFamily = syneFontFamily()
-                        )
+                        HeadingText("Tween And Spring")
                     }
                 )
 
@@ -190,7 +180,6 @@ internal fun AnimatedContentScope.WideTweenAndSpring(
             }
 
             TabContent(
-                color = color,
                 modifier = Modifier.weight(1f),
                 hazeState = hazeState,
                 tabsList = animationTabsList(),

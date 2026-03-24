@@ -17,7 +17,6 @@ import pro.jayeshseth.animations.defaultApis.screens.VisibilityAnimations
 fun EntryProviderScope<Route>.defaultApis(
     onClickLink: OnClickLink,
     hazeState: HazeState,
-    color: Color,
     navAction: OnNavAction,
 ) {
     entry<DefaultApisRoutes.DefaultApisLanding>(
@@ -25,7 +24,6 @@ fun EntryProviderScope<Route>.defaultApis(
     ) {
         DefaultApisLanding(
             hazeState,
-//            color = color
         ) { navAction(it) }
     }
     entry<DefaultApisRoutes.AnimateVisibilityRoute>(

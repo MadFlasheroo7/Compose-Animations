@@ -90,7 +90,7 @@ fun TweenAndSpringScreen(
     hazeState: HazeState,
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier,
-    color: Color = Color.Cyan
+//    color: Color = Color.Cyan
 ) {
     val previewTabs = remember { PlaygroundPreviewTabs.entries }
     val specTabs = remember { TweenNSpringSpec.entries }
@@ -167,7 +167,6 @@ fun TweenAndSpringScreen(
                             state.value = it
                         },
                         modifier = Modifier,
-                        color = color,
                         onMouseUp = {
                             scope.launch(Dispatchers.Main) {
                                 contentPagerState.animateScrollToPage(contentPagerState.currentPage + 1)
@@ -204,7 +203,6 @@ fun TweenAndSpringScreen(
                             state.value = it
                         },
                         modifier = Modifier,
-                        color = color,
                         onMouseUp = {
                             scope.launch(Dispatchers.Main) {
                                 contentPagerState.animateScrollToPage(contentPagerState.currentPage + 1)

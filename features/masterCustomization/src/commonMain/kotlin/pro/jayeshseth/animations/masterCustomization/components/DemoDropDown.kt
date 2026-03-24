@@ -37,6 +37,7 @@ import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
+import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,9 +49,13 @@ fun DemoDropDown(
     onDismissRequest: () -> Unit,
     value: String,
     modifier: Modifier = Modifier,
-    color: Color = Color.Cyan,
     content: @Composable ColumnScope.() -> Unit
 ) {
+    val customizationState = LocalCustomizationState.current
+    val color by animateColorAsState(
+        targetValue = Color(customizationState.accentColorArgb),
+        animationSpec = spring(stiffness = Spring.StiffnessLow)
+    )
     val shadowColor by animateColorAsState(
         targetValue = if (expanded) color else color.copy(.40f),
         animationSpec = tween(500),

@@ -26,17 +26,14 @@ fun CopyIconButton(
     onClick: () -> Unit,
     hazeState: HazeState,
     modifier: Modifier = Modifier,
-    color: Color = Color.Cyan
 ) {
     HazedIconButton(
         onClick = onClick,
         modifier = modifier,
         hazeState = hazeState,
-        color = color
     ) {
         Icon(
             Icons.Rounded.CopyAll, "",
-            tint = color
         )
     }
 }

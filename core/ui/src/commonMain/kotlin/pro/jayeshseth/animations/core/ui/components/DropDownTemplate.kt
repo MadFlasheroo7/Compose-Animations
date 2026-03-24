@@ -21,6 +21,7 @@ import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 
 /**
  * A composable that provides a customizable dropdown menu with a glass-morphism effect
@@ -54,12 +55,16 @@ fun DropDownTemplate(
     onExpandedChange: (Boolean) -> Unit,
     title: @Composable () -> Unit,
     onDismissRequest: () -> Unit,
-    color: Color = Color.Cyan,
+//    color: Color = Color.Cyan,
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
     var anchorCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
-
+    val customizationState = LocalCustomizationState.current
+    val color by animateColorAsState(
+        targetValue = Color(customizationState.accentColorArgb),
+        animationSpec = spring(stiffness = Spring.StiffnessLow)
+    )
     val spread by animateFloatAsState(
         targetValue = if (expanded) 20f else 10f,
         animationSpec = spring(

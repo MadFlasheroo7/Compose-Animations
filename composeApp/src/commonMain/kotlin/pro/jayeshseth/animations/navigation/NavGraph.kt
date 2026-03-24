@@ -23,23 +23,13 @@ import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
-import com.mikepenz.hypnoticcanvas.shaderBackground
-import com.mikepenz.hypnoticcanvas.shaders.BlackCherryCosmos
-import com.mikepenz.hypnoticcanvas.shaders.BubbleRings
-import com.mikepenz.hypnoticcanvas.shaders.GoldenMagma
-import com.mikepenz.hypnoticcanvas.shaders.GradientFlow
-import com.mikepenz.hypnoticcanvas.shaders.Heat
-import com.mikepenz.hypnoticcanvas.shaders.IceReflection
-import com.mikepenz.hypnoticcanvas.shaders.InkFlow
-import com.mikepenz.hypnoticcanvas.shaders.OilFlow
-import com.mikepenz.hypnoticcanvas.shaders.PurpleLiquid
-import com.mikepenz.hypnoticcanvas.shaders.Stage
-import com.mikepenz.hypnoticcanvas.shaders.Stripy
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.Navigator
 import pro.jayeshseth.animations.core.navigation.Route
+import pro.jayeshseth.animations.core.ui.components.BackgroundRenderer
+import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 import pro.jayeshseth.animations.core.navigation.isSecondary
 import pro.jayeshseth.animations.core.navigation.scenesAndStrategies.BasicTwoPaneScene
 import pro.jayeshseth.animations.core.navigation.scenesAndStrategies.rememberBasicTwoPaneSceneStrategy
@@ -54,6 +44,7 @@ import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
 import pro.jayeshseth.animations.playground.navigation.playground
 import pro.jayeshseth.animations.shaders.navigation.ShaderRoutes
 import pro.jayeshseth.animations.shaders.navigation.shaders
+import pro.jayeshseth.animations.core.ui.backgrounds.BackgroundRegistrar
 import pro.jayeshseth.animations.ui.screens.AboutScreen
 import pro.jayeshseth.animations.ui.screens.BouncyRope
 import pro.jayeshseth.animations.ui.screens.HomeScreen
@@ -83,22 +74,8 @@ fun NavGraph(
         mutableStateOf<ImageBitmap?>(null)
     }
 
-    val shaders = remember {
-        listOf(
-            InkFlow,
-            BlackCherryCosmos,
-            OilFlow,
-            Heat(),
-            GoldenMagma,
-            BubbleRings,
-            Stage,
-            IceReflection,
-            GradientFlow,
-            PurpleLiquid,
-            Stripy()
-        )
-    }
-    var currentShaderIndex by remember { mutableStateOf(0) }
+    val customization = LocalCustomizationState.current
+//    val accentColor = Color(customization.buttonAccentColorArgb)
 
 //    val paletteColor by animateColorAsState(
 //        targetValue =
@@ -111,23 +88,6 @@ fun NavGraph(
 //            ?: palette?.darkMutedSwatch?.toColor()
 //            ?: Color.Cyan,
 //    )
-    LaunchedEffect(currentShaderIndex) {
-//        bitmap = gl.toImageBitmap()
-    }
-//
-//    LaunchedEffect(bitmap, currentShaderIndex) {
-//        palette = withContext(Dispatchers.Default) {
-//            if (bitmap != null) {
-//                val sb = bitmap!!.asAndroidBitmap().copy(
-//                    Bitmap.Config.ARGB_8888,
-//                    false
-//                )
-//                Palette.from(sb)
-//                    .generate()
-//            } else null
-//        }
-//    }
-
     LaunchedEffect(Unit) {
         LandingRoutes.register()
         DefaultApisRoutes.register()
@@ -147,12 +107,12 @@ fun NavGraph(
             }
         }
     ) {
-        Box(
-            Modifier
+        BackgroundRenderer(
+            backgroundType = customization.backgroundType,
+            modifier = Modifier
                 .fillMaxSize()
                 .hazeSource(hazeState)
                 .blur(12.dp)
-                .shaderBackground(shaders[currentShaderIndex], .2f)
         )
 
 //        bitmap?.let {
@@ -239,8 +199,6 @@ fun NavGraph(
                 metadata = BasicTwoPaneScene.primaryPane()
             ) {
                 HomeScreen(
-//                    color = paletteColor,
-                    color = Color.Cyan,
                     hazeState = hazeState,
                     isSceneActivated = backStack.backStack.lastOrNull()?.isSecondary == true
                 ) { route ->
@@ -248,7 +206,7 @@ fun NavGraph(
                 }
             }
             // Feature Graphs
-            defaultApis(onClickLink, hazeState, color = Color.Cyan) { backStack.navigate(it) }
+            defaultApis(onClickLink, hazeState) { backStack.navigate(it) }
             playground(
                 hazeState = hazeState,
                 onClickLink = onClickLink,
@@ -288,4 +246,13 @@ fun registerAllRoutes() {
     PlaygroundRoutes.register()
     ItemPlacementRoutes.register()
     ShaderRoutes.register()
+}
+
+/**
+ * One-time app initialization.
+ * Registers all shaders and navigation routes.
+ */
+fun initializeApp() {
+    BackgroundRegistrar.register()
+    registerAllRoutes()
 }

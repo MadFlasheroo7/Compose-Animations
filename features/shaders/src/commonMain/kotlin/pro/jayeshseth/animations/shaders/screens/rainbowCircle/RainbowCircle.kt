@@ -88,7 +88,7 @@ private fun InnerRainbowCircle(
     hazeState: HazeState,
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier,
-    color: Color = Color.Cyan
+//    color: Color = Color.Cyan
 ) {
     val pagerState = rememberPagerState { animationTabsList().size }
     val scope = rememberCoroutineScope { Dispatchers.Default }
@@ -231,7 +231,6 @@ private fun InnerRainbowCircle(
         TabContent(
             hazeState = hazeState,
             modifier = Modifier.weight(1f),
-            color = color,
             tabsList = animationTabsList(),
             selectedIndex = pagerState.currentPage,
             tabComponent = { index, tab ->
