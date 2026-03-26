@@ -7,7 +7,6 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -44,13 +43,12 @@ import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 @Composable
 fun DemoDropDown(
     hazeState: HazeState,
-    expanded: Boolean,
-    onExpandedChange: (Boolean) -> Unit,
-    onDismissRequest: () -> Unit,
-    value: String,
     modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit
 ) {
+    val options = listOf("Option 1", "Option 2", "Option 3")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf(options.first()) }
+
     val customizationState = LocalCustomizationState.current
     val color by animateColorAsState(
         targetValue = Color(customizationState.accentColorArgb),
@@ -81,12 +79,10 @@ fun DemoDropDown(
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
         modifier = modifier
             .padding(32.dp)
-//            .padding(16.dp)
-//            .aspectRatio(1f)
     ) {
         ExposedDropdownMenuBox(
             expanded = expanded,
-            onExpandedChange = onExpandedChange,
+            onExpandedChange = { expanded = it },
             modifier = Modifier
                 .clip(CircleShape)
                 .hazeEffect(
@@ -102,15 +98,12 @@ fun DemoDropDown(
                     this.radius = radius
                     this.color = shadowColor
                 }
-//                .onGloballyPositioned { coordinates ->
-//                    anchorCoordinates = coordinates
-//                }
         ) {
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .menuAnchor(MenuAnchorType.PrimaryNotEditable),
-                value = value,
+                value = selectedOption,
                 onValueChange = {},
                 readOnly = true,
                 shape = CircleShape,
@@ -130,9 +123,8 @@ fun DemoDropDown(
             )
             ExposedDropdownMenu(
                 expanded = expanded,
-                onDismissRequest = onDismissRequest,
+                onDismissRequest = { expanded = false },
                 shape = RoundedCornerShape(25.dp),
-                content = content,
                 containerColor = Color.Transparent,
                 tonalElevation = 0.dp,
                 shadowElevation = 0.dp,
@@ -150,7 +142,17 @@ fun DemoDropDown(
                         this.radius = radius
                         this.color = shadowColor
                     }
-            )
+            ) {
+                options.forEach { option ->
+                    DropdownMenuItem(
+                        text = { Text(text = option) },
+                        onClick = {
+                            selectedOption = option
+                            expanded = false
+                        }
+                    )
+                }
+            }
         }
     }
 }
@@ -159,41 +161,15 @@ fun DemoDropDown(
 @Preview
 @Composable
 fun PreviewDropDown() {
-    var expanded by remember { mutableStateOf(true) }
-    val options = listOf("Option 1", "Option 2", "Option 3")
-    var selectedOption by remember { mutableStateOf(options.first()) }
     ShaderPreviewContent {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(20.dp)
-//                .hazeEffect(
-//                    state = it,
-//                    HazeStyle(
-//                        tint = HazeTint(Color.Black.copy(.7f)),
-//                        blurRadius = 50.dp,
-//                        noiseFactor = .2f,
-//                    )
-//                )
         ) {
             DemoDropDown(
-                value = selectedOption,
-                hazeState = it,
-                expanded = expanded,
-                onExpandedChange = { expanded = it },
-                onDismissRequest = { expanded = false }
-            ) {
-                options.forEach { option ->
-                    DropdownMenuItem(
-                        text = { Text(text = option) },
-                        modifier = Modifier,
-                        onClick = {
-                            selectedOption = option
-                            expanded = false
-                        }
-                    )
-                }
-            }
+                hazeState = it
+            )
         }
     }
 }

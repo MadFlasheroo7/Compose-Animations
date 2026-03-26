@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import dev.chrisbanes.haze.HazeState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.ui.components.HazedSwitch
@@ -15,11 +14,17 @@ import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
 @Composable
 fun DemoSwitch(
     hazeState: HazeState,
-    toggled: Boolean,
-    onToggleChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    HazedSwitch(hazeState, toggled, onToggleChanged, modifier = modifier)
+    var toggled by remember { mutableStateOf(true) }
+    HazedSwitch(
+        hazeState = hazeState,
+        toggled = toggled,
+        onToggleChanged = {
+            toggled = it
+        },
+        modifier = modifier
+    )
 }
 
 @Preview
@@ -41,6 +46,6 @@ fun PreviewSwitch() {
 //                )
 //        ) {
 //        }
-        DemoSwitch(it, toggled, { toggled = it })
+        DemoSwitch(it)
     }
 }

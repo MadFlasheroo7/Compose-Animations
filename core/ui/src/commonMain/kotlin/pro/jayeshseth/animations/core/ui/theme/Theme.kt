@@ -27,6 +27,7 @@ fun AnimationsTheme(
 
     CompositionLocalProvider(
         LocalTextStyle provides LocalTextStyle.current.copy(
+            color = animatedPrimary,
             fontFamily = syneFontFamily()
         )
     ) {

@@ -4,6 +4,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -75,6 +76,7 @@ fun InfiniteRotation(
             Icon(
                 painter = painterResource(AnimIcons.fan),
                 contentDescription = "Fan",
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .size(200.dp)
                     .rotate(angle)

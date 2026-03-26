@@ -55,7 +55,7 @@ fun HazedSwitch(
     toggled: Boolean = true,
     onToggleChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = false, //TODO add enable and disable states
+    enabled: Boolean = true, //TODO add enable and disable states
 ) {
     val customizationState = LocalCustomizationState.current
     val color by animateColorAsState(

@@ -9,6 +9,7 @@ import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import pro.jayeshseth.animations.core.model.BackgroundType
+import pro.jayeshseth.animations.core.ui.backgrounds.BackgroundRegistrar
 import pro.jayeshseth.animations.core.ui.backgrounds.shaders.InkFlowShader
 
 /**
@@ -28,6 +29,7 @@ fun ShaderPreviewContent(
     contentAlignment: Alignment = Alignment.Center,
     content: @Composable (hazeState: HazeState) -> Unit,
 ) {
+    BackgroundRegistrar.register()
     val hazeState = rememberHazeState()
     Box(
         contentAlignment = contentAlignment,

@@ -1,6 +1,7 @@
 package pro.jayeshseth.animations.playground.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -21,11 +22,12 @@ fun AnimationSpecs(
 ) {
     Column(
         modifier = modifier
+            .fillMaxSize()
             .verticalScroll(
                 rememberScrollState()
             )
             .systemBarsPadding()
-            .padding(horizontal = 20.dp)
+            .padding(20.dp)
     ) {
         InteractiveButton(
             hazeState = hazeState,

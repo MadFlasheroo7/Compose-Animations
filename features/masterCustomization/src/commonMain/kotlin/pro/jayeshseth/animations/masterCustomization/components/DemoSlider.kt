@@ -5,6 +5,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,8 +26,9 @@ import pro.jayeshseth.animations.core.ui.icons.AnimIcons
 fun DemoSlider(
     hazeState: HazeState,
     modifier: Modifier = Modifier,
-//    color: Color = Color.Cyan
 ) {
+    var value by remember { mutableFloatStateOf(50f) }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -37,12 +42,10 @@ fun DemoSlider(
             )
         }
         StretchySlider(
-            value = { 1f },
-            onValueChange = {},
-            valueRange = 0f..2f,
+            value = { value },
+            onValueChange = { value = it },
+            valueRange = 0f..100f,
             hazeState = hazeState,
-//            interactionSource = interactionSource,
-//            steps = step,
             modifier = Modifier
                 .zIndex(1f)
                 .weight(1f)
