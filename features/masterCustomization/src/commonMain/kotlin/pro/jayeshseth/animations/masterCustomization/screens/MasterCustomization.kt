@@ -2,6 +2,7 @@ package pro.jayeshseth.animations.masterCustomization.screens
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
@@ -13,6 +14,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +41,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -89,6 +92,8 @@ fun MasterCustomization(
 
     var forward by remember { mutableStateOf(false) }
 
+    var visible by rememberSaveable { mutableStateOf(true) }
+
     val deviceConfig = currentDeviceConfiguration()
     val isWideScreen = deviceConfig.isWideScreen
 
@@ -104,42 +109,63 @@ fun MasterCustomization(
                                 tween(400, easing = FastOutSlowInEasing)
                             }
                 },
-                modifier = modifier.fillMaxSize()
+                modifier = modifier.fillMaxSize().then(
+                    if (!visible) {
+                        Modifier.clickable(
+                            indication = null,
+                            interactionSource = null,
+                            onClick = {
+                                visible = !visible
+                            }
+                        )
+                    } else {
+                        Modifier
+                    }
+                )
             ) { isWide ->
                 if (isWide) {
                     WideScreenMasterCustomization(
                         hazeState = hazeState,
                         pagerState = pagerState,
-//                        color = accentColor,
-                        onClick = {
-                            scope.launch {
-                                val nextPage = if (forward) {
-                                    if (pagerState2.currentPage < entries.size - 1) {
-                                        pagerState2.currentPage + 1
-                                    } else {
-                                        forward = false // Switch direction
-                                        pagerState2.currentPage - 1
-                                    }
-                                } else {
-                                    if (pagerState2.currentPage > 0) {
-                                        pagerState2.currentPage - 1
-                                    } else {
-                                        forward = true // Switch direction
-                                        pagerState2.currentPage + 1
-                                    }
-                                }
-                                pagerState2.animateScrollToPage(nextPage)
-                            }
-
+                        visibility = visible,
+                        onHideAll = {
+                            visible = !visible
                         }
+//                        color = accentColor,
+//                        onClick = {
+//                            scope.launch {
+//                                val nextPage = if (forward) {
+//                                    if (pagerState2.currentPage < entries.size - 1) {
+//                                        pagerState2.currentPage + 1
+//                                    } else {
+//                                        forward = false // Switch direction
+//                                        pagerState2.currentPage - 1
+//                                    }
+//                                } else {
+//                                    if (pagerState2.currentPage > 0) {
+//                                        pagerState2.currentPage - 1
+//                                    } else {
+//                                        forward = true // Switch direction
+//                                        pagerState2.currentPage + 1
+//                                    }
+//                                }
+//                                pagerState2.animateScrollToPage(nextPage)
+//                            }
+//
+//                        }
 //                        pagerState2 = pagerState2
                     )
                 } else {
                     StandardMasterCustomization(
                         hazeState = hazeState,
                         configPagerState = pagerState,
+                        visibility = visible,
+                        onHideAll = {
+                            visible = !visible
+                        },
+                        pagerState2 = pagerState2,
 //                        color = accentColor,
-                        onClick = {
+//                        onClick = {
 //                            scope.launch {
 //                                val nextPage = if (forward) {
 //                                    if (pagerState2.currentPage < entries.size - 1) {
@@ -159,8 +185,7 @@ fun MasterCustomization(
 //                                pagerState2.animateScrollToPage(nextPage)
 //                            }
 
-                        },
-                        pagerState2 = pagerState2,
+//                        },
                     )
                 }
             }
@@ -178,70 +203,82 @@ private fun AnimatedContentScope.StandardMasterCustomization(
     hazeState: HazeState,
     configPagerState: PagerState,
     pagerState2: PagerState,
-    onClick: () -> Unit,
+    visibility: Boolean = true,
+    onHideAll: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
         ?: throw IllegalStateException("No SharedTransitionScope found")
     val scope = rememberCoroutineScope()
-    with(sharedTransitionScope) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
-                .fillMaxSize()
-                .animateContentSize(tween(300))
-        ) {
-            // Top Section
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                    scrolledContainerColor = Color.Transparent,
-                ),
-                title = {
-                    HeadingText("Master Customization")
-                }
-            )
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .sharedBounds(
-                        rememberSharedContentState(key = "customization-panel"),
-                        this@StandardMasterCustomization,
-                        boundsTransform = { _, _ -> tween(300) }
-                    )
+    AnimatedVisibility(
+        visible = visibility,
+        enter = fadeIn(
+            animationSpec = tween(2000)
+        ),
+        exit = fadeOut(
+            animationSpec = tween(2000)
+        )
+    ) {
+        with(sharedTransitionScope) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier
+                    .fillMaxSize()
+                    .animateContentSize(tween(300))
             ) {
-                CustomizationDemoPager(
-                    hazeState = hazeState,
-                    demoPagerState = pagerState2,
-                    sharedTransitionScope = sharedTransitionScope,
-                    animatedContentScope = this@StandardMasterCustomization,
-                    onMouseDown = {
-                        scope.launch(Dispatchers.Main) {
-                            pagerState2.animateScrollToPage(pagerState2.currentPage - 1)
-                        }
-                    },
-                    onMouseUp = {
-                        scope.launch(Dispatchers.Main) {
-                            pagerState2.animateScrollToPage(pagerState2.currentPage + 1)
-                        }
-                    },
+                // Top Section
+                CenterAlignedTopAppBar(
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color.Transparent,
+                        scrolledContainerColor = Color.Transparent,
+                    ),
+                    title = {
+                        HeadingText("Master Customization")
+                    }
                 )
-            }
-
-            // Bottom Section
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .sharedBounds(
-                        rememberSharedContentState(key = "tabs-panel"),
-                        this@StandardMasterCustomization,
-                        boundsTransform = { _, _ -> tween(300) }
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .sharedBounds(
+                            rememberSharedContentState(key = "customization-panel"),
+                            this@StandardMasterCustomization,
+                            boundsTransform = { _, _ -> tween(300) }
+                        )
+                ) {
+                    CustomizationDemoPager(
+                        hazeState = hazeState,
+                        demoPagerState = pagerState2,
+                        sharedTransitionScope = sharedTransitionScope,
+                        animatedContentScope = this@StandardMasterCustomization,
+                        onHideAll = onHideAll,
+                        onMouseDown = {
+                            scope.launch(Dispatchers.Main) {
+                                pagerState2.animateScrollToPage(pagerState2.currentPage - 1)
+                            }
+                        },
+                        onMouseUp = {
+                            scope.launch(Dispatchers.Main) {
+                                pagerState2.animateScrollToPage(pagerState2.currentPage + 1)
+                            }
+                        },
                     )
-            ) {
-                TabsSection(hazeState, configPagerState, onClick)
+                }
+
+                // Bottom Section
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .sharedBounds(
+                            rememberSharedContentState(key = "tabs-panel"),
+                            this@StandardMasterCustomization,
+                            boundsTransform = { _, _ -> tween(300) }
+                        )
+                ) {
+                    TabsSection(hazeState, configPagerState)
+                }
             }
         }
     }
@@ -253,115 +290,126 @@ private fun AnimatedContentScope.StandardMasterCustomization(
 private fun AnimatedVisibilityScope.WideScreenMasterCustomization(
     hazeState: HazeState,
     pagerState: PagerState,
-    onClick: () -> Unit
+    onHideAll: () -> Unit,
+    visibility: Boolean = true
 ) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
         ?: throw IllegalStateException("No SharedTransitionScope found")
 
-    with(sharedTransitionScope) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .animateContentSize(tween(300))
-                .animateBounds(sharedTransitionScope)
-        ) {
-            // Left Panel
-            Box(
+    AnimatedVisibility(
+        visible = visibility,
+        enter = fadeIn(
+            animationSpec = tween(2000)
+        ),
+        exit = fadeOut(
+            animationSpec = tween(2000)
+        )
+    ) {
+        with(sharedTransitionScope) {
+            Row(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .sharedBounds(
-                        rememberSharedContentState(key = "customization-panel"),
-                        this@WideScreenMasterCustomization,
-                        boundsTransform = { _, _ -> tween(300) }
-                    )
+                    .fillMaxSize()
+                    .animateContentSize(tween(300))
+                    .animateBounds(sharedTransitionScope)
             ) {
-                Column {
-                    CenterAlignedTopAppBar(
-                        colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = Color.Transparent,
-                            scrolledContainerColor = Color.Transparent,
-                        ),
-                        title = {
-                            HeadingText("Master Customization")
-                        }
-                    )
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
-                        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
-                    ) {
-                        AnimationCard(
-                            index = 0,
-                            hazeState = hazeState,
-                            onClickLink = {},
-                            modifier = Modifier
-                                .padding(32.dp),
-                            animationContent = AnimationContent(
-                                title = "Background",
-                                content = {
-//                                BackgroundCustomizationContent()
-                                }
-                            )
+                // Left Panel
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .sharedBounds(
+                            rememberSharedContentState(key = "customization-panel"),
+                            this@WideScreenMasterCustomization,
+                            boundsTransform = { _, _ -> tween(300) }
                         )
-                        DemoInteractiveButtons(
-                            hazeState,
-                            modifier = Modifier
+                ) {
+                    Column {
+                        CenterAlignedTopAppBar(
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = Color.Transparent,
+                                scrolledContainerColor = Color.Transparent,
+                            ),
+                            title = {
+                                HeadingText("Master Customization")
+                            }
+                        )
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(
+                                20.dp,
+                                Alignment.CenterVertically
+                            ),
+                            modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+                        ) {
+                            AnimationCard(
+                                index = 0,
+                                hazeState = hazeState,
+                                onClickLink = {},
+                                modifier = Modifier
+                                    .padding(32.dp),
+                                animationContent = AnimationContent(
+                                    title = "Background",
+                                    content = {
+//                                BackgroundCustomizationContent()
+                                    }
+                                )
+                            )
+                            DemoInteractiveButtons(
+                                hazeState,
+                                modifier = Modifier
 //                            .sharedBounds(
 //                                rememberSharedContentState(key = MasterCustomizationSharedKeys.InteractiveButtons),
 //                                this@WideScreenMasterCustomization,
 //                                boundsTransform = { _, _ -> tween(300) }
 //                            )
-                        )
-                        DemoSlider(
-                            hazeState, modifier = Modifier,
+                            )
+                            DemoSlider(
+                                hazeState, modifier = Modifier,
 //                            .sharedBounds(
 //                                rememberSharedContentState(key = MasterCustomizationSharedKeys.Slider),
 //                                this@WideScreenMasterCustomization,
 //                                boundsTransform = { _, _ -> tween(300) }
 //                            )
-                        )
-                        DemoSwitch(
-                            hazeState = hazeState,
-                            modifier = Modifier,
+                            )
+                            DemoSwitch(
+                                hazeState = hazeState,
+                                modifier = Modifier,
 //                            .sharedBounds(
 //                                rememberSharedContentState(key = MasterCustomizationSharedKeys.Switch),
 //                                this@WideScreenMasterCustomization,
 //                                boundsTransform = { _, _ -> tween(300) }
 //                            )
 //                        color = color
-                        )
+                            )
 
-                        DemoDropDown(
-                            hazeState = hazeState,
-                            modifier = Modifier
+                            DemoDropDown(
+                                hazeState = hazeState,
+                                modifier = Modifier
 //                            .sharedBounds(
 //                                rememberSharedContentState(key = MasterCustomizationSharedKeys.DropDown),
 //                                this@WideScreenMasterCustomization,
 //                                boundsTransform = { _, _ -> tween(300) }
 //                            )
-                        )
-
-
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            InteractiveButton(
-                                hazeState = hazeState,
-                                text = "Hide All",
-                                modifier = Modifier
-                                    .wrapContentWidth(unbounded = true)
-                                    .width(150.dp),
-                                onClick = {
-
-                                }
                             )
+
+
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                InteractiveButton(
+                                    hazeState = hazeState,
+                                    text = "Hide All",
+                                    modifier = Modifier
+                                        .wrapContentWidth(unbounded = true)
+                                        .width(150.dp),
+                                    onClick = onHideAll
+                                )
+                            }
                         }
                     }
-                }
 //                CustomizationPager(pagerState2)
-            }
+                }
 //
 //            VerticalDivider(
 //                modifier = Modifier
@@ -370,18 +418,19 @@ private fun AnimatedVisibilityScope.WideScreenMasterCustomization(
 //                    .renderInSharedTransitionScopeOverlay(zIndexInOverlay = 1f)
 //            )
 
-            // Right Panel
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .sharedBounds(
-                        rememberSharedContentState(key = "tabs-panel"),
-                        this@WideScreenMasterCustomization,
-                        boundsTransform = { _, _ -> tween(300) }
-                    )
-            ) {
-                TabsSection(hazeState, pagerState, onClick)
+                // Right Panel
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .sharedBounds(
+                            rememberSharedContentState(key = "tabs-panel"),
+                            this@WideScreenMasterCustomization,
+                            boundsTransform = { _, _ -> tween(300) }
+                        )
+                ) {
+                    TabsSection(hazeState, pagerState)
+                }
             }
         }
     }
@@ -395,6 +444,7 @@ private fun CustomizationDemoPager(
     animatedContentScope: AnimatedContentScope,
     onMouseDown: () -> Unit,
     onMouseUp: () -> Unit,
+    onHideAll: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     with(sharedTransitionScope) {
@@ -443,9 +493,7 @@ private fun CustomizationDemoPager(
                             modifier = Modifier
                                 .wrapContentWidth(unbounded = true)
                                 .width(150.dp),
-                            onClick = {
-
-                            }
+                            onClick = onHideAll
                         )
                     }
                 }
@@ -519,7 +567,7 @@ object MasterCustomizationSharedKeys {
 private fun TabsSection(
     hazeState: HazeState,
     pagerState: PagerState,
-    onClick: () -> Unit,
+//    onClick: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     TabContent(
@@ -530,7 +578,7 @@ private fun TabsSection(
         tabComponent = { index, tab ->
             AnimatedTab(onClick = {
                 scope.launch { pagerState.animateScrollToPage(index) }
-                onClick()
+//                onClick()
             }) {
                 Text(tab.name)
             }
@@ -542,7 +590,7 @@ private fun TabsSection(
         ) { page ->
             when (MasterCustomizationTabs.entries[page]) {
                 MasterCustomizationTabs.Theme -> ThemeCustomizationContent(hazeState)
-                MasterCustomizationTabs.Background -> BackgroundCustomizationContent()
+                MasterCustomizationTabs.Background -> BackgroundCustomizationContent(hazeState)
             }
         }
     }
@@ -572,7 +620,7 @@ private fun PreviewStandardMasterCustomization() {
                 hazeState = hazeState,
                 configPagerState = rememberPagerState { 6 },
                 pagerState2 = rememberPagerState { entries.size },
-                onClick = {}
+                onHideAll = {}
             )
         }
     }
@@ -586,8 +634,7 @@ private fun PreviewWideScreenMasterCustomization() {
             WideScreenMasterCustomization(
                 hazeState = hazeState,
                 pagerState = rememberPagerState { 6 },
-                onClick = {},
-//                pagerState2 = rememberPagerState { StandardPages.entries.size },
+                onHideAll = {}
             )
         }
     }

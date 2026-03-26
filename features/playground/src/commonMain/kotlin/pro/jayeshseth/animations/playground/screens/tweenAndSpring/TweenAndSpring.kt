@@ -76,6 +76,7 @@ import pro.jayeshseth.animations.core.ui.components.LocalSharedTransitionScope
 import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
 import pro.jayeshseth.animations.core.ui.components.TabContent
 import pro.jayeshseth.animations.core.ui.components.Toggler
+import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
 import pro.jayeshseth.animations.core.ui.utils.currentDeviceConfiguration
 import pro.jayeshseth.animations.playground.components.SpringOptions
 import pro.jayeshseth.animations.playground.components.TweenOptions
@@ -334,7 +335,8 @@ fun Configurations(
             style = TextStyle(
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontFamily = syneFontFamily()
             ),
             modifier = Modifier
                 .fillMaxWidth()

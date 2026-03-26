@@ -55,7 +55,7 @@ fun HomeScreen(
     isSceneActivated: Boolean = false,
     navAction: OnNavAction = {}
 ) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 //    val context = LocalContext.current
 //    val updateTransition = updateTransition(color)
 //    val transitionColor by updateTransition.animateColor { it }

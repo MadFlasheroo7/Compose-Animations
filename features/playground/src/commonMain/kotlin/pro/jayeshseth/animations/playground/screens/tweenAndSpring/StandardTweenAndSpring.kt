@@ -7,9 +7,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -28,6 +30,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventType
@@ -71,15 +74,14 @@ internal fun AnimatedContentScope.StandardTweenAndSpring(
     onStateUpdate: (TweenAndSpringSpecState) -> Unit,
     onMouseUp: () -> Unit,
     onMouseDown: () -> Unit,
-    modifier: Modifier = Modifier,
-//    color: Color = Color.Cyan
+    modifier: Modifier = Modifier
 ) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
         ?: throw IllegalStateException("No SharedTransitionScope found")
 
     with(sharedTransitionScope) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
             modifier = modifier.fillMaxSize()
         ) {
             CenterAlignedTopAppBar(
@@ -139,6 +141,8 @@ internal fun AnimatedContentScope.StandardTweenAndSpring(
                             state = state,
                             replay = replay,
                             modifier = Modifier
+                                .fillMaxSize()
+                                .wrapContentSize(Alignment.Center)
                                 .padding(16.dp)
                                 .safeContentPadding()
                         )
@@ -151,7 +155,6 @@ internal fun AnimatedContentScope.StandardTweenAndSpring(
                 text = "Replay Animation",
                 height = 45.dp,
                 modifier = Modifier
-                    .wrapContentSize()
                     .padding(horizontal = 12.dp),
                 onClick = onReplayClick
             )

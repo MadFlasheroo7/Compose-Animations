@@ -106,7 +106,7 @@ fun BaseInteractiveButton(
                 stiffness = Spring.StiffnessLow,
             )
         }
-    ) { if (it xor flip) 100.dp else 20.dp }
+    ) { if (it xor flip) 100.dp else 12.dp }
 
     val shadowColor by transition.animateColor(
         transitionSpec = {
@@ -184,7 +184,7 @@ fun BaseInteractiveButton(
                                 // Run the outward spread animations concurrently
                                 awaitAll(
                                     async { radius.animateTo(20f, tween(500)) },
-                                    async { spread.animateTo(10f, tween(500)) },
+                                    async { spread.animateTo(20f, tween(500)) },
                                     async { spread2.animateTo(400f, tween(500)) }
                                 )
 

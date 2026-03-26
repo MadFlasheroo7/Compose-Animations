@@ -20,12 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuAnchorType
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,9 +36,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.chrisbanes.haze.HazeState
 import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.core.model.BackgroundType
 import pro.jayeshseth.animations.core.ui.backgrounds.shaders.InkFlowShader
+import pro.jayeshseth.animations.core.ui.components.DropDownTemplate
+import pro.jayeshseth.animations.core.ui.components.SliderTemplate
 import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationRepository
 import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 
@@ -56,6 +54,7 @@ private enum class BackgroundCategory(val label: String) {
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun BackgroundCustomizationContent(
+    hazeState: HazeState,
     modifier: Modifier = Modifier
 ) {
     val repo = LocalCustomizationRepository.current
@@ -77,57 +76,39 @@ fun BackgroundCustomizationContent(
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
-        Text(
-            text = "Background Type",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-
-        ExposedDropdownMenuBox(
+        DropDownTemplate(
+            hazeState = hazeState,
+            value = currentCategory.label,
             expanded = expanded,
             onExpandedChange = { expanded = it },
+            title = { Text("Background Type") },
+            onDismissRequest = { expanded = false },
         ) {
-            OutlinedTextField(
-                value = currentCategory.label,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor(MenuAnchorType.PrimaryNotEditable)
-            )
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-            ) {
-                BackgroundCategory.entries.forEach { category ->
-                    DropdownMenuItem(
-                        text = { Text(category.label) },
-                        onClick = {
-                            expanded = false
-                            val newBackground = when (category) {
-                                BackgroundCategory.Shader -> {
-                                    val current = state.backgroundType
-                                    if (current is BackgroundType.Shader) current
-                                    else InkFlowShader()
-                                }
-                                BackgroundCategory.Canvas -> {
-                                    val current = state.backgroundType
-                                    if (current is BackgroundType.Canvas) current
-                                    else BackgroundType.Canvas.entries.first()
-                                }
-                                BackgroundCategory.Image -> {
-                                    val current = state.backgroundType
-                                    if (current is BackgroundType.Image) current
-                                    else BackgroundType.Image.entries.first()
-                                }
+            BackgroundCategory.entries.forEach { category ->
+                DropdownMenuItem(
+                    text = { Text(category.label) },
+                    onClick = {
+                        expanded = false
+                        val newBackground = when (category) {
+                            BackgroundCategory.Shader -> {
+                                val current = state.backgroundType
+                                if (current is BackgroundType.Shader) current
+                                else InkFlowShader()
                             }
-                            scope.launch { repo?.updateBackground(newBackground) }
+                            BackgroundCategory.Canvas -> {
+                                val current = state.backgroundType
+                                if (current is BackgroundType.Canvas) current
+                                else BackgroundType.Canvas.entries.first()
+                            }
+                            BackgroundCategory.Image -> {
+                                val current = state.backgroundType
+                                if (current is BackgroundType.Image) current
+                                else BackgroundType.Image.entries.first()
+                            }
                         }
-                    )
-                }
+                        scope.launch { repo?.updateBackground(newBackground) }
+                    }
+                )
             }
         }
 
@@ -136,6 +117,7 @@ fun BackgroundCustomizationContent(
         when (val bg = state.backgroundType) {
             is BackgroundType.Shader -> {
                 ShaderCustomizationContent(
+                    hazeState = hazeState,
                     shaderBackground = bg,
                     onUpdateBackground = { scope.launch { repo?.updateBackground(it) } }
                 )
@@ -159,6 +141,7 @@ fun BackgroundCustomizationContent(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ShaderCustomizationContent(
+    hazeState: HazeState,
     shaderBackground: BackgroundType.Shader,
     onUpdateBackground: (BackgroundType.Shader) -> Unit,
     modifier: Modifier = Modifier
@@ -190,21 +173,22 @@ private fun ShaderCustomizationContent(
 
         Spacer(Modifier.height(24.dp))
 
-        Text(
-            text = "Speed: ${((shaderBackground.speed * 100).toInt() / 100f)}",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-
-        Slider(
-            value = shaderBackground.speed,
-            onValueChange = {
-                onUpdateBackground(shaderBackground.withSpeed(it))
+        SliderTemplate(
+            title = "Speed",
+            hazeState = hazeState,
+            value = { shaderBackground.speed },
+            step = { 0 },
+            onValueChange = { onUpdateBackground(shaderBackground.withSpeed(it)) },
+            valueRange = 0.05f..10f,
+            roundToInt = false,
+            onIncrement = {
+                val newSpeed = (shaderBackground.speed + 0.05f).coerceAtMost(1f)
+                onUpdateBackground(shaderBackground.withSpeed(newSpeed))
             },
-            valueRange = 0.05f..1f,
-            modifier = Modifier.fillMaxWidth()
+            onDecrement = {
+                val newSpeed = (shaderBackground.speed - 0.05f).coerceAtLeast(0.05f)
+                onUpdateBackground(shaderBackground.withSpeed(newSpeed))
+            },
         )
     }
 }

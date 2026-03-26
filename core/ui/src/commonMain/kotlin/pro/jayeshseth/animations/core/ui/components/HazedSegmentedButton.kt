@@ -71,7 +71,6 @@ fun SingleChoiceSegmentedButtonRowScope.HazedSegmentedButton(
     shape: Shape,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-//    color: Color = Color.Cyan,
     interactionSource: MutableInteractionSource? = null,
     icon: @Composable () -> Unit = { SegmentedButtonDefaults.Icon(selected) },
     label: @Composable () -> Unit,
@@ -136,8 +135,10 @@ fun SingleChoiceSegmentedButtonRowScope.HazedSegmentedButton(
                 .innerShadow(
                     shape
                 ) {
-                    this.spread = 10f
-                    this.radius = 10f
+//                    this.spread = 10f
+//                    this.radius = 10f
+                    this.spread = 3f
+                    this.radius = 20f
                     this.color = shadowColor
                 }
                 .padding(12.dp)

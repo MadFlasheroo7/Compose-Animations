@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -33,6 +34,7 @@ import dev.chrisbanes.haze.HazeState
 import pro.jayeshseth.animations.core.ui.components.DropDownTemplate
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
 import pro.jayeshseth.animations.core.ui.components.Toggler
+import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
 import pro.jayeshseth.animations.playground.model.TweenAndSpringSpecState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,7 +62,8 @@ fun TweenOptions(
             style = TextStyle(
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontFamily = syneFontFamily()
             ),
             modifier = Modifier.fillMaxWidth()
         )
@@ -190,8 +193,6 @@ fun TweenOptions(
                         )
                     )
                 }
-
-
             } else {
                 DropDownTemplate(
                     value = state.easing.name,
@@ -205,7 +206,8 @@ fun TweenOptions(
                             style = TextStyle(
                                 color = MaterialTheme.colorScheme.onSurface,
                                 fontSize = 22.sp,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                fontFamily = syneFontFamily()
                             )
                         )
                     },
@@ -256,7 +258,8 @@ fun TweenOptions(
             style = TextStyle(
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontFamily = syneFontFamily()
             )
         )
         SliderTemplate(
@@ -284,8 +287,10 @@ fun TweenOptions(
             style = TextStyle(
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
-            )
+                fontWeight = FontWeight.Bold,
+                fontFamily = syneFontFamily()
+            ),
+            modifier = Modifier.padding(bottom = 12.dp)
         )
     }
 }
