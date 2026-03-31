@@ -144,7 +144,7 @@ fun RainbowCircle(
         )
     )
 
-    val shaderContent = remember {
+    val shaderContent = remember(rainbowCircleState.reduceDots) {
         movableContentOf {
             Box(
                 Modifier
