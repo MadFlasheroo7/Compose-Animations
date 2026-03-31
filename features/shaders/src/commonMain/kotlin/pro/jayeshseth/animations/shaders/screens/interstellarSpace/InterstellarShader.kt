@@ -9,13 +9,8 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.ArcMode
 import androidx.compose.animation.core.ExperimentalAnimationSpecApi
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -27,6 +22,7 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -47,8 +43,10 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -57,7 +55,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -71,6 +68,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mikepenz.hypnoticcanvas.shaderBackground
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.rememberHazeState
 import kotlinx.coroutines.Dispatchers
@@ -80,18 +78,19 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.model.AnimationTabs
 import pro.jayeshseth.animations.core.model.Fields
 import pro.jayeshseth.animations.core.model.OnClickLink
-import pro.jayeshseth.animations.core.model.animationTabsList
 import pro.jayeshseth.animations.core.model.lazyNavBarPadding
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
 import pro.jayeshseth.animations.core.ui.components.CodeBlockWithLineNumbers
 import pro.jayeshseth.animations.core.ui.components.CopyIconButton
 import pro.jayeshseth.animations.core.ui.components.HazedIconButton
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
+import pro.jayeshseth.animations.core.ui.components.LocalSharedTransitionScope
 import pro.jayeshseth.animations.core.ui.components.SliderTemplate
 import pro.jayeshseth.animations.core.ui.components.TabContent
 import pro.jayeshseth.animations.core.ui.components.TabsRow
 import pro.jayeshseth.animations.core.ui.components.Toggler
 import pro.jayeshseth.animations.core.ui.icons.AnimIcons
+import pro.jayeshseth.animations.core.ui.utils.currentDeviceConfiguration
 import pro.jayeshseth.animations.shaders.utils.BASE_FEATURE_ROUTE
 
 const val DURATION = 450
@@ -111,37 +110,27 @@ fun InterstellarShaderScreen(
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
-//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
     InterstellarShader(
         hazeState,
         onClickLink,
         modifier
     )
-//    } else {
-//        FeatureUnavailableScreen("Feature Unavailable for api below ${Build.VERSION_CODES.TIRAMISU}")
-//    }
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
-//@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun InterstellarShader(
     hazeState: HazeState,
     onClickLink: OnClickLink,
     modifier: Modifier = Modifier
 ) {
-//    val view = LocalView.current
-//    val activity = LocalActivity.current
-//    val context = LocalContext.current
-//    val window = activity?.window
-//    val fallbackWindow = (context as Activity).window
-//    val shader = remember { InterstellarSpaceShader() }
-//    val shaderBrush = remember { derivedStateOf { ShaderBrush(shader) } }
-    val pagerState = rememberPagerState { animationTabsList().size }
+    val deviceConfig = currentDeviceConfiguration()
+    val isWideScreen = deviceConfig.isWideScreen
+
+    val pagerState = rememberPagerState { AnimationTabs.Tabs.size }
     val scope = rememberCoroutineScope { Dispatchers.Default }
     var showOverlay by remember { mutableStateOf(false) }
     var showControls by remember { mutableStateOf(false) }
-    val infiniteTransition = rememberInfiniteTransition(label = "time_transition")
     var touchPosition by remember { mutableStateOf(0f to 0f) }
     val sliderInteractionSource = remember { MutableInteractionSource() }
     val isSliderDragged by sliderInteractionSource.collectIsDraggedAsState()
@@ -149,14 +138,9 @@ private fun InterstellarShader(
     val opacity by animateFloatAsState(
         targetValue = if (isSliderDragged) 0.5f else 1f,
     )
-//    val controller = WindowInsetsControllerCompat(
-//        window ?: fallbackWindow,
-//        view
-//    )
+
     var interstellarSpaceState by remember {
-        mutableStateOf(
-            InterstellarSpaceState()
-        )
+        mutableStateOf(InterstellarSpaceState())
     }
 
     val animatedSpeed by animateFloatAsState(
@@ -204,64 +188,118 @@ private fun InterstellarShader(
         animationSpec = tween(1000)
     )
 
+    // CMP shader via HypnoticCanvas
+    val shader = remember { InterstellarSpaceHcShader() }
 
-    val time = infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 100f,
-        animationSpec = infiniteRepeatable(
-            tween(100000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        ), label = "time"
+    // Update shader uniforms from animated state each recomposition
+    shader.updateUniforms(
+        interstellarSpaceState.copy(
+            formuparam = animatedForm,
+            stepsize = animatedStepSize,
+            zoom = animatedZoom,
+            tile = animatedTile,
+            speed = animatedSpeed,
+            brightness = animatedBrightness,
+            darkmatter = animatedDarkMatter,
+            distFading = animatedDistFading,
+            saturation = animatedSaturation
+        )
     )
+    shader.mouseX = touchPosition.first
+    shader.mouseY = touchPosition.second
 
-//    if (!view.isInEditMode) {
-//        DisposableEffect(Unit) {
-//            controller.systemBarsBehavior =
-//                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-//            controller.hide(WindowInsetsCompat.Type.systemBars())
+    val tabsContent = remember {
+        movableContentOf {
+            val sharedTransitionScope = LocalSharedTransitionScope.current
+            with(sharedTransitionScope) {
+                TabContent(
+                    hazeState = hazeState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .graphicsLayer {
+                            alpha = opacity
+                        },
+                    tabsList = AnimationTabs.Tabs,
+                    selectedIndex = pagerState.currentPage,
+                    tabComponent = { index, tab ->
+                        AnimatedTab(
+                            onClick = {
+                                scope.launch(Dispatchers.Main) {
+                                    pagerState.animateScrollToPage(index)
+                                }
+                            },
+                        ) {
+                            Icon(
+                                painter = painterResource(tab.icon),
+                                contentDescription = tab.title,
+                                tint = LocalContentColor.current,
+                                modifier = Modifier
+//                                    .then(
+//                                        if (tab == AnimationTabs.Settings) Modifier.sharedBounds(
+//                                            sharedContentState = rememberSharedContentState(
+//                                                "shared_config_icon"
+//                                            ),
+//                                            animatedVisibilityScope = this@AnimatedContent,
+//                                            resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
+//                                            boundsTransform = boundsTransform
 //
-//            onDispose {
-//                controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
-//                controller.show(WindowInsetsCompat.Type.systemBars())
-//            }
-//        }
-//    }
+//                                        ) else Modifier
+//                                    )
+                            )
+                        }
+                    }
+                ) {
+                    HorizontalPager(
+                        state = pagerState,
+                        modifier = Modifier.fillMaxSize()
+                    ) { page ->
+                        when (AnimationTabs.Tabs[page]) {
+                            AnimationTabs.Settings -> {
+                                Configurations(
+                                    hazeState = hazeState,
+                                    interactionSource = sliderInteractionSource,
+                                    interstellarSpaceState = { interstellarSpaceState },
+                                    onInterstellarSpaceStateChange = {
+                                        interstellarSpaceState = it
+                                    }
+                                )
+                            }
 
+                            AnimationTabs.Code -> {
+                                CodePreview(hazeState, interstellarSpaceState)
+                            }
+
+                            AnimationTabs.Source -> {
+                                LinksButtons(hazeState, onClickLink)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     SharedTransitionLayout {
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .pointerInput(Unit) {
-                    detectDragGestures { change, _ ->
-                        touchPosition = change.position.x to change.position.y
+        CompositionLocalProvider(
+            LocalSharedTransitionScope provides this
+        ) {
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, _ ->
+                            touchPosition = change.position.x to change.position.y
+                        }
                     }
-                }
-                .drawWithCache {
-                    onDrawBehind {
-//                        shader.updateResolution(size)
-//                        shader.updateTime({ time.value })
-//                        shader.updateMouse({ touchPosition.first }, { touchPosition.second })
-//                        shader.updateBrightness({ animatedBrightness })
-//                        shader.updateDarkmatter({ animatedDarkMatter })
-//                        shader.updateDistFading { animatedDistFading }
-//                        shader.updateFormuparam { animatedForm }
-//                        shader.updateSaturation { animatedSaturation }
-//                        shader.updateSpeed { animatedSpeed }
-//                        shader.updateStepsize { animatedStepSize }
-//                        shader.updateTile { animatedTile }
-//                        shader.updateZoom { animatedZoom }
-//                        drawRect(shaderBrush.value)
-                    }
-                }
-                .clickable(
-                    indication = null,
-                    interactionSource = null,
-                    onClick = {
-                        when {
-                            showControls && showOverlay -> showControls = false
-                            else -> {
-                                showOverlay = !showOverlay
+                    .shaderBackground(shader)
+                    .clickable(
+                        indication = null,
+                        interactionSource = null,
+                        onClick = {
+                            when {
+                                showControls && showOverlay -> showControls = false
+                                else -> {
+                                    showOverlay = !showOverlay
 //                                if (controller.systemBarsBehavior == WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE) {
 //                                    controller.show(WindowInsetsCompat.Type.systemBars())
 //                                    controller.systemBarsBehavior =
@@ -271,151 +309,102 @@ private fun InterstellarShader(
 //                                    controller.systemBarsBehavior =
 //                                        WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 //                                }
+                                }
                             }
                         }
-
-                    }
-                )
-        ) {
-            AnimatedVisibility(
-                visible = showOverlay,
-                enter = slideInVertically {
-                    it
-                } + fadeIn(),
-                exit = slideOutVertically { it } + fadeOut(),
-                modifier = Modifier.align(Alignment.BottomCenter)
+                    )
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
-                        .background(
-                            brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    Color.Transparent,
-                                    MaterialTheme.colorScheme.surface
-                                )
-                            )
-                        )
+                OverlayControls(
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    isWideScreen = isWideScreen,
+                    showOverlay = showOverlay,
+                    showControls = showControls,
+                    hazeState = hazeState,
+                    onToggleControls = { showControls = !showControls },
+                    tabsContent = { tabsContent() }
                 )
             }
+        }
+    }
+}
 
-            AnimatedVisibility(
-                visible = showOverlay,
-                enter = slideInVertically {
-                    it
-                } + fadeIn(),
-                exit = slideOutVertically { it } + fadeOut(),
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-            ) {
-                AnimatedContent(
-                    targetState = showControls,
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                ) {
-                    if (it) {
-                        TabContent(
-                            hazeState = hazeState,
-                            tabsList = animationTabsList(),
-                            selectedIndex = pagerState.currentPage,
-                            tabComponent = { index, tab ->
-                                AnimatedTab(
-                                    modifier = Modifier
-                                        .sharedBounds(
-                                            sharedContentState = rememberSharedContentState("shared_inner_background"),
-                                            animatedVisibilityScope = this@AnimatedContent,
-                                            resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
-                                            boundsTransform = boundsTransform
-                                        ),
-                                    onClick = {
-                                        scope.launch(Dispatchers.Main) {
-                                            pagerState.animateScrollToPage(index)
-                                        }
-                                    },
-                                ) {
-                                    Icon(
-                                        painter = painterResource(tab.icon),
-                                        contentDescription = tab.title,
-                                        tint = LocalContentColor.current,
-                                        modifier = Modifier
-                                            .then(
-                                                if (tab == AnimationTabs.Settings) Modifier.sharedBounds(
-                                                    sharedContentState = rememberSharedContentState(
-                                                        "shared_config_icon"
-                                                    ),
-                                                    animatedVisibilityScope = this@AnimatedContent,
-                                                    resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
-                                                    boundsTransform = boundsTransform
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+private fun BoxScope.OverlayControls(
+    isWideScreen: Boolean,
+    showOverlay: Boolean,
+    showControls: Boolean,
+    hazeState: HazeState,
+    onToggleControls: () -> Unit,
+    tabsContent: @Composable () -> Unit,
+    sharedTransitionScope: SharedTransitionScope
+) {
+    AnimatedVisibility(
+        visible = showOverlay,
+        enter = slideInVertically { it } + fadeIn(),
+        exit = slideOutVertically { it } + fadeOut(),
+        modifier = Modifier.align(Alignment.BottomCenter)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            MaterialTheme.colorScheme.surface
+                        )
+                    )
+                )
+        )
+    }
 
-                                                ) else Modifier
-                                            )
-//                                                .animateContentSize()
-//                                                .animateEnterExit()
-//                                                .animateBounds(this@SharedTransitionLayout)
-                                    )
-                                }
-                            },
-                            modifier = Modifier
-                                .fillMaxHeight(.5f)
-                                .graphicsLayer {
-                                    alpha = opacity
-                                }
-                        ) {
-                            HorizontalPager(
-                                state = pagerState,
-                            ) { page ->
-                                when (animationTabsList()[page]) {
-                                    AnimationTabs.Settings -> {
-                                        Configurations(
-                                            hazeState = hazeState,
-                                            interactionSource = sliderInteractionSource,
-                                            interstellarSpaceState = { interstellarSpaceState },
-                                            onInterstellarSpaceStateChange = {
-                                                interstellarSpaceState = it
-                                            }
-                                        )
-                                    }
-
-                                    AnimationTabs.Code -> {
-                                        CodePreview(hazeState, interstellarSpaceState)
-                                    }
-
-                                    AnimationTabs.Source -> {
-                                        LinksButtons(hazeState, onClickLink)
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        HazedIconButton(
-                            hazeState = hazeState,
+    with(sharedTransitionScope) {
+        AnimatedVisibility(
+            visible = showOverlay,
+            enter = if (isWideScreen) fadeIn() else slideInVertically { it } + fadeIn(),
+            exit = if (isWideScreen) fadeOut() else slideOutVertically { it } + fadeOut(),
+            modifier = Modifier.align(Alignment.BottomEnd)
+        ) {
+            AnimatedContent(
+                targetState = showControls,
+            ) { controlsVisible ->
+                if (controlsVisible) {
+                    Box(
+                        modifier = Modifier
+                            .then(
+                                if (isWideScreen) Modifier.fillMaxWidth(.5f).align(Alignment.TopEnd)
+                                else Modifier.fillMaxHeight(.5f).align(Alignment.BottomCenter)
+                            )
+                    ) {
+                        tabsContent()
+                    }
+                } else {
+                    HazedIconButton(
+                        hazeState = hazeState,
+                        modifier = Modifier
+                            .sharedBounds(
+                                sharedContentState = rememberSharedContentState("shared_background"),
+                                animatedVisibilityScope = this@AnimatedContent,
+                                resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
+                                boundsTransform = boundsTransform
+                            )
+                            .padding(16.dp)
+                            .navigationBarsPadding(),
+                        onClick = onToggleControls
+                    ) {
+                        Icon(
+                            painter = painterResource(AnimIcons.settings),
+                            contentDescription = "",
                             modifier = Modifier
                                 .sharedBounds(
-                                    sharedContentState = rememberSharedContentState("shared_background"),
+                                    sharedContentState = rememberSharedContentState("shared_config_icon"),
                                     animatedVisibilityScope = this@AnimatedContent,
                                     resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
                                     boundsTransform = boundsTransform
-
                                 )
-                                .padding(16.dp)
-                                .navigationBarsPadding(),
-                            onClick = {
-                                showControls = !showControls
-                            }
-                        ) {
-                            Icon(
-                                painter = painterResource(AnimIcons.settings),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .sharedBounds(
-                                        sharedContentState = rememberSharedContentState("shared_config_icon"),
-                                        animatedVisibilityScope = this@AnimatedContent,
-                                        resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
-                                        boundsTransform = boundsTransform
-                                    )
-                            )
-                        }
+                        )
                     }
                 }
             }
@@ -465,7 +454,7 @@ private fun Configurations(
                         titlePadding = PaddingValues(vertical = 10.dp),
                         interactionSource = interactionSource,
                         onIncrement = {
-                            data.onValueChange(data.value + 1) //TODO fix this and all the incs and decs
+                            data.onValueChange(data.value + .1f) //TODO fix this and all the incs and decs
                         },
                         onDecrement = {
                             data.onValueChange(data.value - 1)

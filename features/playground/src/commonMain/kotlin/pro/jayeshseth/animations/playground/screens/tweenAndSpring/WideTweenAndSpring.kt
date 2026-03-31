@@ -47,7 +47,6 @@ import pro.jayeshseth.animations.core.model.DampingRatioList
 import pro.jayeshseth.animations.core.model.EasingList
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.model.StiffnessList
-import pro.jayeshseth.animations.core.model.animationTabsList
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
 import pro.jayeshseth.animations.core.ui.components.HeadingText
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
@@ -182,7 +181,7 @@ internal fun AnimatedContentScope.WideTweenAndSpring(
             TabContent(
                 modifier = Modifier.weight(1f),
                 hazeState = hazeState,
-                tabsList = animationTabsList(),
+                tabsList = AnimationTabs.Tabs,
                 selectedIndex = configPagerState.currentPage,
                 tabComponent = { index, tab ->
                     AnimatedTab(
@@ -233,7 +232,7 @@ internal fun AnimatedContentScope.WideTweenAndSpring(
                         }
 
                 ) { page ->
-                    when (animationTabsList()[page]) {
+                    when (AnimationTabs.Tabs[page]) {
                         AnimationTabs.Settings -> {
                             Configurations(
                                 state = state,
@@ -263,7 +262,7 @@ internal fun AnimatedContentScope.WideTweenAndSpring(
 @Composable
 private fun WideTweenAndSpringPreview() {
     val previewTabs = PlaygroundPreviewTabs.entries
-    val configPagerState = rememberPagerState { animationTabsList().size }
+    val configPagerState = rememberPagerState { AnimationTabs.Tabs.size }
     val previewPagerState = rememberPagerState { previewTabs.size }
     val easingList = EasingList
     val dampingRatioList = DampingRatioList

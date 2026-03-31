@@ -1,5 +1,7 @@
 package pro.jayeshseth.animations.core.utils
 
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -18,6 +20,7 @@ internal class DataStoreCustomizationRepository(
 ) : CustomizationRepository {
 
     private companion object Keys {
+        val BACKGROUND_BLUR = floatPreferencesKey(DefaultPrefKeys.BACKGROUND_BLUR_KEY)
         val PRIMARY_COLOR = intPreferencesKey(DefaultPrefKeys.PRIMARY_COLOR_KEY)
         val HEADING_COLOR = intPreferencesKey(DefaultPrefKeys.HEADING_COLOR_KEY)
         val ACCENT_COLOR = intPreferencesKey(DefaultPrefKeys.ACCENT_COLOR_KEY)
@@ -51,6 +54,7 @@ internal class DataStoreCustomizationRepository(
             }
         }
         CustomizationState(
+            backgroundBlur = prefs[BACKGROUND_BLUR]?.dp ?: defaults.backgroundBlur,
             primaryColorArgb = prefs[PRIMARY_COLOR] ?: defaults.primaryColorArgb,
             headingColorArgb = prefs[HEADING_COLOR] ?: defaults.headingColorArgb,
             accentColorArgb = prefs[ACCENT_COLOR] ?: defaults.accentColorArgb,
@@ -59,6 +63,10 @@ internal class DataStoreCustomizationRepository(
                 ?: defaults.primaryButtonAccentColorArgb,
             backgroundType = backgroundType,
         )
+    }
+
+    override suspend fun updateBackgroundBlur(blur: Dp) {
+        dataStore.edit { it[BACKGROUND_BLUR] = blur.value }
     }
 
     override suspend fun updatePrimaryColor(argb: Int) {

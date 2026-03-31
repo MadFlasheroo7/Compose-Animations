@@ -7,11 +7,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -45,7 +43,6 @@ import pro.jayeshseth.animations.core.model.DampingRatioList
 import pro.jayeshseth.animations.core.model.EasingList
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.model.StiffnessList
-import pro.jayeshseth.animations.core.model.animationTabsList
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
 import pro.jayeshseth.animations.core.ui.components.HeadingText
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
@@ -162,7 +159,7 @@ internal fun AnimatedContentScope.StandardTweenAndSpring(
             TabContent(
                 modifier = Modifier.weight(1f),
                 hazeState = hazeState,
-                tabsList = animationTabsList(),
+                tabsList = AnimationTabs.Tabs,
                 selectedIndex = configPagerState.currentPage,
                 tabComponent = { index, tab ->
                     AnimatedTab(
@@ -182,7 +179,7 @@ internal fun AnimatedContentScope.StandardTweenAndSpring(
                     state = configPagerState,
                     modifier = Modifier.fillMaxSize()
                 ) { page ->
-                    when (animationTabsList()[page]) {
+                    when (AnimationTabs.Tabs[page]) {
                         AnimationTabs.Settings -> {
                             Configurations(
                                 state = state,
@@ -212,7 +209,7 @@ internal fun AnimatedContentScope.StandardTweenAndSpring(
 @Composable
 private fun StandardTweenAndSpringPreview() {
     val previewTabs = PlaygroundPreviewTabs.entries
-    val configPagerState = rememberPagerState { animationTabsList().size }
+    val configPagerState = rememberPagerState { AnimationTabs.Tabs.size }
     val previewPagerState = rememberPagerState { previewTabs.size }
     val easingList = EasingList
     val dampingRatioList = DampingRatioList

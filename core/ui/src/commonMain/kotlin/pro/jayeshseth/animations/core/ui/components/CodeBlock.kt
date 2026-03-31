@@ -1,7 +1,6 @@
 package pro.jayeshseth.animations.core.ui.components
 
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +13,9 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,13 +48,17 @@ fun CodeBlockWithLineNumbers(text: List<String>, modifier: Modifier = Modifier) 
 
     // Measure the width of the widest index ("999" for 3-digit lines)
     val textMeasurer = rememberTextMeasurer()
-    val indexWidth = textMeasurer.measure(
-        text = AnnotatedString(sampleIndexText),
-        style = TextStyle(
-            fontFamily = FontFamily.Monospace,
-            fontSize = 14.sp
+    val indexWidth by remember {
+        mutableStateOf(
+            textMeasurer.measure(
+                text = AnnotatedString(sampleIndexText),
+                style = TextStyle(
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 14.sp
+                )
+            ).size.width
         )
-    ).size.width
+    }
 
     SelectionContainer {
         Column(
@@ -68,7 +74,7 @@ fun CodeBlockWithLineNumbers(text: List<String>, modifier: Modifier = Modifier) 
                     DisableSelection {
                         Box(
                             modifier = Modifier
-                                .width(with(LocalDensity.current) { indexWidth.toDp() }),
+                                .width(with(LocalDensity.current) { indexWidth.toDp() } + 8.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(

@@ -19,6 +19,7 @@ object PermissionPrefs {
 
 object DefaultPrefKeys {
     // Pref Keys
+    const val BACKGROUND_BLUR_KEY = "background_blur"
     const val PRIMARY_COLOR_KEY = "primary_color"
     const val HEADING_COLOR_KEY = "heading_color"
     const val ACCENT_COLOR_KEY = "accent_color"

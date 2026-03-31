@@ -20,10 +20,12 @@ sealed class AnimationTabs(val icon: DrawableResource, val title: String) {
     data object Settings : AnimationTabs(Res.drawable.faders, "Settings")
     data object Code : AnimationTabs(Res.drawable.code, "Code")
     data object Source : AnimationTabs(Res.drawable.link, "Source")
-}
 
-fun animationTabsList(): List<AnimationTabs> = listOf(
-    AnimationTabs.Settings,
-    AnimationTabs.Code,
-    AnimationTabs.Source
-)
+    companion object {
+        val Tabs = listOf(
+            Settings,
+            Code,
+            Source
+        )
+    }
+}

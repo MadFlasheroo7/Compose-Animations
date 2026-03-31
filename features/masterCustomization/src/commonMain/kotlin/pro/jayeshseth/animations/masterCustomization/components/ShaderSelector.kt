@@ -95,11 +95,13 @@ fun BackgroundCustomizationContent(
                                 if (current is BackgroundType.Shader) current
                                 else InkFlowShader()
                             }
+
                             BackgroundCategory.Canvas -> {
                                 val current = state.backgroundType
                                 if (current is BackgroundType.Canvas) current
                                 else BackgroundType.Canvas.entries.first()
                             }
+
                             BackgroundCategory.Image -> {
                                 val current = state.backgroundType
                                 if (current is BackgroundType.Image) current
@@ -112,7 +114,25 @@ fun BackgroundCustomizationContent(
             }
         }
 
-        Spacer(Modifier.height(24.dp))
+        SliderTemplate(
+            title = "Background Blur",
+            hazeState = hazeState,
+            value = { state.backgroundBlur.value },
+            step = { 0 },
+            onValueChange = { scope.launch { repo?.updateBackgroundBlur(it.dp) } },
+            valueRange = 0f..20f,
+            roundToInt = false,
+            onIncrement = {
+                val newBlur = (state.backgroundBlur + 0.05.dp)
+                scope.launch { repo?.updateBackgroundBlur(newBlur) }
+            },
+            onDecrement = {
+                val newBlur = (state.backgroundBlur - 0.05.dp)
+                scope.launch { repo?.updateBackgroundBlur(newBlur) }
+            },
+        )
+
+//        Spacer(Modifier.height(24.dp))
 
         when (val bg = state.backgroundType) {
             is BackgroundType.Shader -> {
@@ -122,12 +142,14 @@ fun BackgroundCustomizationContent(
                     onUpdateBackground = { scope.launch { repo?.updateBackground(it) } }
                 )
             }
+
             is BackgroundType.Canvas -> {
                 CanvasCustomizationContent(
                     canvasBackground = bg,
                     onUpdateBackground = { scope.launch { repo?.updateBackground(it) } }
                 )
             }
+
             is BackgroundType.Image -> {
                 ImageCustomizationContent(
                     imageBackground = bg,

@@ -16,11 +16,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
-import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import dev.chrisbanes.haze.hazeSource
@@ -28,11 +26,12 @@ import dev.chrisbanes.haze.rememberHazeState
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.navigation.Navigator
 import pro.jayeshseth.animations.core.navigation.Route
-import pro.jayeshseth.animations.core.ui.components.BackgroundRenderer
-import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 import pro.jayeshseth.animations.core.navigation.isSecondary
 import pro.jayeshseth.animations.core.navigation.scenesAndStrategies.BasicTwoPaneScene
 import pro.jayeshseth.animations.core.navigation.scenesAndStrategies.rememberBasicTwoPaneSceneStrategy
+import pro.jayeshseth.animations.core.ui.backgrounds.BackgroundRegistrar
+import pro.jayeshseth.animations.core.ui.components.BackgroundRenderer
+import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
 import pro.jayeshseth.animations.defaultApis.navigation.defaultApis
 import pro.jayeshseth.animations.itemPlacements.navigation.ItemPlacementRoutes
@@ -44,7 +43,6 @@ import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
 import pro.jayeshseth.animations.playground.navigation.playground
 import pro.jayeshseth.animations.shaders.navigation.ShaderRoutes
 import pro.jayeshseth.animations.shaders.navigation.shaders
-import pro.jayeshseth.animations.core.ui.backgrounds.BackgroundRegistrar
 import pro.jayeshseth.animations.ui.screens.AboutScreen
 import pro.jayeshseth.animations.ui.screens.BouncyRope
 import pro.jayeshseth.animations.ui.screens.HomeScreen
@@ -112,7 +110,7 @@ fun NavGraph(
             modifier = Modifier
                 .fillMaxSize()
                 .hazeSource(hazeState)
-                .blur(12.dp)
+                .blur(customization.backgroundBlur)
         )
 
 //        bitmap?.let {

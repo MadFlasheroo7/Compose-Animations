@@ -63,11 +63,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import pro.jayeshseth.animations.core.model.AnimationTabs
 import pro.jayeshseth.animations.core.model.DampingRatioList
 import pro.jayeshseth.animations.core.model.EasingList
 import pro.jayeshseth.animations.core.model.OnClickLink
 import pro.jayeshseth.animations.core.model.StiffnessList
-import pro.jayeshseth.animations.core.model.animationTabsList
 import pro.jayeshseth.animations.core.ui.components.AnimatedChart
 import pro.jayeshseth.animations.core.ui.components.AnimatedTab
 import pro.jayeshseth.animations.core.ui.components.HazedSegmentedButton
@@ -96,7 +96,7 @@ fun TweenAndSpringScreen(
     val previewTabs = remember { PlaygroundPreviewTabs.entries }
     val specTabs = remember { TweenNSpringSpec.entries }
     val contentPagerState = rememberPagerState { previewTabs.size }
-    val configsPagerState = rememberPagerState { animationTabsList().size }
+    val configsPagerState = rememberPagerState { AnimationTabs.Tabs.size }
     var selectedPreviewIndex by remember { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope { Dispatchers.Default }
     val easingList = remember { EasingList }
@@ -254,7 +254,7 @@ private fun PreviewTabs() {
         ) {
             TabContent(
                 hazeState = it,
-                tabsList = animationTabsList(),
+                tabsList = AnimationTabs.Tabs,
                 selectedIndex = state,
                 tabComponent = { index, tab ->
                     AnimatedTab(

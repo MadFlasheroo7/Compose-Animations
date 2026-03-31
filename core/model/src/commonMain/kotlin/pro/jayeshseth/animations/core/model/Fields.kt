@@ -22,10 +22,10 @@ sealed class Fields {
     data class SliderData(
         val title: String,
         val value: Float,
-        val step: Int,
         val onValueChange: (Float) -> Unit,
         val valueRange: ClosedFloatingPointRange<Float>,
-        val roundToInt: Boolean,
+        val step: Int = 0,
+        val roundToInt: Boolean = false,
     ) : Fields()
 
     /**

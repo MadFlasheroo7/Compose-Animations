@@ -106,7 +106,7 @@ fun BaseInteractiveButton(
                 stiffness = Spring.StiffnessLow,
             )
         }
-    ) { if (it xor flip) 100.dp else 12.dp }
+    ) { if (it xor flip) 100.dp else 18.dp }
 
     val shadowColor by transition.animateColor(
         transitionSpec = {
