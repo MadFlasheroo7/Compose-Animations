@@ -6,6 +6,7 @@ import androidx.compose.animation.BoundsTransform
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.animateBounds
 import androidx.compose.animation.core.ArcMode
 import androidx.compose.animation.core.ExperimentalAnimationSpecApi
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -90,6 +91,7 @@ import pro.jayeshseth.animations.core.ui.components.TabContent
 import pro.jayeshseth.animations.core.ui.components.TabsRow
 import pro.jayeshseth.animations.core.ui.components.Toggler
 import pro.jayeshseth.animations.core.ui.icons.AnimIcons
+import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
 import pro.jayeshseth.animations.core.ui.utils.currentDeviceConfiguration
 import pro.jayeshseth.animations.shaders.utils.BASE_FEATURE_ROUTE
 
@@ -373,6 +375,18 @@ private fun BoxScope.OverlayControls(
                 if (controlsVisible) {
                     Box(
                         modifier = Modifier
+                            .sharedBounds(
+                                sharedContentState = rememberSharedContentState("shared_background"),
+                                animatedVisibilityScope = this@AnimatedContent,
+//                                resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds,
+                                boundsTransform = boundsTransform
+                            )
+                            .animateBounds(
+                                sharedTransitionScope,
+                                boundsTransform = boundsTransform,
+                                animateMotionFrameOfReference = true
+                            )
+//                                tween(400, easing = FastOutSlowInEasing))
                             .then(
                                 if (isWideScreen) Modifier.fillMaxWidth(.5f).align(Alignment.TopEnd)
                                 else Modifier.fillMaxHeight(.5f).align(Alignment.BottomCenter)
@@ -462,7 +476,8 @@ private fun Configurations(
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 22.sp,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = syneFontFamily()
                         )
                     )
                 }
@@ -476,7 +491,8 @@ private fun Configurations(
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 22.sp,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = syneFontFamily()
                         ),
                         modifier = Modifier.fillMaxWidth()
                     )
