@@ -164,7 +164,7 @@ object KfugLogo {
     // Aggregation list for the UI
     val allLayers = listOf(layer1, layer2, layer3, layer4, layer5, layer6, layer7, layer8)
 }
-//
+
 //@Composable
 //fun BouncyRope() {
 //    val animState = rememberSvgAnimationState()

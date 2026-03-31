@@ -1,11 +1,9 @@
 package pro.jayeshseth.animations.ui.screens
 
-import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -226,10 +224,10 @@ private fun animationScreens(isItUnlocked: Boolean): List<AnimationScreen> {
             route = DefaultApisRoutes.DefaultApisLanding
 //            route = EasterEggsRoutes.EasterEggsLandingRoute
         ),
-        /*        AnimationScreen(
-                    title = "Community",
-                    route = NavDestinations.Community.route
-                ),*/
+        AnimationScreen(
+            title = "Community",
+            route = LandingRoutes.Community
+        ),
         if (isItUnlocked) AnimationScreen(
             title = "Master Customisations",
             route = LandingRoutes.MasterCustomization,

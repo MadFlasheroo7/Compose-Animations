@@ -1,4 +1,4 @@
-package pro.jayeshseth.animations.ui.screens
+package pro.jayeshseth.animations.ui.composables.wip
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -45,6 +45,7 @@ import androidx.compose.ui.input.pointer.isPrimaryPressed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import pro.jayeshseth.animations.ui.screens.KfugLogo
 
 enum class AnimationStatus2 { Idle, DrawingStroke, FadingFill, Finished }
 
@@ -200,7 +201,7 @@ private data class MultiPathData(
 )
 
 @Composable
-fun BouncyRope() {
+fun AnimSVGWIP() {
     val scope = rememberCoroutineScope()
     val animState = rememberSvgAnimationStates()
 

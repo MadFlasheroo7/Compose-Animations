@@ -43,6 +43,7 @@ import pro.jayeshseth.animations.playground.navigation.PlaygroundRoutes
 import pro.jayeshseth.animations.playground.navigation.playground
 import pro.jayeshseth.animations.shaders.navigation.ShaderRoutes
 import pro.jayeshseth.animations.shaders.navigation.shaders
+import pro.jayeshseth.animations.ui.composables.wip.AnimSVGWIP
 import pro.jayeshseth.animations.ui.screens.AboutScreen
 import pro.jayeshseth.animations.ui.screens.BouncyRope
 import pro.jayeshseth.animations.ui.screens.HomeScreen
@@ -86,14 +87,14 @@ fun NavGraph(
 //            ?: palette?.darkMutedSwatch?.toColor()
 //            ?: Color.Cyan,
 //    )
-    LaunchedEffect(Unit) {
-        LandingRoutes.register()
-        DefaultApisRoutes.register()
-        NavigationRoutes.register()
-        PlaygroundRoutes.register()
-        ItemPlacementRoutes.register()
-        ShaderRoutes.register()
-    }
+//    LaunchedEffect(Unit) {
+//        LandingRoutes.register()
+//        DefaultApisRoutes.register()
+//        NavigationRoutes.register()
+//        PlaygroundRoutes.register()
+//        ItemPlacementRoutes.register()
+//        ShaderRoutes.register()
+//    }
 
     Box(
         Modifier.drawWithCache {
@@ -230,6 +231,7 @@ fun NavGraph(
             }
             // TODO add community
             entry<LandingRoutes.Community> {
+                AnimSVGWIP()
 //                AboutScreen(hazeState)
             }
         }
