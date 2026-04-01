@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
@@ -32,14 +31,18 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -60,18 +63,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import animations.composeapp.generated.resources.Res
+import animations.composeapp.generated.resources.about
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.HazeTint
 import dev.chrisbanes.haze.hazeEffect
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import pro.jayeshseth.animations.core.ui.components.HeadingText
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
 import pro.jayeshseth.animations.core.ui.components.SocialMedia
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
+import com.mikepenz.hypnoticcanvas.shaderBackground
+import com.mikepenz.hypnoticcanvas.shaders.Shader
+import com.mikepenz.hypnoticcanvas.RuntimeEffect
 import pro.jayeshseth.glowingButton.glowingShadow
 
 @OptIn(
@@ -105,7 +115,7 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
     val val1 = remember { Animatable(0f) }
     val val2 = remember { Animatable(.000000000000f) }
     val val3 = remember { Animatable(0.1f) }
-//    val About = stringResource(R.string.about)
+    val About = stringResource(Res.string.about)
     val sourceCode = "https://github.com/MadFlasheroo7/Compose-Animations"
 
 //    val isPermissionPermanentlyDenied =
@@ -262,11 +272,8 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
                     animationSpec = tween(1000, delayMillis = 1000)
                 )
             ) {
-                Text(
+                HeadingText(
                     text = " Animations ",
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight(750),
-                    fontFamily = syneFontFamily()
                 )
             }
 
@@ -306,11 +313,12 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
                 ),
             ) {
                 Text(
-                    text = "About",
+                    text = About,
                     style = TextStyle(
-                        fontSize = 20.sp,
+                        fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.primary,
                         fontFamily = syneFontFamily()
                     )
                 )
@@ -342,7 +350,7 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
                 modifier = Modifier
             ) {
                 Text(
-                    text = "",
+                    text = "www",
 //                    text = if (permissionState.status.isGranted) "Few Claps 👏 are appreciated ☺️"
 //                    else
 //                        "Needs Permission :(\nTap to grant permission",
@@ -408,6 +416,11 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
         }
     }
 
+    val shader = remember { AboutShader() }
+    shader.val1 = val1.value
+    shader.val2 = val2.value
+    shader.val3 = val3.value
+
     //TODO Handle fallback
     AnimatedVisibility(
         visible = bool,
@@ -418,11 +431,7 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
         ),
         exit = fadeOut(snap())
     ) {
-//        Shader(
-//            val1 = { val1.value },
-//            val2 = { val2.value },
-//            val3 = { val3.value },
-//        )
+        Box(Modifier.fillMaxSize().shaderBackground(shader))
     }
 
     AnimatedVisibility(
@@ -508,7 +517,7 @@ fun RationalDialog(
         initialValue = 30f,
         targetValue = 80f,
         animationSpec = infiniteRepeatable(
-            animation = tween(1000, easing = LinearEasing),
+            animation = tween(1000),
             repeatMode = RepeatMode.Reverse
         ),
         label = "pulseAlpha"
@@ -530,6 +539,8 @@ fun RationalDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier
                     .padding(horizontal = 30.dp)
+                    .fillMaxWidth(0.75f)      // Takes 85% of screen width
+                    .widthIn(max = 500.dp)
                     .glowingShadow {
                         color = Color.Cyan
                         spread = 18f
@@ -541,7 +552,6 @@ fun RationalDialog(
                         cardStyle
                     )
                     .padding(16.dp)
-
             ) {
                 Text(
                     "Permission Required",
@@ -671,68 +681,54 @@ private fun TextAnimation(
 }
 
 
-//@Composable
-//private fun Shader(
-//    val1: ComposeFriendlyFloat,
-//    val2: ComposeFriendlyFloat,
-//    val3: ComposeFriendlyFloat,
-//    modifier: Modifier = Modifier
-//) {
-//    var time by remember { mutableFloatStateOf(0f) }
-//
-//    LaunchedEffect(Unit) {
-//        val startTime = System.nanoTime()
-//        while (true) {
-//            withFrameNanos { frameTime ->
-//                time = ((frameTime - startTime) / 1_000_000_000f)
-//            }
-//        }
-//    }
-//
-//    val shader = remember { RuntimeShader(shaderSource) }
-//
-//    Box(
-//        modifier = modifier
-//            .fillMaxSize()
-//            .drawWithCache {
-//                onDrawBehind {
-//                    shader.setFloatUniform(
-//                        "iResolution",
-//                        size.width,
-//                        size.height
-//                    )
-//                    shader.setFloatUniform("iTime", time)
-//                    shader.setFloatUniform("val1", val1())
-//                    shader.setFloatUniform("val2", val2())
-//                    shader.setFloatUniform("val3", val3())
-//
-//                    val shaderBrush = ShaderBrush(shader)
-//                    drawRect(shaderBrush)
-//                }
-//            }
-//    )
-//}
+private class AboutShader : Shader {
+    override val name = "AboutShader"
+    override val authorName = "Compose-Animations"
+    override val authorUrl = ""
+    override val credit = ""
+    override val license = ""
+    override val licenseUrl = ""
+    override val speedModifier = 0.166f
 
-private val shaderSource = """
+    var val1: Float = 0f
+    var val2: Float = 0f
+    var val3: Float = 0.1f
+
+    override val sksl = """
         uniform float2 iResolution;
         uniform float iTime;
-        uniform float val1,val2,val3;
+        uniform float val1, val2, val3;
 
-        vec4 main(float2 fragCoord) {
-            vec3 c = vec3(0.0);
-            float l, z = iTime;
+        half4 main(float2 fragCoord) {
+            float3 c = float3(0.0);
+            float l = 0.0;
+            float z = iTime;
 
-            for(int i = 0; i < 3; i++) {
-                vec2 uv, p = fragCoord.xy / iResolution;
-                uv = p;
+            for (int i = 0; i < 3; i++) {
+                float2 uv = fragCoord.xy / iResolution;
+                float2 p = uv;
                 p -= 0.5;
                 p.x *= iResolution.x / iResolution.y;
                 z += 0.0;
                 l = length(p);
                 uv += p / l * (sin(z) + val1) * abs(sin(l * 9.0 - z - z));
-                c[i] = val2 / length(mod(uv, val3) - .5);
+                c[i] = val2 / length(mod(uv, float2(val3)) - 0.5);
             }
 
-            return vec4(c / l, 1.0);
+            return half4(half3(c / l), 1.0);
         }
     """.trimIndent()
+
+    override fun applyUniforms(
+        runtimeEffect: RuntimeEffect,
+        time: Float,
+        width: Float,
+        height: Float
+    ) {
+        runtimeEffect.setFloatUniform("iResolution", width, height)
+        runtimeEffect.setFloatUniform("iTime", time)
+        runtimeEffect.setFloatUniform("val1", val1)
+        runtimeEffect.setFloatUniform("val2", val2)
+        runtimeEffect.setFloatUniform("val3", val3)
+    }
+}
