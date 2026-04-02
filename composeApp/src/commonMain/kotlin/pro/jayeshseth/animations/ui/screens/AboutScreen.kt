@@ -31,13 +31,10 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -46,6 +43,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -65,6 +63,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import animations.composeapp.generated.resources.Res
 import animations.composeapp.generated.resources.about
+import com.mikepenz.hypnoticcanvas.RuntimeEffect
+import com.mikepenz.hypnoticcanvas.shaderBackground
+import com.mikepenz.hypnoticcanvas.shaders.Shader
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.HazeStyle
 import dev.chrisbanes.haze.HazeTint
@@ -73,15 +74,15 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import pro.jayeshseth.animations.EasterEggDetector
 import pro.jayeshseth.animations.core.ui.components.HeadingText
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
 import pro.jayeshseth.animations.core.ui.components.SocialMedia
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
+import pro.jayeshseth.animations.core.ui.theme.LocalEasterEggRepository
 import pro.jayeshseth.animations.core.ui.theme.syneFontFamily
-import com.mikepenz.hypnoticcanvas.shaderBackground
-import com.mikepenz.hypnoticcanvas.shaders.Shader
-import com.mikepenz.hypnoticcanvas.RuntimeEffect
+import pro.jayeshseth.animations.rememberEasterEggPermissionState
 import pro.jayeshseth.glowingButton.glowingShadow
 
 @OptIn(
@@ -94,6 +95,10 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
 //    val context = LocalContext.current
 //    val activity = LocalActivity.current
     val urlLauncher = LocalUriHandler.current
+    val easterEggRepo = LocalEasterEggRepository.current
+    val canPlayShader by easterEggRepo?.hasEasterEggEgged?.collectAsState(initial = false)
+        ?: remember { mutableStateOf(false) }
+    val permissionState = rememberEasterEggPermissionState()
 //    val window = activity?.window
 //    val prefs = context.commonPrefs
 //    val fallbackWindow = (context as Activity).window
@@ -102,12 +107,13 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
 //        view
 //    )
     var clapCount by remember { mutableStateOf(0) }
-    var bool by rememberSaveable { mutableStateOf(false) }
+    var hasEasterEggTriggered by remember { mutableStateOf(false) }
+    var playShader by rememberSaveable { mutableStateOf(false) }
     var showMsg by rememberSaveable { mutableStateOf(false) }
     var isDetecting by remember { mutableStateOf(false) }
     var showPermissionDialog by remember { mutableStateOf(false) }
     val backgroundColor by animateColorAsState(
-        targetValue = if (bool) Color.Black else Color.Transparent,
+        targetValue = if (playShader) Color.Black else Color.Transparent,
         animationSpec = tween(2000),
         label = ""
     )
@@ -146,6 +152,26 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
 //        } else {
 //            isDetecting = true
 //        }
+        if (!canPlayShader) {
+            if (!permissionState.isPermissionGranted && !permissionState.dontShowEverAgain) {
+                showPermissionDialog = true
+            } else {
+                isDetecting = true
+            }
+        }
+    }
+
+    LaunchedEffect(permissionState.isPermissionGranted) {
+        if (permissionState.isPermissionGranted) {
+            showPermissionDialog = false
+            isDetecting = true
+        }
+    }
+
+    LaunchedEffect(hasEasterEggTriggered) {
+        if (hasEasterEggTriggered) {
+            playShader = true
+        }
     }
 
 //    if (!view.isInEditMode && bool) {
@@ -161,44 +187,21 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
 //        }
 //    }
 
-//    if (!canPlayShader.value) {
-//        DisposableEffect(isDetecting) {
-//            var job: Job? = null
-//            if (isDetecting) {
-//                Log.d(TAG, "Starting detection...")
-//
-//                job = scope.launch(Dispatchers.IO) {
-//                    try {
-//                        detectClapsDebug(
-//                            onClapDetected = {
-//                                Log.d(TAG, "CLAP DETECTED!")
-//                                clapCount++
-//                                Log.d(TAG, "Clap Count: $clapCount")
-//                                bool = true
-//                            },
-//                            onLog = { message ->
-//                                Log.d(TAG, "LOG: $message")
-//                            },
-//                            onError = { error ->
-//                                isDetecting = false
-//                            }
-//                        )
-//                    } catch (e: Exception) {
-//                        Log.e(TAG, "Error in detection: ${e.message}", e)
-//                        isDetecting = false
-//                    }
-//                }
-//            }
-//
-//            onDispose {
-//                Log.d(TAG, "Stopping detection...")
-//                job?.cancel()
-//            }
-//        }
-//    }
 
-    LaunchedEffect(bool) {
-        if (bool) {
+    print("paly shader ${canPlayShader} ")
+    if (!canPlayShader) {
+        EasterEggDetector(
+            enabled = isDetecting,
+            easterEggRepo = easterEggRepo,
+            onEasterEggTriggered = {
+                clapCount++
+                hasEasterEggTriggered = true
+            }
+        )
+    }
+
+    LaunchedEffect(playShader) {
+        if (playShader) {
             delay(3500)
             launch {
                 val1.animateTo(
@@ -248,7 +251,7 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
                 .padding(top = 25.dp)
         ) {
             AnimatedVisibility(
-                visible = !bool,
+                visible = !playShader,
                 enter = fadeIn(
                     animationSpec = tween(2000)
                 ),
@@ -264,7 +267,7 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
             }
 
             AnimatedVisibility(
-                visible = !bool,
+                visible = !playShader,
                 enter = fadeIn(
                     animationSpec = tween(1000)
                 ),
@@ -278,7 +281,7 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
             }
 
             AnimatedVisibility(
-                visible = !bool,
+                visible = !playShader,
                 enter = fadeIn(
                     animationSpec = tween(2000)
                 ),
@@ -304,7 +307,7 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
                 .verticalScroll(rememberScrollState())
         ) {
             AnimatedVisibility(
-                visible = !bool,
+                visible = !playShader,
                 enter = fadeIn(
                     animationSpec = tween(2000)
                 ),
@@ -326,7 +329,7 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
         }
 
         AnimatedVisibility(
-            visible = !bool,
+            visible = !playShader,
             enter = fadeIn(
                 animationSpec = tween(2000)
             ),
@@ -338,7 +341,7 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
         }
 
         AnimatedVisibility(
-            visible = !bool,
+            visible = !playShader,
             enter = fadeIn(),
             exit = fadeOut(
                 animationSpec = tween(2000)
@@ -350,21 +353,26 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
                 modifier = Modifier
             ) {
                 Text(
-                    text = "www",
+//                    text = "www",
 //                    text = if (permissionState.status.isGranted) "Few Claps 👏 are appreciated ☺️"
 //                    else
 //                        "Needs Permission :(\nTap to grant permission",
+                    text = if (permissionState.isPermissionGranted) "Few Claps \uD83D\uDC4F are appreciated \u263A\uFE0F"
+                    else
+                        "Needs Permission :(\nTap to grant permission",
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.combinedClickable(
                         indication = null,
                         interactionSource = null,
                         onClick = {
-                            showPermissionDialog = !showPermissionDialog
+//                            showPermissionDialog = !showPermissionDialog
 //                            if (!permissionState.status.isGranted) showPermissionDialog = true
+                            if (!permissionState.isPermissionGranted) showPermissionDialog = true
                         },
                         onLongClick = {
 //                            if (permissionState.status.isGranted) showPermissionDialog = true
+                            if (permissionState.isPermissionGranted) showPermissionDialog = true
                         }
                     )
                 )
@@ -378,7 +386,7 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
                 ) {
                     AnimatedVisibility(
 //                        visible = canPlayShader.value,
-                        visible = true,
+                        visible = canPlayShader,
                         enter = slideInHorizontally(
                             animationSpec = spring(
                                 dampingRatio = Spring.DampingRatioLowBouncy,
@@ -400,7 +408,7 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
                             text = "Play Shader",
                             hazeState = hazeState,
                             height = 80.dp,
-                            onClick = { bool = true },
+                            onClick = { playShader = true },
                         )
                     }
                     InteractiveButton(
@@ -423,7 +431,7 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
 
     //TODO Handle fallback
     AnimatedVisibility(
-        visible = bool,
+        visible = playShader,
         enter = fadeIn(
             animationSpec = tween(2000, delayMillis = 3000)
         ) + scaleIn(
@@ -460,9 +468,10 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
                         0.001189427f at 3000 using LinearOutSlowInEasing
                     }
                 )
-                bool = false
+                playShader = false
                 scope.launch {
 //                    prefs.writePref(CAN_PLAY_SHADER, true)
+                    easterEggRepo?.markTriggered()
                 }
             }
         }
@@ -472,7 +481,7 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
         hazeState = hazeState,
         showPermissionDialog = showPermissionDialog,
 //        isPermissionPermanentlyDenied = isPermissionPermanentlyDenied.value,
-        isPermissionPermanentlyDenied = false,
+        isPermissionPermanentlyDenied = permissionState.isPermanentlyDenied,
         onOki = {
 //            permissionState.launchPermissionRequest()
 //            if (isPermissionPermanentlyDenied.value) {
@@ -481,13 +490,13 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
 //                intent.data = uri
 //                context.startActivity(intent)
 //            }
+            permissionState.requestPermission()
         },
         onNaa = { showPermissionDialog = false },
         onNeverAgain = {
             showPermissionDialog = false
-            scope.launch {
 //                prefs.writePref(PermissionPrefs.PERMISSION_RATIONAL, true)
-            }
+            permissionState.markDontShowEverAgain()
         }
     )
 }
@@ -539,8 +548,8 @@ fun RationalDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier
                     .padding(horizontal = 30.dp)
-                    .fillMaxWidth(0.75f)      // Takes 85% of screen width
-                    .widthIn(max = 500.dp)
+//                    .fillMaxWidth(0.75f)      // Takes 85% of screen width
+//                    .widthIn(max = 500.dp)
                     .glowingShadow {
                         color = Color.Cyan
                         spread = 18f

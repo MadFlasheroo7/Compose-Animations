@@ -13,8 +13,10 @@ import pro.jayeshseth.animations.core.navigation.rememberNavigator
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationRepository
 import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
+import pro.jayeshseth.animations.core.ui.theme.LocalEasterEggRepository
 import pro.jayeshseth.animations.core.utils.BASE_URL
 import pro.jayeshseth.animations.core.utils.rememberCustomizationRepository
+import pro.jayeshseth.animations.core.utils.rememberEasterEggRepository
 import pro.jayeshseth.animations.navigation.LandingRoutes
 import pro.jayeshseth.animations.navigation.NavGraph
 import pro.jayeshseth.animations.navigation.initializeApp
@@ -29,10 +31,12 @@ class MainActivity : ComponentActivity() {
             val backStack = rememberNavigator(LandingRoutes.Home)
             val urlHandler = LocalUriHandler.current
             val repo = rememberCustomizationRepository()
+            val easterEggRepo = rememberEasterEggRepository()
             val customizationState by repo.state.collectAsState(initial = CustomizationState())
             CompositionLocalProvider(
                 LocalCustomizationState provides customizationState,
                 LocalCustomizationRepository provides repo,
+                LocalEasterEggRepository provides easterEggRepo,
             ) {
                 AnimationsTheme {
                     NavGraph(backStack) { urlHandler.openUri("$BASE_URL/$it") }

@@ -39,7 +39,9 @@ import pro.jayeshseth.animations.core.navigation.rememberNavigator
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
 import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationRepository
 import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
+import pro.jayeshseth.animations.core.ui.theme.LocalEasterEggRepository
 import pro.jayeshseth.animations.core.utils.rememberCustomizationRepository
+import pro.jayeshseth.animations.core.utils.rememberEasterEggRepository
 import pro.jayeshseth.animations.navigation.LandingRoutes
 import pro.jayeshseth.animations.navigation.initializeApp
 import pro.jayeshseth.animations.navigation.NavGraph
@@ -79,10 +81,12 @@ fun main() {
             backStack.navBack()
         }
         val repo = rememberCustomizationRepository()
+        val easterEggRepo = rememberEasterEggRepository()
         val customizationState by repo.state.collectAsState(initial = CustomizationState())
         CompositionLocalProvider(
             LocalCustomizationState provides customizationState,
             LocalCustomizationRepository provides repo,
+            LocalEasterEggRepository provides easterEggRepo,
         ) {
             AnimationsTheme {
                 NavGraph(backStack) { }
