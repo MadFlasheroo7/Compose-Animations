@@ -609,7 +609,7 @@ private fun CodePreview(
     interstellarSpaceState: InterstellarSpaceState,
     modifier: Modifier = Modifier
 ) {
-    val tabsList = remember { mutableStateListOf("AGSL", "Compose") }
+    val tabsList = remember { mutableStateListOf("SKSL", "Compose") }
     val selectedTab = remember { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope()
     val clipboardManager = LocalClipboard.current
