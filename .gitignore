@@ -2,6 +2,7 @@
 .gradle
 .idea
 ./.kotlin
+/.kotlin
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -17,3 +18,5 @@
 local.properties
 /.idea/git_toolbox_blame.xml
 /.idea/git_toolbox_prj.xml
+/build-logic/.kotlin
+/build-logic/.kotlin/errors

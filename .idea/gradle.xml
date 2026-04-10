@@ -22,9 +22,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/build-logic/convention" />
+            <option value="$PROJECT_DIR$/composeApp" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/model" />
             <option value="$PROJECT_DIR$/core/navigation" />
@@ -34,6 +34,7 @@
             <option value="$PROJECT_DIR$/features/defaultApis" />
             <option value="$PROJECT_DIR$/features/easterEggs" />
             <option value="$PROJECT_DIR$/features/itemPlacements" />
+            <option value="$PROJECT_DIR$/features/masterCustomization" />
             <option value="$PROJECT_DIR$/features/navigation" />
             <option value="$PROJECT_DIR$/features/playground" />
             <option value="$PROJECT_DIR$/features/shaders" />

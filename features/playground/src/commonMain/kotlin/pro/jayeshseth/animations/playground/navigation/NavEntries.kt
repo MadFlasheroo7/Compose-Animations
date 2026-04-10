@@ -1,0 +1,40 @@
+package pro.jayeshseth.animations.playground.navigation
+
+import androidx.navigation3.runtime.EntryProviderScope
+import dev.chrisbanes.haze.HazeState
+import pro.jayeshseth.animations.core.model.OnClickLink
+import pro.jayeshseth.animations.core.navigation.OnNavAction
+import pro.jayeshseth.animations.core.navigation.Route
+import pro.jayeshseth.animations.core.navigation.scenesAndStrategies.BasicTwoPaneScene
+import pro.jayeshseth.animations.playground.screens.AnimationSpecs
+import pro.jayeshseth.animations.playground.screens.PlaygroundLanding
+import pro.jayeshseth.animations.playground.screens.tweenAndSpring.TweenAndSpringScreen
+
+fun EntryProviderScope<Route>.playground(
+    hazeState: HazeState,
+    onNavAction: OnNavAction,
+    onClickLink: OnClickLink
+) {
+    entry<PlaygroundRoutes.PlaygroundLandingRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
+        PlaygroundLanding(
+            hazeState = hazeState,
+            navAction = onNavAction
+        )
+    }
+    entry<PlaygroundRoutes.AnimationSpecRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
+        AnimationSpecs(
+            hazeState = hazeState,
+            navAction = onNavAction
+        )
+    }
+    entry<PlaygroundRoutes.TweenAndSpringRoute> {
+        TweenAndSpringScreen(
+            hazeState = hazeState,
+            onClickLink
+        )
+    }
+}

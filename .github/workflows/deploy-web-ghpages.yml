@@ -1,0 +1,76 @@
+name: Deploy Web (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build WASM distribution
+        run: ./gradlew :composeApp:wasmJsBrowserDistribution
+        env:
+          GRADLE_OPTS: "-Xmx6g"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wasm-dist
+          path: composeApp/build/dist/wasmJs/productionExecutable/
+
+  build-js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build JS distribution
+        run: ./gradlew :composeApp:jsBrowserDistribution
+        env:
+          GRADLE_OPTS: "-Xmx6g"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: js-dist
+          path: composeApp/build/dist/js/productionExecutable/
+
+  deploy:
+    needs: [build-wasm, build-js]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: wasm-dist
+          path: site/
+      - uses: actions/download-artifact@v4
+        with:
+          name: js-dist
+          path: site/js/
+      - name: Add CNAME
+        run: echo "animations.jayeshseth.pro" > site/CNAME
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+      - id: deployment
+        uses: actions/deploy-pages@v4

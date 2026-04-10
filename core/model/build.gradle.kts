@@ -1,11 +1,18 @@
 plugins {
-    alias(libs.plugins.animations.library)
+    alias(libs.plugins.animations.cmp.library)
 }
 
-android {
-    namespace = "pro.jayeshseth.animations.core.model"
-}
-
-dependencies {
-    implementation("com.github.qawaz:compose-code-editor:2.0.3")
+kotlin {
+    sourceSets {
+        androidMain {
+            dependencies {
+                implementation(libs.compose.code.editor)
+            }
+        }
+        commonMain {
+            dependencies {
+                implementation(compose.components.resources)
+            }
+        }
+    }
 }

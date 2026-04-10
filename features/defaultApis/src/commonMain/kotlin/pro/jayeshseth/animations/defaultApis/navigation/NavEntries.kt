@@ -1,0 +1,62 @@
+package pro.jayeshseth.animations.defaultApis.navigation
+
+import androidx.compose.ui.graphics.Color
+import androidx.navigation3.runtime.EntryProviderScope
+import dev.chrisbanes.haze.HazeState
+import pro.jayeshseth.animations.core.model.OnClickLink
+import pro.jayeshseth.animations.core.navigation.OnNavAction
+import pro.jayeshseth.animations.core.navigation.Route
+import pro.jayeshseth.animations.core.navigation.scenesAndStrategies.BasicTwoPaneScene
+import pro.jayeshseth.animations.defaultApis.animations.infiniteTransistions.InfiniteRotation
+import pro.jayeshseth.animations.defaultApis.screens.AnimateValueAsState
+import pro.jayeshseth.animations.defaultApis.screens.AnimatedGestures
+import pro.jayeshseth.animations.defaultApis.screens.AnimatedTransition
+import pro.jayeshseth.animations.defaultApis.screens.DefaultApisLanding
+import pro.jayeshseth.animations.defaultApis.screens.VisibilityAnimations
+
+fun EntryProviderScope<Route>.defaultApis(
+    onClickLink: OnClickLink,
+    hazeState: HazeState,
+    navAction: OnNavAction,
+) {
+    entry<DefaultApisRoutes.DefaultApisLanding>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
+        DefaultApisLanding(
+            hazeState,
+        ) { navAction(it) }
+    }
+    entry<DefaultApisRoutes.AnimateVisibilityRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
+        VisibilityAnimations(
+            hazeState,
+            onClickLink
+        )
+    }
+    entry<DefaultApisRoutes.AnimateContentRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
+        AnimatedTransition(
+            hazeState
+        )
+    }
+    entry<DefaultApisRoutes.AnimateValueAsStateRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
+        AnimateValueAsState(
+            hazeState,
+            onClickLink
+        )
+    }
+    entry<DefaultApisRoutes.AnimateGestureRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) { AnimatedGestures() }
+    entry<DefaultApisRoutes.InfiniteRotationRoute>(
+        metadata = BasicTwoPaneScene.secondaryPane()
+    ) {
+        InfiniteRotation(
+            hazeState
+        )
+    }
+}

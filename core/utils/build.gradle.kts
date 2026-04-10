@@ -1,15 +1,39 @@
 plugins {
-    alias(libs.plugins.animations.library)
+    alias(libs.plugins.animations.cmp.library)
 }
 
-android {
-    buildFeatures {
-        buildConfig = true
+kotlin {
+    sourceSets {
+        val nonWebMain by creating {
+            dependsOn(commonMain.get())
+            dependencies {
+                api(libs.androidx.datastore)
+                api(libs.androidx.datastore.preferences)
+            }
+        }
+
+        androidMain {
+            dependsOn(nonWebMain)
+        }
+
+        iosMain {
+            dependsOn(nonWebMain)
+        }
+
+        desktopMain {
+            dependsOn(nonWebMain)
+        }
+
+        commonMain {
+            dependencies {
+                implementation(projects.core.model)
+            }
+        }
+
+        webMain {
+            dependencies {
+                implementation(libs.kotlinx.browser)
+            }
+        }
     }
-    namespace = "pro.jayeshseth.animations.core.utils"
-}
-
-dependencies {
-    implementation(libs.androidx.datastore.preferences)
-    implementation(libs.androidx.datastore.preferences.core)
 }
