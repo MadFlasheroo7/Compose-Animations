@@ -2,6 +2,8 @@ package pro.jayeshseth.animations.core.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import kotlinx.browser.localStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,8 +54,16 @@ private class LocalStorageCustomizationRepository : CustomizationRepository {
             buttonAccentColorArgb = localStorage.getItem(DefaultPrefKeys.BUTTON_ACCENT_COLOR_KEY)
                 ?.toIntOrNull()
                 ?: defaults.buttonAccentColorArgb,
+            backgroundBlur = localStorage.getItem(DefaultPrefKeys.BACKGROUND_BLUR_KEY)
+                ?.toFloatOrNull()?.dp
+                ?: defaults.backgroundBlur,
             backgroundType = backgroundType,
         )
+    }
+
+    override suspend fun updateBackgroundBlur(blur: Dp) {
+        localStorage.setItem(DefaultPrefKeys.BACKGROUND_BLUR_KEY, blur.toString())
+        _state.value = _state.value.copy(backgroundBlur = blur)
     }
 
     override suspend fun updatePrimaryColor(argb: Int) {

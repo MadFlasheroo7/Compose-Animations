@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,7 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeState
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -34,6 +34,7 @@ import pro.jayeshseth.animations.core.ui.components.PrimaryInteractiveButton
 import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
 import pro.jayeshseth.animations.core.ui.layouts.LazyIntrinsicGrid
 import pro.jayeshseth.animations.core.ui.theme.AnimationsTheme
+import pro.jayeshseth.animations.core.ui.theme.LocalEasterEggRepository
 import pro.jayeshseth.animations.core.ui.utils.DeviceConfiguration.DESKTOP
 import pro.jayeshseth.animations.core.ui.utils.DeviceConfiguration.MOBILE_LANDSCAPE
 import pro.jayeshseth.animations.core.ui.utils.DeviceConfiguration.MOBILE_PORTRAIT
@@ -63,6 +64,9 @@ fun HomeScreen(
 //    val isUnlocked =
 //        prefs.collectPrefAsState(CAN_PLAY_SHADER, false)
 
+    val easterEggRepo = LocalEasterEggRepository.current
+    val isUnlocked by easterEggRepo?.hasEasterEggEgged?.collectAsState(initial = false)
+        ?: remember { mutableStateOf(false) }
     LaunchedEffect(lazyListState.isScrollInProgress) {
         if (lazyListState.isScrollInProgress) {
             isInitialLoad = false
@@ -80,20 +84,6 @@ fun HomeScreen(
             DESKTOP -> 3
         }
     )
-
-    val device by remember(deviceConfiguration) {
-        mutableStateOf(
-            when (deviceConfiguration) {
-                MOBILE_PORTRAIT -> "Mobile Portrait"
-                MOBILE_LANDSCAPE -> "Mobile Landscape"
-                TABLET_PORTRAIT -> "Tablet Portrait"
-                TABLET_LANDSCAPE -> "Tablet Landscape"
-                DESKTOP -> "Desktop"
-            }
-        )
-    }
-    val local = LocalWindowInfo.current
-//    Log.d("HomeScreen", "isUnlocked: ${isUnlocked.value}")
     Scaffold(
         containerColor = Color.Transparent,
         topBar = {
@@ -111,8 +101,7 @@ fun HomeScreen(
     ) {
         LazyIntrinsicGrid(
             state = lazyListState,
-//            items = animationScreens(isUnlocked.value),
-            items = animationScreens(true),
+            items = animationScreens(isUnlocked),
             columns = if (isSceneActivated) 1 else columns,
             contentPadding = it,
             span = { 1 },
@@ -215,19 +204,14 @@ private fun animationScreens(isItUnlocked: Boolean): List<AnimationScreen> {
             title = "Canvas",
             route = LandingRoutes.BouncyRope
         ),
-//        /*        AnimationScreen(
-//                    title = "Community",
-//                    route = DefaultApisRoutes.AnimateVisibilityRoute
-//                ),*/
-        AnimationScreen(
-            title = "Past Easter Eggs",
-            route = DefaultApisRoutes.DefaultApisLanding
-//            route = EasterEggsRoutes.EasterEggsLandingRoute
-        ),
-        AnimationScreen(
-            title = "Community",
-            route = LandingRoutes.Community
-        ),
+//        AnimationScreen(
+//            title = "Past Easter Eggs",
+//            route = DefaultApisRoutes.DefaultApisLanding
+//        ),
+//        AnimationScreen(
+//            title = "Community",
+//            route = LandingRoutes.Community
+//        ),
         if (isItUnlocked) AnimationScreen(
             title = "Master Customisations",
             route = LandingRoutes.MasterCustomization,
