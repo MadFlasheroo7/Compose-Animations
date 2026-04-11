@@ -52,7 +52,7 @@ jobs:
           path: composeApp/build/dist/js/productionExecutable/
 
   deploy:
-    needs: [build-wasm]
+    needs: [build-wasm,build-js]
     runs-on: ubuntu-latest
     environment:
       name: github-pages
