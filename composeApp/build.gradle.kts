@@ -82,8 +82,9 @@ compose {
             mainClass = "pro.jayeshseth.animations.MainKt"
 
             nativeDistributions {
-                targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-                packageName = "pro.jayeshseth.animations"
+                targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Rpm, TargetFormat.AppImage)
+                modules("jdk.unsupported")
+                packageName = "compose-animations"
                 packageVersion = "1.0.0"
             }
         }

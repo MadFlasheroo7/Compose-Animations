@@ -72,6 +72,52 @@ jobs:
           name: linux-deb
           path: ${{ needs.resolve-version.outputs.artifact-prefix }}.deb
 
+  build-desktop-linux-rpm:
+    needs: resolve-version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build rpm package
+        run: ./gradlew :composeApp:packageRpm
+        env:
+          GRADLE_OPTS: "-Xmx6g"
+      - name: Rename artifact
+        run: |
+          PREFIX="${{ needs.resolve-version.outputs.artifact-prefix }}"
+          cp composeApp/build/compose/binaries/main/rpm/*.rpm "$PREFIX.rpm"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-rpm
+          path: ${{ needs.resolve-version.outputs.artifact-prefix }}.rpm
+
+  build-desktop-linux-appimage:
+    needs: resolve-version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build AppImage
+        run: ./gradlew :composeApp:packageAppImage
+        env:
+          GRADLE_OPTS: "-Xmx6g"
+      - name: Rename artifact
+        run: |
+          PREFIX="${{ needs.resolve-version.outputs.artifact-prefix }}"
+          cp composeApp/build/compose/binaries/main/app-image/*.AppImage "$PREFIX.AppImage"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-appimage
+          path: ${{ needs.resolve-version.outputs.artifact-prefix }}.AppImage
+
   build-desktop-windows:
     needs: resolve-version
     runs-on: windows-latest
@@ -172,6 +218,8 @@ jobs:
       - resolve-version
       - build-android
       - build-desktop-linux
+      - build-desktop-linux-rpm
+      - build-desktop-linux-appimage
       - build-desktop-windows
       - build-desktop-macos
       - build-web-wasm
