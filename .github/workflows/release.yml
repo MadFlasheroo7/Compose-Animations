@@ -175,7 +175,7 @@ jobs:
   create-release:
     needs:
       - resolve-version
-      - build-android
+#      - build-android
       - build-desktop-linux
       - build-desktop-windows
       - build-desktop-macos
