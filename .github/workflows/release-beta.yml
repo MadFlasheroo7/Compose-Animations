@@ -95,7 +95,7 @@ jobs:
           name: linux-rpm
           path: ${{ needs.resolve-version.outputs.artifact-prefix }}.rpm
 
-  build-desktop-linux-appimage:
+  build-desktop-linux-tar:
     needs: resolve-version
     runs-on: ubuntu-latest
     steps:
@@ -105,18 +105,18 @@ jobs:
           distribution: temurin
           java-version: 17
       - uses: gradle/actions/setup-gradle@v4
-      - name: Build AppImage
-        run: ./gradlew :composeApp:packageAppImage
+      - name: Build distributable app
+        run: ./gradlew :composeApp:createDistributable
         env:
           GRADLE_OPTS: "-Xmx6g"
-      - name: Rename artifact
+      - name: Package as tar.gz
         run: |
           PREFIX="${{ needs.resolve-version.outputs.artifact-prefix }}"
-          cp composeApp/build/compose/binaries/main/app-image/*.AppImage "$PREFIX.AppImage"
+          tar -czf "$PREFIX.tar.gz" -C composeApp/build/compose/binaries/main/app .
       - uses: actions/upload-artifact@v4
         with:
-          name: linux-appimage
-          path: ${{ needs.resolve-version.outputs.artifact-prefix }}.AppImage
+          name: linux-tar
+          path: ${{ needs.resolve-version.outputs.artifact-prefix }}.tar.gz
 
   build-desktop-windows:
     needs: resolve-version
@@ -219,7 +219,7 @@ jobs:
       - build-android
       - build-desktop-linux
       - build-desktop-linux-rpm
-      - build-desktop-linux-appimage
+      - build-desktop-linux-tar
       - build-desktop-windows
       - build-desktop-macos
       - build-web-wasm
