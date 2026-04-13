@@ -43,7 +43,7 @@ jobs:
       - name: Rename artifact
         run: |
           PREFIX="${{ needs.resolve-version.outputs.artifact-prefix }}"
-          cp composeApp/build/outputs/apk/debug/composeApp-debug.apk "$PREFIX.apk"
+          cp composeApp/build/outputs/apk/debug/*.apk "$PREFIX.apk"
       - uses: actions/upload-artifact@v4
         with:
           name: android-apk
