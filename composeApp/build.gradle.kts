@@ -7,6 +7,14 @@ plugins {
 
 kotlin {
     android {
+//        signingConfigs {
+//            create("release") {
+//                storeFile = file("keystore.jks")
+//                storePassword = System.getenv("STORE_PASSWORD")
+//                keyAlias = System.getenv("KEY_ALIAS")
+//                keyPassword = System.getenv("KEY_PASSWORD")
+//            }
+//        }
         buildTypes {
             release {
                 isMinifyEnabled = true
@@ -14,6 +22,7 @@ kotlin {
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
                 )
+//                signingConfig = signingConfigs.getByName("release")
             }
             debug {
                 applicationIdSuffix = ".debug"
@@ -82,7 +91,7 @@ compose {
             mainClass = "pro.jayeshseth.animations.MainKt"
 
             nativeDistributions {
-                targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Rpm, TargetFormat.AppImage)
+                targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Rpm)
                 modules("jdk.unsupported")
                 packageName = "compose-animations"
                 packageVersion = "1.0.0"
