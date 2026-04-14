@@ -64,7 +64,6 @@ namespace = "pro.jayeshseth.animations"
 version-code = "10"
 version-name = "2.0.0" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
 version-nameBetaSuffix = "-beta01"
-jvm-target = "17"
 target-sdk = "36"
 compile-sdk = "36"
 min-sdk = "24"

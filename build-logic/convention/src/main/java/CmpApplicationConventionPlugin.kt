@@ -52,6 +52,7 @@ class CmpApplicationConventionPlugin : Plugin<Project> {
             configureWebTarget()
 
             extensions.configure<KotlinMultiplatformExtension> {
+                jvmToolchain(17)
                 applyHierarchyTemplate()
             }
 
