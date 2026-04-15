@@ -38,6 +38,7 @@
             <option value="$PROJECT_DIR$/features/navigation" />
             <option value="$PROJECT_DIR$/features/playground" />
             <option value="$PROJECT_DIR$/features/shaders" />
+            <option value="$PROJECT_DIR$/macrobenchmark" />
           </set>
         </option>
       </GradleProjectSettings>

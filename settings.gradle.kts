@@ -39,6 +39,8 @@ plugins {
 
 rootProject.name = "Animations"
 include(":composeApp")
+include(":macrobenchmark")
+
 // Core Modules
 include(":core:ui")
 include(":core:utils")

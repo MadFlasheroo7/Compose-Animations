@@ -24,6 +24,14 @@ kotlin {
                 )
 //                signingConfig = signingConfigs.getByName("release")
             }
+            create("benchmark") {
+                initWith(getByName("release"))
+                signingConfig = signingConfigs.getByName("debug")
+                isDebuggable = false
+                isMinifyEnabled = false
+                isShrinkResources = false
+                matchingFallbacks += listOf("release")
+            }
             debug {
                 applicationIdSuffix = ".debug"
                 isDefault = true

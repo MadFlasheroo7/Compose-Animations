@@ -38,6 +38,8 @@ cascade = "2.3.0"
 accompanist = "0.37.3"
 coil = "3.3.0"
 composeCodeEditor = "2.0.3"
+benchmarkMacroJunit4 = "1.4.1"
+uiautomator = "2.3.0"
 espresso-core = "3.6.1"
 junit = "4.13.2"
 lottie = "6.6.6"
@@ -86,6 +88,8 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 androidx-window = { module = "androidx.window:window", version.ref = "androidx-window" }
 
 # Benchmark
+androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
+androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 
 # Cascade
 cascade = { group = "me.saket.cascade", name = "cascade", version.ref = "cascade" }
