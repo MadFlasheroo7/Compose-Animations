@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.trace
 import com.mikepenz.hypnoticcanvas.shaderBackground
 import com.mikepenz.hypnoticcanvas.shaders.InkFlow
 import dev.chrisbanes.haze.HazeState
@@ -77,29 +78,31 @@ fun InteractiveButton(
         targetValue = Color(customizationState.buttonAccentColorArgb),
         animationSpec = spring(stiffness = Spring.StiffnessLow)
     )
-    BaseInteractiveButton(
-        hazeState = hazeState,
-        hazeStyle = hazeStyle,
-        onLongClick = onLongClick,
-        color = color,
-        clickDelay = clickDelay,
-        onClick = onClick,
-        blur = 0f,
-        scale = 1f,
-        modifier = modifier
-            .height(height)
-    ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(18.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+    trace("BaseInteractiveButton") {
+        BaseInteractiveButton(
+            hazeState = hazeState,
+            hazeStyle = hazeStyle,
+            onLongClick = onLongClick,
+            color = color,
+            clickDelay = clickDelay,
+            onClick = onClick,
+            blur = 0f,
+            scale = 1f,
+            modifier = modifier
+                .height(height)
         ) {
-            Text(
-                text = text,
-                color = color,
-                textAlign = TextAlign.Center,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium,
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(18.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = text,
+                    color = color,
+                    textAlign = TextAlign.Center,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                )
+            }
         }
     }
 }

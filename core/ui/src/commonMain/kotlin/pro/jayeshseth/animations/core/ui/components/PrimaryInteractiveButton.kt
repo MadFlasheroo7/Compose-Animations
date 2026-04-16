@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.trace
 import com.mikepenz.hypnoticcanvas.shaderBackground
 import com.mikepenz.hypnoticcanvas.shaders.InkFlow
 import dev.chrisbanes.haze.ExperimentalHazeApi
@@ -77,43 +78,45 @@ fun PrimaryInteractiveButton(
         targetValue = Color(customizationState.primaryButtonAccentColorArgb),
         animationSpec = spring(stiffness = Spring.StiffnessLow)
     )
-    BaseInteractiveButton(
-        hazeState = hazeState,
-        hazeStyle = hazeStyle,
-        onLongClick = onLongClick,
-        color = color,
-        clickDelay = clickDelay,
-        onClick = onClick,
-        flip = flip,
-        blur = blur,
-        scale = scale,
-        modifier = modifier,
-        showOverlay = true
-    ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(18.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(
-                horizontal = 16.dp,
-                vertical = 25.dp
-            )
+    trace("BaseInteractiveButton") {
+        BaseInteractiveButton(
+            hazeState = hazeState,
+            hazeStyle = hazeStyle,
+            onLongClick = onLongClick,
+            color = color,
+            clickDelay = clickDelay,
+            onClick = onClick,
+            flip = flip,
+            blur = blur,
+            scale = scale,
+            modifier = modifier,
+            showOverlay = true
         ) {
-            Icon(
-                painter = painterResource(AnimIcons.settings),
-                contentDescription = null,
-                tint = color,
-                modifier = Modifier.size(60.dp)
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(18.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(
+                    horizontal = 16.dp,
+                    vertical = 25.dp
+                )
+            ) {
+                Icon(
+                    painter = painterResource(AnimIcons.settings),
+                    contentDescription = null,
+                    tint = color,
+                    modifier = Modifier.size(60.dp)
+                )
 
-            Text(
-                text = text,
-                color = color,
-                textAlign = TextAlign.Center,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.ExtraBold,
-            )
+                Text(
+                    text = text,
+                    color = color,
+                    textAlign = TextAlign.Center,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                )
+            }
+
         }
-
     }
 }
 
