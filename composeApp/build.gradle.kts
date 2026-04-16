@@ -53,6 +53,12 @@ kotlin {
                 implementation("androidx.compose.foundation:foundation:1.11.0-alpha04")
                 implementation(libs.androidx.activity.compose)
                 implementation(fileTree("libs") { include("*.jar") })
+                implementation(libs.rebugger)
+            }
+        }
+        iosMain {
+            dependencies {
+                implementation(libs.rebugger)
             }
         }
         commonMain {
@@ -88,6 +94,7 @@ kotlin {
         desktopMain {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation(libs.rebugger)
             }
         }
     }

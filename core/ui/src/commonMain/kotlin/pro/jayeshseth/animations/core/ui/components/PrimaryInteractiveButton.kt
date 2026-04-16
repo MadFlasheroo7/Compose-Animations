@@ -69,12 +69,12 @@ fun PrimaryInteractiveButton(
     onLongClick: () -> Unit = {},
     clickDelay: Long = 0L,
     flip: Boolean = false,
-    scale: Float = 1f,
-    blur: Float = 0f,
+    scale: () -> Float = { 1f },
+    blur: () -> Float = { 0f },
     onClick: () -> Unit,
 ) {
     val customizationState = LocalCustomizationState.current
-    val color by animateColorAsState(
+    val colorState = animateColorAsState(
         targetValue = Color(customizationState.primaryButtonAccentColorArgb),
         animationSpec = spring(stiffness = Spring.StiffnessLow)
     )
@@ -83,7 +83,7 @@ fun PrimaryInteractiveButton(
             hazeState = hazeState,
             hazeStyle = hazeStyle,
             onLongClick = onLongClick,
-            color = color,
+            color = { colorState.value },
             clickDelay = clickDelay,
             onClick = onClick,
             flip = flip,
@@ -103,18 +103,18 @@ fun PrimaryInteractiveButton(
                 Icon(
                     painter = painterResource(AnimIcons.settings),
                     contentDescription = null,
-                    tint = color,
+                    tint = colorState.value,
                     modifier = Modifier.size(60.dp)
                 )
 
-                Text(
-                    text = text,
-                    color = color,
-                    textAlign = TextAlign.Center,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                )
-            }
+            Text(
+                text = text,
+                color = colorState.value,
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.ExtraBold,
+            )
+        }
 
         }
     }
@@ -142,8 +142,8 @@ private fun PreviewInteractiveButton() {
                 items(120) {
                     PrimaryInteractiveButton(
                         hazeState = hazeState,
-                        scale = 1f,
-                        blur = 0f,
+                        scale = { 1f },
+                        blur = { 0f },
                         text = "Shapes & Morphing",
                         onClick = {
                             println("✨ Animation complete onclick triggred!")

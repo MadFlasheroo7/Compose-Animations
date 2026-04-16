@@ -5,6 +5,9 @@ plugins {
 
 kotlin {
     sourceSets {
+        androidMain.dependencies { implementation(libs.rebugger) }
+        iosMain.dependencies { implementation(libs.rebugger) }
+        desktopMain.dependencies { implementation(libs.rebugger) }
         wasmJsMain {
             dependencies {
 //                implementation(libs.rebugger)
@@ -12,7 +15,6 @@ kotlin {
         }
         commonMain {
             dependencies {
-//                implementation(libs.rebugger)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(projects.core.model)

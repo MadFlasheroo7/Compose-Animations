@@ -29,8 +29,8 @@ fun DemoInteractiveButtons(
         PrimaryInteractiveButton(
             hazeState = hazeState,
             text = "Click Me",
-            scale = 1f,
-            blur = 0f,
+            scale = { 1f },
+            blur = { 0f },
             onClick = {
 
             }

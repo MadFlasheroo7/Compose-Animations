@@ -1,5 +1,6 @@
 package pro.jayeshseth.animations.ui.screens
 
+import pro.jayeshseth.animations.core.ui.utils.TrackRecomposition
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -54,6 +55,14 @@ fun HomeScreen(
     isSceneActivated: Boolean = false,
     navAction: OnNavAction = {}
 ) {
+    TrackRecomposition(
+        trackMap = mapOf(
+            "hazeState" to hazeState,
+            "isSceneActivated" to isSceneActivated,
+            "navAction" to navAction
+        ),
+        composableName = "HomeScreen"
+    )
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 //    val context = LocalContext.current
 //    val updateTransition = updateTransition(color)
@@ -135,6 +144,18 @@ private fun AnimateButtonScale(
     flip: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    TrackRecomposition(
+        trackMap = mapOf(
+            "index" to index,
+            "text" to text,
+            "hazeState" to hazeState,
+            "onClick" to onClick,
+            "isInitialLoad" to isInitialLoad,
+            "flip" to flip,
+            "modifier" to modifier
+        ),
+        composableName = "AnimateButtonScale"
+    )
     val animatedProgress = remember { Animatable(4.5f) }
     val animatedBlur = remember { Animatable(100f) }
     var hasAnimated by remember { mutableStateOf(false) }
@@ -167,8 +188,8 @@ private fun AnimateButtonScale(
         flip = flip,
         text = text,
         onClick = onClick,
-        scale = animatedProgress.value,
-        blur = animatedBlur.value,
+        scale = { animatedProgress.value },
+        blur = { animatedBlur.value },
         modifier = modifier
     )
 }

@@ -34,6 +34,7 @@ import pro.jayeshseth.animations.core.ui.components.BackgroundRenderer
 import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
 import pro.jayeshseth.animations.defaultApis.navigation.defaultApis
+import pro.jayeshseth.animations.core.ui.utils.initRebugger
 import pro.jayeshseth.animations.itemPlacements.navigation.ItemPlacementRoutes
 import pro.jayeshseth.animations.itemPlacements.navigation.itemPlacements
 import pro.jayeshseth.animations.masterCustomization.screens.MasterCustomization
@@ -238,7 +239,6 @@ fun NavGraph(
     )
 }
 
-
 fun registerAllRoutes() {
     LandingRoutes.register()
     DefaultApisRoutes.register()
@@ -253,6 +253,7 @@ fun registerAllRoutes() {
  * Registers all shaders and navigation routes.
  */
 fun initializeApp() {
+    initRebugger()
     BackgroundRegistrar.register()
     registerAllRoutes()
 }

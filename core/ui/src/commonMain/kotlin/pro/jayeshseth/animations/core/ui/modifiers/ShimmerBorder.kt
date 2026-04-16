@@ -1,6 +1,5 @@
 package pro.jayeshseth.animations.core.ui.modifiers
 
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
@@ -10,6 +9,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
+import pro.jayeshseth.animations.core.model.ComposeFriendlyFloat
 
 /**
  * A `Modifier` that adds a shimmering border effect to a composable.
@@ -38,8 +38,8 @@ import androidx.compose.ui.unit.Dp
  * ```
  */
 fun Modifier.shimmerBorder(
-    cornerRadius: Dp,
-    animatedTranslation: Float,
+    cornerRadius: () -> Dp,
+    animatedTranslation: ComposeFriendlyFloat,
     borderWidth: Float = 4f,
     colors: List<Color> = listOf(
         Color.Transparent,
@@ -49,15 +49,15 @@ fun Modifier.shimmerBorder(
 ): Modifier = drawBehind {
     val shimmerBrush = Brush.linearGradient(
         colors = colors,
-        start = Offset(size.width * animatedTranslation, 0f),
-        end = Offset(size.width * (animatedTranslation + 0.3f), size.height)
+        start = Offset(size.width * animatedTranslation(), 0f),
+        end = Offset(size.width * (animatedTranslation() + 0.3f), size.height)
     )
 
     drawRoundRect(
         brush = shimmerBrush,
         topLeft = Offset(4f / 2, 4f / 2),
         size = Size(size.width - 4f, size.height - 4f),
-        cornerRadius = CornerRadius(cornerRadius.toPx()),
+        cornerRadius = CornerRadius(cornerRadius().toPx()),
         style = Stroke(width = borderWidth)
     )
 }

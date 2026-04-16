@@ -74,7 +74,7 @@ fun InteractiveButton(
     onClick: () -> Unit
 ) {
     val customizationState = LocalCustomizationState.current
-    val color by animateColorAsState(
+    val colorState = animateColorAsState(
         targetValue = Color(customizationState.buttonAccentColorArgb),
         animationSpec = spring(stiffness = Spring.StiffnessLow)
     )
@@ -83,11 +83,11 @@ fun InteractiveButton(
             hazeState = hazeState,
             hazeStyle = hazeStyle,
             onLongClick = onLongClick,
-            color = color,
+            color = { colorState.value },
             clickDelay = clickDelay,
             onClick = onClick,
-            blur = 0f,
-            scale = 1f,
+            blur = { 0f },
+            scale = { 1f },
             modifier = modifier
                 .height(height)
         ) {
@@ -97,7 +97,7 @@ fun InteractiveButton(
             ) {
                 Text(
                     text = text,
-                    color = color,
+                    color = colorState.value,
                     textAlign = TextAlign.Center,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,

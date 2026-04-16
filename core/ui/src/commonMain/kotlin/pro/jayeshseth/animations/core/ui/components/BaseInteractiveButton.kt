@@ -1,6 +1,5 @@
 package pro.jayeshseth.animations.core.ui.components
 
-import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.EaseInCubic
 import androidx.compose.animation.core.RepeatMode
@@ -46,6 +45,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pro.jayeshseth.animations.core.ui.modifiers.shimmerBorder
+import pro.jayeshseth.animations.core.ui.utils.TrackRecomposition
 import pro.jayeshseth.glowingButton.glowingShadow
 
 // TODO make is accessible and testable
@@ -76,10 +76,10 @@ fun BaseInteractiveButton(
     hazeStyle: HazeStyle = HazeStyle.Unspecified,
     onLongClick: () -> Unit = {},
     clickDelay: Long = 0L,
-    color: Color = Color.Cyan,
+    color: () -> Color = { Color.Cyan },
     flip: Boolean = false,
-    scale: Float = 1f,
-    blur: Float = 0f,
+    scale: () -> Float = { 1f },
+    blur: () -> Float = { 0f },
     showOverlay: Boolean = false,
     onClick: () -> Unit,
     content: @Composable (BoxScope.() -> Unit)
@@ -99,7 +99,7 @@ fun BaseInteractiveButton(
     val infiniteTransition = rememberInfiniteTransition(label = "shimmer")
     val transition = updateTransition(isVisuallyActive, "button animation")
 
-    val buttonDp by transition.animateDp(
+    val buttonDp = transition.animateDp(
         transitionSpec = {
             spring(
                 dampingRatio = Spring.DampingRatioLowBouncy,
@@ -108,19 +108,19 @@ fun BaseInteractiveButton(
         }
     ) { if (it xor flip) 100.dp else 18.dp }
 
-    val shadowColor by transition.animateColor(
+    val shadowAlpha = transition.animateFloat(
         transitionSpec = {
             spring(
                 dampingRatio = Spring.DampingRatioLowBouncy,
                 stiffness = Spring.StiffnessLow,
             )
         }
-    ) { if (it) color else color.copy(alpha = .4f) }
+    ) { if (it) 1f else 0.4f }
 
-    val shape by remember(buttonDp, flip) { mutableStateOf(RoundedCornerShape(buttonDp)) }
+    val shape = remember(buttonDp.value, flip) { mutableStateOf(RoundedCornerShape(buttonDp.value)) }
 
     // Infinite Shimmer anim
-    val translateAnim by infiniteTransition.animateFloat(
+    val translateAnim = infiniteTransition.animateFloat(
         initialValue = -2f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
@@ -130,28 +130,59 @@ fun BaseInteractiveButton(
         label = "shimmer"
     )
 
-    // Temp inner radius, a workaround for inner shadow bug
-    val innerRadius by infiniteTransition.animateFloat(
-        initialValue = 4.9f,
-        targetValue = 5f,
-        label = "",
-        animationSpec = infiniteRepeatable(
-            animation = tween(5000),
-        )
-    )
+//    // Temp inner radius, a workaround for inner shadow bug
+//    val innerRadius = infiniteTransition.animateFloat(
+//        initialValue = 4.9f,
+//        targetValue = 5f,
+//        label = "",
+//        animationSpec = infiniteRepeatable(
+//            animation = tween(5000),
+//        )
+//    )
 
+
+    TrackRecomposition(
+        trackMap = mapOf(
+            "hazeState" to hazeState,
+            "modifier" to modifier,
+            "hazeStyle" to hazeStyle,
+            "onLongClick" to onLongClick,
+            "clickDelay" to clickDelay,
+            "color" to color,
+            "flip" to flip,
+            "scale" to scale,
+            "blur" to blur,
+            "showOverlay" to showOverlay,
+            "onClick" to onClick,
+            "content" to content,
+            "buttonDp" to buttonDp,
+            "spread" to spread,
+            "radius" to radius,
+            "spread2" to spread2,
+            "isPressed" to isPressed,
+            "isHovered" to isHovered,
+            "isAnimatingClick" to isAnimatingClick,
+            "shape" to shape,
+            "color" to color,
+//            "innerRadius" to innerRadius,
+//            "translateAnim" to translateAnim,
+            "shadowAlpha" to shadowAlpha,
+            "scope" to scope
+        ),
+        composableName = "BaseInteractiveButton"
+    )
     Box(
         contentAlignment = Alignment.Center,
         content = content,
         modifier = modifier
             .fillMaxWidth()
             .glowingShadow {
-                this.shape = shape
-                this.color = color
+                this.shape = shape.value
+                this.color = color()
                 this.spread = spread.value
                 this.blurRadius = radius.value
             }
-            .clip(shape)
+            .clip(shape.value)
             .hazeEffect(state = hazeState, style = hazeStyle)
             .pointerInput(Unit) {
                 awaitPointerEventScope {
@@ -215,6 +246,7 @@ fun BaseInteractiveButton(
             .then(
                 if (showOverlay) {
                     Modifier.drawBehind {
+                        val currentShadowColor = color().copy(alpha = shadowAlpha.value)
                         drawIntoCanvas { canvas ->
                             val brush = Brush.radialGradient(
                                 radius = this.size.maxDimension * .9f,
@@ -223,9 +255,9 @@ fun BaseInteractiveButton(
                                     this.size.height / 2f
                                 ),
                                 colors = listOf(
-                                    shadowColor.copy(alpha = 0.1f),
-                                    shadowColor,
-                                    shadowColor,
+                                    currentShadowColor.copy(alpha = 0.1f),
+                                    currentShadowColor,
+                                    currentShadowColor,
                                 )
                             )
                             this.drawRoundRect(brush = brush)
@@ -233,22 +265,24 @@ fun BaseInteractiveButton(
                     }
                 } else Modifier
             )
-            .innerShadow(shape) {
-                this.color = shadowColor
-                this.radius = innerRadius
+            .innerShadow(shape.value) {
+                this.color = color().copy(alpha = shadowAlpha.value)
+                this.radius = 5f
                 this.spread = 10f
             }
             .graphicsLayer {
-                this.shape = shape
-                this.scaleX = scale
-                this.scaleY = scale
-                if (blur > 0f) {
-                    renderEffect = BlurEffect(blur, blur, TileMode.Decal)
+                val currentScale = scale()
+                val currentBlur = blur()
+                this.shape = shape.value
+                this.scaleX = currentScale
+                this.scaleY = currentScale
+                if (currentBlur > 0f) {
+                    renderEffect = BlurEffect(currentBlur, currentBlur, TileMode.Decal)
                 }
             }
             .shimmerBorder(
-                cornerRadius = buttonDp,
-                animatedTranslation = translateAnim
+                cornerRadius = { buttonDp.value },
+                animatedTranslation = { translateAnim.value }
             )
     )
 }
