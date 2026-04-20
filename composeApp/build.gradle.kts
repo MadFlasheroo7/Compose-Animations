@@ -1,45 +1,10 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.animations.cmp.application)
 }
 
 kotlin {
-    android {
-//        signingConfigs {
-//            create("release") {
-//                storeFile = file("keystore.jks")
-//                storePassword = System.getenv("STORE_PASSWORD")
-//                keyAlias = System.getenv("KEY_ALIAS")
-//                keyPassword = System.getenv("KEY_PASSWORD")
-//            }
-//        }
-        buildTypes {
-            release {
-                isMinifyEnabled = true
-                proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
-                )
-//                signingConfig = signingConfigs.getByName("release")
-            }
-            create("benchmark") {
-                initWith(getByName("release"))
-                signingConfig = signingConfigs.getByName("debug")
-                isDebuggable = false
-                isMinifyEnabled = false
-                isShrinkResources = false
-                matchingFallbacks += listOf("release")
-            }
-            debug {
-                applicationIdSuffix = ".debug"
-                isDefault = true
-                versionNameSuffix = libs.versions.version.nameBetaSuffix.get()
-            }
-        }
-    }
-
     sourceSets {
         webMain {
             dependencies {

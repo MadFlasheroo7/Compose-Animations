@@ -2,7 +2,6 @@ import org.gradle.api.JavaVersion
 
 plugins {
     alias(libs.plugins.androidTest)
-    alias(libs.plugins.kotlinAndroid)
 }
 
 android {
@@ -29,7 +28,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    targetProjectPath = ":composeApp"
+    targetProjectPath = ":androidApp"
     experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 
@@ -45,9 +44,8 @@ androidComponents {
     }
 }
 
-// Ensure the target app is installed before running benchmarks
 afterEvaluate {
     tasks.matching { it.name.contains("connectedBenchmarkAndroidTest") }.configureEach {
-        dependsOn(":composeApp:installBenchmark")
+        dependsOn(":androidApp:installBenchmark")
     }
 }

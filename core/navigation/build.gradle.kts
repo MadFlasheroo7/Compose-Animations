@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.animations.cmp.library)
-    alias(libs.plugins.kotlinAtomicfu)
 }
 
 kotlin {
@@ -10,6 +9,7 @@ kotlin {
                 implementation(projects.core.ui)
                 implementation(libs.compose.nav3)
                 implementation(libs.material3.adaptive)
+                implementation("org.jetbrains.kotlinx:atomicfu:${libs.versions.kotlin.atomic.get()}")
             }
         }
     }

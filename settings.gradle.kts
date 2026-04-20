@@ -38,6 +38,7 @@ plugins {
 }
 
 rootProject.name = "Animations"
+include(":androidApp")
 include(":composeApp")
 include(":macrobenchmark")
 
