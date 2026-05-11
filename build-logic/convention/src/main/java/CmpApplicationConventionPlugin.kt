@@ -2,7 +2,6 @@ import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import pro.jayeshseth.animations.convention.applyHierarchyTemplate
@@ -37,6 +36,8 @@ class CmpApplicationConventionPlugin : Plugin<Project> {
                     namespace = libs.findVersion("namespace").get().toString()
                     compileSdk = libs.findVersion("compile-sdk").get().toString().toInt()
                     minSdk = libs.findVersion("min-sdk").get().toString().toInt()
+
+                    androidResources.enable = true
                 }
 
                 jvmToolchain(17)
