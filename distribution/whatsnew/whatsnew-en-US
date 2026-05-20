@@ -1,0 +1,6 @@
+Performance improvements:
+- Faster cold start: background renderer is now deferred off the first-frame critical path
+- Smoother animations: removed initial app-ready delay and fade transition
+
+Bug fixes:
+- Fixed rotation bug where release builds would navigate to the wrong screen after configuration change

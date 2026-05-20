@@ -47,7 +47,6 @@ class CmpFeatureConventionPlugin : Plugin<Project> {
 
                 "commonMainImplementation"(libs.findLibrary("jetbrains-savedstate").get())
                 "commonMainImplementation"(libs.findLibrary("jetbrains-bundle").get())
-                "debugImplementation"(libs.findLibrary("compose-ui-tooling").get())
             }
         }
     }

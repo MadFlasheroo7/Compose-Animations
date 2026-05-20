@@ -1,8 +1,6 @@
 package pro.jayeshseth.animations.core.navigation
 
 import androidx.compose.runtime.Immutable
-import kotlinx.atomicfu.locks.SynchronizedObject
-import kotlinx.atomicfu.locks.synchronized
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.element
@@ -48,45 +46,31 @@ val Route.isSecondary: Boolean
 /**
  * A custom [KSerializer] for handling polymorphic serialization of [Route] subclasses.
  *
- * This serializer is necessary because the standard polymorphic serialization mechanisms
- * in `kotlinx.serialization` can be complex to set up, especially for passing objects
- * through Android Bundles (e.g., for navigation arguments). This custom implementation
- * provides a simpler, explicit way to serialize and deserialize different `Route` types.
- *
- * Serialization format:
- * It serializes a `Route` object into a structure containing two fields:
- * 1.  `type`: The fully qualified class name of the actual `Route` subclass instance.
- * 2.  `payload`: The actual serialized data of the `Route` object.
- *
- * Deserialization process:
- * It first reads the `type` (class name) to determine which specific `Route` subclass
- * needs to be instantiated. It then uses reflection (`Class.forName`) to get the
- * corresponding `KClass` and its serializer. Finally, it uses this specific serializer
- * to deserialize the `payload` back into the correct `Route` object.
- *
- * This approach allows for type-safe navigation arguments without needing to register
- * every subclass in a `SerializersModule`.
- *
- * @see Route
+ * Routes are identified by their [kotlinx.serialization.descriptors.SerialDescriptor.serialName] —
+ * a compile-time string constant the kotlinx-serialization plugin embeds in bytecode.
+ * Using `serialName` (rather than `KClass.simpleName` or `qualifiedName`) makes the registry key:
+ *  - R8-safe: string literals are never renamed
+ *  - KMP-safe: every target (JVM/Native/JS) returns the same value
+ *  - collision-free: serial names are fully qualified by default
  */
 @OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
 class RouteSerializer : KSerializer<Route> {
 
     companion object Companion {
-        // Registry to hold the serializers
-        private val routeRegistry = mutableMapOf<String, KSerializer<out Route>>()
-        private val registryLock = SynchronizedObject()
+        // Registration is a startup-only, single-threaded operation (MainActivity.onCreate →
+        // initializeApp() → registerAllRoutes(), before setContent). After that the maps are
+        // read-only on the main thread (Compose composition). No synchronization needed.
+        private val serializerBySerialName = mutableMapOf<String, KSerializer<out Route>>()
+        private val serializerByClass = mutableMapOf<KClass<out Route>, KSerializer<out Route>>()
 
         /**
          * Register a route explicitly.
          * MUST be called for every route on iOS/Native.
          */
         fun <T : Route> registerRoute(kClass: KClass<T>, serializer: KSerializer<T>) {
-            synchronized(registryLock) {
-                val qualifiedName = kClass.simpleName
-                    ?: error("Cannot register route without qualified name")
-                routeRegistry[qualifiedName] = serializer
-            }
+            val serialName = serializer.descriptor.serialName
+            serializerBySerialName[serialName] = serializer
+            serializerByClass[kClass] = serializer
         }
 
         // Helper for cleaner syntax: RouteSerializer.register<HomeScreen>()
@@ -102,17 +86,16 @@ class RouteSerializer : KSerializer<Route> {
 
     override fun deserialize(decoder: Decoder): Route {
         return decoder.decodeStructure(descriptor) {
-            var className: String? = null
+            var serialName: String? = null
             var route: Route? = null
 
             while (true) {
                 when (val index = decodeElementIndex(descriptor)) {
-                    0 -> className = decodeStringElement(descriptor, 0)
+                    0 -> serialName = decodeStringElement(descriptor, 0)
                     1 -> {
-                        val name = requireNotNull(className) { "Type must be decoded before payload" }
-                        val serializer = synchronized(registryLock) {
-                            routeRegistry[name]
-                        } ?: error("Route '$name' is not registered. Call RouteSerializer.register<$name>() at app startup.")
+                        val name = requireNotNull(serialName) { "Type must be decoded before payload" }
+                        val serializer = serializerBySerialName[name]
+                            ?: error("Route with serialName '$name' is not registered. Call RouteSerializer.register<...>() at app startup.")
 
                         route = decodeSerializableElement(descriptor, 1, serializer)
                     }
@@ -126,29 +109,20 @@ class RouteSerializer : KSerializer<Route> {
 
     override fun serialize(encoder: Encoder, value: Route) {
         encoder.encodeStructure(descriptor) {
-            val qualifiedName = value::class.simpleName
-                ?: error("Cannot serialize route without qualified name")
-
-            // 1. Look up the serializer in the registry
-            val serializer = synchronized(registryLock) {
-                routeRegistry[qualifiedName]
-            }
-
-            // 2. On JVM, we can fallback to magic. On iOS, we MUST fail if not found.
             @Suppress("UNCHECKED_CAST")
-            val finalSerializer = (serializer as? KSerializer<Route>)
+            val finalSerializer = (serializerByClass[value::class] as? KSerializer<Route>)
                 ?: try {
-                    // Fallback for Android/JVM only
+                    // Fallback for Android/JVM only — on iOS/Native this throws.
                     value::class.serializer() as KSerializer<Route>
                 } catch (e: Exception) {
-                    // This creates the error message you are seeing on iOS
                     throw SerializationException(
-                        "Serializer for '${qualifiedName}' not found. " +
-                                "On iOS, you must explicitly call RouteSerializer.register<${value::class.simpleName}>() at startup.", e
+                        "Serializer for '${value::class.simpleName}' not found. " +
+                                "Call RouteSerializer.register<${value::class.simpleName}>() at startup.",
+                        e,
                     )
                 }
 
-            encodeStringElement(descriptor, 0, qualifiedName)
+            encodeStringElement(descriptor, 0, finalSerializer.descriptor.serialName)
             encodeSerializableElement(descriptor, 1, finalSerializer, value)
         }
     }

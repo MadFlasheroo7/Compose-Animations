@@ -35,8 +35,6 @@ class CmpLibraryConventionPlugin : Plugin<Project> {
                 "commonMainImplementation"(
                     libs.findLibrary("jetbrains-compose-material-icons-extended").get()
                 )
-
-                "debugImplementation"(libs.findLibrary("compose-ui-tooling").get())
             }
         }
     }

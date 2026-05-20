@@ -217,8 +217,8 @@ fun HazedIconButton(
                 this.spread = 10f
             }
             .shimmerBorder(
-                cornerRadius = buttonDp,
-                animatedTranslation = translateAnim
+                cornerRadius = { buttonDp },
+                animatedTranslation = { translateAnim }
             )
     ) {
         CompositionLocalProvider(LocalContentColor provides color) {

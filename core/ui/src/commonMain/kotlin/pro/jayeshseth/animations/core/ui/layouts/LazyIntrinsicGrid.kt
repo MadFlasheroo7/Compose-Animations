@@ -159,8 +159,8 @@ fun PreviewLazyGrid() {
                 text = "Shape And Morphing",
                 onClick = {},
                 modifier = Modifier,
-                scale = 1f,
-                blur = 0f
+                scale = { 1f },
+                blur = { 0f }
             )
 
         }

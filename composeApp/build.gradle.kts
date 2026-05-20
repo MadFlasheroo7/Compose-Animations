@@ -1,37 +1,10 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.animations.cmp.application)
 }
 
 kotlin {
-    android {
-//        signingConfigs {
-//            create("release") {
-//                storeFile = file("keystore.jks")
-//                storePassword = System.getenv("STORE_PASSWORD")
-//                keyAlias = System.getenv("KEY_ALIAS")
-//                keyPassword = System.getenv("KEY_PASSWORD")
-//            }
-//        }
-        buildTypes {
-            release {
-                isMinifyEnabled = true
-                proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
-                )
-//                signingConfig = signingConfigs.getByName("release")
-            }
-            debug {
-                applicationIdSuffix = ".debug"
-                isDefault = true
-                versionNameSuffix = libs.versions.version.nameBetaSuffix.get()
-            }
-        }
-    }
-
     sourceSets {
         webMain {
             dependencies {
@@ -45,6 +18,12 @@ kotlin {
                 implementation("androidx.compose.foundation:foundation:1.11.0-alpha04")
                 implementation(libs.androidx.activity.compose)
                 implementation(fileTree("libs") { include("*.jar") })
+                implementation(libs.rebugger)
+            }
+        }
+        iosMain {
+            dependencies {
+                implementation(libs.rebugger)
             }
         }
         commonMain {
@@ -77,9 +56,17 @@ kotlin {
                 implementation(libs.bundles.navigation)
             }
         }
+        commonTest {
+            dependencies {
+                implementation(kotlin("test"))
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(libs.compose.ui.test)
+            }
+        }
         desktopMain {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation(libs.rebugger)
             }
         }
     }

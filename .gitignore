@@ -20,3 +20,6 @@ local.properties
 /.idea/git_toolbox_prj.xml
 /build-logic/.kotlin
 /build-logic/.kotlin/errors
+/macrobenchmark/build
+/ai/plans
+androidApp/build

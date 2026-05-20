@@ -231,8 +231,8 @@ fun StretchySlider(
                     .fillMaxWidth()
                     .height(height)
                     .shimmerBorder(
-                        cornerRadius = outerRadius,
-                        animatedTranslation = animatedShimmer,
+                        cornerRadius = { outerRadius },
+                        animatedTranslation = { animatedShimmer },
                         borderWidth = if (isValueReachedMax) 10f else 4f
                     )
                     .border(

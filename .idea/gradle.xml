@@ -22,6 +22,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/androidApp" />
             <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/build-logic/convention" />
             <option value="$PROJECT_DIR$/composeApp" />
@@ -38,6 +39,7 @@
             <option value="$PROJECT_DIR$/features/navigation" />
             <option value="$PROJECT_DIR$/features/playground" />
             <option value="$PROJECT_DIR$/features/shaders" />
+            <option value="$PROJECT_DIR$/macrobenchmark" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -34,6 +34,7 @@ import pro.jayeshseth.animations.core.ui.components.BackgroundRenderer
 import pro.jayeshseth.animations.core.ui.theme.LocalCustomizationState
 import pro.jayeshseth.animations.defaultApis.navigation.DefaultApisRoutes
 import pro.jayeshseth.animations.defaultApis.navigation.defaultApis
+import pro.jayeshseth.animations.core.ui.utils.initRebugger
 import pro.jayeshseth.animations.itemPlacements.navigation.ItemPlacementRoutes
 import pro.jayeshseth.animations.itemPlacements.navigation.itemPlacements
 import pro.jayeshseth.animations.masterCustomization.screens.MasterCustomization
@@ -96,6 +97,13 @@ fun NavGraph(
 //        ShaderRoutes.register()
 //    }
 
+    // Defer BackgroundRenderer composition by one frame so the first display frame (HomeScreen)
+    // commits without hazeSource + shader + blur on its critical path. LaunchedEffect runs after
+    // the first composition commits, so the background pops in on frame 2 — fully opaque, no fade.
+    // Phase 7 vs Phase 8 in BENCHMARK_LOG: gate saves ~60–80ms TTID on cold/warm starts.
+    var isAppReady by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { isAppReady = true }
+
     Box(
         Modifier.drawWithCache {
             onDrawWithContent {
@@ -106,13 +114,15 @@ fun NavGraph(
             }
         }
     ) {
-        BackgroundRenderer(
-            backgroundType = customization.backgroundType,
-            modifier = Modifier
-                .fillMaxSize()
-                .hazeSource(hazeState)
-                .blur(customization.backgroundBlur)
-        )
+        if (isAppReady) {
+            BackgroundRenderer(
+                backgroundType = customization.backgroundType,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .hazeSource(hazeState)
+                    .blur(customization.backgroundBlur)
+            )
+        }
 
 //        bitmap?.let {
 //            Image(
@@ -238,7 +248,6 @@ fun NavGraph(
     )
 }
 
-
 fun registerAllRoutes() {
     LandingRoutes.register()
     DefaultApisRoutes.register()
@@ -253,6 +262,7 @@ fun registerAllRoutes() {
  * Registers all shaders and navigation routes.
  */
 fun initializeApp() {
+    initRebugger()
     BackgroundRegistrar.register()
     registerAllRoutes()
 }

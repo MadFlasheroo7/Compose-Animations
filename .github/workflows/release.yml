@@ -37,22 +37,28 @@ jobs:
           java-version: 17
       - uses: gradle/actions/setup-gradle@v4
       - name: Decode keystore
-        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > composeApp/keystore.jks
-      - name: Build release APK
-        run: ./gradlew :composeApp:assembleRelease
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > keystore.jks
+      - name: Build release APK and AAB
+        run: ./gradlew :androidApp:assembleRelease :androidApp:bundleRelease
         env:
           GRADLE_OPTS: "-Xmx6g"
+          STORE_FILE: keystore.jks
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
-      - name: Rename artifact
+      - name: Rename artifacts
         run: |
           PREFIX="${{ needs.resolve-version.outputs.artifact-prefix }}"
-          cp composeApp/build/outputs/apk/release/*.apk "$PREFIX.apk"
+          cp androidApp/build/outputs/apk/release/*.apk "$PREFIX.apk"
+          cp androidApp/build/outputs/bundle/release/*.aab "$PREFIX.aab"
       - uses: actions/upload-artifact@v4
         with:
           name: android-apk
           path: ${{ needs.resolve-version.outputs.artifact-prefix }}.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-aab
+          path: ${{ needs.resolve-version.outputs.artifact-prefix }}.aab
 
   build-desktop-linux:
     needs: resolve-version
