@@ -17,51 +17,31 @@ class StartupBenchmark {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
-    @OptIn(ExperimentalMetricApi::class)
     @Test
-    fun startupCold() = benchmarkRule.measureRepeated(
-        packageName = "pro.jayeshseth.animations",
-        metrics = listOf(
-            StartupTimingMetric(),
-            TraceSectionMetric("BaseInteractiveButton")
-        ),
-        iterations = 5,
-        startupMode = StartupMode.COLD,
-        compilationMode = CompilationMode.DEFAULT,
-    ) {
-        pressHome(1000)
-        startActivityAndWait()
-    }
+    fun startupColdNone() = startup(CompilationMode.None(), StartupMode.COLD)
+
+    @Test
+    fun startupColdPartial() = startup(CompilationMode.Partial(), StartupMode.COLD)
+
+    @Test
+    fun startupWarmPartial() = startup(CompilationMode.Partial(), StartupMode.WARM)
+
+    @Test
+    fun startupHotPartial() = startup(CompilationMode.Partial(), StartupMode.HOT)
 
     @OptIn(ExperimentalMetricApi::class)
-    @Test
-    fun startupWarm() = benchmarkRule.measureRepeated(
-        packageName = "pro.jayeshseth.animations",
-        metrics = listOf(
-            StartupTimingMetric(),
-            TraceSectionMetric("BaseInteractiveButton")
-        ),
-        iterations = 5,
-        startupMode = StartupMode.WARM,
-        compilationMode = CompilationMode.DEFAULT,
-    ) {
-        pressHome(1000)
-        startActivityAndWait()
-    }
-
-    @OptIn(ExperimentalMetricApi::class)
-    @Test
-    fun startupHot() = benchmarkRule.measureRepeated(
-        packageName = "pro.jayeshseth.animations",
-        metrics = listOf(
-            StartupTimingMetric(),
-            TraceSectionMetric("BaseInteractiveButton")
-        ),
-        iterations = 5,
-        startupMode = StartupMode.HOT,
-        compilationMode = CompilationMode.DEFAULT,
-    ) {
-        pressHome(1000)
-        startActivityAndWait()
-    }
+    private fun startup(compilationMode: CompilationMode, startupMode: StartupMode) = 
+        benchmarkRule.measureRepeated(
+            packageName = "pro.jayeshseth.animations",
+            metrics = listOf(
+                StartupTimingMetric(),
+                TraceSectionMetric("BaseInteractiveButton")
+            ),
+            iterations = 5,
+            startupMode = startupMode,
+            compilationMode = compilationMode,
+        ) {
+            pressHome(1000)
+            startActivityAndWait()
+        }
 }
