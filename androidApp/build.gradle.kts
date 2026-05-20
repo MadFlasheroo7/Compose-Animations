@@ -18,13 +18,13 @@ fun signingValue(key: String, envKey: String): String? =
 android {
     signingConfigs {
         create("release") {
-            val storeFilePath = signingValue("RELEASE_STORE_FILE", "RELEASE_STORE_FILE")
+            val storeFilePath = signingValue("RELEASE_STORE_FILE", "STORE_FILE")
             if (storeFilePath != null) {
                 storeFile = rootProject.file(storeFilePath)
             }
-            storePassword = signingValue("RELEASE_STORE_PASSWORD", "RELEASE_STORE_PASSWORD")
-            keyAlias = signingValue("RELEASE_KEY_ALIAS", "RELEASE_KEY_ALIAS")
-            keyPassword = signingValue("RELEASE_KEY_PASSWORD", "RELEASE_KEY_PASSWORD")
+            storePassword = signingValue("RELEASE_STORE_PASSWORD", "STORE_PASSWORD")
+            keyAlias = signingValue("RELEASE_KEY_ALIAS", "KEY_ALIAS")
+            keyPassword = signingValue("RELEASE_KEY_PASSWORD", "KEY_PASSWORD")
         }
     }
 
