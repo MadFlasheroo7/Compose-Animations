@@ -34,7 +34,11 @@ datastore = "1.2.0"
 appcompat = "1.7.0"
 
 # Others
+baselineprofile = "1.5.0-alpha01"
 cascade = "2.3.0"
+mokkery = "2.3.0"
+roborazzi = "1.12.0"
+robolectric = "4.12.2"
 accompanist = "0.37.3"
 coil = "3.3.0"
 composeCodeEditor = "2.0.3"
@@ -63,8 +67,8 @@ jetbrains-core-bundle = "1.0.1"
 # Versioning
 applicationId = "pro.jayeshseth.animations"
 namespace = "pro.jayeshseth.animations"
-version-code = "10"
-version-name = "2.0.0" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
+version-code = "11"
+version-name = "2.0.1" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
 version-nameBetaSuffix = "-beta01"
 target-sdk = "36"
 compile-sdk = "36"
@@ -89,6 +93,7 @@ androidx-window = { module = "androidx.window:window", version.ref = "androidx-w
 
 # Benchmark
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
+androidx-baselineprofile = { group = "androidx.benchmark", name = "benchmark-baseline-profile", version.ref = "baselineprofile" }
 androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 
 # Cascade
@@ -118,6 +123,8 @@ compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling
 compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
 compose-animation-graphics = { group = "androidx.compose.animation", name = "animation-graphics" }
 compose-unstyled = { group = "com.composables", name = "composeunstyled", version.ref = "composeUnstyled" }
+compose-ui-test = { module = "org.jetbrains.compose.ui:ui-test", version.ref = "compose-multiplatform" }
+compose-ui-test-junit4 = { module = "org.jetbrains.compose.ui:ui-test-junit4", version.ref = "compose-multiplatform" }
 
 # Jetbrains Compose
 glowingbutton = { module = "pro.jayeshseth.madifiers:glowingButton", version.ref = "glowingbutton" }
@@ -205,9 +212,15 @@ android-tools-common = { group = "com.android.tools", name = "common", version.r
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
+roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = "roborazzi" }
+roborazzi-compose = { module = "io.github.takahirom.roborazzi:roborazzi-compose", version.ref = "roborazzi" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 
 
 [plugins]
+baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
+baselineprofile-producer = { id = "androidx.baselineprofile.producer", version.ref = "baselineprofile" }
+baselineprofile-consumer = { id = "androidx.baselineprofile.consumer", version.ref = "baselineprofile" }
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "compose-hot-reload" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -219,6 +232,8 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinAtomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "kotlin-atomic" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }

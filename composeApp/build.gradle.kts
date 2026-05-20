@@ -56,6 +56,13 @@ kotlin {
                 implementation(libs.bundles.navigation)
             }
         }
+        commonTest {
+            dependencies {
+                implementation(kotlin("test"))
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(libs.compose.ui.test)
+            }
+        }
         desktopMain {
             dependencies {
                 implementation(compose.desktop.currentOs)

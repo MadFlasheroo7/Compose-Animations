@@ -1,6 +1,7 @@
 import org.gradle.api.JavaVersion
 
 plugins {
+    alias(libs.plugins.baselineprofile)
     alias(libs.plugins.androidTest)
 }
 
@@ -38,14 +39,6 @@ dependencies {
     implementation(libs.androidx.test.ext.junit)
 }
 
-androidComponents {
-    beforeVariants(selector().all()) {
-        it.enable = it.buildType == "benchmark"
-    }
-}
-
-afterEvaluate {
-    tasks.matching { it.name.contains("connectedBenchmarkAndroidTest") }.configureEach {
-        dependsOn(":androidApp:installBenchmark")
-    }
+baselineProfile {
+    useConnectedDevices = true
 }
