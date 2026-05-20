@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.innerShadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlurEffect
@@ -130,15 +131,15 @@ fun BaseInteractiveButton(
         label = "shimmer"
     )
 
-//    // Temp inner radius, a workaround for inner shadow bug
-//    val innerRadius = infiniteTransition.animateFloat(
-//        initialValue = 4.9f,
-//        targetValue = 5f,
-//        label = "",
-//        animationSpec = infiniteRepeatable(
-//            animation = tween(5000),
-//        )
-//    )
+    // Temp inner radius, a workaround for inner shadow bug
+    val innerRadius = infiniteTransition.animateFloat(
+        initialValue = 4.9f,
+        targetValue = 5f,
+        label = "",
+        animationSpec = infiniteRepeatable(
+            animation = tween(5000),
+        )
+    )
 
 
     TrackRecomposition(
@@ -245,29 +246,32 @@ fun BaseInteractiveButton(
             // TODO migrate glowing shadow and replace this
             .then(
                 if (showOverlay) {
-                    Modifier.drawBehind {
-                        val currentShadowColor = color().copy(alpha = shadowAlpha.value)
-                        drawIntoCanvas { canvas ->
-                            val brush = Brush.radialGradient(
-                                radius = this.size.maxDimension * .9f,
-                                center = Offset(
-                                    this.size.width / 2f,
-                                    this.size.height / 2f
-                                ),
-                                colors = listOf(
-                                    currentShadowColor.copy(alpha = 0.1f),
-                                    currentShadowColor,
-                                    currentShadowColor,
-                                )
+                    Modifier.drawWithCache {
+                        val baseColor = color()
+                        val brush = Brush.radialGradient(
+                            radius = this.size.maxDimension * .9f,
+                            center = Offset(
+                                this.size.width / 2f,
+                                this.size.height / 2f
+                            ),
+                            colors = listOf(
+                                baseColor.copy(alpha = 0.1f),
+                                baseColor,
+                                baseColor,
                             )
-                            this.drawRoundRect(brush = brush)
+                        )
+                        onDrawBehind {
+                            val alpha = shadowAlpha.value
+                            drawIntoCanvas { canvas ->
+                                this.drawRoundRect(brush = brush, alpha = alpha)
+                            }
                         }
                     }
                 } else Modifier
             )
             .innerShadow(shape.value) {
                 this.color = color().copy(alpha = shadowAlpha.value)
-                this.radius = 5f
+                this.radius = innerRadius.value
                 this.spread = 10f
             }
             .graphicsLayer {
