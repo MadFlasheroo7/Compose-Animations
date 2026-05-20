@@ -37,9 +37,9 @@ jobs:
           java-version: 17
       - uses: gradle/actions/setup-gradle@v4
       - name: Decode keystore
-        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > composeApp/keystore.jks
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > keystore.jks
       - name: Build release APK
-        run: ./gradlew :composeApp:assembleRelease
+        run: ./gradlew :androidApp:assembleRelease
         env:
           GRADLE_OPTS: "-Xmx6g"
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
@@ -48,7 +48,7 @@ jobs:
       - name: Rename artifact
         run: |
           PREFIX="${{ needs.resolve-version.outputs.artifact-prefix }}"
-          cp composeApp/build/outputs/apk/release/*.apk "$PREFIX.apk"
+          cp androidApp/build/outputs/apk/release/*.apk "$PREFIX.apk"
       - uses: actions/upload-artifact@v4
         with:
           name: android-apk
