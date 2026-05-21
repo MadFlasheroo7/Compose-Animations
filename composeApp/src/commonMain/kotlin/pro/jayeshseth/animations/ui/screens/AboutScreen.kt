@@ -29,16 +29,22 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -75,6 +81,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.EasterEggDetector
+import pro.jayeshseth.animations.core.ui.components.HazedIconButton
 import pro.jayeshseth.animations.core.ui.components.HeadingText
 import pro.jayeshseth.animations.core.ui.components.InteractiveButton
 import pro.jayeshseth.animations.core.ui.components.ShaderPreviewContent
@@ -123,6 +130,7 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
     val val3 = remember { Animatable(0.1f) }
     val About = stringResource(Res.string.about)
     val sourceCode = "https://github.com/MadFlasheroo7/Compose-Animations"
+    val performanceReport = "https://animations.jayeshseth.pro/report/"
 
 //    val isPermissionPermanentlyDenied =
 //        prefs.collectPrefAsState(PermissionPrefs.RECORD_AUDIO_DENIED, false)
@@ -246,54 +254,81 @@ fun AboutScreen(hazeState: HazeState, modifier: Modifier = Modifier) {
             .background(backgroundColor)
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
                 .windowInsetsPadding(WindowInsets.statusBars)
-                .padding(top = 25.dp)
+                .padding(top = 25.dp, start = 12.dp, end = 12.dp)
         ) {
-            AnimatedVisibility(
-                visible = !playShader,
-                enter = fadeIn(
-                    animationSpec = tween(2000)
-                ),
-                exit = fadeOut(
-                    animationSpec = tween(2000)
-                )
+//            Box(modifier = Modifier.size(44.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.weight(1f)
             ) {
-                Text(
-                    text = "\uD83D\uDC96",
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                AnimatedVisibility(
+                    visible = !playShader,
+                    enter = fadeIn(
+                        animationSpec = tween(2000)
+                    ),
+                    exit = fadeOut(
+                        animationSpec = tween(2000)
+                    )
+                ) {
+                    Text(
+                        text = "\uD83D\uDC96",
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                AnimatedVisibility(
+                    visible = !playShader,
+                    enter = fadeIn(
+                        animationSpec = tween(1000)
+                    ),
+                    exit = fadeOut(
+                        animationSpec = tween(1000, delayMillis = 1000)
+                    )
+                ) {
+                    HeadingText(
+                        text = " Animations ",
+                    )
+                }
+
+                AnimatedVisibility(
+                    visible = !playShader,
+                    enter = fadeIn(
+                        animationSpec = tween(2000)
+                    ),
+                    exit = fadeOut(
+                        animationSpec = tween(2000)
+                    )
+                ) {
+                    Text(
+                        text = "\uD83D\uDC96",
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
             }
 
             AnimatedVisibility(
                 visible = !playShader,
-                enter = fadeIn(
-                    animationSpec = tween(1000)
-                ),
-                exit = fadeOut(
-                    animationSpec = tween(1000, delayMillis = 1000)
-                )
+                enter = fadeIn(animationSpec = tween(2000)),
+                exit = fadeOut(animationSpec = tween(2000))
             ) {
-                HeadingText(
-                    text = " Animations ",
-                )
-            }
-
-            AnimatedVisibility(
-                visible = !playShader,
-                enter = fadeIn(
-                    animationSpec = tween(2000)
-                ),
-                exit = fadeOut(
-                    animationSpec = tween(2000)
-                )
-            ) {
-                Text(
-                    text = "\uD83D\uDC96",
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.Bold,
-                )
+                HazedIconButton(
+                    onClick = { urlLauncher.openUri(performanceReport) },
+                    hazeState = hazeState,
+                    contentPadding = PaddingValues(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "Performance report"
+                    )
+                }
             }
         }
 

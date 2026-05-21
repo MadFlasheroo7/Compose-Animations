@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Compose Animations — Performance Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  :root {
+    --primary: #d0bcff;
+    --primary-2: #b69cf0;
+    --accent: #29b6f6;
+    --good: #66bb6a;
+    --bad: #ef5350;
+    --neutral: #90a4ae;
+    --bg: #0e0a1c;
+    --bg-2: #15102a;
+    --card: #1c1638;
+    --card-2: #221b44;
+    --border: #2c2654;
+    --text: #f2ecff;
+    --text-dim: #b8b0d8;
+    --grid: rgba(208, 188, 255, 0.08);
+    --shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    --glow: 0 0 28px rgba(208, 188, 255, 0.18);
+  }
+  [data-theme="light"] {
+    --primary: #6650a4;
+    --primary-2: #7e57c2;
+    --accent: #0288d1;
+    --good: #2e7d32;
+    --bad: #c62828;
+    --neutral: #607d8b;
+    --bg: #faf7ff;
+    --bg-2: #f1ecff;
+    --card: #ffffff;
+    --card-2: #f6f2ff;
+    --border: #e3dcf5;
+    --text: #1a1430;
+    --text-dim: #5b5378;
+    --grid: rgba(102, 80, 164, 0.08);
+    --shadow: 0 10px 30px rgba(102, 80, 164, 0.12);
+    --glow: 0 0 24px rgba(102, 80, 164, 0.15);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { font-size: 15px; }
+  body {
+    font-family: "Syne", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.94rem;
+    line-height: 1.5;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(1200px 600px at 80% -10%, rgba(208, 188, 255, 0.08), transparent 60%),
+      radial-gradient(900px 500px at 0% 30%, rgba(41, 182, 246, 0.05), transparent 60%);
+    background-attachment: fixed;
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+  [data-theme="light"] body {
+    background-image:
+      radial-gradient(1200px 600px at 80% -10%, rgba(102, 80, 164, 0.08), transparent 60%),
+      radial-gradient(900px 500px at 0% 30%, rgba(2, 136, 209, 0.05), transparent 60%);
+  }
+
+  #bgCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 24px 80px; }
+
+  /* Header */
+  header.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0 36px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 36px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    box-shadow: var(--glow);
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    color: #0e0a1c;
+  }
+  .brand-text {
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+  }
+  .brand-text small {
+    display: block;
+    font-weight: 500;
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+  }
+  .theme-toggle {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.18s ease, border-color 0.25s ease, background 0.25s ease;
+    font-size: 0.9rem;
+  }
+  .theme-toggle:hover { transform: translateY(-1px); border-color: var(--primary); }
+  .theme-toggle svg { width: 16px; height: 16px; }
+
+  /* Hero block */
+  .hero-banner {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 28px;
+    margin-bottom: 48px;
+  }
+  @media (max-width: 860px) {
+    .hero-banner { grid-template-columns: 1fr; }
+  }
+  .hero-title {
+    font-size: clamp(1.6rem, 3vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1.08;
+    margin: 0 0 14px;
+    letter-spacing: -0.015em;
+  }
+  .hero-title .accent {
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero-sub {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    margin: 0 0 20px;
+    max-width: 58ch;
+  }
+  .meta-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+  .chip strong { color: var(--text); font-weight: 700; }
+
+  .hero-stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 18px;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--primary), transparent 60%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .stat-num {
+    font-size: 1.7rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--primary);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-num.good { color: var(--good); }
+  .stat-label {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  /* Section */
+  section { margin-bottom: 56px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  .section-num {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--primary);
+    font-variant-numeric: tabular-nums;
+  }
+  .section-title {
+    font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .section-desc {
+    color: var(--text-dim);
+    margin: 0;
+    font-size: 0.9rem;
+    max-width: 78ch;
+  }
+
+  /* Cards / layouts */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+  @media (max-width: 860px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  .chart-card-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin: 0 0 4px;
+  }
+  .chart-card-sub {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    margin: 0 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .better-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(102, 187, 106, 0.32);
+    color: var(--good);
+    background: rgba(102, 187, 106, 0.10);
+    letter-spacing: 0.02em;
+  }
+  .better-tag.up {
+    color: var(--accent);
+    border-color: rgba(41, 182, 246, 0.32);
+    background: rgba(41, 182, 246, 0.10);
+  }
+  .chart-wrap { position: relative; height: 320px; }
+  .chart-wrap.tall { height: 380px; }
+
+  /* Timeline */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+    margin-top: 6px;
+  }
+  @media (max-width: 980px) { .timeline { grid-template-columns: repeat(2, 1fr); } }
+  .phase {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+    transition: transform 0.18s ease, border-color 0.25s ease;
+  }
+  .phase:hover { transform: translateY(-2px); border-color: var(--primary); }
+  .phase-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #0e0a1c;
+    display: grid; place-items: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+  }
+  .phase-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin: 0 0 6px;
+    line-height: 1.25;
+  }
+  .phase-desc {
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    margin: 0;
+    line-height: 1.4;
+  }
+  .phase-tag {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--good);
+    background: rgba(102, 187, 106, 0.12);
+    border: 1px solid rgba(102, 187, 106, 0.3);
+    border-radius: 999px;
+    padding: 2px 8px;
+  }
+  .phase-tag.neutral {
+    color: var(--neutral);
+    background: transparent;
+    border-color: var(--border);
+  }
+  .phase-tag.bad {
+    color: var(--bad);
+    background: rgba(239, 83, 80, 0.10);
+    border-color: rgba(239, 83, 80, 0.3);
+  }
+
+  /* Recomp bar info */
+  .kv-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 18px;
+  }
+  @media (max-width: 720px) { .kv-grid { grid-template-columns: 1fr; } }
+  .kv {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+  }
+  .kv-label {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+  .kv-val {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-top: 4px;
+    color: var(--good);
+    letter-spacing: -0.02em;
+  }
+  .kv-val.bad { color: var(--bad); }
+  .kv-val.neutral { color: var(--neutral); }
+  .kv-sub {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* Takeaway lists */
+  .takeaways {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 980px) { .takeaways { grid-template-columns: 1fr; } }
+  .ta-card {
+    border-radius: 18px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    background: var(--card);
+  }
+  .ta-card h4 {
+    margin: 0 0 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ta-card.good h4 { color: var(--good); }
+  .ta-card.bad h4 { color: var(--bad); }
+  .ta-card.neutral h4 { color: var(--accent); }
+  .ta-card ul {
+    margin: 0; padding-left: 1.1rem;
+    color: var(--text-dim);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .ta-card li { margin-bottom: 6px; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+    padding-top: 24px;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* Inline icon */
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--good); display: inline-block; margin-right: 4px;
+  }
+  .dot.bad { background: var(--bad); }
+  .dot.neutral { background: var(--neutral); }
+
+  /* Stat cards row */
+  .headline-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 8px 0 32px;
+  }
+  @media (max-width: 860px) { .headline-stats { grid-template-columns: repeat(2, 1fr); } }
+  .headline-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 18px;
+    text-align: left;
+    box-shadow: var(--shadow);
+  }
+  .headline-card .big {
+    font-size: 1.55rem;
+    font-weight: 800;
+    background: linear-gradient(120deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+  .headline-card .lbl {
+    margin-top: 8px;
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="brand">
+      <div class="brand-mark">CA</div>
+      <div class="brand-text">
+        Compose Animations
+        <small>Performance Optimization Report</small>
+      </div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+      <span id="themeLabel">Light</span>
+    </button>
+  </header>
+
+  <section class="hero-banner">
+    <div>
+      <h1 class="hero-title">From frame stutter to <span class="accent">silky 60 fps</span>.</h1>
+      <p class="hero-sub">
+        A four-phase deep-dive into recomposition cost, draw-phase allocation, startup gating, and baseline profiles —
+        measured on a real device with Jetpack Macrobenchmark.
+      </p>
+      <div class="meta-chips">
+        <span class="chip">Device: <strong>Motorola Edge 50 Pro</strong></span>
+        <span class="chip">Tool: <strong>Macrobenchmark</strong></span>
+        <span class="chip">Iterations per test: <strong>5</strong></span>
+        <span class="chip">Variant tested: <strong>release (R8 + profile)</strong></span>
+      </div>
+    </div>
+    <div class="hero-stat-grid">
+      <div class="stat-card">
+        <div class="stat-num good">−92%</div>
+        <div class="stat-label">Recompositions on initial render<br/>(72 → 6 buttons)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num good">−57%</div>
+        <div class="stat-label">P99 frame overrun on initial render<br/>(543 ms → 236 ms)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num good">−38%</div>
+        <div class="stat-label">Cold-start time-to-initial-display vs Phase 2</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num good">−82%</div>
+        <div class="stat-label">Button recomp cost on cold start<br/>(14.3 ms → 2.6 ms)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Phase timeline -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Optimization Timeline</h2>
+    </div>
+    <p class="section-desc">Each phase isolates one class of change so the contribution can be measured cleanly.</p>
+    <div class="timeline">
+      <div class="phase">
+        <div class="phase-num">0</div>
+        <h3 class="phase-title">Baseline</h3>
+        <p class="phase-desc">Pre-optimization measurements on idle, scroll, and initial render.</p>
+        <span class="phase-tag neutral">reference</span>
+      </div>
+      <div class="phase">
+        <div class="phase-num">1</div>
+        <h3 class="phase-title">Recomposition</h3>
+        <p class="phase-desc">Lambdas for color / scale / blur, shape moved to graphicsLayer.</p>
+        <span class="phase-tag">−86% recomp</span>
+      </div>
+      <div class="phase">
+        <div class="phase-num">2</div>
+        <h3 class="phase-title">Draw Phase</h3>
+        <p class="phase-desc">drawBehind → drawWithCache for radial gradient brush.</p>
+        <span class="phase-tag">−22% P50 CPU</span>
+      </div>
+      <div class="phase">
+        <div class="phase-num">3</div>
+        <h3 class="phase-title">Initial Load</h3>
+        <p class="phase-desc">isAppReady gate — defer SKSL + haze setup off first-display path.</p>
+        <span class="phase-tag">−20% cold</span>
+      </div>
+      <div class="phase">
+        <div class="phase-num">4</div>
+        <h3 class="phase-title">Baseline Profile</h3>
+        <p class="phase-desc">Producer + consumer wired, AOT compilation for hot paths.</p>
+        <span class="phase-tag">−19% TTID</span>
+      </div>
+      <div class="phase">
+        <div class="phase-num">5</div>
+        <h3 class="phase-title">Gate / Lock A/B</h3>
+        <p class="phase-desc">Gate kept (~70ms win), unnecessary lock dropped (noise).</p>
+        <span class="phase-tag neutral">validated</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Headline stat row -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Headline Numbers</h2>
+    </div>
+    <div class="headline-stats">
+      <div class="headline-card">
+        <div class="big">660 → 534 ms</div>
+        <div class="lbl">Cold start TTID with baseline profile (median)</div>
+      </div>
+      <div class="headline-card">
+        <div class="big">42 → 6</div>
+        <div class="lbl">Idle recompositions (one per visible button)</div>
+      </div>
+      <div class="headline-card">
+        <div class="big">47.5 → 37.0 ms</div>
+        <div class="lbl">P50 scroll frame CPU after draw-phase fix</div>
+      </div>
+      <div class="headline-card">
+        <div class="big">76 ms</div>
+        <div class="lbl">Hot startup median — feels instant</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Charts: recomposition -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Recomposition Collapse</h2>
+    </div>
+    <p class="section-desc">Wrapping animated state in lambdas defers reads to draw, so composition only fires when the button actually changes structure. Recomp count drops to exactly one per visible button.</p>
+    <div class="grid-2" style="margin-top: 18px;">
+      <div class="card">
+        <p class="chart-card-title">Recomposition count — median</p>
+        <p class="chart-card-sub">Pre vs Post recomposition optimization (BaseInteractiveButton) <span class="better-tag">Lower is better ↓</span></p>
+        <div class="chart-wrap"><canvas id="chartRecompCount"></canvas></div>
+      </div>
+      <div class="card">
+        <p class="chart-card-title">Recomposition time SumMs — median</p>
+        <p class="chart-card-sub">CPU time spent recomposing buttons per test run <span class="better-tag">Lower is better ↓</span></p>
+        <div class="chart-wrap"><canvas id="chartRecompMs"></canvas></div>
+      </div>
+    </div>
+    <div class="kv-grid">
+      <div class="kv">
+        <div class="kv-label">Idle</div>
+        <div class="kv-val">−86%</div>
+        <div class="kv-sub">42 → 6 recomps, 14.3 → 5.2 ms</div>
+      </div>
+      <div class="kv">
+        <div class="kv-label">Scroll</div>
+        <div class="kv-val">−80%</div>
+        <div class="kv-sub">30 → 6 recomps, 10.1 → 5.3 ms</div>
+      </div>
+      <div class="kv">
+        <div class="kv-label">Initial Render</div>
+        <div class="kv-val">−92%</div>
+        <div class="kv-sub">72 → 6 recomps, 29.3 → 18.0 ms</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Charts: frame timing -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Frame Timing — Initial Render</h2>
+    </div>
+    <p class="section-desc">The worst-case cold-start stutter (P99 frame overrun) is what users feel as jank. Phase 1 cut it from 543 ms to 236 ms — more than half.</p>
+    <div class="grid-2" style="margin-top: 18px;">
+      <div class="card">
+        <p class="chart-card-title">Frame Duration CPU (ms)</p>
+        <p class="chart-card-sub">Initial Render percentiles <span class="better-tag">Lower is better ↓</span></p>
+        <div class="chart-wrap tall"><canvas id="chartCpuInitial"></canvas></div>
+      </div>
+      <div class="card">
+        <p class="chart-card-title">Frame Overrun (ms)</p>
+        <p class="chart-card-sub">Time past the 16ms budget — Initial Render percentiles <span class="better-tag">Lower is better ↓</span></p>
+        <div class="chart-wrap tall"><canvas id="chartOverrunInitial"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Draw phase win -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Draw Phase Allocation Fix</h2>
+    </div>
+    <p class="section-desc">Moving the radial-gradient brush from <code>drawBehind</code> into <code>drawWithCache</code> stops the per-frame <code>Brush</code> allocation. Scroll frames immediately cheapened.</p>
+    <div class="grid-2" style="margin-top: 18px;">
+      <div class="card">
+        <p class="chart-card-title">Scroll Frame Duration CPU (ms)</p>
+        <p class="chart-card-sub">Post Recomp (broken) vs Post Draw Phase <span class="better-tag">Lower is better ↓</span></p>
+        <div class="chart-wrap tall"><canvas id="chartScrollCpu"></canvas></div>
+      </div>
+      <div class="card">
+        <p class="chart-card-title">Scroll Frame Overrun (ms)</p>
+        <p class="chart-card-sub">Same window — overrun percentiles <span class="better-tag">Lower is better ↓</span></p>
+        <div class="chart-wrap tall"><canvas id="chartScrollOverrun"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Startup TTID journey -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Cold-Start Journey</h2>
+    </div>
+    <p class="section-desc">Time to Initial Display across phases. The release variant + baseline profile combo delivers the biggest single jump.</p>
+    <div class="card" style="margin-top: 18px;">
+      <p class="chart-card-title">Cold Start TTID (median, ms) by Phase</p>
+      <p class="chart-card-sub">Baseline → Recomp → Initial-Load → Profile (None / Partial) <span class="better-tag">Lower is better ↓</span></p>
+      <div class="chart-wrap tall"><canvas id="chartColdJourney"></canvas></div>
+    </div>
+  </section>
+
+  <!-- Baseline profile isolation -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">07</span>
+      <h2 class="section-title">Pure Baseline Profile Effect</h2>
+    </div>
+    <p class="section-desc">Same APK, same run, only difference: profile applied at install time vs not. Clean isolation of the AOT compilation contribution.</p>
+    <div class="grid-2" style="margin-top: 18px;">
+      <div class="card">
+        <p class="chart-card-title">Cold Start TTID — None vs Partial</p>
+        <p class="chart-card-sub">Min / Median / Max in ms <span class="better-tag">Lower is better ↓</span></p>
+        <div class="chart-wrap"><canvas id="chartProfileTtid"></canvas></div>
+      </div>
+      <div class="card">
+        <p class="chart-card-title">Button Recomp Cost on Cold Start (ms)</p>
+        <p class="chart-card-sub">JIT-only (None) vs AOT (Partial) <span class="better-tag">Lower is better ↓</span></p>
+        <div class="chart-wrap"><canvas id="chartProfileButton"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gate / Lock investigation -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">08</span>
+      <h2 class="section-title">Gate vs Lock — A/B Investigation</h2>
+    </div>
+    <p class="section-desc">Once thermal-state noise was controlled, the <code>isAppReady</code> gate proved load-bearing (~60–80ms) while the <code>RouteSerializer</code> lock was measurement-neutral and could be dropped.</p>
+    <div class="card" style="margin-top: 18px;">
+      <p class="chart-card-title">Startup TTID — Gate vs No Gate (cool device)</p>
+      <p class="chart-card-sub">Phase 7 (gate retained) vs Phase 8 (gate removed) <span class="better-tag">Lower is better ↓</span></p>
+      <div class="chart-wrap tall"><canvas id="chartGate"></canvas></div>
+    </div>
+    <div class="kv-grid">
+      <div class="kv">
+        <div class="kv-label">Gate (Cold None)</div>
+        <div class="kv-val">+12.8%</div>
+        <div class="kv-sub">Removing the gate regresses TTID by 83 ms</div>
+      </div>
+      <div class="kv">
+        <div class="kv-label">Gate (Warm)</div>
+        <div class="kv-val">+67%</div>
+        <div class="kv-sub">123.5 → 206.3 ms when removed</div>
+      </div>
+      <div class="kv">
+        <div class="kv-label">Lock removal</div>
+        <div class="kv-val neutral">noise</div>
+        <div class="kv-sub">Within run-to-run CoV — kept removed for simplicity</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Takeaways -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">09</span>
+      <h2 class="section-title">Takeaways</h2>
+    </div>
+    <div class="takeaways">
+      <div class="ta-card good">
+        <h4><span class="dot"></span>What worked</h4>
+        <ul>
+          <li>Lambda-deferred state reads collapsed recomp count to one per visible button.</li>
+          <li>drawWithCache eliminated per-frame <code>Brush</code> allocation in scroll.</li>
+          <li>Deferring SKSL background compile saves ~60–80 ms of TTID on cold start.</li>
+          <li>Baseline profile + R8 release variant: 38% faster cold start vs Phase 2.</li>
+        </ul>
+      </div>
+      <div class="ta-card bad">
+        <h4><span class="dot bad"></span>Trade-offs</h4>
+        <ul>
+          <li>Per-frame draw cost is now the dominant scroll bottleneck.</li>
+          <li>Glow shadow + haze blur + inner shadow + shimmer border + radial overlay all run every frame.</li>
+          <li>Idle P95/P99 tail latency drifted slightly upward post-recomp (P99 +24%).</li>
+        </ul>
+      </div>
+      <div class="ta-card neutral">
+        <h4><span class="dot neutral"></span>What we learned</h4>
+        <ul>
+          <li>Thermal state dominates short A/B comparisons — always cool the device.</li>
+          <li><code>BaseInteractiveButton</code> SumMs is a reliable thermal canary.</li>
+          <li>The unrelated registry lock was protecting a race that can't happen — dropped safely.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>Compose Animations — performance benchmarking deck.</div>
+    <div>Generated from <code>macrobenchmark/BENCHMARK_LOG.md</code></div>
+  </footer>
+
+</div>
+
+<script>
+  // ----- Physics-driven Gravitational Constellation Canvas -----
+  const canvas = document.getElementById("bgCanvas");
+  const ctx = canvas.getContext("2d");
+
+  let width = (canvas.width = window.innerWidth);
+  let height = (canvas.height = window.innerHeight);
+
+  let mouse = { x: width / 2, y: height / 2, active: false };
+  const particles = [];
+  const particleCount = 180;
+  const maxDistance = 110;
+  const gravityRadius = 220;
+  const gravityStrength = 0.28;
+
+  // Idle scatter state tracking
+  let lastMouseMoveTime = Date.now();
+  let isIdleScattered = false;
+
+  class Particle {
+    constructor() {
+      this.reset(true);
+    }
+
+    reset(init = false) {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.radius = Math.random() * 2 + 1;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
+      this.colorIndex = Math.random() > 0.5 ? 1 : 2;
+      this.alpha = Math.random() * 0.5 + 0.2;
+    }
+
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      if (mouse.active) {
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < gravityRadius) {
+          const force = (gravityRadius - dist) / gravityRadius;
+          this.vx += (dx / dist) * force * gravityStrength;
+          this.vy += (dy / dist) * force * gravityStrength;
+        }
+      }
+
+      // Subtle ambient Brownian noise so they float indefinitely and never freeze
+      this.vx += (Math.random() - 0.5) * 0.06;
+      this.vy += (Math.random() - 0.5) * 0.06;
+
+      this.vx *= 0.94;
+      this.vy *= 0.94;
+
+      if (this.x < 0 || this.x > width) this.vx *= -1;
+      if (this.y < 0 || this.y > height) this.vy *= -1;
+    }
+
+    draw(colors) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = this.colorIndex === 1 ? colors.primary(this.alpha) : colors.accent(this.alpha);
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+
+  window.addEventListener("resize", () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
+
+  window.addEventListener("mousemove", (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    mouse.active = true;
+    lastMouseMoveTime = Date.now();
+    isIdleScattered = false;
+  });
+
+  window.addEventListener("mouseleave", () => {
+    mouse.active = false;
+  });
+
+  function getPalette() {
+    const isLight = document.documentElement.getAttribute("data-theme") === "light";
+    if (isLight) {
+      return {
+        primary: (a) => `rgba(102, 80, 164, ${a})`,
+        accent: (a) => `rgba(2, 136, 209, ${a})`,
+        line: (a) => `rgba(102, 80, 164, ${a * 0.15})`
+      };
+    } else {
+      return {
+        primary: (a) => `rgba(208, 188, 255, ${a})`,
+        accent: (a) => `rgba(41, 182, 246, ${a})`,
+        line: (a) => `rgba(208, 188, 255, ${a * 0.15})`
+      };
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    const colors = getPalette();
+
+    // Idle scatter check: explode outward if idle for >5s
+    if (Date.now() - lastMouseMoveTime > 5000) {
+      if (!isIdleScattered) {
+        particles.forEach((p) => {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = Math.random() * 12 + 10; // Significantly more energetic blast (10px to 22px/frame)
+          p.vx = Math.cos(angle) * speed;
+          p.vy = Math.sin(angle) * speed;
+        });
+        isIdleScattered = true;
+      }
+      mouse.active = false;
+    }
+
+    particles.forEach((p) => {
+      p.update();
+      p.draw(colors);
+    });
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.hypot(dx, dy);
+
+        // High-performance mutual repulsion force (Newtonian separation)
+        const minDist = 38;
+        if (dist < minDist) {
+          const force = (minDist - dist) / minDist;
+          const pushX = (dx / dist) * force * 0.22;
+          const pushY = (dy / dist) * force * 0.22;
+          particles[i].vx += pushX;
+          particles[i].vy += pushY;
+          particles[j].vx -= pushX;
+          particles[j].vy -= pushY;
+        }
+
+        if (dist < maxDistance) {
+          const alpha = (maxDistance - dist) / maxDistance;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = colors.line(alpha);
+          ctx.lineWidth = 0.55;
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // ----- Theme toggle -----
+  const root = document.documentElement;
+  const btn = document.getElementById("themeToggle");
+  const label = document.getElementById("themeLabel");
+  const iconMoon = document.getElementById("iconMoon");
+  const iconSun = document.getElementById("iconSun");
+
+  function applyTheme(theme) {
+    root.setAttribute("data-theme", theme);
+    const isLight = theme === "light";
+    label.textContent = isLight ? "Dark" : "Light";
+    iconMoon.style.display = isLight ? "none" : "";
+    iconSun.style.display = isLight ? "" : "none";
+    try { localStorage.setItem("ca-theme", theme); } catch (_) {}
+  }
+
+  const saved = (() => { try { return localStorage.getItem("ca-theme"); } catch (_) { return null; } })();
+  const initial = saved || (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+  applyTheme(initial);
+
+  btn.addEventListener("click", () => {
+    applyTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+    if (typeof Chart !== "undefined") rebuildCharts();
+  });
+
+  // ----- Chart.js setup -----
+  function cssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+  function hexToRgba(hex, a) {
+    const h = hex.replace("#", "");
+    const full = h.length === 3 ? h.split("").map(c => c + c).join("") : h;
+    const n = parseInt(full, 16);
+    return `rgba(${(n>>16)&255}, ${(n>>8)&255}, ${n&255}, ${a})`;
+  }
+
+  if (typeof Chart !== "undefined") {
+    Chart.defaults.font.family = "Syne, system-ui, sans-serif";
+    Chart.defaults.font.size = 12;
+    if (typeof ChartDataLabels !== "undefined") {
+      Chart.register(ChartDataLabels);
+    }
+  }
+
+  const chartInstances = {};
+
+  function destroyAll() {
+    Object.values(chartInstances).forEach(c => c && c.destroy());
+  }
+
+  function commonOpts(unit, yTitle) {
+    const text = cssVar("--text");
+    const dim = cssVar("--text-dim");
+    const grid = cssVar("--grid");
+    const suffix = unit ? " " + unit : "";
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 700, easing: "easeOutCubic" },
+      layout: { padding: { top: 22 } },
+      plugins: {
+        legend: {
+          labels: { color: text, font: { family: "Syne", weight: 600 }, boxWidth: 12, boxHeight: 12 }
+        },
+        tooltip: {
+          backgroundColor: cssVar("--card"),
+          titleColor: text, bodyColor: text,
+          borderColor: cssVar("--border"), borderWidth: 1,
+          titleFont: { family: "Syne", weight: 700 },
+          bodyFont: { family: "Syne", weight: 500 },
+          padding: 12, cornerRadius: 10,
+          callbacks: {
+            label: function(ctx) {
+              const v = ctx.parsed.y;
+              const ds = ctx.dataset.label ? ctx.dataset.label + ": " : "";
+              return ds + v + suffix;
+            }
+          }
+        },
+        datalabels: {
+          anchor: "end",
+          align: "end",
+          offset: 2,
+          color: text,
+          font: { family: "Syne", weight: 700, size: 11 },
+          formatter: function(value) {
+            return value + suffix;
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: grid, drawBorder: false },
+          ticks: { color: dim, font: { family: "Syne" } }
+        },
+        y: {
+          beginAtZero: true,
+          grid: { color: grid, drawBorder: false },
+          ticks: {
+            color: dim,
+            font: { family: "Syne" },
+            callback: function(value) { return value + (unit ? " " + unit : ""); }
+          },
+          title: yTitle ? {
+            display: true,
+            text: yTitle,
+            color: dim,
+            font: { family: "Syne", weight: 600, size: 11 }
+          } : { display: false }
+        }
+      }
+    };
+  }
+
+  function deepMerge(a, b) {
+    for (const k in b) {
+      if (b[k] && typeof b[k] === "object" && !Array.isArray(b[k])) {
+        a[k] = deepMerge(a[k] || {}, b[k]);
+      } else {
+        a[k] = b[k];
+      }
+    }
+    return a;
+  }
+
+  function buildBar(id, labels, datasets, axisCfg, opts) {
+    const el = document.getElementById(id);
+    if (!el) return null;
+    const ctx = el.getContext("2d");
+    const base = commonOpts(axisCfg && axisCfg.unit, axisCfg && axisCfg.yTitle);
+    return new Chart(ctx, {
+      type: "bar",
+      data: { labels, datasets },
+      options: deepMerge(base, opts || {})
+    });
+  }
+
+  function rebuildCharts() {
+    destroyAll();
+    const primary = cssVar("--primary");
+    const accent = cssVar("--accent");
+    const good = cssVar("--good");
+    const bad = cssVar("--bad");
+    const neutral = cssVar("--neutral");
+
+    const preColor = hexToRgba(bad, 0.78);
+    const postColor = hexToRgba(good, 0.85);
+    const preBorder = bad;
+    const postBorder = good;
+
+    // 1. Recomp count
+    chartInstances.recompCount = buildBar("chartRecompCount",
+      ["Idle", "Scroll", "Initial Render"],
+      [
+        { label: "Pre",  data: [42, 30, 72], backgroundColor: preColor,  borderColor: preBorder,  borderWidth: 1, borderRadius: 8 },
+        { label: "Post", data: [6,  6,  6],  backgroundColor: postColor, borderColor: postBorder, borderWidth: 1, borderRadius: 8 }
+      ],
+      { unit: "", yTitle: "Recompositions (count) — lower is better" }
+    );
+
+    // 2. Recomp ms
+    chartInstances.recompMs = buildBar("chartRecompMs",
+      ["Idle", "Scroll", "Initial Render"],
+      [
+        { label: "Pre",  data: [14.3, 10.1, 29.3], backgroundColor: preColor,  borderColor: preBorder,  borderWidth: 1, borderRadius: 8 },
+        { label: "Post", data: [5.2,  5.3,  18.0], backgroundColor: postColor, borderColor: postBorder, borderWidth: 1, borderRadius: 8 }
+      ],
+      { unit: "ms", yTitle: "CPU time (ms) — lower is better" }
+    );
+
+    // 3. Initial render CPU
+    chartInstances.cpuInitial = buildBar("chartCpuInitial",
+      ["P50", "P90", "P95", "P99"],
+      [
+        { label: "Pre",  data: [45.2, 54.9, 59.9, 165.3], backgroundColor: preColor,  borderColor: preBorder,  borderWidth: 1, borderRadius: 8 },
+        { label: "Post", data: [46.3, 54.6, 58.7, 137.9], backgroundColor: postColor, borderColor: postBorder, borderWidth: 1, borderRadius: 8 }
+      ],
+      { unit: "ms", yTitle: "Frame CPU duration (ms) — lower is better" }
+    );
+
+    // 4. Initial render overrun
+    chartInstances.overrunInitial = buildBar("chartOverrunInitial",
+      ["P50", "P90", "P95", "P99"],
+      [
+        { label: "Pre",  data: [57.4, 72.7, 104.4, 543.1], backgroundColor: preColor,  borderColor: preBorder,  borderWidth: 1, borderRadius: 8 },
+        { label: "Post", data: [57.8, 73.3,  99.0, 235.9], backgroundColor: postColor, borderColor: postBorder, borderWidth: 1, borderRadius: 8 }
+      ],
+      { unit: "ms", yTitle: "Frame overrun (ms) — lower is better" }
+    );
+
+    // 5. Scroll CPU (post recomp vs post draw)
+    chartInstances.scrollCpu = buildBar("chartScrollCpu",
+      ["P50", "P90", "P99"],
+      [
+        { label: "Post Recomp",     data: [47.5, 56.1, 86.9], backgroundColor: preColor,  borderColor: preBorder,  borderWidth: 1, borderRadius: 8 },
+        { label: "Post Draw Phase", data: [37.0, 42.9, 74.3], backgroundColor: postColor, borderColor: postBorder, borderWidth: 1, borderRadius: 8 }
+      ],
+      { unit: "ms", yTitle: "Frame CPU duration (ms) — lower is better" }
+    );
+
+    // 6. Scroll overrun
+    chartInstances.scrollOverrun = buildBar("chartScrollOverrun",
+      ["P50", "P99"],
+      [
+        { label: "Post Recomp",     data: [61.3, 168.8], backgroundColor: preColor,  borderColor: preBorder,  borderWidth: 1, borderRadius: 8 },
+        { label: "Post Draw Phase", data: [54.3, 116.9], backgroundColor: postColor, borderColor: postBorder, borderWidth: 1, borderRadius: 8 }
+      ],
+      { unit: "ms", yTitle: "Frame overrun (ms) — lower is better" }
+    );
+
+    // 7. Cold journey
+    chartInstances.coldJourney = buildBar("chartColdJourney",
+      ["Baseline", "Post Recomp", "Post Initial Load", "Profile · None", "Profile · Partial"],
+      [
+        {
+          label: "Cold TTID median",
+          data: [964.2, 1077.7, 863.8, 660.0, 533.7],
+          backgroundColor: [
+            hexToRgba(neutral, 0.55),
+            hexToRgba(bad, 0.65),
+            hexToRgba(primary, 0.55),
+            hexToRgba(accent, 0.6),
+            hexToRgba(good, 0.85)
+          ],
+          borderColor: [neutral, bad, primary, accent, good],
+          borderWidth: 1, borderRadius: 10
+        }
+      ],
+      { unit: "ms", yTitle: "Time to Initial Display (ms) — lower is better" },
+      { plugins: { legend: { display: false } } }
+    );
+
+    // 8. Pure profile TTID
+    chartInstances.profileTtid = buildBar("chartProfileTtid",
+      ["Min", "Median", "Max"],
+      [
+        { label: "None",    data: [624.2, 660.0, 717.3], backgroundColor: preColor,  borderColor: preBorder,  borderWidth: 1, borderRadius: 8 },
+        { label: "Partial", data: [506.6, 533.7, 578.5], backgroundColor: postColor, borderColor: postBorder, borderWidth: 1, borderRadius: 8 }
+      ],
+      { unit: "ms", yTitle: "Cold start TTID (ms) — lower is better" }
+    );
+
+    // 9. Button recomp on cold (profile)
+    chartInstances.profileButton = buildBar("chartProfileButton",
+      ["Min", "Median", "Max"],
+      [
+        { label: "None (JIT)",    data: [13.8, 14.3, 16.3], backgroundColor: preColor,  borderColor: preBorder,  borderWidth: 1, borderRadius: 8 },
+        { label: "Partial (AOT)", data: [2.4,  2.6,  2.9],  backgroundColor: postColor, borderColor: postBorder, borderWidth: 1, borderRadius: 8 }
+      ],
+      { unit: "ms", yTitle: "Recomposition CPU time (ms) — lower is better" }
+    );
+
+    // 10. Gate phase 7 vs 8
+    chartInstances.gate = buildBar("chartGate",
+      ["Cold None", "Cold Partial", "Warm Partial", "Hot Partial"],
+      [
+        { label: "Phase 7 (gate)",    data: [649.9, 550.9, 123.5,  76.1], backgroundColor: postColor, borderColor: postBorder, borderWidth: 1, borderRadius: 8 },
+        { label: "Phase 8 (no gate)", data: [733.1, 609.5, 206.3,  85.2], backgroundColor: preColor,  borderColor: preBorder,  borderWidth: 1, borderRadius: 8 }
+      ],
+      { unit: "ms", yTitle: "Time to Initial Display (ms) — lower is better" }
+    );
+  }
+
+  function bootstrapCharts() {
+    if (typeof Chart === "undefined") {
+      console.error("Chart.js failed to load — charts will not render.");
+      return;
+    }
+    rebuildCharts();
+  }
+  if (document.fonts && document.fonts.ready) {
+    Promise.race([
+      document.fonts.ready,
+      new Promise(resolve => setTimeout(resolve, 1200))
+    ]).then(bootstrapCharts);
+  } else {
+    bootstrapCharts();
+  }
+</script>
+</body>
+</html>

@@ -58,6 +58,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: wasm-dist
@@ -66,6 +67,10 @@ jobs:
         with:
           name: js-dist
           path: site/js/
+      - name: Copy performance report
+        run: |
+          mkdir -p site/report
+          cp -r macrobenchmark/report/. site/report/
       - name: Add CNAME
         run: echo "animations.jayeshseth.pro" > site/CNAME
       - uses: actions/configure-pages@v5
