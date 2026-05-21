@@ -67,8 +67,8 @@ jetbrains-core-bundle = "1.0.1"
 # Versioning
 applicationId = "pro.jayeshseth.animations"
 namespace = "pro.jayeshseth.animations"
-version-code = "11"
-version-name = "2.0.1" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
+version-code = "12"
+version-name = "2.0.2" # X.Y.Z; X = Major, Y = minor, Z = Patch level - (beta, canary) = stage
 version-nameBetaSuffix = "-beta01"
 target-sdk = "36"
 compile-sdk = "36"
