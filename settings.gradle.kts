@@ -56,3 +56,9 @@ include(":features:shaders")
 include(":features:easterEggs")
 include(":features:navigation")
 include(":features:masterCustomization")
+
+// Design Modules
+include(":design:mugen")
+
+// Samples
+include(":samples:mugen-playground")
