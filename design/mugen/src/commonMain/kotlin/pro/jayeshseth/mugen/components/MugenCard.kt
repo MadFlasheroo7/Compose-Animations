@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import pro.jayeshseth.mugen.locals.LocalMugenCardDefaults
-import pro.jayeshseth.mugen.locals.LocalMugenLook
+import pro.jayeshseth.mugen.locals.LocalMugenRendererSet
 import pro.jayeshseth.mugen.renderers.MugenCardRenderer
 
 @Composable
@@ -16,7 +16,7 @@ fun MugenCard(
     val defaults = LocalMugenCardDefaults.current
     val activeRenderer = renderer
         ?: defaults.renderer
-        ?: LocalMugenLook.current.cardRenderer
+        ?: LocalMugenRendererSet.current.card
     activeRenderer.Render(
         defaults = defaults,
         modifier = modifier,

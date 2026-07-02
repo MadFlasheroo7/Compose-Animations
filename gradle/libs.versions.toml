@@ -237,6 +237,8 @@ roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }
+android-kotlin-multiplatform-application = { id = "com.android.kotlin.multiplatform.application", version.ref = "androidGradlePlugin" }
+
 
 # Convention Plugins
 animations-kmp-library = { id = "animations.kmp.library" }

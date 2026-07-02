@@ -33,6 +33,8 @@
             <option value="$PROJECT_DIR$/core/utils" />
             <option value="$PROJECT_DIR$/design" />
             <option value="$PROJECT_DIR$/design/mugen" />
+            <option value="$PROJECT_DIR$/design/mugen-look-haze" />
+            <option value="$PROJECT_DIR$/design/mugen-look-material" />
             <option value="$PROJECT_DIR$/features" />
             <option value="$PROJECT_DIR$/features/defaultApis" />
             <option value="$PROJECT_DIR$/features/easterEggs" />

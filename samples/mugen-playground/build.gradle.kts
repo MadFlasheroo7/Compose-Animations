@@ -5,10 +5,19 @@ plugins {
 }
 
 kotlin {
+    @Suppress("OPT_IN_USAGE")
+    targets.configureEach {
+        if (this is com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget) {
+            namespace = "pro.jayeshseth.mugen.sample"
+        }
+    }
+    
     sourceSets {
         commonMain {
             dependencies {
                 implementation(projects.design.mugen)
+                implementation(projects.design.mugenLookHaze)
+                implementation(projects.design.mugenLookMaterial)
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
@@ -36,7 +45,7 @@ kotlin {
 compose {
     desktop {
         application {
-            mainClass = "pro.jayeshseth.mugen.playground.MainKt"
+            mainClass = "pro.jayeshseth.mugen.sample.MainKt"
 
             nativeDistributions {
                 targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)

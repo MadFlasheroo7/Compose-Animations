@@ -13,12 +13,15 @@ import pro.jayeshseth.mugen.locals.LocalMugenColors
 import pro.jayeshseth.mugen.locals.LocalMugenElevation
 import pro.jayeshseth.mugen.locals.LocalMugenLook
 import pro.jayeshseth.mugen.locals.LocalMugenMotion
+import pro.jayeshseth.mugen.locals.LocalMugenRendererSet
 import pro.jayeshseth.mugen.locals.LocalMugenShapes
 import pro.jayeshseth.mugen.locals.LocalMugenSpacing
 import pro.jayeshseth.mugen.locals.LocalMugenTextDefaults
 import pro.jayeshseth.mugen.locals.LocalMugenTypography
 import pro.jayeshseth.mugen.look.MugenLook
-import pro.jayeshseth.mugen.look.haze.HazeLook
+import pro.jayeshseth.mugen.look.plain.PlainLook
+import pro.jayeshseth.mugen.renderers.MugenRendererSet
+import pro.jayeshseth.mugen.renderers.plain.PlainRenderers
 import pro.jayeshseth.mugen.tokens.MugenColors
 import pro.jayeshseth.mugen.tokens.MugenElevation
 import pro.jayeshseth.mugen.tokens.MugenMotion
@@ -27,18 +30,27 @@ import pro.jayeshseth.mugen.tokens.MugenSpacing
 import pro.jayeshseth.mugen.tokens.MugenTypography
 
 /**
- * Top-level mugen theme. Wraps any subtree with the active [MugenLook] and every derived
- * per-component default. Swapping [look] is a single state change that re-themes the
- * entire subtree in one Compose pass.
+ * Top-level mugen theme. Wires the active [MugenLook] (visual identity) and
+ * [MugenRendererSet] (drawing layer) into the composition independently.
  *
- * @param look       The visual language to apply. Defaults to the signature [HazeLook].
+ * The two concepts are deliberately decoupled:
+ * - **[look]** defines the visual language (colors, shapes, motion, typography, spacing, elevation).
+ * - **[renderers]** defines how components are drawn. If a renderer set doesn't cover a
+ *   component, [PlainRenderers] provides the fallback via `MugenRendererSet`'s interface defaults.
+ *
+ * Swapping [look] alone updates all token-driven visuals in one Compose pass; swapping
+ * [renderers] alone updates drawing logic without changing the palette.
+ *
+ * @param look       The visual language to apply. Defaults to [PlainLook] (zero external deps).
+ * @param renderers  The drawing layer to apply. Defaults to [PlainRenderers].
  * @param overrides  Theme-wide tweaks to component defaults (sizes, padding, shape, …).
  *                   Sub-tree-only overrides should use `CompositionLocalProvider(Local… provides …)`
  *                   inside [content] directly.
  */
 @Composable
 fun MugenTheme(
-    look: MugenLook = HazeLook(),
+    look: MugenLook = PlainLook(),
+    renderers: MugenRendererSet = PlainRenderers,
     overrides: MugenOverrides = MugenOverrides.Empty,
     content: @Composable () -> Unit,
 ) {
@@ -55,6 +67,7 @@ fun MugenTheme(
         LocalMugenTypography provides look.typography,
         LocalMugenSpacing provides look.spacing,
         LocalMugenElevation provides look.elevation,
+        LocalMugenRendererSet provides renderers,
         LocalMugenButtonDefaults provides buttonDefaults,
         LocalMugenCardDefaults provides cardDefaults,
         LocalMugenTextDefaults provides textDefaults,
@@ -98,6 +111,10 @@ object MugenTheme {
     /** The currently active Look. Downcast (e.g. `as? HazeLook`) when you need bespoke tokens. */
     val look: MugenLook
         @Composable @ReadOnlyComposable get() = LocalMugenLook.current
+
+    /** The currently active renderer set. */
+    val renderers: MugenRendererSet
+        @Composable @ReadOnlyComposable get() = LocalMugenRendererSet.current
 
     val capabilities: MugenCapabilities
         @Composable @ReadOnlyComposable get() = LocalMugenCapabilities.current

@@ -58,7 +58,9 @@ include(":features:navigation")
 include(":features:masterCustomization")
 
 // Design Modules
-include(":design:mugen")
+include(":design:mugen")          // mugen-core — keep directory name, change logical name below
+include(":design:mugen-look-haze")
+include(":design:mugen-look-material")
 
 // Samples
 include(":samples:mugen-playground")

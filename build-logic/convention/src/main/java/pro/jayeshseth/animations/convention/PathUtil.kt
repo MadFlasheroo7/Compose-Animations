@@ -18,6 +18,7 @@ import java.util.Locale
 fun Project.pathToPackageName(): String {
     val relativePackageName = path
         .replace(':', '.')
+        .replace('-', '_')
         .lowercase()
 
     println("pathToPackageName: pro.jayeshseth$relativePackageName")

@@ -6,21 +6,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import pro.jayeshseth.mugen.locals.LocalMugenButtonDefaults
-import pro.jayeshseth.mugen.locals.LocalMugenLook
+import pro.jayeshseth.mugen.locals.LocalMugenRendererSet
 import pro.jayeshseth.mugen.renderers.MugenButtonRenderer
 import pro.jayeshseth.mugen.state.rememberMugenButtonState
 
 /**
- * A button rendered by the active [pro.jayeshseth.mugen.look.MugenLook]. The visual is
- * owned by that Look's renderer; the component itself only owns interaction plumbing.
+ * A button whose visual is owned by the active [pro.jayeshseth.mugen.renderers.MugenRendererSet];
+ * the component itself only manages interaction plumbing (press, hover, focus).
  *
- * Token values (min height, padding, shape) come exclusively from
- * [LocalMugenButtonDefaults] — to change them, provide your own defaults via
- * `CompositionLocalProvider` or via [pro.jayeshseth.mugen.MugenOverrides]. The only
- * per-call escape hatch is [renderer].
+ * Renderer resolution priority (highest → lowest):
+ * 1. Per-call [renderer] param
+ * 2. Sub-tree [pro.jayeshseth.mugen.locals.LocalMugenButtonDefaults].renderer
+ * 3. [pro.jayeshseth.mugen.locals.LocalMugenRendererSet].button
  *
- * @param renderer  Optional per-call renderer override. When set, beats the sub-tree
- *                  default and the Look's renderer.
+ * Token values (min height, padding, shape) come from [LocalMugenButtonDefaults].
+ *
+ * @param renderer  Optional per-call renderer override (highest priority).
  */
 @Composable
 fun MugenButton(
@@ -34,7 +35,7 @@ fun MugenButton(
     val defaults = LocalMugenButtonDefaults.current
     val activeRenderer = renderer
         ?: defaults.renderer
-        ?: LocalMugenLook.current.buttonRenderer
+        ?: LocalMugenRendererSet.current.button
     val state = rememberMugenButtonState(interactionSource = interactionSource, enabled = enabled)
     activeRenderer.Render(
         state = state,

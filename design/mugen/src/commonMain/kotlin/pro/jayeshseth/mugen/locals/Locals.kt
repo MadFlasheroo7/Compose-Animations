@@ -3,6 +3,8 @@ package pro.jayeshseth.mugen.locals
 import androidx.compose.runtime.staticCompositionLocalOf
 import pro.jayeshseth.mugen.capabilities.MugenCapabilities
 import pro.jayeshseth.mugen.look.MugenLook
+import pro.jayeshseth.mugen.renderers.MugenRendererSet
+import pro.jayeshseth.mugen.renderers.plain.PlainRenderers
 import pro.jayeshseth.mugen.tokens.MugenColors
 import pro.jayeshseth.mugen.tokens.MugenElevation
 import pro.jayeshseth.mugen.tokens.MugenMotion
@@ -33,6 +35,17 @@ val LocalMugenTypography = staticCompositionLocalOf<MugenTypography> { error(NO_
 val LocalMugenSpacing = staticCompositionLocalOf<MugenSpacing> { error(NO_THEME_MSG) }
 val LocalMugenElevation = staticCompositionLocalOf<MugenElevation> { error(NO_THEME_MSG) }
 
+// ----- Renderer set (the active drawing layer, independent of Look) -----
+
+/**
+ * The active [MugenRendererSet]. Provided by [pro.jayeshseth.mugen.MugenTheme].
+ * Components read their renderer from here — not from the Look.
+ *
+ * Defaults to [PlainRenderers] so compositions without an explicit `MugenTheme` still
+ * render (useful in previews and tests).
+ */
+val LocalMugenRendererSet = staticCompositionLocalOf<MugenRendererSet> { PlainRenderers }
+
 // ----- Per-component defaults locals (the primary override path for token values) -----
 
 val LocalMugenButtonDefaults = staticCompositionLocalOf<MugenButtonDefaults> { error(NO_THEME_MSG) }
@@ -42,3 +55,4 @@ val LocalMugenTextDefaults = staticCompositionLocalOf<MugenTextDefaults> { error
 // ----- Capabilities (target-specific fingerprint) -----
 
 val LocalMugenCapabilities = staticCompositionLocalOf<MugenCapabilities> { error(NO_THEME_MSG) }
+

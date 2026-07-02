@@ -1,9 +1,6 @@
 package pro.jayeshseth.mugen.look
 
 import androidx.compose.runtime.Stable
-import pro.jayeshseth.mugen.renderers.MugenButtonRenderer
-import pro.jayeshseth.mugen.renderers.MugenCardRenderer
-import pro.jayeshseth.mugen.renderers.MugenTextRenderer
 import pro.jayeshseth.mugen.tokens.MugenColors
 import pro.jayeshseth.mugen.tokens.MugenElevation
 import pro.jayeshseth.mugen.tokens.MugenMotion
@@ -12,17 +9,19 @@ import pro.jayeshseth.mugen.tokens.MugenSpacing
 import pro.jayeshseth.mugen.tokens.MugenTypography
 
 /**
- * The universal Look contract.
+ * The universal Look contract — pure visual identity.
  *
- * Each [MugenLook] bundles the six token families plus one renderer per component the
- * library ships. Concrete Looks (`HazeLook`, `MaterialLook`, etc.) implement this
- * interface and use covariant property overrides to expose their own typed token classes
- * — that's how they introduce bespoke tokens (e.g. `HazeColors.glow`) that don't pollute
- * the base contract.
+ * A [MugenLook] defines **who** the UI is (colors, shapes, motion, typography, spacing,
+ * elevation). It does **not** define **how** components are drawn — that is the
+ * responsibility of [pro.jayeshseth.mugen.renderers.MugenRendererSet].
  *
- * To author a custom Look: implement this interface (or extend an existing class) and
- * provide your own renderer instances. To swap Looks at runtime: hoist a `MugenLook`
- * state and pass it to [pro.jayeshseth.mugen.MugenTheme].
+ * Concrete Looks (`HazeLook`, `MaterialLook`, etc.) implement this interface and use
+ * covariant property overrides to expose their own typed token classes — that's how they
+ * introduce bespoke tokens (e.g. `HazeColors.glow`) without polluting the base contract.
+ *
+ * To author a custom Look: implement this interface (six token families + a name). No
+ * renderer knowledge needed. To swap Looks at runtime: hoist a `MugenLook` state and
+ * pass it to [pro.jayeshseth.mugen.MugenTheme].
  */
 @Stable
 interface MugenLook {
@@ -35,9 +34,5 @@ interface MugenLook {
     val typography: MugenTypography
     val spacing: MugenSpacing
     val elevation: MugenElevation
-
-    // Renderer slots — one per component currently shipping in mugen
-    val buttonRenderer: MugenButtonRenderer
-    val cardRenderer: MugenCardRenderer
-    val textRenderer: MugenTextRenderer
 }
+

@@ -8,10 +8,8 @@ kotlin {
             dependencies {
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
-                implementation(libs.haze)
-                implementation(libs.glowingbutton)
-                implementation(libs.hypnoticcanvas)
-                implementation(libs.hypnoticcanvas.shaders)
+                // material3 only for PlainButtonRenderer ripple + PlainTextRenderer Text
+                implementation(compose.material3)
             }
         }
     }
