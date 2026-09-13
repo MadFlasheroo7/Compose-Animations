@@ -16,5 +16,5 @@ import pro.jayeshseth.mugen.renderers.MugenRendererSet
 class MaterialRendererSet(look: MaterialLook = MaterialLook()) : MugenRendererSet {
     override val button = MaterialButtonRenderer(look)
     override val card   = MaterialCardRenderer(look)
-    override val text   = MaterialTextRenderer(look)
+//    override val text   = MaterialTextRenderer(look)
 }

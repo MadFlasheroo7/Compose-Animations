@@ -1,5 +1,6 @@
 package pro.jayeshseth.mugen.locals
 
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import pro.jayeshseth.mugen.capabilities.MugenCapabilities
 import pro.jayeshseth.mugen.look.MugenLook
@@ -46,13 +47,20 @@ val LocalMugenElevation = staticCompositionLocalOf<MugenElevation> { error(NO_TH
  */
 val LocalMugenRendererSet = staticCompositionLocalOf<MugenRendererSet> { PlainRenderers }
 
-// ----- Per-component defaults locals (the primary override path for token values) -----
+// ----- Single Defaults Container for ALL component defaults -----
 
-val LocalMugenButtonDefaults = staticCompositionLocalOf<MugenButtonDefaults> { error(NO_THEME_MSG) }
-val LocalMugenCardDefaults = staticCompositionLocalOf<MugenCardDefaults> { error(NO_THEME_MSG) }
-val LocalMugenTextDefaults = staticCompositionLocalOf<MugenTextDefaults> { error(NO_THEME_MSG) }
+/**
+ * The lazy [MugenDefaultsContainer] provided by [pro.jayeshseth.mugen.MugenTheme].
+ * Resolves component layout defaults dynamically on demand.
+ */
+val LocalMugenDefaults = staticCompositionLocalOf<MugenDefaultsContainer> { error(NO_THEME_MSG) }
+
+// ----- Optional per-component sub-tree override locals -----
+
+val LocalMugenButtonDefaults = compositionLocalOf<MugenButtonDefaults?> { null }
+val LocalMugenCardDefaults = compositionLocalOf<MugenCardDefaults?> { null }
+val LocalMugenTextDefaults = compositionLocalOf<MugenTextDefaults?> { null }
 
 // ----- Capabilities (target-specific fingerprint) -----
 
 val LocalMugenCapabilities = staticCompositionLocalOf<MugenCapabilities> { error(NO_THEME_MSG) }
-

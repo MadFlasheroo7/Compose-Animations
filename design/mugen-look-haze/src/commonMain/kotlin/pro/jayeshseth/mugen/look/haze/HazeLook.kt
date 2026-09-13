@@ -1,6 +1,14 @@
 package pro.jayeshseth.mugen.look.haze
 
 import androidx.compose.runtime.Stable
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.unit.dp
+import pro.jayeshseth.mugen.components.MugenChipDefaults
+import pro.jayeshseth.mugen.locals.MugenButtonDefaults
+import pro.jayeshseth.mugen.locals.MugenCardDefaults
+import pro.jayeshseth.mugen.locals.MugenDefaultsRegistry
+import pro.jayeshseth.mugen.locals.MugenTextDefaults
+import pro.jayeshseth.mugen.locals.mugenDefaults
 import pro.jayeshseth.mugen.look.MugenLook
 
 /**
@@ -37,4 +45,28 @@ class HazeLook(
     override val elevation: HazeElevation = HazeElevation(),
 ) : MugenLook {
     override val name: String = "Haze"
+
+    override val defaults: MugenDefaultsRegistry = mugenDefaults {
+        register(
+            MugenButtonDefaults(
+                minHeight = 44.dp,
+                minWidth = 56.dp,
+                contentPadding = PaddingValues(horizontal = spacing.lg, vertical = spacing.md),
+                shape = shapes.lg,
+            )
+        )
+        register(
+            MugenCardDefaults(
+                contentPadding = PaddingValues(spacing.lg),
+                shape = shapes.lg,
+            )
+        )
+        register(MugenTextDefaults())
+        register(
+            MugenChipDefaults(
+                contentPadding = PaddingValues(horizontal = spacing.md, vertical = spacing.sm),
+                shape = shapes.sm,
+            )
+        )
+    }
 }

@@ -2,18 +2,28 @@ package pro.jayeshseth.animations.ui.screens
 
 import pro.jayeshseth.animations.core.ui.utils.TrackRecomposition
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,11 +32,17 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import dev.chrisbanes.haze.HazeState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import pro.jayeshseth.animations.core.navigation.AnimationScreen
 import pro.jayeshseth.animations.core.navigation.OnNavAction
@@ -84,6 +100,7 @@ fun HomeScreen(
 
     val deviceConfiguration = currentDeviceConfiguration()
 
+    val ints = remember { MutableInteractionSource() }
     val columns by rememberUpdatedState(
         newValue = when (deviceConfiguration) {
             MOBILE_PORTRAIT -> 1
@@ -93,6 +110,12 @@ fun HomeScreen(
             DESKTOP -> 3
         }
     )
+    val shdp by animateDpAsState(
+        if (ints.collectIsTappedAsState(200L).value) 0.dp else 100.dp,
+        animationSpec = tween(500)
+    )
+    val sh = remember(shdp){ RoundedCornerShape(shdp) }
+//    val sh =
     Scaffold(
         containerColor = Color.Transparent,
         topBar = {
@@ -119,18 +142,70 @@ fun HomeScreen(
                 .padding(horizontal = 20.dp)
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) { index, item ->
-            AnimateButtonScale(
-                index = index,
-                text = item.title,
-                hazeState = hazeState,
-                isInitialLoad = isInitialLoad,
-                flip = item.flip,
-                onClick = {
-                    navAction(item.route)
-                }
-            )
+            Button(
+                onClick = {},
+//                shape = mugenButtonShape(ints),
+                shape = sh,
+                interactionSource = ints
+            ) {
+                Text("${ints.collectIsTappedAsState().value || ints.collectIsPressedAsState().value}", color = Color.Black)
+            }
+//            AnimateButtonScale(
+//                index = index,
+//                text = item.title,
+//                hazeState = hazeState,
+//                isInitialLoad = isInitialLoad,
+//                flip = item.flip,
+//                onClick = {
+//                    navAction(item.route)
+//                }
+//            )
         }
     }
+}
+
+@Composable
+fun mugenButtonShape(interactionSource: MutableInteractionSource): Shape {
+    val squish = remember { Animatable(0f) }
+
+    LaunchedEffect(interactionSource) {
+        var job: Job? = null
+        interactionSource.interactions.collect { interaction ->
+            if (interaction is PressInteraction.Release) {
+                job?.cancel()
+                job = launch {
+                    squish.animateTo(1f, spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessHigh))
+                    squish.animateTo(0f, spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessMedium))
+                }
+            }
+        }
+    }
+
+    val corner = lerp(8.dp, 24.dp, squish.value)
+    return RoundedCornerShape(corner)
+}
+
+private const val TapPulseDurationMillis = 100L
+
+@Composable
+fun InteractionSource.collectIsTappedAsState(
+    pulseDurationMillis: Long = TapPulseDurationMillis,
+): State<Boolean> {
+    val isTapped = remember { mutableStateOf(false) }
+    LaunchedEffect(this) {
+        var resetJob: Job? = null
+        interactions.collect { interaction ->
+            if (interaction is PressInteraction.Release) {
+                resetJob?.cancel()
+                isTapped.value = true
+                resetJob = launch {
+                    delay(pulseDurationMillis)
+                    isTapped.value = false
+                }
+            }
+        }
+    }
+    return isTapped
 }
 
 // temp

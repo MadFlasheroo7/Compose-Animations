@@ -34,8 +34,11 @@ import pro.jayeshseth.mugen.Mugen
 import pro.jayeshseth.mugen.MugenTheme
 import pro.jayeshseth.mugen.components.MugenButton
 import pro.jayeshseth.mugen.components.MugenCard
+import pro.jayeshseth.mugen.components.MugenChip
 import pro.jayeshseth.mugen.components.MugenText
 import pro.jayeshseth.mugen.locals.LocalMugenButtonDefaults
+import pro.jayeshseth.mugen.locals.LocalMugenDefaults
+import pro.jayeshseth.mugen.locals.MugenButtonDefaults
 import pro.jayeshseth.mugen.look.MugenLook
 import pro.jayeshseth.mugen.look.haze.HazeLook
 import pro.jayeshseth.mugen.look.material.MaterialLook
@@ -95,7 +98,6 @@ private fun PlaygroundHeader(look: MugenLook) {
         )
     }
 }
-
 @Composable
 private fun ComponentGallerySection() {
     val typography = MugenTheme.typography
@@ -104,6 +106,11 @@ private fun ComponentGallerySection() {
     Row(horizontalArrangement = Arrangement.spacedBy(spacing.md)) {
         MugenButton(onClick = {}) { MugenText("Primary") }
         MugenButton(onClick = {}, enabled = false) { MugenText("Disabled") }
+    }
+    Spacer(Modifier.height(spacing.sm))
+    Row(horizontalArrangement = Arrangement.spacedBy(spacing.md)) {
+        MugenChip(onClick = {}) { MugenText("Default Chip") }
+        MugenChip(onClick = {}) { MugenText("Look-driven Defaults") }
     }
     Spacer(Modifier.height(spacing.sm))
     MugenCard {
@@ -121,6 +128,7 @@ private fun SubTreeOverrideSection() {
     val spacing = MugenTheme.spacing
     SectionTitle("Sub-tree defaults override (LocalMugenButtonDefaults)")
     val current = LocalMugenButtonDefaults.current
+        ?: LocalMugenDefaults.current.resolve<MugenButtonDefaults>()
     CompositionLocalProvider(
         LocalMugenButtonDefaults provides current.copy(minHeight = 72.dp)
     ) {

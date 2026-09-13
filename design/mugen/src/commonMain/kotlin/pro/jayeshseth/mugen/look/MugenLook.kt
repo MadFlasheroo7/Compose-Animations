@@ -8,6 +8,8 @@ import pro.jayeshseth.mugen.tokens.MugenShapes
 import pro.jayeshseth.mugen.tokens.MugenSpacing
 import pro.jayeshseth.mugen.tokens.MugenTypography
 
+import pro.jayeshseth.mugen.locals.MugenDefaultsRegistry
+
 /**
  * The universal Look contract — pure visual identity.
  *
@@ -34,5 +36,11 @@ interface MugenLook {
     val typography: MugenTypography
     val spacing: MugenSpacing
     val elevation: MugenElevation
+
+    /**
+     * Component defaults provided by this Look.
+     * Looks register their component defaults via [pro.jayeshseth.mugen.locals.mugenDefaults].
+     */
+    val defaults: MugenDefaultsRegistry get() = MugenDefaultsRegistry.Empty
 }
 

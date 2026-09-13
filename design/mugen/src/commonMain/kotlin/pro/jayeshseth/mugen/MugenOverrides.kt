@@ -5,6 +5,7 @@ import pro.jayeshseth.mugen.locals.MugenButtonDefaults
 import pro.jayeshseth.mugen.locals.MugenCardDefaults
 import pro.jayeshseth.mugen.locals.MugenTextDefaults
 import pro.jayeshseth.mugen.look.MugenLook
+import kotlin.reflect.KClass
 
 /**
  * One-shot theme-level overrides. Use the [build] DSL to override per-component
@@ -24,14 +25,22 @@ import pro.jayeshseth.mugen.look.MugenLook
  * directly — `MugenOverrides` is for theme-wide setup.
  */
 @Immutable
-class MugenOverrides internal constructor(
-    internal val button: ((MugenButtonDefaults) -> MugenButtonDefaults)? = null,
-    internal val card: ((MugenCardDefaults) -> MugenCardDefaults)? = null,
-    internal val text: ((MugenTextDefaults) -> MugenTextDefaults)? = null,
+class MugenOverrides private constructor(
+    private val transforms: Map<KClass<out Any>, (Any) -> Any>
 ) {
+    /**
+     * Resolves the overridden defaults for the given [base] object.
+     * Returns [base] unchanged if no override is registered.
+     */
+    fun <T : Any> get(base: T): T {
+        val transform = transforms[base::class] ?: return base
+        @Suppress("UNCHECKED_CAST")
+        return transform(base) as T
+    }
+
     companion object {
         /** A pass-through overrides instance — uses the active Look's defaults unchanged. */
-        val Empty: MugenOverrides = MugenOverrides()
+        val Empty = MugenOverrides(emptyMap())
 
         /** DSL entry point. */
         fun build(block: Builder.() -> Unit): MugenOverrides =
@@ -39,43 +48,20 @@ class MugenOverrides internal constructor(
     }
 
     class Builder internal constructor() {
-        private var buttonTransform: ((MugenButtonDefaults) -> MugenButtonDefaults)? = null
-        private var cardTransform: ((MugenCardDefaults) -> MugenCardDefaults)? = null
-        private var textTransform: ((MugenTextDefaults) -> MugenTextDefaults)? = null
+        private val transforms = mutableMapOf<KClass<out Any>, (Any) -> Any>()
 
-        /** Transform the per-Look button defaults. */
-        fun button(transform: (MugenButtonDefaults) -> MugenButtonDefaults) {
-            buttonTransform = transform
+        /** Registers a type-safe transformer override for component defaults of type [T]. */
+        fun <T : Any> override(clazz: KClass<T>, transform: (T) -> T) {
+            transforms[clazz] = { transform(it as T) }
         }
 
-        fun card(transform: (MugenCardDefaults) -> MugenCardDefaults) {
-            cardTransform = transform
+        /** Registers a type-safe transformer override for component defaults of type [T]. */
+        inline fun <reified T : Any> override(noinline transform: (T) -> T) {
+            override(T::class, transform)
         }
 
-        fun text(transform: (MugenTextDefaults) -> MugenTextDefaults) {
-            textTransform = transform
-        }
-
-        internal fun build(): MugenOverrides =
-            MugenOverrides(buttonTransform, cardTransform, textTransform)
+        internal fun build(): MugenOverrides = MugenOverrides(transforms.toMap())
     }
 }
 
-/**
- * Internal: derive the per-component defaults for the given [look], applying any [overrides].
- * Used by [MugenTheme].
- */
-internal fun MugenLook.applyButtonDefaults(overrides: MugenOverrides): MugenButtonDefaults {
-    val base = defaultButtonDefaults(this)
-    return overrides.button?.invoke(base) ?: base
-}
 
-internal fun MugenLook.applyCardDefaults(overrides: MugenOverrides): MugenCardDefaults {
-    val base = defaultCardDefaults(this)
-    return overrides.card?.invoke(base) ?: base
-}
-
-internal fun MugenLook.applyTextDefaults(overrides: MugenOverrides): MugenTextDefaults {
-    val base = defaultTextDefaults(this)
-    return overrides.text?.invoke(base) ?: base
-}

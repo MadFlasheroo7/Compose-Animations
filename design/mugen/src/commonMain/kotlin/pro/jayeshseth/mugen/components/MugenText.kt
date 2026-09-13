@@ -5,9 +5,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import pro.jayeshseth.mugen.locals.LocalMugenColors
+import pro.jayeshseth.mugen.locals.LocalMugenDefaults
 import pro.jayeshseth.mugen.locals.LocalMugenRendererSet
 import pro.jayeshseth.mugen.locals.LocalMugenTextDefaults
 import pro.jayeshseth.mugen.locals.LocalMugenTypography
+import pro.jayeshseth.mugen.locals.MugenTextDefaults
 import pro.jayeshseth.mugen.renderers.MugenTextRenderer
 
 /**
@@ -23,6 +25,7 @@ fun MugenText(
     renderer: MugenTextRenderer? = null,
 ) {
     val defaults = LocalMugenTextDefaults.current
+        ?: LocalMugenDefaults.current.resolve<MugenTextDefaults>()
     val activeRenderer = renderer
         ?: defaults.renderer
         ?: LocalMugenRendererSet.current.text

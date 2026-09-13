@@ -1,6 +1,14 @@
 package pro.jayeshseth.mugen.look.plain
 
 import androidx.compose.runtime.Stable
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.unit.dp
+import pro.jayeshseth.mugen.components.MugenChipDefaults
+import pro.jayeshseth.mugen.locals.MugenButtonDefaults
+import pro.jayeshseth.mugen.locals.MugenCardDefaults
+import pro.jayeshseth.mugen.locals.MugenDefaultsRegistry
+import pro.jayeshseth.mugen.locals.MugenTextDefaults
+import pro.jayeshseth.mugen.locals.mugenDefaults
 import pro.jayeshseth.mugen.look.MugenLook
 
 /**
@@ -18,6 +26,10 @@ import pro.jayeshseth.mugen.look.MugenLook
  * override any of the six token properties — they get Plain rendering for free until they
  * pair a custom [pro.jayeshseth.mugen.renderers.MugenRendererSet].
  */
+
+data class Dumb(
+    val dum1: String
+)
 @Stable
 class PlainLook(
     override val colors: PlainColors = PlainColors(),
@@ -28,4 +40,31 @@ class PlainLook(
     override val elevation: PlainElevation = PlainElevation(),
 ) : MugenLook {
     override val name: String = "Plain"
+
+    override val defaults: MugenDefaultsRegistry = mugenDefaults {
+        register(
+            Dumb(
+                ""
+            )
+//            MugenButtonDefaults(
+//                minHeight = 48.dp,
+//                minWidth = 64.dp,
+//                contentPadding = PaddingValues(horizontal = spacing.lg, vertical = spacing.md),
+//                shape = shapes.lg,
+//            )
+        )
+        register(
+            MugenCardDefaults(
+                contentPadding = PaddingValues(spacing.lg),
+                shape = shapes.lg,
+            )
+        )
+        register(MugenTextDefaults())
+        register(
+            MugenChipDefaults(
+                contentPadding = PaddingValues(horizontal = spacing.md, vertical = spacing.sm),
+                shape = shapes.sm,
+            )
+        )
+    }
 }

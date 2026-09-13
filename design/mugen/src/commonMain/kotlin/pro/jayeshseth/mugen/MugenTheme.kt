@@ -6,18 +6,17 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import pro.jayeshseth.mugen.capabilities.MugenCapabilities
 import pro.jayeshseth.mugen.capabilities.resolveMugenCapabilities
-import pro.jayeshseth.mugen.locals.LocalMugenButtonDefaults
 import pro.jayeshseth.mugen.locals.LocalMugenCapabilities
-import pro.jayeshseth.mugen.locals.LocalMugenCardDefaults
 import pro.jayeshseth.mugen.locals.LocalMugenColors
+import pro.jayeshseth.mugen.locals.LocalMugenDefaults
 import pro.jayeshseth.mugen.locals.LocalMugenElevation
 import pro.jayeshseth.mugen.locals.LocalMugenLook
 import pro.jayeshseth.mugen.locals.LocalMugenMotion
 import pro.jayeshseth.mugen.locals.LocalMugenRendererSet
 import pro.jayeshseth.mugen.locals.LocalMugenShapes
 import pro.jayeshseth.mugen.locals.LocalMugenSpacing
-import pro.jayeshseth.mugen.locals.LocalMugenTextDefaults
 import pro.jayeshseth.mugen.locals.LocalMugenTypography
+import pro.jayeshseth.mugen.locals.MugenDefaultsContainer
 import pro.jayeshseth.mugen.look.MugenLook
 import pro.jayeshseth.mugen.look.plain.PlainLook
 import pro.jayeshseth.mugen.renderers.MugenRendererSet
@@ -54,9 +53,9 @@ fun MugenTheme(
     overrides: MugenOverrides = MugenOverrides.Empty,
     content: @Composable () -> Unit,
 ) {
-    val buttonDefaults = remember(look, overrides) { look.applyButtonDefaults(overrides) }
-    val cardDefaults = remember(look, overrides) { look.applyCardDefaults(overrides) }
-    val textDefaults = remember(look, overrides) { look.applyTextDefaults(overrides) }
+    val defaultsContainer = remember(look, overrides) {
+        MugenDefaultsContainer(look, overrides)
+    }
     val capabilities = resolveMugenCapabilities()
 
     CompositionLocalProvider(
@@ -68,9 +67,7 @@ fun MugenTheme(
         LocalMugenSpacing provides look.spacing,
         LocalMugenElevation provides look.elevation,
         LocalMugenRendererSet provides renderers,
-        LocalMugenButtonDefaults provides buttonDefaults,
-        LocalMugenCardDefaults provides cardDefaults,
-        LocalMugenTextDefaults provides textDefaults,
+        LocalMugenDefaults provides defaultsContainer,
         LocalMugenCapabilities provides capabilities,
         content = content,
     )

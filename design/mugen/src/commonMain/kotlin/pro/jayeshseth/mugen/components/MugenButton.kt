@@ -6,7 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import pro.jayeshseth.mugen.locals.LocalMugenButtonDefaults
+import pro.jayeshseth.mugen.locals.LocalMugenDefaults
 import pro.jayeshseth.mugen.locals.LocalMugenRendererSet
+import pro.jayeshseth.mugen.locals.MugenButtonDefaults
 import pro.jayeshseth.mugen.renderers.MugenButtonRenderer
 import pro.jayeshseth.mugen.state.rememberMugenButtonState
 
@@ -19,7 +21,8 @@ import pro.jayeshseth.mugen.state.rememberMugenButtonState
  * 2. Sub-tree [pro.jayeshseth.mugen.locals.LocalMugenButtonDefaults].renderer
  * 3. [pro.jayeshseth.mugen.locals.LocalMugenRendererSet].button
  *
- * Token values (min height, padding, shape) come from [LocalMugenButtonDefaults].
+ * Token values (min height, padding, shape) come from subtree [LocalMugenButtonDefaults]
+ * or dynamically from [LocalMugenDefaults].
  *
  * @param renderer  Optional per-call renderer override (highest priority).
  */
@@ -33,6 +36,7 @@ fun MugenButton(
     content: @Composable RowScope.() -> Unit,
 ) {
     val defaults = LocalMugenButtonDefaults.current
+        ?: LocalMugenDefaults.current.resolve<MugenButtonDefaults>()
     val activeRenderer = renderer
         ?: defaults.renderer
         ?: LocalMugenRendererSet.current.button
