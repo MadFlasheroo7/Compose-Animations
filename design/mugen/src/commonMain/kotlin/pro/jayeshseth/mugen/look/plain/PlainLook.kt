@@ -26,10 +26,6 @@ import pro.jayeshseth.mugen.look.MugenLook
  * override any of the six token properties — they get Plain rendering for free until they
  * pair a custom [pro.jayeshseth.mugen.renderers.MugenRendererSet].
  */
-
-data class Dumb(
-    val dum1: String
-)
 @Stable
 class PlainLook(
     override val colors: PlainColors = PlainColors(),
@@ -43,15 +39,12 @@ class PlainLook(
 
     override val defaults: MugenDefaultsRegistry = mugenDefaults {
         register(
-            Dumb(
-                ""
+            MugenButtonDefaults(
+                minHeight = 48.dp,
+                minWidth = 64.dp,
+                contentPadding = PaddingValues(horizontal = spacing.lg, vertical = spacing.md),
+                shape = shapes.lg,
             )
-//            MugenButtonDefaults(
-//                minHeight = 48.dp,
-//                minWidth = 64.dp,
-//                contentPadding = PaddingValues(horizontal = spacing.lg, vertical = spacing.md),
-//                shape = shapes.lg,
-//            )
         )
         register(
             MugenCardDefaults(
